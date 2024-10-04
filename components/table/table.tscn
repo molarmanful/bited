@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnhlhp8evbrv3"]
+
+[ext_resource type="PackedScene" uid="uid://c1cjx57ksqn6a" path="res://components/table/glyph.tscn" id="1_7onw6"]
+[ext_resource type="Theme" uid="uid://co6jxl87eleb2" path="res://default.tres" id="1_px6qq"]
+
+[node name="Table" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+theme = ExtResource("1_px6qq")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 1
+
+[node name="Glyph" parent="HFlowContainer" instance=ExtResource("1_7onw6")]
+layout_mode = 2

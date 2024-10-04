@@ -1,7 +1,13 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq3sf"]
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
 
 [resource]
 default_font = ExtResource("1_stftx")
 default_font_size = 16
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_yq3sf")

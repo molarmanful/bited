@@ -22,6 +22,10 @@ window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 
+[dotnet]
+
+project/assembly_name="bited"
+
 [gui]
 
 theme/custom="res://default.tres"

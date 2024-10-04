@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=4 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Theme" uid="uid://co6jxl87eleb2" path="res://default.tres" id="1_8hrfp"]
+[ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="2_6hepq"]
+[ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_x1gl4"]
 
 [node name="All" type="PanelContainer"]
 anchors_preset = 15
@@ -13,6 +15,7 @@ metadata/_edit_lock_ = true
 
 [node name="Body" type="VBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 0
 metadata/_edit_lock_ = true
 
 [node name="Main" type="ScrollContainer" parent="Body"]
@@ -28,10 +31,34 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
+[node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("2_6hepq")]
+layout_mode = 2
+
 [node name="RichTextLabel" type="RichTextLabel" parent="Body/Main/MarginContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_8hrfp")
 text = "Bacon ipsum dolor amet beef ribs jerky sirloin pastrami pork beef turducken rump fatback. Chislic chuck pork drumstick, jerky shankle jowl boudin filet mignon fatback cupim. Corned beef leberkas pig, prosciutto tongue sausage beef. Pastrami pancetta prosciutto meatloaf cow venison. Corned beef shank meatloaf brisket short ribs frankfurter pork venison hamburger salami ground round jowl.
+
+Chicken shoulder meatloaf ground round tongue chuck sirloin corned beef ball tip. Jowl tri-tip ground round venison chislic cow. Brisket pork belly tri-tip, biltong tongue chicken ham hock short ribs sirloin cupim buffalo. Short loin tenderloin pork belly jerky, ground round shankle chicken pork loin shoulder bresaola capicola. Turducken pancetta shankle capicola, sausage kevin andouille.
+
+Drumstick meatball bresaola jerky. Shank ribeye prosciutto pork loin. Spare ribs porchetta bacon boudin, buffalo burgdoggen pork belly shankle brisket beef short loin bresaola pork loin. Brisket doner swine bacon pancetta.
+
+Landjaeger cow fatback chuck tail ham. Bresaola chicken sirloin brisket filet mignon bacon drumstick turkey jowl burgdoggen. Cow tail venison, short loin pancetta chicken pork loin pastrami. Meatball pork chop shank strip steak. Jerky tongue turkey, biltong pork chop pork belly porchetta rump cupim short ribs beef burgdoggen short loin shoulder chicken. Hamburger cow porchetta, flank fatback pastrami alcatra. Short ribs prosciutto chislic ribeye chuck cupim pancetta.
+
+Cow ham short ribs shank. Tri-tip leberkas beef ribs rump shankle shank. Ham hock fatback ham, strip steak tail short loin porchetta turkey bresaola sirloin cupim. Porchetta capicola tenderloin short ribs leberkas pancetta pork boudin buffalo landjaeger ground round. Chuck turkey pork chop, prosciutto biltong cupim venison ribeye pork loin rump shoulder. Buffalo salami short loin swine shankle venison, kielbasa landjaeger sausage jowl jerky turkey pig alcatra tongue.
+
+Bacon ipsum dolor amet beef ribs jerky sirloin pastrami pork beef turducken rump fatback. Chislic chuck pork drumstick, jerky shankle jowl boudin filet mignon fatback cupim. Corned beef leberkas pig, prosciutto tongue sausage beef. Pastrami pancetta prosciutto meatloaf cow venison. Corned beef shank meatloaf brisket short ribs frankfurter pork venison hamburger salami ground round jowl.
+
+Chicken shoulder meatloaf ground round tongue chuck sirloin corned beef ball tip. Jowl tri-tip ground round venison chislic cow. Brisket pork belly tri-tip, biltong tongue chicken ham hock short ribs sirloin cupim buffalo. Short loin tenderloin pork belly jerky, ground round shankle chicken pork loin shoulder bresaola capicola. Turducken pancetta shankle capicola, sausage kevin andouille.
+
+Drumstick meatball bresaola jerky. Shank ribeye prosciutto pork loin. Spare ribs porchetta bacon boudin, buffalo burgdoggen pork belly shankle brisket beef short loin bresaola pork loin. Brisket doner swine bacon pancetta.
+
+Landjaeger cow fatback chuck tail ham. Bresaola chicken sirloin brisket filet mignon bacon drumstick turkey jowl burgdoggen. Cow tail venison, short loin pancetta chicken pork loin pastrami. Meatball pork chop shank strip steak. Jerky tongue turkey, biltong pork chop pork belly porchetta rump cupim short ribs beef burgdoggen short loin shoulder chicken. Hamburger cow porchetta, flank fatback pastrami alcatra. Short ribs prosciutto chislic ribeye chuck cupim pancetta.
+
+Cow ham short ribs shank. Tri-tip leberkas beef ribs rump shankle shank. Ham hock fatback ham, strip steak tail short loin porchetta turkey bresaola sirloin cupim. Porchetta capicola tenderloin short ribs leberkas pancetta pork boudin buffalo landjaeger ground round. Chuck turkey pork chop, prosciutto biltong cupim venison ribeye pork loin rump shoulder. Buffalo salami short loin swine shankle venison, kielbasa landjaeger sausage jowl jerky turkey pig alcatra tongue.
+
+Bacon ipsum dolor amet beef ribs jerky sirloin pastrami pork beef turducken rump fatback. Chislic chuck pork drumstick, jerky shankle jowl boudin filet mignon fatback cupim. Corned beef leberkas pig, prosciutto tongue sausage beef. Pastrami pancetta prosciutto meatloaf cow venison. Corned beef shank meatloaf brisket short ribs frankfurter pork venison hamburger salami ground round jowl.
 
 Chicken shoulder meatloaf ground round tongue chuck sirloin corned beef ball tip. Jowl tri-tip ground round venison chislic cow. Brisket pork belly tri-tip, biltong tongue chicken ham hock short ribs sirloin cupim buffalo. Short loin tenderloin pork belly jerky, ground round shankle chicken pork loin shoulder bresaola capicola. Turducken pancetta shankle capicola, sausage kevin andouille.
 
@@ -43,6 +70,5 @@ Cow ham short ribs shank. Tri-tip leberkas beef ribs rump shankle shank. Ham hoc
 fit_content = true
 scroll_active = false
 
-[node name="Nav" type="PanelContainer" parent="Body"]
-custom_minimum_size = Vector2(0, 64)
+[node name="Nav" parent="Body" instance=ExtResource("2_x1gl4")]
 layout_mode = 2
