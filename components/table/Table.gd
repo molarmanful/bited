@@ -1,10 +1,9 @@
-@tool
-extends PanelStyler
+extends PanelContainer
 
-func style() -> void:
-	print_debug(get_theme_color("bord"))
-	stylebox.set("bg_color", get_theme_color("bord"))
-	stylebox.set("border_width_top", 1)
-	stylebox.set("border_width_bottom", 1)
-	stylebox.set("border_width_left", 1)
-	stylebox.set("border_width_right", 1)
+@export var node_glyphs: Container
+
+
+func _ready() -> void:
+	for c in 256:
+		var glyph := Glyph.create(c)
+		node_glyphs.add_child(glyph)
