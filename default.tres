@@ -1,6 +1,15 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_i3i8j"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+color = Color(0.14902, 0.14902, 0.14902, 1)
+grow_begin = 0.0
+grow_end = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq3sf"]
 bg_color = Color(0, 0, 0, 1)
@@ -10,4 +19,11 @@ anti_aliasing = false
 [resource]
 default_font = ExtResource("1_stftx")
 default_font_size = 16
+HSeparator/constants/separation = 5
+HSeparator/styles/separator = SubResource("StyleBoxLine_i3i8j")
+PanelContainer/colors/bg = Color(0, 0, 0, 1)
+PanelContainer/colors/bord = Color(0.14902, 0.14902, 0.14902, 1)
+PanelContainer/colors/dis = Color(0.0901961, 0.0901961, 0.0901961, 1)
+PanelContainer/colors/fg = Color(1, 1, 1, 1)
+PanelContainer/colors/sel = Color(0.117647, 0.25098, 0.686275, 1)
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_yq3sf")

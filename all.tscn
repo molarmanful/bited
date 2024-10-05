@@ -1,8 +1,16 @@
 [gd_scene load_steps=4 format=3 uid="uid://vuvwrmullfm8"]
 
-[ext_resource type="Theme" uid="uid://co6jxl87eleb2" path="res://default.tres" id="1_8hrfp"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="2_6hepq"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_x1gl4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ma0t"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
 
 [node name="All" type="PanelContainer"]
 anchors_preset = 15
@@ -10,7 +18,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_8hrfp")
 metadata/_edit_lock_ = true
 
 [node name="Body" type="VBoxContainer" parent="."]
@@ -33,11 +40,11 @@ theme_override_constants/margin_bottom = 32
 
 [node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("2_6hepq")]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ma0t")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Body/Main/MarginContainer"]
 visible = false
 layout_mode = 2
-theme = ExtResource("1_8hrfp")
 text = "Bacon ipsum dolor amet beef ribs jerky sirloin pastrami pork beef turducken rump fatback. Chislic chuck pork drumstick, jerky shankle jowl boudin filet mignon fatback cupim. Corned beef leberkas pig, prosciutto tongue sausage beef. Pastrami pancetta prosciutto meatloaf cow venison. Corned beef shank meatloaf brisket short ribs frankfurter pork venison hamburger salami ground round jowl.
 
 Chicken shoulder meatloaf ground round tongue chuck sirloin corned beef ball tip. Jowl tri-tip ground round venison chislic cow. Brisket pork belly tri-tip, biltong tongue chicken ham hock short ribs sirloin cupim buffalo. Short loin tenderloin pork belly jerky, ground round shankle chicken pork loin shoulder bresaola capicola. Turducken pancetta shankle capicola, sausage kevin andouille.
@@ -72,3 +79,4 @@ scroll_active = false
 
 [node name="Nav" parent="Body" instance=ExtResource("2_x1gl4")]
 layout_mode = 2
+script = null
