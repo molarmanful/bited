@@ -23,7 +23,7 @@ func _set_value(value):
 	if self._distinct_until_changed and self._latest_value == value:
 		return
 	self._latest_value = value
-
+	
 	var observers_ : Array[ObserverBase]
 	if true:
 		var __ = ReadWriteLockGuard.new(self._rwlock, true)
@@ -43,71 +43,71 @@ func _init(
 	source : Observable = null
 ):
 	var wself : WeakRef = weakref(self)
-
+	
 	self.is_disposed = false
-
+	
 	self._observers = []
 	self._rwlock = ReadWriteLock.new()
-
+	
 	self._latest_value = initial_value_
 	self._distinct_until_changed = distinct_until_changed_
 	self._raise_latest_value_on_subscribe = raise_latest_value_on_subscribe_
-
+	
 	if source != null:
 		self._source_subscription = source.subscribe(func(i): wself.get_ref().Value = i)
-
+	
 	@warning_ignore("shadowed_variable")
 	var subscribe = func(
 		observer : ObserverBase,
 		_scheduler : SchedulerBase = null
 	) -> DisposableBase:
 		var prop : ReactiveProperty = wself.get_ref()
-
+		
 		if not prop or prop.is_disposed:
 			observer.on_completed()
 			return Disposable.new()
-
+		
 		if true:
 			var __ = ReadWriteLockGuard.new(prop._rwlock, false)
 			prop._observers.push_back(observer)
-
+		
 		if prop._raise_latest_value_on_subscribe:
 			observer.on_next(prop._latest_value)
-
+		
 		var dispose_ = func():
 			var _prop : ReactiveProperty = wself.get_ref()
 			if not _prop:
 				return
 			var __ = ReadWriteLockGuard.new(_prop._rwlock, false)
 			_prop._observers.erase(observer)
-
+		
 		return Disposable.new(dispose_)
-
+	
 	super._init(subscribe)
 
 func dispose():
 	if this.is_disposed:
 		return
-
+	
 	this.is_disposed = true
-
+	
 	var observers_ : Array[ObserverBase]
 	if true:
 		var __ = ReadWriteLockGuard.new(this._rwlock, true)
 		observers_ = this._observers.duplicate()
 	for obs in observers_:
 		obs.on_completed()
-
+	
 	if true:
 		var __ = ReadWriteLockGuard.new(this._rwlock, false)
 		this._observers.clear()
-
+	
 	if this._source_subscription != null:
 		this._source_subscription.dispose()
 
 func to_readonly() -> ReadOnlyReactiveProperty:
 	return ReadOnlyReactiveProperty.new(
-		self, Value, self._distinct_until_changed,
+		self, Value, self._distinct_until_changed, 
 		self._raise_latest_value_on_subscribe
 	)
 
@@ -122,7 +122,7 @@ static func FromGetSet(
 		distinct_until_changed_,
 		raise_latest_value_on_subscribe_
 	)
-
+	
 	prop.subscribe(func(x): setter.call(x))
 	return prop
 
@@ -134,12 +134,12 @@ static func FromMember(
 	distinct_until_changed_ : bool = true,
 	raise_latest_value_on_subscribe_ : bool = true
 ) -> ReactiveProperty:
-
+	
 	var getter = func():
 		return target.get(member_name)
 	var setter = func(v):
 		target.set(member_name, v)
-
+	
 	return FromGetSet(
 		func(): return convert_cb.call(getter.call()),
 		func(x): setter.call(convert_back_cb.call(x)),

@@ -11,7 +11,7 @@ static func from_godot_signal_(
 		if scheduler != null: _scheduler = scheduler
 		elif scheduler_ != null: _scheduler = scheduler_
 		else: _scheduler = GodotSignalScheduler.singleton()
-
+		
 		var obj = instance_from_id(sig.get_object_id())
 		if obj == null:
 			GDRx.raise(NullReferenceError.new())
@@ -22,7 +22,7 @@ static func from_godot_signal_(
 			if dict["name"] == sig.get_name():
 				n_args = dict["args"].size()
 				break
-
+		
 		var action : Callable
 		match n_args:
 			0:
@@ -59,11 +59,11 @@ static func from_godot_signal_(
 				GDRx.raise(TooManyArgumentsError.new(
 					"Only up to 8 signal parameters supported! Use lists instead!"))
 				return Disposable.new()
-
+		
 		if not _scheduler is GodotSignalScheduler:
 			_scheduler = GodotSignalScheduler.singleton()
-
+		
 		var godot_signal_scheduler : GodotSignalScheduler = _scheduler
 		return godot_signal_scheduler.schedule_signal(sig, n_args, action)
-
+	
 	return Observable.new(subscribe)

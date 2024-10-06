@@ -17,11 +17,11 @@ func _init(
 	on_completed_ : Callable = GDRx.basic.noop):
 		this = self
 		this.unreference()
-
+		
 		self._on_next = on_next_
 		self._on_error = on_error_
 		self._on_completed = on_completed_
-
+		
 		self._subscription = SingleAssignmentDisposable.new()
 		self.is_stopped = false
 
@@ -34,7 +34,7 @@ func on_error(e):
 	if self.is_stopped:
 		return
 	self.is_stopped = true
-
+	
 	GDRx.try(func():
 		self._on_error.call(e)
 	).end_try_catch()
@@ -44,7 +44,7 @@ func on_completed():
 	if self.is_stopped:
 		return
 	self.is_stopped = true
-
+	
 	GDRx.try(func():
 		self._on_completed.call()
 	).end_try_catch()
@@ -62,7 +62,7 @@ func dispose():
 func fail(err) -> bool:
 	if self.is_stopped:
 		return false
-
+	
 	self.is_stopped = true
 	self._on_error.call(err)
 	return true

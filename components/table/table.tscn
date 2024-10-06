@@ -13,11 +13,11 @@ size_flags_vertical = 0
 script = ExtResource("1_21spc")
 node_glyphs = NodePath("Inner/HFlowContainer")
 
-[node name="Inner" type="PanelContainer" parent="." node_paths=PackedStringArray("node_resizer")]
+[node name="Inner" type="PanelContainer" parent="." node_paths=PackedStringArray("node_sizer")]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("2_4ccbk")
-node_resizer = NodePath("..")
+node_sizer = NodePath("..")
 
 [node name="HFlowContainer" type="HFlowContainer" parent="Inner"]
 layout_mode = 2

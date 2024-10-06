@@ -1,6 +1,6 @@
 extends PanelStyler
 
-@export var node_resizer: Container
+@export var node_sizer: Node
 
 
 func style() -> void:
@@ -13,8 +13,5 @@ func style() -> void:
 
 func _ready() -> void:
 	super()
-	node_resizer.resized.connect(resize_width)
-
-
-func resize_width() -> void:
-	custom_minimum_size.x = int(node_resizer.size.x / 33 - 1) * 33 + 1
+	node_sizer.resized.connect(func(): Virt.w_sizer.Value = node_sizer.size.x)
+	Virt.w_table.subscribe(func(w: int): custom_minimum_size.x = w)

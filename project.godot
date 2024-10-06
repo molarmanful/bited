@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 GDRx="*res://addons/reactivex/__gdrxsingleton__.gd"
 StateVars="*res://components/VARS/state_vars.gd"
 StyleVars="*res://components/VARS/style_vars.gd"
+Virt="*res://components/table/virt.gd"
 
 [display]
 
