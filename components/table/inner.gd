@@ -1,6 +1,7 @@
 extends PanelStyler
 
 @export var node_sizer: Node
+@export var virt: Virt
 
 
 func style() -> void:
@@ -13,5 +14,6 @@ func style() -> void:
 
 func _ready() -> void:
 	super()
-	node_sizer.resized.connect(func(): Virt.w_sizer.Value = node_sizer.size.x)
-	Virt.w_table.subscribe(func(w: int): custom_minimum_size.x = w)
+
+	node_sizer.resized.connect(func(): virt.w_sizer.Value = node_sizer.size.x)
+	virt.w_table.subscribe(func(w: int): custom_minimum_size.x = w).dispose_with(self)

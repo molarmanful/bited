@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnhlhp8evbrv3"]
+[gd_scene load_steps=4 format=3 uid="uid://bnhlhp8evbrv3"]
 
 [ext_resource type="Script" path="res://components/table/table.gd" id="1_21spc"]
 [ext_resource type="Script" path="res://components/table/inner.gd" id="2_4ccbk"]
+[ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
 
 [node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_glyphs")]
 anchors_preset = 15
@@ -12,12 +13,14 @@ grow_vertical = 2
 size_flags_vertical = 0
 script = ExtResource("1_21spc")
 node_glyphs = NodePath("Inner/HFlowContainer")
+metadata/_edit_lock_ = true
 
 [node name="Inner" type="PanelContainer" parent="." node_paths=PackedStringArray("node_sizer")]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("2_4ccbk")
 node_sizer = NodePath("..")
+virt = ExtResource("3_vj2v8")
 
 [node name="HFlowContainer" type="HFlowContainer" parent="Inner"]
 layout_mode = 2
