@@ -11,7 +11,7 @@ var this
 func _init(subscribe : Callable):
 	this = self
 	this.unreference()
-	
+
 	super._init(subscribe)
 
 func _notification(what):
