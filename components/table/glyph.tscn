@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1cjx57ksqn6a"]
 
-[ext_resource type="Script" path="res://components/glyph.gd" id="1_mjxq3"]
+[ext_resource type="Script" path="res://components/table/glyph.gd" id="1_mjxq3"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_2cf3a"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="2_se6b1"]
 

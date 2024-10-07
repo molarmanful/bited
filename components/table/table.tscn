@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://components/table/inner.gd" id="2_4ccbk"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
 
-[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_glyphs")]
+[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,19 +12,29 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 0
 script = ExtResource("1_21spc")
-node_glyphs = NodePath("Inner/HFlowContainer")
+node_inner = NodePath("Inner")
+node_glyphs = NodePath("Inner/VBoxContainer/HFlowContainer")
+node_pad = NodePath("Inner/VBoxContainer/Pad")
 virt = ExtResource("3_vj2v8")
 metadata/_edit_lock_ = true
 
-[node name="Inner" type="PanelContainer" parent="." node_paths=PackedStringArray("node_sizer")]
+[node name="Inner" type="PanelContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("2_4ccbk")
-node_sizer = NodePath("..")
 virt = ExtResource("3_vj2v8")
 
-[node name="HFlowContainer" type="HFlowContainer" parent="Inner"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Inner"]
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Pad" type="MarginContainer" parent="Inner/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HFlowContainer" type="HFlowContainer" parent="Inner/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 alignment = 1

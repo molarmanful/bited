@@ -1,7 +1,7 @@
 class_name Glyph
 extends PanelContainer
 
-const ScnGlyph := preload("res://components/glyph.tscn")
+const ScnGlyph := preload("res://components/table/glyph.tscn")
 
 @export var virt: Virt
 @export var node_code: RichTextLabel
