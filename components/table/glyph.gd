@@ -25,15 +25,14 @@ static func create() -> Glyph:
 
 
 func _ready() -> void:
-	renamed.connect(up_ui)
-	node_code.text = label
+	thumb()
 
-	(
-		virt
-		. w_item
-		. subscribe(func(w: int): node_thumb.custom_minimum_size = Vector2(w, w))
-		. dispose_with(self)
-	)
+	renamed.connect(up_ui)
+	StyleVars.set_thumb.connect(thumb)
+
+
+func thumb():
+	node_thumb.custom_minimum_size = Vector2(StyleVars.thumb_size, StyleVars.thumb_size)
 
 
 func up_ui() -> void:

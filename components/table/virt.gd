@@ -1,40 +1,78 @@
 class_name Virt
 extends Resource
 
-var length := RX.state(2048)
-var r_length := length.to_readonly()
-var w_sizer := RX.state(0)
-var r_w_sizer := w_sizer.to_readonly()
-var h_view := RX.state(0)
-var r_h_view := h_view.to_readonly()
-var v_scroll := RX.state(0)
-var r_v_scroll := v_scroll.to_readonly()
+signal refresh
 
-var w_item := RX.derived2(
-	StyleVars.thumb_scale_cor, StyleVars.thumb_px_scale_cor, func(n: int, m: int): return 8 * n * m
-)
-var h_item = RX.derived2(StyleVars.font_size, w_item, func(fsz: int, w: int): return 9 + fsz + w)
-var size_item = RX.derived2(w_item, h_item, func(w: int, h: int): return Vector2i(w, h))
-var size_item_gap := RX.derived1(size_item, func(sz: Vector2i): return sz + Vector2i(1, 1))
+var length := 65535:
+	set(n):
+		length = n
+		refresh.emit()
+var w_sizer := 0:
+	set(n):
+		w_sizer = n
+		refresh.emit()
+var h_view := 0:
+	set(n):
+		h_view = n
+		refresh.emit()
+var v_scroll := 0:
+	set(n):
+		v_scroll = n
+		refresh.emit()
 
-var cols := RX.derived2(r_w_sizer, size_item_gap, func(w: int, gsz: Vector2i): return w / gsz.x - 1)
-var rows := RX.derived2(r_length, cols, func(l: int, cs: int): return int(ceil(l / float(cs))))
-var dims := RX.derived2(cols, rows, func(cs: int, rs: int): return Vector2i(cs, rs))
+var w_item: int:
+	get:
+		return StyleVars.thumb_size
+var h_item: int:
+	get:
+		return 9 + StyleVars.font_size + w_item
+var size_item: Vector2i:
+	get:
+		return Vector2i(w_item, h_item)
+var size_item_gap: Vector2i:
+	get:
+		return size_item + Vector2i(1, 1)
 
-var size_table := RX.derived2(
-	dims, size_item_gap, func(ds: Vector2i, gsz: Vector2i): return ds * gsz + Vector2i(1, 1)
-)
+var cols: int:
+	get:
+		return w_sizer / size_item_gap.x - 1
+var rows: int:
+	get:
+		return int(ceil(length / float(cols)))
+var dims: Vector2i:
+	get:
+		return Vector2i(cols, rows)
 
-var rows_view := RX.derived2(r_h_view, size_item_gap, func(h: int, gsz: Vector2i): return h / gsz.y)
-var rows_off := RX.derived1(rows_view, func(d: int): return 0)
-var row_top := RX.derived2(r_v_scroll, size_item_gap, func(v: int, gsz: Vector2i): return v / gsz.y)
-var row_bottom := RX.derived2(row_top, rows_view, func(t: int, d: int): return t + d)
-var row0 := RX.derived2(row_top, rows_off, func(t: int, o: int): return max(0, t - o))
-var row1 := RX.derived3(
-	rows, row_bottom, rows_off, func(rs: int, b: int, o: int): return min(rs, b + o)
-)
+var size_table: Vector2i:
+	get:
+		return dims * size_item_gap + Vector2i(1, 1)
 
-var i0 := RX.derived2(row0, cols, func(r0: int, cs: int): return r0 * cs)
-var i1 := RX.derived3(r_length, row1, cols, func(l: int, r1: int, cs: int): return min(l, r1 * cs))
+var rows_view: int:
+	get:
+		return h_view / size_item_gap.y
+var rows_off: int:
+	get:
+		return 2
+var row_top: int:
+	get:
+		return v_scroll / size_item_gap.y
+var row_bottom: int:
+	get:
+		return row_top + rows_view
+var row0: int:
+	get:
+		return max(0, row_top - rows_off)
+var row1: int:
+	get:
+		return min(rows, row_bottom + rows_off)
 
-var pad_top := RX.derived2(row0, size_item_gap, func(r0: int, gsz: Vector2i): return r0 * gsz.y)
+var i0: int:
+	get:
+		return row0 * cols
+var i1: int:
+	get:
+		return min(length, row1 * cols)
+
+var pad_top: int:
+	get:
+		return row0 * size_item_gap.y

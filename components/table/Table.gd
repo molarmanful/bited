@@ -5,36 +5,52 @@ extends PanelContainer
 @export var node_pad: Container
 @export var virt: Virt
 
+var debounced = false
+var to_update = false
+
 
 func _ready() -> void:
-	resized.connect(func(): virt.w_sizer.Value = size.x ; virt.h_view.Value = get_viewport().size.y)
-	virt.size_table.subscribe(func(sz: Vector2i): node_inner.custom_minimum_size = sz).dispose_with(
-		self
-	)
-
-	virt.pad_top.subscribe(func(v: int): node_pad.custom_minimum_size.y = v).dispose_with(self)
-
-	(
-		GDRx
-		. combine_latest([virt.i0, virt.i1])
-		. subscribe(func(i: Tuple): gen_glyphs(i.first, i.second))
-		. dispose_with(self)
-	)
+	resized.connect(onresize)
+	virt.refresh.connect(func(): to_update = true)
 
 
 func _process(_delta: float) -> void:
 	onscroll()
+	update()
 
 
-func onscroll():
+func onresize() -> void:
+	virt.w_sizer = int(size.x)
+	virt.h_view = get_viewport().size.y
+
+
+func onscroll() -> void:
+	if debounced:
+		return
+
 	var cur := -int(get_global_transform_with_canvas().get_origin().y)
-	if virt.v_scroll.Value != cur:
-		virt.v_scroll.Value = cur
+	if virt.v_scroll == cur:
+		return
+	virt.v_scroll = cur
+
+	debounced = true
+	get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
 
 
-func gen_glyphs(i0: int, i1: int):
+func update() -> void:
+	if not to_update:
+		return
+	to_update = false
+
+	node_inner.custom_minimum_size = virt.size_table
+	node_pad.custom_minimum_size.y = virt.pad_top
+	gen_glyphs(virt.i0, virt.i1)
+
+
+func gen_glyphs(i0: int, i1: int) -> void:
 	var len_ideal := i1 - i0
 	var len_glyphs := node_glyphs.get_child_count()
+	printt(len_ideal, len_glyphs)
 
 	while len_glyphs < len_ideal:
 		var glyph := Glyph.create()

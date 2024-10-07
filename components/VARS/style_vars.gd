@@ -1,14 +1,34 @@
 extends Node
 
-var font_scale := RX.state(1)
-var r_font_scale := font_scale.to_readonly()
-var font_scale_cor := RX.derived1(r_font_scale, func(n: int): return maxi(1, n))
-var font_size := RX.derived1(font_scale_cor, func(n: int): return 16 * n)
+signal set_font
 
-var thumb_scale := RX.state(3)
-var r_thumb_scale := thumb_scale.to_readonly()
-var thumb_scale_cor := RX.derived1(r_thumb_scale, func(n: int): return maxi(1, n))
+signal set_thumb
 
-var thumb_px_scale := RX.state(2)
-var r_thumb_px_scale := thumb_px_scale.to_readonly()
-var thumb_px_scale_cor := RX.derived1(r_thumb_px_scale, func(n: int): return maxi(1, n))
+var font_scale := 1:
+	set(n):
+		font_scale = n
+		set_font.emit()
+var font_scale_cor: int:
+	get:
+		return max(1, font_scale)
+var font_size: int:
+	get:
+		return 16 * font_scale_cor
+
+var thumb_scale := 3:
+	set(n):
+		thumb_scale = n
+		set_thumb.emit()
+var thumb_scale_cor: int:
+	get:
+		return maxi(1, thumb_scale)
+var thumb_px_scale := 2:
+	set(n):
+		thumb_px_scale = n
+		set_thumb.emit()
+var thumb_px_scale_cor: int:
+	get:
+		return maxi(1, thumb_px_scale)
+var thumb_size: int:
+	get:
+		return 8 * thumb_scale_cor * thumb_px_scale_cor

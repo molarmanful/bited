@@ -17,8 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GDRx="*res://addons/reactivex/__gdrxsingleton__.gd"
-RX="*res://components/VARS/rx.gd"
 StateVars="*res://components/VARS/state_vars.gd"
 StyleVars="*res://components/VARS/style_vars.gd"
 
@@ -32,10 +30,6 @@ window/stretch/scale_mode="integer"
 [dotnet]
 
 project/assembly_name="bited"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/reactivex/plugin.cfg")
 
 [gui]
 
