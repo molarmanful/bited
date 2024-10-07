@@ -13,6 +13,7 @@ grow_vertical = 2
 size_flags_vertical = 0
 script = ExtResource("1_21spc")
 node_glyphs = NodePath("Inner/HFlowContainer")
+virt = ExtResource("3_vj2v8")
 metadata/_edit_lock_ = true
 
 [node name="Inner" type="PanelContainer" parent="." node_paths=PackedStringArray("node_sizer")]

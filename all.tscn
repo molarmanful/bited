@@ -29,8 +29,9 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("2_6hepq")]
+[node name="Table" parent="Body/Main/MarginContainer" node_paths=PackedStringArray("scroller") instance=ExtResource("2_6hepq")]
 layout_mode = 2
+scroller = NodePath("../..")
 
 [node name="Nav" parent="Body" instance=ExtResource("2_x1gl4")]
 layout_mode = 2

@@ -16,4 +16,4 @@ func _ready() -> void:
 	super()
 
 	node_sizer.resized.connect(func(): virt.w_sizer.Value = node_sizer.size.x)
-	virt.w_table.subscribe(func(w: int): custom_minimum_size.x = w).dispose_with(self)
+	virt.size_table.subscribe(func(sz: Vector2i): custom_minimum_size = sz).dispose_with(self)
