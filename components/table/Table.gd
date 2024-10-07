@@ -5,8 +5,6 @@ extends PanelContainer
 @export var node_pad: Container
 @export var virt: Virt
 
-var debounced = false
-
 
 func _ready() -> void:
 	resized.connect(func(): virt.w_sizer.Value = size.x ; virt.h_view.Value = get_viewport().size.y)
@@ -29,18 +27,25 @@ func _process(_delta: float) -> void:
 
 
 func onscroll():
-	if debounced:
-		return
-
 	var cur := -int(get_global_transform_with_canvas().get_origin().y)
 	if virt.v_scroll.Value != cur:
 		virt.v_scroll.Value = cur
-		print(cur)
-		debounced = true
-		get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
 
 
 func gen_glyphs(i0: int, i1: int):
-	for c in range(i0, i1):
-		var glyph := Glyph.create(c)
+	var len_ideal := i1 - i0
+	var len_glyphs := node_glyphs.get_child_count()
+
+	while len_glyphs < len_ideal:
+		var glyph := Glyph.create()
 		node_glyphs.add_child(glyph)
+		len_glyphs += 1
+
+	while len_glyphs > len_ideal:
+		node_glyphs.get_child(len_glyphs - 1).hide()
+		len_glyphs -= 1
+
+	for c in range(i0, i1):
+		var glyph := node_glyphs.get_child(c - i0)
+		glyph.data_code = c
+		glyph.show()
