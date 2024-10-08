@@ -30,6 +30,7 @@ func _ready() -> void:
 	renamed.connect(up_ui)
 	set_thumb()
 	Thumb.updated.connect(set_thumb)
+	gui_input.connect(oninput)
 
 
 func set_thumb() -> void:
@@ -37,6 +38,10 @@ func set_thumb() -> void:
 	var sz := Vector2(s, s)
 	node_tex.size = sz
 	node_tex.texture = Thumb.tex.texture
+
+
+func oninput(e: InputEvent):
+	pass
 
 
 func up_ui() -> void:

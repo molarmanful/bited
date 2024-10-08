@@ -66,6 +66,9 @@ var row1: int:
 	get:
 		return min(rows, row_bottom + rows_off)
 
+var len_ideal: int:
+	get:
+		return row1 * cols - i0
 var i0: int:
 	get:
 		return row0 * cols

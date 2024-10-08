@@ -48,15 +48,15 @@ func update() -> void:
 
 
 func gen_glyphs(i0: int, i1: int) -> void:
-	var len_ideal := i1 - i0
 	var len_glyphs := node_glyphs.get_child_count()
 
-	while len_glyphs < len_ideal:
+	while len_glyphs < virt.len_ideal:
 		var glyph := Glyph.create()
 		node_glyphs.add_child(glyph)
 		len_glyphs += 1
 
-	while len_glyphs > len_ideal:
+	var len_i := i1 - i0
+	while len_glyphs > len_i:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
