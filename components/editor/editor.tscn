@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhghm74u2o8ik"]
+
+[ext_resource type="Script" path="res://components/editor/grid.gd" id="1_ccvcr"]
+[ext_resource type="Texture2D" uid="uid://cx6xcip6prb61" path="res://assets/one.png" id="1_mxstp"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_srqya"]
+resource_name = "tile"
+texture = ExtResource("1_mxstp")
+texture_region_size = Vector2i(1, 1)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jcfss"]
+sources/0 = SubResource("TileSetAtlasSource_srqya")
+
+[node name="Editor" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/PanelContainer/SubViewportContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+
+[node name="TileMapLayer" type="TileMapLayer" parent="CenterContainer/PanelContainer/SubViewportContainer/SubViewport"]
+tile_set = SubResource("TileSet_jcfss")
+script = ExtResource("1_ccvcr")

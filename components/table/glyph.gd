@@ -4,7 +4,7 @@ extends PanelContainer
 const ScnGlyph := preload("res://components/table/glyph.tscn")
 
 @export var virt: Virt
-@export var node_code: RichTextLabel
+@export var node_code: Label
 @export var node_tex: TextureRect
 
 var data_name := ""

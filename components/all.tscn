@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=4 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
+[ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 
 [node name="All" type="PanelContainer"]
@@ -30,6 +31,10 @@ theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
 [node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("1_tnd3j")]
+visible = false
+layout_mode = 2
+
+[node name="Editor" parent="Body/Main/MarginContainer" instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]

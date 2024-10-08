@@ -28,22 +28,13 @@ size_flags_vertical = 4
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 32
-text = "bited"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
+theme_override_font_sizes/font_size = 32
+text = "new font"
+vertical_alignment = 1
+justification_flags = 0
 
 [node name="Spacer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 32
-text = "testest123"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
