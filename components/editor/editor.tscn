@@ -1,13 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=4 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="Script" path="res://components/editor/grid.gd" id="1_ccvcr"]
+[ext_resource type="Script" path="res://components/editor/gridlines.gd" id="2_jsp0s"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6j27u"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+[sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
+viewport_path = NodePath("CenterContainer/Grid/Lines/SubViewport")
 
 [node name="Editor" type="PanelContainer"]
 anchors_preset = 15
@@ -19,13 +16,29 @@ grow_vertical = 2
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("node_cells")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines")]
+custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_6j27u")
 script = ExtResource("1_ccvcr")
-node_cells = NodePath("TextureRect")
+node_cells = NodePath("Cells")
+node_view_lines = NodePath("Lines/SubViewport")
+node_lines = NodePath("Lines/SubViewport/Node2D")
 
-[node name="TextureRect" type="TextureRect" parent="CenterContainer/PanelContainer"]
+[node name="Cells" type="TextureRect" parent="CenterContainer/Grid"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
+mouse_default_cursor_shape = 3
+
+[node name="Lines" type="TextureRect" parent="CenterContainer/Grid"]
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_iwxi2")
+
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/Grid/Lines"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(256, 256)
+
+[node name="Node2D" type="Node2D" parent="CenterContainer/Grid/Lines/SubViewport"]
+script = ExtResource("2_jsp0s")
