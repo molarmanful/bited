@@ -33,8 +33,8 @@ func onscroll() -> void:
 		return
 	virt.v_scroll = cur
 
-	debounced = true
-	get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
+	# debounced = true
+	# get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
 
 
 func update() -> void:
@@ -50,7 +50,6 @@ func update() -> void:
 func gen_glyphs(i0: int, i1: int) -> void:
 	var len_ideal := i1 - i0
 	var len_glyphs := node_glyphs.get_child_count()
-	printt(len_ideal, len_glyphs)
 
 	while len_glyphs < len_ideal:
 		var glyph := Glyph.create()

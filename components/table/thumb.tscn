@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb8wd71gpfqti"]
+
+[ext_resource type="Script" path="res://components/table/thumb.gd" id="2_w3aya"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_a3oko"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Thumb" type="Node" node_paths=PackedStringArray("tex", "view", "node_line0", "node_line1")]
+script = ExtResource("2_w3aya")
+tex = NodePath("TextureRect")
+view = NodePath("SubViewport")
+node_line0 = NodePath("SubViewport/Line2D")
+node_line1 = NodePath("SubViewport/Line2D2")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.69)
+offset_right = 32.0
+offset_bottom = 32.0
+texture = SubResource("ViewportTexture_a3oko")
+stretch_mode = 3
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(32, 32)
+
+[node name="Line2D" type="Line2D" parent="SubViewport"]
+points = PackedVector2Array(0, 0, 32, 32)
+width = 1.0
+default_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[node name="Line2D2" type="Line2D" parent="SubViewport"]
+points = PackedVector2Array(32, 0, 0, 32)
+width = 1.0
+default_color = Color(0.14902, 0.14902, 0.14902, 1)

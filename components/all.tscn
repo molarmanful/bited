@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://vuvwrmullfm8"]
 
-[ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="2_6hepq"]
-[ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_x1gl4"]
+[ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
+[ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 
 [node name="All" type="PanelContainer"]
 anchors_preset = 15
@@ -29,9 +29,9 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("2_6hepq")]
+[node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("1_tnd3j")]
 layout_mode = 2
 
-[node name="Nav" parent="Body" instance=ExtResource("2_x1gl4")]
+[node name="Nav" parent="Body" instance=ExtResource("2_rafec")]
 layout_mode = 2
 script = null

@@ -4,11 +4,11 @@
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_2cf3a"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="2_se6b1"]
 
-[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_thumb")]
+[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex")]
 script = ExtResource("1_mjxq3")
 virt = ExtResource("2_se6b1")
 node_code = NodePath("VBoxContainer/PanelContainer/MarginContainer/RichTextLabel")
-node_thumb = NodePath("VBoxContainer/AspectRatioContainer")
+node_tex = NodePath("VBoxContainer/AspectRatioContainer/TextureRect")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 clip_contents = true
@@ -43,5 +43,10 @@ layout_mode = 2
 theme_override_constants/separation = 1
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
+self_modulate = Color(1, 1, 1, 0.69)
 layout_mode = 2

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="bited"
-run/main_scene="res://all.tscn"
+run/main_scene="res://components/all.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 StateVars="*res://components/VARS/state_vars.gd"
 StyleVars="*res://components/VARS/style_vars.gd"
+Thumb="*res://components/table/thumb.tscn"
 
 [display]
 

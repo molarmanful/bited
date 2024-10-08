@@ -5,17 +5,19 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 
 @export var virt: Virt
 @export var node_code: RichTextLabel
-@export var node_thumb: Control
+@export var node_tex: TextureRect
 
+var data_name := ""
 var data_code := -1:
 	set(c):
 		data_code = c
+		if c >= 0:
+			data_name = "%04X" % data_code
 		up_ui()
-
 var label: String:
 	get:
 		if data_code < 0:
-			return name
+			return data_name
 		return char(data_code)
 
 
@@ -25,14 +27,16 @@ static func create() -> Glyph:
 
 
 func _ready() -> void:
-	thumb()
-
 	renamed.connect(up_ui)
-	StyleVars.set_thumb.connect(thumb)
+	set_thumb()
+	Thumb.updated.connect(set_thumb)
 
 
-func thumb():
-	node_thumb.custom_minimum_size = Vector2(StyleVars.thumb_size, StyleVars.thumb_size)
+func set_thumb() -> void:
+	var s := StyleVars.thumb_size
+	var sz := Vector2(s, s)
+	node_tex.size = sz
+	node_tex.texture = Thumb.tex.texture
 
 
 func up_ui() -> void:
