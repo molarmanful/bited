@@ -3,7 +3,7 @@ extends Resource
 
 signal refresh
 
-var length := 65535:
+var length := 65536:
 	set(n):
 		length = n
 		refresh.emit()

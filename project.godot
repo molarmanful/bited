@@ -32,6 +32,10 @@ window/stretch/scale_mode="integer"
 
 project/assembly_name="bited"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
+
 [gui]
 
 theme/custom="res://default.tres"
