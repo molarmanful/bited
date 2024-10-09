@@ -33,13 +33,14 @@ var pressed := false
 func style() -> void:
 	stylebox.set("border_width_top", 1)
 	stylebox.set("border_width_left", 1)
+	node_cells.self_modulate = get_theme_color("fg")
+	update_size()
 
 
 func _ready() -> void:
 	super()
 	node_cells.texture = tex_cells
 	to_update_cells = true
-	update_size()
 
 	gui_input.connect(oninput)
 

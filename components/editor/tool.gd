@@ -5,7 +5,7 @@ enum { X, START, END }
 
 var grid: Grid
 var prev: Image
-var color: Color
+var a: bool
 var pivot: Vector2i
 
 var pos: Vector2i:
@@ -23,10 +23,10 @@ func pen(state := X) -> void:
 
 	var p = pos
 	if state == 1:
-		color = Color.TRANSPARENT if grid.cells.get_pixelv(p).a > 0 else Color.WHITE
+		a = not grid.cells.get_pixelv(p).a
 		pivot = p
 
-	interp(p, func(v): grid.cells.set_pixelv(v, color))
+	interp(p, func(v): grid.cells.set_pixelv(v, Color(1, 1, 1, a)))
 	pivot = p
 	grid.to_update_cells = true
 
@@ -38,11 +38,11 @@ func line(state := X) -> void:
 	var p = pos
 	if state == 1:
 		prev = grid.cells.get_region(Rect2i(0, 0, grid.dim_grid, grid.dim_grid))
-		color = Color.WHITE
+		a = true
 		pivot = p
 
 	grid.cells.copy_from(prev)
-	interp(p, func(v): grid.cells.set_pixelv(v, color))
+	interp(p, func(v): grid.cells.set_pixelv(v, Color(1, 1, 1, a)))
 	grid.to_update_cells = true
 
 

@@ -1,7 +1,8 @@
 extends Node
 
+signal set_theme(t: Theme)
+signal apply_theme
 signal set_font
-
 signal set_thumb
 
 var font_scale := 1:

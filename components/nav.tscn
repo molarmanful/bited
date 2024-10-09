@@ -1,21 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=2 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aqtet"]
-bg_color = Color(0, 0, 0, 1)
-border_width_top = 1
-border_color = Color(0.14902, 0.14902, 0.14902, 1)
-anti_aliasing = false
-
-[node name="Nav" type="PanelContainer"]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("node_theme")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_aqtet")
 script = ExtResource("1_i15a6")
+node_theme = NodePath("MarginContainer/HBoxContainer/CheckButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -38,3 +32,7 @@ justification_flags = 0
 [node name="Spacer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+button_pressed = true

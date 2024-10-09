@@ -38,7 +38,7 @@ enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
 [gui]
 
-theme/custom="res://default.tres"
+theme/custom="res://dark.tres"
 theme/custom_font="res://assets/kirsch.woff2"
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
