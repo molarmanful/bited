@@ -6,7 +6,7 @@
 bg_color = Color(0, 0, 0, 0)
 border_width_left = 1
 border_width_top = 1
-border_color = Color(0.14902, 0.14902, 0.14902, 1)
+border_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_i3i8j"]
 content_margin_left = 0.0
@@ -39,6 +39,13 @@ anti_aliasing = false
 default_font = ExtResource("1_stftx")
 default_font_size = 16
 Grid/base_type = &"PanelContainer"
+Grid/colors/asc = Color(0.513726, 0.0941176, 0.262745, 1)
+Grid/colors/bord = Color(0.0901961, 0.0901961, 0.0901961, 1)
+Grid/colors/cap = Color(0.498039, 0.113725, 0.113725, 1)
+Grid/colors/desc = Color(0.0862745, 0.305882, 0.388235, 1)
+Grid/colors/origin = Color(0.321569, 0.321569, 0.321569, 1)
+Grid/colors/w = Color(0.0784314, 0.32549, 0.176471, 1)
+Grid/colors/x = Color(0.443137, 0.247059, 0.0705882, 1)
 Grid/styles/panel = SubResource("StyleBoxFlat_uc33t")
 HSeparator/constants/separation = 5
 HSeparator/styles/separator = SubResource("StyleBoxLine_i3i8j")

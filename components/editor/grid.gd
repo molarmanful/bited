@@ -35,6 +35,7 @@ func _ready() -> void:
 	to_update_cells = true
 	update_size()
 
+	theme_changed.connect(update_size)
 	gui_input.connect(oninput)
 
 
@@ -44,14 +45,9 @@ func _process(_delta: float) -> void:
 
 
 func update_size() -> void:
-	# TODO: find better place for this?
-	node_cells.self_modulate = get_theme_color("fg")
 	node_cells.custom_minimum_size = size_grid
+	node_cells.self_modulate = get_theme_color("fg")
 	node_view_lines.size = size_grid
-	update_lines()
-
-
-func update_lines() -> void:
 	node_lines.w_cell = w_cell
 	node_lines.w_grid = w_grid
 	node_lines.color = get_theme_color("bord")

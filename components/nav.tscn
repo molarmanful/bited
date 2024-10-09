@@ -34,5 +34,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 button_pressed = true
