@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("node_theme")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("node_theme", "font_name")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -10,6 +10,7 @@ offset_bottom = 33.0
 grow_horizontal = 2
 script = ExtResource("1_i15a6")
 node_theme = NodePath("MarginContainer/HBoxContainer/CheckButton")
+font_name = NodePath("MarginContainer/HBoxContainer/Label")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -25,7 +26,7 @@ alignment = 1
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "new font"
+text = "bited"
 vertical_alignment = 1
 justification_flags = 0
 
