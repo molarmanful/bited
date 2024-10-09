@@ -23,7 +23,8 @@ var size_grid: Vector2i:
 var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
 
-var tool_cur := ToolPen.new(self)
+var gtool := Tool.new(self)
+var tool_cur := "pen"
 
 var to_update_cells := false
 var pressed := false
@@ -44,7 +45,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	tool_cur.apply_tool()
+	gtool[tool_cur].call()
 	update_cells()
 
 
@@ -74,28 +75,7 @@ func oninput(e: InputEvent) -> void:
 		return
 
 	pressed = e.pressed
-	tool_cur.apply_tool(true)
-
-
-class Tool:
-	var grid: Grid
-
-	func _init(g: Grid) -> void:
-		grid = g
-
-
-class ToolPen:
-	extends Tool
-
-	var color: Color
-
-	func apply_tool(first = false) -> void:
-		if not grid.pressed:
-			return
-
-		var pos = Vector2i(grid.get_local_mouse_position() / grid.w_cell)
-		if first:
-			color = Color.TRANSPARENT if grid.cells.get_pixelv(pos).a > 0 else Color.WHITE
-
-		grid.cells.set_pixelv(pos, color)
-		grid.to_update_cells = true
+	if pressed:
+		gtool[tool_cur].call(Tool.START)
+	else:
+		gtool[tool_cur].call(Tool.END)
