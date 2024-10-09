@@ -1,14 +1,9 @@
-extends PanelStyler
+extends PanelContainer
 
 @export var node_theme: CheckButton
 
 
-func style() -> void:
-	stylebox.set("border_width_top", 1)
-
-
 func _ready() -> void:
-	super()
 	node_theme.toggled.connect(ontoggle)
 
 

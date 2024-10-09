@@ -19,6 +19,7 @@ layout_mode = 2
 [node name="Grid" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
+theme_type_variation = &"Grid"
 script = ExtResource("1_ccvcr")
 node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")

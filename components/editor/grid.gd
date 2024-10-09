@@ -1,5 +1,5 @@
 class_name Grid
-extends PanelStyler
+extends PanelContainer
 
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
@@ -30,17 +30,10 @@ var to_update_cells := false
 var pressed := false
 
 
-func style() -> void:
-	stylebox.set("border_width_top", 1)
-	stylebox.set("border_width_left", 1)
-	node_cells.self_modulate = get_theme_color("fg")
-	update_size()
-
-
 func _ready() -> void:
-	super()
 	node_cells.texture = tex_cells
 	to_update_cells = true
+	update_size()
 
 	gui_input.connect(oninput)
 
@@ -51,6 +44,8 @@ func _process(_delta: float) -> void:
 
 
 func update_size() -> void:
+	# TODO: find better place for this?
+	node_cells.self_modulate = get_theme_color("fg")
 	node_cells.custom_minimum_size = size_grid
 	node_view_lines.size = size_grid
 	update_lines()

@@ -36,10 +36,10 @@ theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 32
 
 [node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("1_tnd3j")]
+visible = false
 layout_mode = 2
 
 [node name="Editor" parent="Body/Main/MarginContainer" instance=ExtResource("2_q0u5u")]
-visible = false
 layout_mode = 2
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]
