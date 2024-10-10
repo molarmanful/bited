@@ -78,17 +78,19 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		pass
+		print(c_grid.bitmap.gen())
 
 
 class ToolPen:
 	extends _Tool
 
 	func start() -> void:
+		super()
 		c_tool.a = not c_grid.cells.get_pixelv(p).a
 		c_tool.pivot = p
 
 	func update() -> void:
+		super()
 		c_tool.interp(p, func(v): c_grid.cells.set_pixelv(v, Color(1, 1, 1, c_tool.a)))
 		c_tool.pivot = p
 
@@ -97,10 +99,12 @@ class ToolLine:
 	extends _Tool
 
 	func start() -> void:
+		super()
 		c_tool.prev = c_grid.cells.get_region(Rect2i(0, 0, c_grid.dim_grid, c_grid.dim_grid))
 		c_tool.a = true
 		c_tool.pivot = p
 
 	func update() -> void:
+		super()
 		c_grid.cells.copy_from(c_tool.prev)
 		c_tool.interp(p, func(v): c_grid.cells.set_pixelv(v, Color(1, 1, 1, c_tool.a)))
