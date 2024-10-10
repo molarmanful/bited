@@ -2,11 +2,13 @@ class_name Bitmap
 extends Node
 
 var grid: Grid
-var data_name: StringName
+var data_code := -1
+var data_name := &""
 
 
-func _init(g: Grid, dn: StringName) -> void:
+func _init(g: Grid, dc := -1, dn := &"") -> void:
 	grid = g
+	data_code = dc
 	data_name = dn
 
 
@@ -17,6 +19,7 @@ func gen() -> Dictionary:
 
 	return {
 		name = data_name,
-		img = img.save_png_to_buffer(),
+		code = data_code,
 		off = (bl - grid.origin) * Vector2i(1, -1) if bounds.size else bounds.size,
+		img = img.save_png_to_buffer(),
 	}

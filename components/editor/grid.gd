@@ -39,7 +39,7 @@ var tool_sel := "pen"
 var to_update_cells := false
 var pressed := false
 
-var bitmap := Bitmap.new(self, "test")
+var bitmap := Bitmap.new(self, -1, "test")
 
 
 func _ready() -> void:
