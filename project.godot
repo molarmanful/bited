@@ -12,6 +12,8 @@ config_version=5
 
 config/name="bited"
 run/main_scene="res://components/all.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="bited"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 

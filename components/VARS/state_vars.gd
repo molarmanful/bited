@@ -49,9 +49,13 @@ var font_xlfd: String:
 		)
 
 @onready var db_uc := SQLite.new()
+@onready var db_saves := SQLite.new()
 
 
 func _ready():
 	db_uc.path = "res://assets/uc.db"
 	db_uc.read_only = true
 	db_uc.open_db()
+
+	db_saves.path = "user://saves.db"
+	db_saves.open_db()
