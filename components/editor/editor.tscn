@@ -41,5 +41,6 @@ disable_3d = true
 transparent_bg = true
 size = Vector2i(256, 256)
 
-[node name="Node2D" type="Node2D" parent="CenterContainer/Grid/Lines/SubViewport"]
+[node name="Node2D" type="Node2D" parent="CenterContainer/Grid/Lines/SubViewport" node_paths=PackedStringArray("grid")]
 script = ExtResource("2_jsp0s")
+grid = NodePath("../../..")
