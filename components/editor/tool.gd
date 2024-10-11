@@ -78,7 +78,7 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		print(c_grid.bitmap.gen())
+		c_grid.bitmap.save()
 
 
 class ToolPen:

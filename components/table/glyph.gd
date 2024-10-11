@@ -7,7 +7,7 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 @export var node_code: Label
 @export var node_tex: TextureRect
 
-var data_name := &""
+var data_name := ""
 var data_code := -1:
 	set(c):
 		data_code = c

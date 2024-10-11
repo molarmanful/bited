@@ -1,6 +1,7 @@
 extends Node
 
 var font := {
+	id = "new_font",
 	foundry = "bited",
 	family = "new font",
 	weight = "Medium",
@@ -19,6 +20,7 @@ var font := {
 	metricsset = 0,
 	dwidth = Vector2i(8, 0),
 	dwidth1 = Vector2i(16, 0),
+	vvector = Vector2i(4, 14),
 	cap_h = 9,
 	x_h = 7,
 	asc = 14,
@@ -63,3 +65,42 @@ func _ready():
 
 	db_saves.path = "user://saves.db"
 	db_saves.open_db()
+
+	init_font_metas()
+	init_font(font.id)
+
+
+func init_font_metas() -> bool:
+	return (
+		db_saves
+		. create_table(
+			"fonts",
+			{
+				id = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				data = {data_type = "blob", not_null = true},
+			}
+		)
+	)
+
+
+func init_font(id: String) -> bool:
+	db_saves.insert_row("fonts", {id = id, data = var_to_bytes(font)})
+	return (
+		db_saves
+		. create_table(
+			id,
+			{
+				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				code = {data_type = "int", not_null = true},
+				dwidth_x = {data_type = "int", not_null = true},
+				dwidth_y = {data_type = "int", not_null = true},
+				dwidth1_x = {data_type = "int"},
+				dwidth1_y = {data_type = "int"},
+				vvector_x = {data_type = "int"},
+				vvector_y = {data_type = "int"},
+				off_x = {data_type = "int", not_null = true},
+				off_y = {data_type = "int", not_null = true},
+				img = {data_type = "blob", not_null = true},
+			}
+		)
+	)

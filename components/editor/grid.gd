@@ -43,6 +43,7 @@ var bitmap := Bitmap.new(self, -1, "test")
 
 
 func _ready() -> void:
+	bitmap.restore()
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()

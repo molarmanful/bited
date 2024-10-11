@@ -31,7 +31,7 @@ var size_item: Vector2i:
 		return Vector2i(w_item, h_item)
 var size_item_gap: Vector2i:
 	get:
-		return size_item + Vector2i(1, 1)
+		return size_item + Vector2i.ONE
 
 var cols: int:
 	get:
@@ -45,7 +45,7 @@ var dims: Vector2i:
 
 var size_table: Vector2i:
 	get:
-		return dims * size_item_gap + Vector2i(1, 1)
+		return dims * size_item_gap + Vector2i.ONE
 
 var rows_view: int:
 	get:
