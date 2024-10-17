@@ -41,6 +41,7 @@ layout_mode = 2
 
 [node name="Editor" parent="Body/Main/MarginContainer" instance=ExtResource("2_q0u5u")]
 layout_mode = 2
+metadata/_edit_lock_ = true
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]
 layout_mode = 2

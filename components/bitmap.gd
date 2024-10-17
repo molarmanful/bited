@@ -19,7 +19,9 @@ func save() -> bool:
 	var bounds := grid.cells.get_used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
 	var off := (bl - grid.origin) * Vector2i(1, -1) if bounds.size else bounds.size
-	var img := grid.cells.get_region(bounds)
+	var img: PackedByteArray
+	if bounds:
+		img = grid.cells.get_region(bounds).save_png_to_buffer()
 
 	var gen := {
 		name = data_name,
@@ -32,7 +34,7 @@ func save() -> bool:
 		vvector_y = vvector.y,
 		off_x = off.x,
 		off_y = off.y,
-		img = img.save_png_to_buffer(),
+		img = img,
 	}
 
 	# TODO: save to undo stack
@@ -43,7 +45,7 @@ func save() -> bool:
 		. query_with_bindings(
 			(
 				"""
-				insert or replace into %s
+				insert or replace into font_%s
 				(name, code, dwidth_x, dwidth_y, dwidth1_x, dwidth1_y, vvector_x, vvector_y, off_x, off_y, img)
 				values
 				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -57,7 +59,7 @@ func save() -> bool:
 
 func restore() -> void:
 	var q := StateVars.db_saves.select_rows(
-		StateVars.font.id,
+		"font_" + StateVars.font.id,
 		"name = %s" % JSON.stringify(data_name),
 		[
 			"name",
@@ -83,8 +85,9 @@ func restore() -> void:
 	dwidth1 = Vector2i(gen.dwidth1_x, gen.dwidth1_y)
 	vvector = Vector2i(gen.vvector_x, gen.vvector_y)
 
-	var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
-	img.load_png_from_buffer(gen.img)
-	var sz := img.get_size()
-	var off := Vector2i(gen.off_x, -gen.off_y) + grid.origin - Vector2i(0, sz.y)
-	grid.cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+	if gen.img:
+		var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
+		img.load_png_from_buffer(gen.img)
+		var sz := img.get_size()
+		var off := Vector2i(gen.off_x, -gen.off_y) + grid.origin - Vector2i(0, sz.y)
+		grid.cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)

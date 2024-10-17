@@ -4,6 +4,7 @@ extends PanelContainer
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: Node2D
+@export var tools_group: ButtonGroup
 
 var dim_grid := 32:
 	set(n):
@@ -50,6 +51,7 @@ func _ready() -> void:
 
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
+	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 
 
 func _process(_delta: float) -> void:

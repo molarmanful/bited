@@ -1,0 +1,8 @@
+[gd_resource type="ButtonGroup" load_steps=2 format=3 uid="uid://ccxcutyn7ifmw"]
+
+[sub_resource type="GDScript" id="GDScript_nj4q8"]
+
+[resource]
+resource_local_to_scene = false
+resource_name = "ToolsGroup"
+script = SubResource("GDScript_nj4q8")

@@ -88,7 +88,7 @@ func init_font(id: String) -> bool:
 	return (
 		db_saves
 		. create_table(
-			id,
+			"font_" + id,
 			{
 				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
 				code = {data_type = "int", not_null = true},
@@ -100,7 +100,7 @@ func init_font(id: String) -> bool:
 				vvector_y = {data_type = "int"},
 				off_x = {data_type = "int", not_null = true},
 				off_y = {data_type = "int", not_null = true},
-				img = {data_type = "blob", not_null = true},
+				img = {data_type = "blob"},
 			}
 		)
 	)
