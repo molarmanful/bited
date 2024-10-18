@@ -5,6 +5,7 @@ extends PanelContainer
 @export var node_view_lines: SubViewport
 @export var node_lines: Node2D
 @export var tools_group: ButtonGroup
+@export var cmode_group: ButtonGroup
 
 var dim_grid := 32:
 	set(n):
@@ -34,7 +35,7 @@ var origin: Vector2i:
 var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
 
-var tools := Tool.new(self).tools
+var toolman := Tool.new(self)
 var tool_sel := "pen"
 
 var to_update_cells := false
@@ -52,10 +53,11 @@ func _ready() -> void:
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
+	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
 
 func _process(_delta: float) -> void:
-	tools[tool_sel].handle()
+	toolman.tools[tool_sel].handle()
 	update_cells()
 
 
@@ -84,4 +86,4 @@ func oninput(e: InputEvent) -> void:
 		return
 
 	pressed = e.pressed
-	tools[tool_sel].handle(Tool.START if pressed else Tool.END)
+	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
