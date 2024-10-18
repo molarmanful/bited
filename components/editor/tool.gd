@@ -48,11 +48,8 @@ func check_pos(p: Vector2i) -> bool:
 	return 0 <= p.x and p.x < grid.dim_grid and 0 <= p.y and p.y < grid.dim_grid
 
 
-func capture_prev() -> void:
-	prev = grid.cells.get_region(Rect2i(0, 0, grid.dim_grid, grid.dim_grid))
-
-
 class _Tool:
+	var name := "tool"
 	var c_grid: Grid
 	var c_tool: Tool
 	var p: Vector2i
@@ -81,13 +78,22 @@ class _Tool:
 		a = true
 		if c_tool.cmode == CMode.CELL:
 			a = not c_grid.cells.get_pixelv(p).a
-		c_tool.capture_prev()
+		c_tool.prev = Util.img_copy(c_grid.cells)
 
 	func update() -> void:
 		pass
 
 	func end() -> void:
+		act()
 		c_grid.bitmap.save()
+
+	func act() -> void:
+		var cells := Util.img_copy(c_grid.cells)
+		var prev := Util.img_copy(c_tool.prev)
+		c_grid.undoman.create_action(name)
+		c_grid.undoman.add_undo_property(c_grid, "cells", prev)
+		c_grid.undoman.add_do_property(c_grid, "cells", cells)
+		c_grid.undoman.commit_action(false)
 
 	func get_c(v: Vector2i) -> Color:
 		return Color(1, 1, 1, get_a(v))
@@ -107,6 +113,10 @@ class _Tool:
 class ToolPen:
 	extends _Tool
 
+	func _init(t: Tool) -> void:
+		super(t)
+		name = "pen"
+
 	func start() -> void:
 		super()
 		a = not c_grid.cells.get_pixelv(p).a
@@ -121,6 +131,10 @@ class ToolPen:
 class ToolLine:
 	extends _Tool
 
+	func _init(t: Tool) -> void:
+		super(t)
+		name = "line"
+
 	func start() -> void:
 		super()
 		c_tool.pivot = p
@@ -133,6 +147,10 @@ class ToolLine:
 
 class ToolRect:
 	extends _Tool
+
+	func _init(t: Tool) -> void:
+		super(t)
+		name = "rect"
 
 	func start() -> void:
 		super()

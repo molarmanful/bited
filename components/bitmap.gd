@@ -37,8 +37,6 @@ func save() -> bool:
 		img = img,
 	}
 
-	# TODO: save to undo stack
-
 	return (
 		StateVars
 		. db_saves

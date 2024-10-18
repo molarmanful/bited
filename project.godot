@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 
 StateVars="*res://components/VARS/state_vars.gd"
 StyleVars="*res://components/VARS/style_vars.gd"
+Util="*res://components/util.gd"
 Thumb="*res://components/table/thumb.tscn"
 
 [display]

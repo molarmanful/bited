@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://components/editor/grid.gd" id="1_ccvcr"]
 [ext_resource type="Script" path="res://components/editor/gridlines.gd" id="2_jsp0s"]
 [ext_resource type="Texture2D" uid="uid://bkq4iy7vqadw3" path="res://assets/cmode/inv.svg" id="2_od75m"]
-[ext_resource type="ButtonGroup" uid="uid://c6kxtnnl4kyma" path="res://components/editor/cmode_group.tres" id="2_qbssp"]
+[ext_resource type="ButtonGroup" path="res://components/editor/cmode_group.tres" id="2_qbssp"]
 [ext_resource type="Texture2D" uid="uid://3q48hfg0mxcv" path="res://assets/cmode/cell.svg" id="3_gnkst"]
 [ext_resource type="Texture2D" uid="uid://bwgdu8vufmqcl" path="res://assets/cmode/t.svg" id="6_mqen1"]
 [ext_resource type="Texture2D" uid="uid://qef2nehtarn1" path="res://assets/cmode/f.svg" id="7_ukwbh"]
@@ -154,7 +154,7 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines", "btn_undo", "btn_redo")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
@@ -164,6 +164,8 @@ node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
+btn_undo = NodePath("../8/undo")
+btn_redo = NodePath("../8/redo")
 
 [node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/Grid"]
 texture_filter = 1
@@ -198,3 +200,17 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 8
+
+[node name="undo" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "undo"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⟲"
+
+[node name="redo" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "redo"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⟳"
