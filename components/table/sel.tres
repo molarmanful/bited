@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="Sel" load_steps=2 format=3 uid="uid://d1o2fm0sstyq1"]
+
+[ext_resource type="Script" path="res://components/table/sel.gd" id="1_or1lm"]
+
+[resource]
+script = ExtResource("1_or1lm")

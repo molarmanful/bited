@@ -4,8 +4,12 @@ extends PanelContainer
 const ScnGlyph := preload("res://components/table/glyph.tscn")
 
 @export var virt: Virt
+@export var sel: Sel
 @export var node_code: Label
 @export var node_tex: TextureRect
+@export var btn: Button
+
+# TODO: use indices for table pos
 
 var data_name := ""
 var data_code := -1:
@@ -13,12 +17,26 @@ var data_code := -1:
 		data_code = c
 		if c >= 0:
 			data_name = "%04X" % data_code
-		up_ui()
+		refresh()
 var label: String:
 	get:
 		if data_code < 0:
 			return data_name
 		return char(data_code)
+
+var selected := false:
+	set(x):
+		if selected == x:
+			return
+		selected = x
+		if selected:
+			sel.sel[data_name] = true
+			var sb := get_theme_stylebox("panel").duplicate()
+			sb.bg_color = get_theme_color("sel")
+			add_theme_stylebox_override("panel", sb)
+		else:
+			sel.sel.erase(data_name)
+			remove_theme_stylebox_override("panel")
 
 
 static func create() -> Glyph:
@@ -27,10 +45,11 @@ static func create() -> Glyph:
 
 
 func _ready() -> void:
-	renamed.connect(up_ui)
+	renamed.connect(refresh)
+	sel.reselect.connect(refresh)
 	set_thumb()
 	Thumb.updated.connect(set_thumb)
-	gui_input.connect(oninput)
+	btn.pressed.connect(onpress)
 
 
 func set_thumb() -> void:
@@ -40,9 +59,31 @@ func set_thumb() -> void:
 	node_tex.texture = Thumb.tex.texture
 
 
-func oninput(e: InputEvent):
-	pass
+func onpress():
+	var shift := Input.is_physical_key_pressed(KEY_SHIFT)
+	var ctrl := Input.is_physical_key_pressed(KEY_CTRL)
+
+	if shift and ctrl and sel.inv_anchor:
+		# TODO
+		return
+
+	if shift and sel.sel_anchor:
+		# TODO
+		return
+
+	if ctrl:
+		selected = !selected
+		return
+
+	if selected:
+		# TODO
+		return
+
+	sel.clear()
+	sel.sel_anchor = data_name
+	selected = true
 
 
-func up_ui() -> void:
+func refresh() -> void:
 	node_code.text = label
+	selected = data_name in sel.sel

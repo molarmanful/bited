@@ -54,8 +54,8 @@ var font_xlfd: String:
 			]
 		)
 
-@onready var db_uc := SQLite.new()
-@onready var db_saves := SQLite.new()
+var db_uc := SQLite.new()
+var db_saves := SQLite.new()
 
 
 func _ready():

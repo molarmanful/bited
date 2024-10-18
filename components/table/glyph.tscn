@@ -1,29 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1cjx57ksqn6a"]
+[gd_scene load_steps=5 format=3 uid="uid://c1cjx57ksqn6a"]
 
 [ext_resource type="Script" path="res://components/table/glyph.gd" id="1_mjxq3"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_2cf3a"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="2_se6b1"]
+[ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_wp5fo"]
 
-[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex")]
+[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex", "btn")]
 script = ExtResource("1_mjxq3")
 virt = ExtResource("2_se6b1")
-node_code = NodePath("VBoxContainer/PanelContainer/MarginContainer/Label")
+sel = ExtResource("3_wp5fo")
+node_code = NodePath("VBoxContainer/MarginContainer/Label")
 node_tex = NodePath("VBoxContainer/AspectRatioContainer/TextureRect")
+btn = NodePath("Button")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/MarginContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_2cf3a")
 horizontal_alignment = 1
@@ -42,4 +42,8 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
 self_modulate = Color(1, 1, 1, 0.69)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
