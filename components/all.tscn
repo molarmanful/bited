@@ -6,16 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 
-[node name="All" type="PanelContainer" node_paths=PackedStringArray("node_view", "table", "editor")]
+[node name="All" type="PanelContainer" node_paths=PackedStringArray("table", "editor")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
-node_view = NodePath("Body/Main/MarginContainer")
-table = NodePath("Body/Main/MarginContainer/Table")
-editor = NodePath("Body/Main/MarginContainer/Editor")
+table = NodePath("Body/Main/ScrollContainer2/MarginContainer/Table")
+editor = NodePath("Body/Main/ScrollContainer/Editor")
 metadata/_edit_lock_ = true
 
 [node name="ThemeSwitcher" type="Node" parent="." node_paths=PackedStringArray("node")]
@@ -27,25 +26,36 @@ layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_edit_lock_ = true
 
-[node name="Main" type="ScrollContainer" parent="Body"]
+[node name="Main" type="HSplitContainer" parent="Body"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Editor" parent="Body/Main/ScrollContainer" instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 32
+metadata/_edit_lock_ = true
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+follow_focus = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/ScrollContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
+theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/MarginContainer" instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/ScrollContainer2/MarginContainer" instance=ExtResource("1_tnd3j")]
 layout_mode = 2
-
-[node name="Editor" parent="Body/Main/MarginContainer" instance=ExtResource("2_q0u5u")]
-layout_mode = 2
-metadata/_edit_lock_ = true
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]
 layout_mode = 2

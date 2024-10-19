@@ -1,6 +1,6 @@
 extends Node
 
-signal set_theme(t: Theme)
+signal set_theme(theme: Theme)
 signal apply_theme
 signal set_font
 signal set_thumb

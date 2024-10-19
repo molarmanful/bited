@@ -84,16 +84,8 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		act()
+		c_grid.act_cells(c_tool.prev)
 		c_grid.bitmap.save()
-
-	func act() -> void:
-		var cells := Util.img_copy(c_grid.cells)
-		var prev := Util.img_copy(c_tool.prev)
-		c_grid.undoman.create_action(name)
-		c_grid.undoman.add_undo_property(c_grid, "cells", prev)
-		c_grid.undoman.add_do_property(c_grid, "cells", cells)
-		c_grid.undoman.commit_action(false)
 
 	func get_c(v: Vector2i) -> Color:
 		return Color(1, 1, 1, get_a(v))

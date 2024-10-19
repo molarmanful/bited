@@ -27,7 +27,7 @@ func _init(
 	data_name = dn
 
 
-func save(over := true) -> bool:
+func save(over := true, refresh = true) -> bool:
 	var bounds := cells.get_used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
 	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
@@ -48,6 +48,8 @@ func save(over := true) -> bool:
 		off_y = off.y,
 		img = img,
 	}
+	if refresh:
+		StateVars.refresh.emit(gen)
 
 	return (
 		StateVars
@@ -102,9 +104,13 @@ func from_gen(gen: Dictionary) -> void:
 	vvector = Vector2i(gen.vvector_x, gen.vvector_y)
 
 
+func clear_cells() -> void:
+	cells.fill(Color.TRANSPARENT)
+
+
 func update_cells(gen: Dictionary) -> void:
+	clear_cells()
 	if not gen.img:
-		cells.fill(Color.TRANSPARENT)
 		return
 
 	var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)

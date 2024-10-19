@@ -10,6 +10,7 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 @export var node_tex: TextureRect
 @export var btn: Button
 
+var table: Table
 var ind := -1
 var data_name := ""
 var data_code := -1:
@@ -41,17 +42,43 @@ var selected := false:
 			remove_theme_stylebox_override("panel")
 
 
-static func create() -> Glyph:
+static func create(t: Table) -> Glyph:
 	var glyph = ScnGlyph.instantiate()
+	glyph.table = t
 	return glyph
 
 
 func _ready() -> void:
+	set_thumb()
+
 	renamed.connect(refresh)
 	sel.reselect.connect(refresh)
-	set_thumb()
 	Thumb.updated.connect(set_thumb)
 	btn.pressed.connect(onpress)
+	StateVars.refresh.connect(refresh_tex)
+
+
+func _input(e: InputEvent) -> void:
+	if not selected:
+		return
+
+	if e.is_action_pressed("ui_text_delete") or e.is_action_pressed("ui_text_backspace"):
+		delete()
+
+
+func refresh() -> void:
+	node_code.text = label
+	selected = data_name in sel.sel
+	set_thumb()
+
+
+func refresh_tex(gen: Dictionary) -> void:
+	if data_name != gen.name:
+		return
+
+	bitmap.update_cells(gen)
+	table.set_thumb_tex(data_name, bitmap.cells)
+	set_thumb()
 
 
 func set_thumb() -> void:
@@ -59,8 +86,8 @@ func set_thumb() -> void:
 	var sz := Vector2(s, s)
 	node_tex_cont.custom_minimum_size = sz
 
-	if data_name in virt.thumbs:
-		node_tex.texture = virt.thumbs[data_name]
+	if data_name in table.thumbs:
+		node_tex.texture = table.thumbs[data_name]
 		node_tex.self_modulate.a = 1
 		return
 	node_tex.texture = Thumb.tex.texture
@@ -93,10 +120,13 @@ func onpress():
 	selected = true
 
 
-func refresh() -> void:
-	node_code.text = label
-	selected = data_name in sel.sel
-	set_thumb()
+# TODO: move to Sel
+func delete() -> void:
+	StateVars.db_saves.delete_rows(
+		"font_" + StateVars.font.id, "name = " + JSON.stringify(data_name)
+	)
+	table.thumbs.erase(data_name)
+	virt.refresh.emit()
 
 
 static func is_noprint(n: int) -> bool:

@@ -3,9 +3,6 @@ extends Resource
 
 signal refresh
 
-var thumbs := {}
-var texs := {}
-
 var length := 65536:
 	set(n):
 		length = n
@@ -38,10 +35,10 @@ var size_item_gap: Vector2i:
 
 var cols: int:
 	get:
-		return w_sizer / size_item_gap.x - 1
+		return max(1, w_sizer / size_item_gap.x - 1)
 var rows: int:
 	get:
-		return int(ceil(length / float(cols)))
+		return ceil(length / float(cols))
 var dims: Vector2i:
 	get:
 		return Vector2i(cols, rows)

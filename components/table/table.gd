@@ -6,6 +6,8 @@ extends PanelContainer
 @export var node_pad: Container
 @export var virt: Virt
 
+# TODO: consider lru-ing
+var thumbs := {}
 var debounced = false
 var to_update = false
 
@@ -52,7 +54,7 @@ func gen_glyphs(i0: int, i1: int) -> void:
 	var len_glyphs := node_glyphs.get_child_count()
 
 	while len_glyphs < virt.len_ideal:
-		var glyph := Glyph.create()
+		var glyph := Glyph.create(self)
 		node_glyphs.add_child(glyph)
 		len_glyphs += 1
 
@@ -72,7 +74,7 @@ func gen_glyphs(i0: int, i1: int) -> void:
 	update_imgs(gs)
 
 
-func update_imgs(gs: Array[Glyph], hard := false) -> void:
+func update_imgs(gs: Array[Glyph]) -> void:
 	var map := {}
 	var qs: Array[String] = []
 	for g in gs:
@@ -100,7 +102,11 @@ func update_imgs(gs: Array[Glyph], hard := false) -> void:
 	for r in StateVars.db_saves.query_result:
 		var bm: Bitmap = map[r.name].bitmap
 		bm.update_cells(r)
-		if r.name not in virt.thumbs:
-			virt.thumbs[r.name] = ImageTexture.create_from_image(bm.cells)
-		elif hard:
-			virt.thumbs[r.name].set_image(bm.cells)
+		set_thumb_tex(r.name, bm.cells)
+
+
+func set_thumb_tex(n: String, cs: Image) -> void:
+	if n not in thumbs:
+		thumbs[n] = ImageTexture.create_from_image(cs)
+	else:
+		thumbs[n].update(cs)

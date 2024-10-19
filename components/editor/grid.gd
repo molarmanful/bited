@@ -31,21 +31,20 @@ var size_grid: Vector2i:
 var to_update_cells := false
 var pressed := false
 
-var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8):
-	set(im):
-		cells = im
-		to_update_cells = true
+var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
 
 var toolman := Tool.new(self)
 var tool_sel := "pen"
 
-var bitmap := Bitmap.new(dim_grid, cells)
+var bitmap := Bitmap.new(dim_grid, cells, 97, "0061")
 
 var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
+	refresh()
+
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
 
@@ -56,7 +55,7 @@ func _ready() -> void:
 	btn_redo.pressed.connect(redo)
 
 
-func _enter_tree() -> void:
+func refresh() -> void:
 	bitmap.restore()
 	node_cells.texture = tex_cells
 	to_update_cells = true
@@ -83,14 +82,29 @@ func update_cells() -> void:
 	tex_cells.update(cells)
 
 
+func act_cells(prev: Image) -> void:
+	var cs := Util.img_copy(cells)
+	var pv := Util.img_copy(prev)
+
+	undoman.create_action(name)
+
+	undoman.add_undo_method(func(): cells.copy_from(pv) ; to_update_cells = true)
+	undoman.add_undo_reference(pv)
+	undoman.add_undo_method(bitmap.save)
+
+	undoman.add_do_method(func(): cells.copy_from(cs) ; to_update_cells = true)
+	undoman.add_do_reference(cs)
+	undoman.add_do_method(bitmap.save)
+
+	undoman.commit_action(false)
+
+
 func undo() -> void:
 	undoman.undo()
-	bitmap.save()
 
 
 func redo() -> void:
 	undoman.redo()
-	bitmap.save()
 
 
 func oninput(e: InputEvent) -> void:

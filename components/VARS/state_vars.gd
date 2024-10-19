@@ -1,7 +1,7 @@
 extends Node
 
-signal table
-signal edit(g: Glyph)
+signal edit(glyph: Glyph)
+signal refresh(gen: Dictionary)
 
 var font := BFont.new()
 
