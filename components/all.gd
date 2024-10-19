@@ -23,7 +23,8 @@ func show_table() -> void:
 
 
 func show_editor(g: Glyph) -> void:
-	grid.bitmap = Bitmap.new(grid, g.data_code, g.data_name)
+	grid.bitmap.data_code = g.data_code
+	grid.bitmap.data_name = g.data_name
 	grid.bitmap.save(false)
 	node_view.remove_child(table)
 	table.process_mode = PROCESS_MODE_DISABLED

@@ -1,27 +1,39 @@
 class_name Bitmap
 extends Node
 
-var grid: Grid
+var dim := 0
+var cells: Image
 var data_code := -1
 var data_name := ""
 var dwidth: Vector2i = StateVars.font.dwidth
 var dwidth1: Vector2i = StateVars.font.dwidth1
 var vvector: Vector2i = StateVars.font.vvector
 
+var corner_bl: Vector2i:
+	get:
+		var center := Vector2i(dim, dim) / 2
+		return center - StateVars.font.center
+var origin: Vector2i:
+	get:
+		return corner_bl - Vector2i(0, StateVars.font.desc)
 
-func _init(g: Grid, dc := -1, dn := &"") -> void:
-	grid = g
+
+func _init(
+	d: int, cs := Image.create_empty(d, d, false, Image.FORMAT_LA8), dc := -1, dn := &""
+) -> void:
+	dim = d
+	cells = cs
 	data_code = dc
 	data_name = dn
 
 
 func save(over := true) -> bool:
-	var bounds := grid.cells.get_used_rect()
+	var bounds := cells.get_used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
-	var off := (bl - grid.origin) * Vector2i(1, -1) if bounds.size else bounds.size
+	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
 	var img: PackedByteArray
 	if bounds:
-		img = grid.cells.get_region(bounds).save_png_to_buffer()
+		img = cells.get_region(bounds).save_png_to_buffer()
 
 	var gen := {
 		name = data_name,
@@ -87,5 +99,5 @@ func restore() -> void:
 		var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
 		img.load_png_from_buffer(gen.img)
 		var sz := img.get_size()
-		var off := Vector2i(gen.off_x, -gen.off_y) + grid.origin - Vector2i(0, sz.y)
-		grid.cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+		var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, sz.y)
+		cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)

@@ -69,7 +69,7 @@ func gen_glyphs(i0: int, i1: int) -> void:
 		glyph.show()
 		gs.push_back(glyph)
 
-	virt.update_imgs(gs)
+	update_imgs(gs)
 
 
 func update_imgs(gs: Array[Glyph]) -> void:
@@ -100,6 +100,7 @@ func update_imgs(gs: Array[Glyph]) -> void:
 		var s := StyleVars.thumb_size_pre
 		var sz := Vector2(s, s)
 		var img_wrap := Image.create_empty(s, s, false, Image.FORMAT_LA8)
+		# TODO: move to glyph?
 		if r.img:
 			var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
 			img.load_png_from_buffer(r.img)

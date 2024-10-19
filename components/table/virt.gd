@@ -3,6 +3,8 @@ extends Resource
 
 signal refresh
 
+var thumbs := {}
+
 var length := 65536:
 	set(n):
 		length = n
@@ -79,13 +81,3 @@ var i1: int:
 var pad_top: int:
 	get:
 		return row0 * size_item_gap.y
-
-var corner_bl: Vector2i:
-	get:
-		var center_grid := Vector2i(StyleVars.thumb_size_pre, StyleVars.thumb_size_pre) / 2
-		return center_grid - StateVars.font.center
-var origin: Vector2i:
-	get:
-		return corner_bl - Vector2i(0, StateVars.font.desc)
-
-var thumbs := {}

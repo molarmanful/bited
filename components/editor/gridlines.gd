@@ -6,7 +6,7 @@ extends Node2D
 func _draw() -> void:
 	var w_cell := grid.w_cell
 	var w_grid := grid.w_grid
-	var origin := grid.origin
+	var origin := grid.bitmap.origin
 
 	var res: Array[Vector2i] = []
 	for i in w_grid:

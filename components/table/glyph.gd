@@ -23,6 +23,8 @@ var label: String:
 			return data_name
 		return char(data_code)
 
+var bitmap := Bitmap.new(StyleVars.thumb_size_pre)
+
 var selected := false:
 	set(x):
 		if selected == x:

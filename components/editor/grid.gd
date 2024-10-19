@@ -28,14 +28,6 @@ var size_grid: Vector2i:
 	get:
 		return Vector2i(w_grid, w_grid)
 
-var corner_bl: Vector2i:
-	get:
-		var center_grid := Vector2i(dim_grid, dim_grid) / 2
-		return center_grid - StateVars.font.center
-var origin: Vector2i:
-	get:
-		return corner_bl - Vector2i(0, StateVars.font.desc)
-
 var to_update_cells := false
 var pressed := false
 
@@ -48,7 +40,7 @@ var tex_cells := ImageTexture.create_from_image(cells)
 var toolman := Tool.new(self)
 var tool_sel := "pen"
 
-var bitmap := Bitmap.new(self, -1, "test")
+var bitmap := Bitmap.new(dim_grid, cells)
 
 var undoman := UndoRedo.new()
 
