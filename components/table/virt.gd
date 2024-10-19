@@ -79,3 +79,44 @@ var i1: int:
 var pad_top: int:
 	get:
 		return row0 * size_item_gap.y
+
+var corner_bl: Vector2i:
+	get:
+		var center_grid := Vector2i(StyleVars.thumb_size_pre, StyleVars.thumb_size_pre) / 2
+		return center_grid - StateVars.font_center
+var origin: Vector2i:
+	get:
+		return corner_bl - Vector2i(0, StateVars.font.desc)
+
+var thumbs := {}
+
+
+func update_imgs(gs: Array[Glyph]) -> void:
+	var names: Array[String] = []
+	var qs: Array[String] = []
+	for g in gs:
+		names.push_back(g.data_name)
+		qs.push_back("?")
+
+	var q := (
+		"""
+		select name, code, off_x, off_y, img from font_%s
+		where name in (%s)
+		"""
+		% [StateVars.font.id, ",".join(qs)]
+	)
+	var suc := StateVars.db_saves.query_with_bindings(q, names)
+	if not suc:
+		return
+
+	for r in StateVars.db_saves.query_result:
+		var s := StyleVars.thumb_size_pre
+		var sz := Vector2(s, s)
+		var img_wrap := Image.create_empty(s, s, false, Image.FORMAT_LA8)
+		if r.img:
+			var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
+			img.load_png_from_buffer(r.img)
+			var off := Vector2i(r.off_x, -r.off_y) + origin - Vector2i(0, img.get_size().y)
+			img_wrap.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+		img_wrap.resize(StyleVars.thumb_size, StyleVars.thumb_size, Image.INTERPOLATE_NEAREST)
+		thumbs[r.name] = ImageTexture.create_from_image(img_wrap)

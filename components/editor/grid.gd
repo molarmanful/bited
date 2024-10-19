@@ -31,9 +31,7 @@ var size_grid: Vector2i:
 var corner_bl: Vector2i:
 	get:
 		var center_grid := Vector2i(dim_grid, dim_grid) / 2
-		var center_glyph := StateVars.font_size_calc * Vector2i(1, -1) / 2
-		return center_grid - center_glyph
-
+		return center_grid - StateVars.font_center
 var origin: Vector2i:
 	get:
 		return corner_bl - Vector2i(0, StateVars.font.desc)
@@ -56,11 +54,6 @@ var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
-	bitmap.restore()
-	node_cells.texture = tex_cells
-	to_update_cells = true
-	update_grid()
-
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
 
@@ -69,6 +62,13 @@ func _ready() -> void:
 
 	btn_undo.pressed.connect(undo)
 	btn_redo.pressed.connect(redo)
+
+
+func _enter_tree() -> void:
+	bitmap.restore()
+	node_cells.texture = tex_cells
+	to_update_cells = true
+	update_grid()
 
 
 func _process(_delta: float) -> void:
@@ -93,10 +93,12 @@ func update_cells() -> void:
 
 func undo() -> void:
 	undoman.undo()
+	bitmap.save()
 
 
 func redo() -> void:
 	undoman.redo()
+	bitmap.save()
 
 
 func oninput(e: InputEvent) -> void:

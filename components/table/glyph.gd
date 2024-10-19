@@ -9,8 +9,7 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 @export var node_tex: TextureRect
 @export var btn: Button
 
-# TODO: use indices for table pos
-
+var ind := -1
 var data_name := ""
 var data_code := -1:
 	set(c):
@@ -20,7 +19,7 @@ var data_code := -1:
 		refresh()
 var label: String:
 	get:
-		if data_code < 0:
+		if data_code < 0 or is_noprint(data_code):
 			return data_name
 		return char(data_code)
 
@@ -56,34 +55,47 @@ func set_thumb() -> void:
 	var s := StyleVars.thumb_size
 	var sz := Vector2(s, s)
 	node_tex.size = sz
+
+	if data_name in virt.thumbs:
+		node_tex.texture = virt.thumbs[data_name]
+		node_tex.self_modulate.a = 1
+		return
 	node_tex.texture = Thumb.tex.texture
+	node_tex.self_modulate.a = .69
 
 
 func onpress():
 	var shift := Input.is_physical_key_pressed(KEY_SHIFT)
 	var ctrl := Input.is_physical_key_pressed(KEY_CTRL)
 
-	if shift and ctrl and sel.inv_anchor:
+	if shift and ctrl and sel.anchor_sel >= 0:
 		# TODO
 		return
 
-	if shift and sel.sel_anchor:
+	if shift and sel.anchor_sel >= 0:
 		# TODO
 		return
 
 	if ctrl:
+		sel.anchor_inv = ind
 		selected = !selected
 		return
 
-	if selected:
-		# TODO
+	if selected and sel.sel.size() <= 1:
+		StateVars.edit.emit(self)
 		return
 
 	sel.clear()
-	sel.sel_anchor = data_name
+	sel.anchor_sel = ind
 	selected = true
 
 
 func refresh() -> void:
 	node_code.text = label
 	selected = data_name in sel.sel
+	set_thumb()
+
+
+static func is_noprint(n: int) -> bool:
+	const R: Array[int] = [0xD800 - 1, 0xDFFF]
+	return R.bsearch(n) % 2

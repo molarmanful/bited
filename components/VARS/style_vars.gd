@@ -30,6 +30,9 @@ var thumb_px_scale := 2:
 var thumb_px_scale_cor: int:
 	get:
 		return maxi(1, thumb_px_scale)
+var thumb_size_pre: int:
+	get:
+		return 8 * thumb_scale_cor
 var thumb_size: int:
 	get:
-		return 8 * thumb_scale_cor * thumb_px_scale_cor
+		return thumb_size_pre * thumb_px_scale_cor

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 
-[node name="All" type="PanelContainer" node_paths=PackedStringArray("node_view", "node_table", "node_editor")]
+[node name="All" type="PanelContainer" node_paths=PackedStringArray("node_view", "table", "editor")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,8 +14,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
 node_view = NodePath("Body/Main/MarginContainer")
-node_table = NodePath("Body/Main/MarginContainer/Table")
-node_editor = NodePath("Body/Main/MarginContainer/Editor")
+table = NodePath("Body/Main/MarginContainer/Table")
+editor = NodePath("Body/Main/MarginContainer/Editor")
 metadata/_edit_lock_ = true
 
 [node name="ThemeSwitcher" type="Node" parent="." node_paths=PackedStringArray("node")]

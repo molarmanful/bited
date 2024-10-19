@@ -15,7 +15,7 @@ func _init(g: Grid, dc := -1, dn := &"") -> void:
 	data_name = dn
 
 
-func save() -> bool:
+func save(over := true) -> bool:
 	var bounds := grid.cells.get_used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
 	var off := (bl - grid.origin) * Vector2i(1, -1) if bounds.size else bounds.size
@@ -43,12 +43,12 @@ func save() -> bool:
 		. query_with_bindings(
 			(
 				"""
-				insert or replace into font_%s
+				insert or %s into font_%s
 				(name, code, dwidth_x, dwidth_y, dwidth1_x, dwidth1_y, vvector_x, vvector_y, off_x, off_y, img)
 				values
 				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 				"""
-				% StateVars.font.id
+				% ["replace" if over else "ignore", StateVars.font.id]
 			),
 			gen.values()
 		)

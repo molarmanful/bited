@@ -1,5 +1,9 @@
 extends Node
 
+signal table
+signal edit(g: Glyph)
+
+# TODO: change to class
 var font := {
 	id = "new_font",
 	foundry = "bited",
@@ -31,6 +35,10 @@ var font := {
 var font_size_calc: Vector2i:
 	get:
 		return Vector2i(font.dwidth.x, font.px_size)
+
+var font_center: Vector2i:
+	get:
+		return StateVars.font_size_calc * Vector2i(1, -1) / 2
 
 var font_xlfd: String:
 	get:
@@ -84,7 +92,9 @@ func init_font_metas() -> bool:
 
 
 func init_font(id: String) -> bool:
-	db_saves.insert_row("fonts", {id = id, data = var_to_bytes(font)})
+	db_saves.query_with_bindings(
+		"insert or ignore into fonts (id, data) values (?, ?)", [id, var_to_bytes(font)]
+	)
 	return (
 		db_saves
 		. create_table(

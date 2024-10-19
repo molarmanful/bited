@@ -41,9 +41,9 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
-self_modulate = Color(1, 1, 1, 0.69)
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+mouse_default_cursor_shape = 2

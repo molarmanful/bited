@@ -1,3 +1,4 @@
+class_name Table
 extends PanelContainer
 
 @export var node_inner: Container
@@ -60,7 +61,12 @@ func gen_glyphs(i0: int, i1: int) -> void:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
+	var gs: Array[Glyph] = []
 	for c in range(i0, i1):
 		var glyph := node_glyphs.get_child(c - i0)
+		glyph.ind = c
 		glyph.data_code = c
 		glyph.show()
+		gs.push_back(glyph)
+
+	virt.update_imgs(gs)
