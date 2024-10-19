@@ -31,7 +31,7 @@ var size_grid: Vector2i:
 var corner_bl: Vector2i:
 	get:
 		var center_grid := Vector2i(dim_grid, dim_grid) / 2
-		return center_grid - StateVars.font_center
+		return center_grid - StateVars.font.center
 var origin: Vector2i:
 	get:
 		return corner_bl - Vector2i(0, StateVars.font.desc)

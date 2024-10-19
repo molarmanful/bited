@@ -3,64 +3,7 @@ extends Node
 signal table
 signal edit(g: Glyph)
 
-# TODO: change to class
-var font := {
-	id = "new_font",
-	foundry = "bited",
-	family = "new font",
-	weight = "Medium",
-	slant = "R",
-	setwidth = "Normal",
-	add_style = "",
-	px_size = 16,
-	pt_size = 150,
-	resolution = Vector2i(75, 75),
-	spacing = "P",
-	avg_w = 80,
-	ch_reg = "ISO10646",
-	ch_enc = "1",
-	bb = Vector2i(8, 16),
-	bb_off = Vector2i(0, -2),
-	metricsset = 0,
-	dwidth = Vector2i(8, 0),
-	dwidth1 = Vector2i(16, 0),
-	vvector = Vector2i(4, 14),
-	cap_h = 9,
-	x_h = 7,
-	asc = 14,
-	desc = 2,
-	props = {}
-}
-
-var font_size_calc: Vector2i:
-	get:
-		return Vector2i(font.dwidth.x, font.px_size)
-
-var font_center: Vector2i:
-	get:
-		return StateVars.font_size_calc * Vector2i(1, -1) / 2
-
-var font_xlfd: String:
-	get:
-		return (
-			"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
-			% [
-				font.foundry,
-				font.family,
-				font.weight,
-				font.slant,
-				font.setwidth,
-				font.add_style,
-				font.px_size,
-				font.pt_size,
-				font.resolution.x,
-				font.resolution.y,
-				font.spacing,
-				font.avg_w,
-				font.ch_reg,
-				font.ch_enc,
-			]
-		)
+var font := BFont.new()
 
 var db_uc := SQLite.new()
 var db_saves := SQLite.new()
@@ -114,3 +57,61 @@ func init_font(id: String) -> bool:
 			}
 		)
 	)
+
+
+class BFont:
+	var id := "new_font"
+	var foundry := "bited"
+	var family := "new font"
+	var weight := "Medium"
+	var slant := "R"
+	var setwidth := "Normal"
+	var add_style := ""
+	var px_size := 16
+	var pt_size := 150
+	var resolution := Vector2i(75, 75)
+	var spacing := "P"
+	var avg_w := 80
+	var ch_reg := "ISO10646"
+	var ch_enc := "1"
+	var bb := Vector2i(8, 16)
+	var bb_off := Vector2i(0, -2)
+	var metricsset := 0
+	var dwidth := Vector2i(8, 0)
+	var dwidth1 := Vector2i(16, 0)
+	var vvector := Vector2i(4, 14)
+	var cap_h := 9
+	var x_h := 7
+	var asc := 14
+	var desc := 2
+	var props := {}
+
+	var size_calc: Vector2i:
+		get:
+			return Vector2i(dwidth.x, px_size)
+
+	var center: Vector2i:
+		get:
+			return size_calc * Vector2i(1, -1) / 2
+
+	var xlfd: String:
+		get:
+			return (
+				"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
+				% [
+					foundry,
+					family,
+					weight,
+					slant,
+					setwidth,
+					add_style,
+					px_size,
+					pt_size,
+					resolution.x,
+					resolution.y,
+					spacing,
+					avg_w,
+					ch_reg,
+					ch_enc,
+				]
+			)

@@ -70,3 +70,40 @@ func gen_glyphs(i0: int, i1: int) -> void:
 		gs.push_back(glyph)
 
 	virt.update_imgs(gs)
+
+
+func update_imgs(gs: Array[Glyph]) -> void:
+	var names: Array[String] = []
+	var qs: Array[String] = []
+	for g in gs:
+		names.push_back(g.data_name)
+		qs.push_back("?")
+
+	var suc := (
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				select name, code, off_x, off_y, img from font_%s
+				where name in (%s)
+				"""
+				% [StateVars.font.id, ",".join(qs)]
+			),
+			names
+		)
+	)
+	if not suc:
+		return
+
+	for r in StateVars.db_saves.query_result:
+		var s := StyleVars.thumb_size_pre
+		var sz := Vector2(s, s)
+		var img_wrap := Image.create_empty(s, s, false, Image.FORMAT_LA8)
+		if r.img:
+			var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
+			img.load_png_from_buffer(r.img)
+			var off := Vector2i(r.off_x, -r.off_y) + virt.origin - Vector2i(0, img.get_size().y)
+			img_wrap.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+		img_wrap.resize(StyleVars.thumb_size, StyleVars.thumb_size, Image.INTERPOLATE_NEAREST)
+		virt.thumbs[r.name] = ImageTexture.create_from_image(img_wrap)
