@@ -6,6 +6,7 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 @export var virt: Virt
 @export var sel: Sel
 @export var node_code: Label
+@export var node_tex_cont: Container
 @export var node_tex: TextureRect
 @export var btn: Button
 
@@ -56,7 +57,7 @@ func _ready() -> void:
 func set_thumb() -> void:
 	var s := StyleVars.thumb_size
 	var sz := Vector2(s, s)
-	node_tex.size = sz
+	node_tex_cont.custom_minimum_size = sz
 
 	if data_name in virt.thumbs:
 		node_tex.texture = virt.thumbs[data_name]

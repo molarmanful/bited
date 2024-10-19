@@ -5,11 +5,12 @@
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="2_se6b1"]
 [ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_wp5fo"]
 
-[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex", "btn")]
+[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex_cont", "node_tex", "btn")]
 script = ExtResource("1_mjxq3")
 virt = ExtResource("2_se6b1")
 sel = ExtResource("3_wp5fo")
 node_code = NodePath("VBoxContainer/MarginContainer/Label")
+node_tex_cont = NodePath("VBoxContainer/AspectRatioContainer")
 node_tex = NodePath("VBoxContainer/AspectRatioContainer/TextureRect")
 btn = NodePath("Button")
 
@@ -41,7 +42,9 @@ custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
+texture_filter = 1
 layout_mode = 2
+stretch_mode = 5
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)

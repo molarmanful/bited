@@ -55,7 +55,8 @@ func save(over := true) -> bool:
 		. query_with_bindings(
 			(
 				"""
-				insert or %s into font_%s
+				insert or %s
+				into font_%s
 				(name, code, dwidth_x, dwidth_y, dwidth1_x, dwidth1_y, vvector_x, vvector_y, off_x, off_y, img)
 				values
 				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -89,15 +90,25 @@ func restore() -> void:
 		return
 
 	var gen: Dictionary = q[0]
+	from_gen(gen)
+	update_cells(gen)
+
+
+func from_gen(gen: Dictionary) -> void:
 	data_name = gen.name
 	data_code = gen.code
 	dwidth = Vector2i(gen.dwidth_x, gen.dwidth_y)
 	dwidth1 = Vector2i(gen.dwidth1_x, gen.dwidth1_y)
 	vvector = Vector2i(gen.vvector_x, gen.vvector_y)
 
-	if gen.img:
-		var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
-		img.load_png_from_buffer(gen.img)
-		var sz := img.get_size()
-		var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, sz.y)
-		cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+
+func update_cells(gen: Dictionary) -> void:
+	if not gen.img:
+		cells.fill(Color.TRANSPARENT)
+		return
+
+	var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
+	img.load_png_from_buffer(gen.img)
+	var sz := img.get_size()
+	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, sz.y)
+	cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)

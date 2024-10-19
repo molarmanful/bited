@@ -4,6 +4,7 @@ extends Resource
 signal refresh
 
 var thumbs := {}
+var texs := {}
 
 var length := 65536:
 	set(n):
