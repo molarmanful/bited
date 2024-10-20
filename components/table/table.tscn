@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnhlhp8evbrv3"]
+[gd_scene load_steps=4 format=3 uid="uid://bnhlhp8evbrv3"]
 
 [ext_resource type="Script" path="res://components/table/table.gd" id="1_21spc"]
+[ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_qums1"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
 
 [node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad")]
@@ -15,6 +16,7 @@ node_inner = NodePath("Inner")
 node_glyphs = NodePath("Inner/VBoxContainer/HFlowContainer")
 node_pad = NodePath("Inner/VBoxContainer/Pad")
 virt = ExtResource("3_vj2v8")
+sel = ExtResource("3_qums1")
 metadata/_edit_lock_ = true
 
 [node name="Inner" type="PanelContainer" parent="."]

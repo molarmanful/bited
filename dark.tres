@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -158,6 +158,16 @@ bg_color = Color(0, 0, 0, 1)
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 anti_aliasing = false
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_f8mdf"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+color = Color(0.14902, 0.14902, 0.14902, 1)
+grow_begin = 0.0
+grow_end = 0.0
+vertical = true
+
 [resource]
 default_font = ExtResource("1_stftx")
 default_font_size = 16
@@ -204,3 +214,4 @@ Tool/colors/font_hover_color = Color(1, 1, 1, 1)
 Tool/colors/icon_hover_color = Color(1, 1, 1, 1)
 Tool/colors/icon_normal_color = Color(0.639216, 0.639216, 0.639216, 1)
 Tool/fonts/font = ExtResource("1_vc1qu")
+VSeparator/styles/separator = SubResource("StyleBoxLine_f8mdf")

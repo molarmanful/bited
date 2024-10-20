@@ -84,7 +84,8 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		c_grid.act_cells(c_tool.prev)
+		var pv = Util.img_copy(c_tool.prev)
+		c_grid.act_cells(pv)
 		c_grid.bitmap.save()
 
 	func get_c(v: Vector2i) -> Color:

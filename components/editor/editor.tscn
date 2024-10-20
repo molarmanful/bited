@@ -41,6 +41,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
+[node name="info" type="Label" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="3" type="Control" parent="CenterContainer/GridContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
@@ -85,7 +90,7 @@ text = "█"
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 9
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
@@ -157,7 +162,7 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines", "btn_undo", "btn_redo")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines", "node_info", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
@@ -165,10 +170,15 @@ script = ExtResource("1_ccvcr")
 node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
+node_info = NodePath("../2/info")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
 btn_undo = NodePath("../8/undo")
 btn_redo = NodePath("../8/redo")
+btn_flip_x = NodePath("../8/flip_x")
+btn_flip_y = NodePath("../8/flip_y")
+btn_rot_ccw = NodePath("../8/rot_ccw")
+btn_rot_cw = NodePath("../8/rot_cw")
 
 [node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/Grid"]
 texture_filter = 1
@@ -217,3 +227,35 @@ tooltip_text = "redo"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "⮫"
+
+[node name="VSeparator" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="flip_x" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "flip horiz"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🡘"
+
+[node name="flip_y" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "flip vert"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🡙"
+
+[node name="rot_ccw" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "rotate ccw"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⟲"
+
+[node name="rot_cw" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "rotate cw"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⟳"

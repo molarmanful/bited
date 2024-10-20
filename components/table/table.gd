@@ -5,6 +5,7 @@ extends PanelContainer
 @export var node_glyphs: Container
 @export var node_pad: Container
 @export var virt: Virt
+@export var sel: Sel
 
 # TODO: consider lru-ing
 var vglyphs := {}
@@ -14,14 +15,21 @@ var to_update = false
 
 
 func _ready() -> void:
+	sel.table = self
+
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
-	StateVars.refresh.connect(func(gen: Dictionary): vglyphs[gen.name].refresh_tex(gen))
+	StateVars.refresh.connect(refresh_tex)
 
 
 func _process(_delta: float) -> void:
 	onscroll()
 	update()
+
+
+func _input(e: InputEvent) -> void:
+	if e.is_action_pressed("ui_text_delete") or e.is_action_pressed("ui_text_backspace"):
+		sel.delete()
 
 
 func onresize() -> void:
@@ -49,10 +57,11 @@ func update() -> void:
 
 	node_inner.custom_minimum_size = virt.size_table
 	node_pad.custom_minimum_size.y = virt.pad_top
-	gen_glyphs(virt.i0, virt.i1)
+	gen_glyphs_range(virt.i0, virt.i1)
 
 
-func gen_glyphs(i0: int, i1: int) -> void:
+# TODO: account for def-glyphs filter
+func gen_glyphs_range(i0: int, i1: int) -> void:
 	var len_glyphs := node_glyphs.get_child_count()
 
 	while len_glyphs < virt.len_ideal:
@@ -102,4 +111,10 @@ func update_imgs(gs: Array[Glyph]) -> void:
 		return
 
 	for gen in StateVars.db_saves.query_result:
-		vglyphs[gen.name].refresh_tex(gen)
+		refresh_tex(gen)
+
+
+func refresh_tex(gen: Dictionary) -> void:
+	if gen.name not in vglyphs:
+		return
+	vglyphs[gen.name].refresh_tex(gen)

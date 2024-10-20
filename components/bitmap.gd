@@ -87,7 +87,7 @@ func restore() -> void:
 			"img"
 		]
 	)
-	if not q.size():
+	if q.is_empty():
 		return
 
 	var gen: Dictionary = q[0]

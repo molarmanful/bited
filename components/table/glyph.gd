@@ -55,14 +55,6 @@ func _ready() -> void:
 	btn.pressed.connect(onpress)
 
 
-func _input(e: InputEvent) -> void:
-	if not selected:
-		return
-
-	if e.is_action_pressed("ui_text_delete") or e.is_action_pressed("ui_text_backspace"):
-		delete()
-
-
 func refresh() -> void:
 	node_code.text = label
 	selected = data_name in sel.sel
@@ -115,16 +107,6 @@ func onpress():
 	sel.clear()
 	sel.anchor_sel = ind
 	selected = true
-
-
-# TODO: move to Sel
-# TODO: clear grid if active
-func delete() -> void:
-	StateVars.db_saves.delete_rows(
-		"font_" + StateVars.font.id, "name = " + JSON.stringify(data_name)
-	)
-	table.thumbs.erase(data_name)
-	set_thumb()
 
 
 static func is_noprint(n: int) -> bool:

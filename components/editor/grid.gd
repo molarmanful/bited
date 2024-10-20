@@ -4,6 +4,7 @@ extends PanelContainer
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: Node2D
+@export var node_info: Label
 
 @export_group("Button Groups")
 @export var tools_group: ButtonGroup
@@ -12,6 +13,10 @@ extends PanelContainer
 @export_group("Buttons")
 @export var btn_undo: Button
 @export var btn_redo: Button
+@export var btn_flip_x: Button
+@export var btn_flip_y: Button
+@export var btn_rot_ccw: Button
+@export var btn_rot_cw: Button
 
 var dim_grid := 32:
 	set(n):
@@ -54,11 +59,28 @@ func _ready() -> void:
 
 	btn_undo.pressed.connect(undoman.undo)
 	btn_redo.pressed.connect(undoman.redo)
+	btn_flip_x.pressed.connect(flip_x)
+	btn_flip_y.pressed.connect(flip_y)
+	btn_rot_ccw.pressed.connect(rot_ccw)
+	btn_rot_cw.pressed.connect(rot_cw)
 
 
 func _process(_delta: float) -> void:
 	toolman.tools[tool_sel].handle()
 	update_cells()
+
+
+func oninput(e: InputEvent) -> void:
+	if not (e is InputEventMouseButton or e is InputEventScreenTouch):
+		return
+	if (
+		e is InputEventMouseButton
+		and e.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP]
+	):
+		return
+
+	pressed = e.pressed
+	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
 
 
 func start_edit(g: Glyph) -> void:
@@ -75,6 +97,7 @@ func refresh() -> void:
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()
+	set_info()
 
 
 func update_grid() -> void:
@@ -82,6 +105,18 @@ func update_grid() -> void:
 	node_cells.self_modulate = get_theme_color("fg")
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()
+
+
+func set_info() -> void:
+	var q := StateVars.db_uc.select_rows("data", "id = %d" % bitmap.data_code, ["name", "category"])
+	if bitmap.data_code < 0:
+		node_info.text = "%s  (custom)" % bitmap.data_name
+	elif q.is_empty():
+		node_info.text = "U+%s  #%d  (undefined)" % [bitmap.data_name, bitmap.data_code]
+	else:
+		node_info.text = (
+			"U+%s  #%d  %s  %s" % [bitmap.data_name, bitmap.data_code, q[0].category, q[0].name]
+		)
 
 
 func update_cells() -> void:
@@ -94,12 +129,11 @@ func update_cells() -> void:
 
 func act_cells(prev: Image) -> void:
 	var cs := Util.img_copy(cells)
-	var pv := Util.img_copy(prev)
 
 	undoman.create_action(name)
 
-	undoman.add_undo_method(func(): cells.copy_from(pv) ; to_update_cells = true)
-	undoman.add_undo_reference(pv)
+	undoman.add_undo_method(func(): cells.copy_from(prev) ; to_update_cells = true)
+	undoman.add_undo_reference(prev)
 	undoman.add_undo_method(bitmap.save)
 
 	undoman.add_do_method(func(): cells.copy_from(cs) ; to_update_cells = true)
@@ -109,14 +143,24 @@ func act_cells(prev: Image) -> void:
 	undoman.commit_action(false)
 
 
-func oninput(e: InputEvent) -> void:
-	if not (e is InputEventMouseButton or e is InputEventScreenTouch):
-		return
-	if (
-		e is InputEventMouseButton
-		and e.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP]
-	):
-		return
+func op(f: Callable) -> void:
+	var prev = Util.img_copy(cells)
+	f.call()
+	to_update_cells = true
+	act_cells(prev)
 
-	pressed = e.pressed
-	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
+
+func flip_x() -> void:
+	op(bitmap.cells.flip_x)
+
+
+func flip_y() -> void:
+	op(bitmap.cells.flip_y)
+
+
+func rot_ccw() -> void:
+	op(bitmap.cells.rotate_90.bind(COUNTERCLOCKWISE))
+
+
+func rot_cw() -> void:
+	op(bitmap.cells.rotate_90.bind(CLOCKWISE))
