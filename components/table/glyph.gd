@@ -53,7 +53,6 @@ func _ready() -> void:
 
 	renamed.connect(refresh)
 	sel.reselect.connect(refresh)
-	Thumb.updated.connect(set_thumb)
 	btn.pressed.connect(onpress)
 	StateVars.refresh.connect(refresh_tex)
 
@@ -73,7 +72,7 @@ func refresh() -> void:
 
 
 func refresh_tex(gen: Dictionary) -> void:
-	if data_name != gen.name:
+	if data_name != gen.name or data_name in table.thumbs:
 		return
 
 	bitmap.update_cells(gen)
@@ -126,6 +125,7 @@ func delete() -> void:
 		"font_" + StateVars.font.id, "name = " + JSON.stringify(data_name)
 	)
 	table.thumbs.erase(data_name)
+	# TODO: clear grid if active
 	virt.refresh.emit()
 
 

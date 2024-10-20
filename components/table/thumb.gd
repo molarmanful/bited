@@ -1,7 +1,5 @@
 extends Node
 
-signal updated
-
 @export var tex: TextureRect
 @export var view: SubViewport
 @export var node_line0: Line2D
@@ -19,4 +17,3 @@ func update():
 	node_line0.points = [Vector2(0, 0), sz]
 	node_line1.points = [Vector2(s, 0), Vector2(0, s)]
 	view.size = sz
-	updated.emit()

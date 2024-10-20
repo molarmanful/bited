@@ -27,7 +27,7 @@ func _init(
 	data_name = dn
 
 
-func save(over := true, refresh = true) -> bool:
+func save(over := true) -> bool:
 	var bounds := cells.get_used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
 	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
@@ -48,8 +48,7 @@ func save(over := true, refresh = true) -> bool:
 		off_y = off.y,
 		img = img,
 	}
-	if refresh:
-		StateVars.refresh.emit(gen)
+	StateVars.refresh.emit(gen)
 
 	return (
 		StateVars
