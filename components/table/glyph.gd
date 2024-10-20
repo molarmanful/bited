@@ -26,11 +26,6 @@ var label: String:
 		return char(data_code)
 
 var bitmap := Bitmap.new(StyleVars.thumb_size_pre)
-var thumb := ImageTexture.create_from_image(bitmap.cells)
-var def := false:
-	set(x):
-		def = x
-		set_thumb()
 
 var selected := false:
 	set(x):
@@ -56,7 +51,6 @@ static func create(t: Table) -> Glyph:
 func _ready() -> void:
 	set_thumb()
 
-	renamed.connect(refresh)
 	sel.reselect.connect(refresh)
 	btn.pressed.connect(onpress)
 
@@ -72,12 +66,16 @@ func _input(e: InputEvent) -> void:
 func refresh() -> void:
 	node_code.text = label
 	selected = data_name in sel.sel
+	set_thumb()
 
 
 func refresh_tex(gen: Dictionary) -> void:
 	bitmap.update_cells(gen)
-	thumb.update(bitmap.cells)
-	def = def or gen.img
+	if data_name in table.thumbs:
+		table.thumbs[data_name].update(bitmap.cells)
+	else:
+		table.thumbs[data_name] = ImageTexture.create_from_image(bitmap.cells)
+	set_thumb()
 
 
 func set_thumb() -> void:
@@ -85,8 +83,8 @@ func set_thumb() -> void:
 	var sz := Vector2(s, s)
 	node_tex_cont.custom_minimum_size = sz
 
-	if def:
-		node_tex.texture = thumb
+	if data_name in table.thumbs:
+		node_tex.texture = table.thumbs[data_name]
 		node_tex.self_modulate.a = 1
 		return
 	node_tex.texture = Thumb.tex.texture
@@ -111,7 +109,6 @@ func onpress():
 		return
 
 	if selected and sel.sel.size() <= 1:
-		def = true
 		StateVars.edit.emit(self)
 		return
 
@@ -126,7 +123,8 @@ func delete() -> void:
 	StateVars.db_saves.delete_rows(
 		"font_" + StateVars.font.id, "name = " + JSON.stringify(data_name)
 	)
-	def = false
+	table.thumbs.erase(data_name)
+	set_thumb()
 
 
 static func is_noprint(n: int) -> bool:

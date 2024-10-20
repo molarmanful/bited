@@ -52,8 +52,8 @@ func _ready() -> void:
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
-	btn_undo.pressed.connect(undo)
-	btn_redo.pressed.connect(redo)
+	btn_undo.pressed.connect(undoman.undo)
+	btn_redo.pressed.connect(undoman.redo)
 
 
 func _process(_delta: float) -> void:
@@ -62,11 +62,12 @@ func _process(_delta: float) -> void:
 
 
 func start_edit(g: Glyph) -> void:
+	undoman.clear_history()
 	bitmap.data_code = g.data_code
 	bitmap.data_name = g.data_name
 	bitmap.clear_cells()
-	bitmap.save(false)
 	refresh()
+	bitmap.save(false)
 
 
 func refresh() -> void:
@@ -106,14 +107,6 @@ func act_cells(prev: Image) -> void:
 	undoman.add_do_method(bitmap.save)
 
 	undoman.commit_action(false)
-
-
-func undo() -> void:
-	undoman.undo()
-
-
-func redo() -> void:
-	undoman.redo()
 
 
 func oninput(e: InputEvent) -> void:

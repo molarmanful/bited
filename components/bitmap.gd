@@ -60,8 +60,8 @@ func save(over := true) -> bool:
 				into font_%s
 				(name, code, dwidth_x, dwidth_y, dwidth1_x, dwidth1_y, vvector_x, vvector_y, off_x, off_y, img)
 				values
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-				"""
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
 			),
 			gen.values()

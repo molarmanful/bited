@@ -8,6 +8,7 @@ extends PanelContainer
 
 # TODO: consider lru-ing
 var vglyphs := {}
+var thumbs := {}
 var debounced = false
 var to_update = false
 
@@ -78,11 +79,9 @@ func gen_glyphs(i0: int, i1: int) -> void:
 
 
 func update_imgs(gs: Array[Glyph]) -> void:
-	var map := {}
 	var qs: Array[String] = []
-	for g in gs:
-		map[g.data_name] = g
-		qs.push_back("?")
+	qs.resize(gs.size())
+	qs.fill("?")
 
 	var suc := (
 		StateVars
@@ -93,10 +92,10 @@ func update_imgs(gs: Array[Glyph]) -> void:
 				select name, code, off_x, off_y, img
 				from font_%s
 				where name in (%s)
-				"""
+				;"""
 				% [StateVars.font.id, ",".join(qs)]
 			),
-			map.keys()
+			gs.map(func(g: Glyph): return g.data_name)
 		)
 	)
 	if not suc:
