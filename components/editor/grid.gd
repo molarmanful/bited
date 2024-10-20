@@ -47,6 +47,7 @@ func _ready() -> void:
 
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
+	StateVars.edit.connect(start_edit)
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
@@ -55,16 +56,24 @@ func _ready() -> void:
 	btn_redo.pressed.connect(redo)
 
 
+func _process(_delta: float) -> void:
+	toolman.tools[tool_sel].handle()
+	update_cells()
+
+
+func start_edit(g: Glyph) -> void:
+	bitmap.data_code = g.data_code
+	bitmap.data_name = g.data_name
+	bitmap.clear_cells()
+	bitmap.save(false)
+	refresh()
+
+
 func refresh() -> void:
 	bitmap.restore()
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()
-
-
-func _process(_delta: float) -> void:
-	toolman.tools[tool_sel].handle()
-	update_cells()
 
 
 func update_grid() -> void:

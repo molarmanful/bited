@@ -7,7 +7,7 @@ extends PanelContainer
 @export var virt: Virt
 
 # TODO: consider lru-ing
-var thumbs := {}
+var vglyphs := {}
 var debounced = false
 var to_update = false
 
@@ -15,6 +15,7 @@ var to_update = false
 func _ready() -> void:
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
+	StateVars.refresh.connect(func(gen: Dictionary): vglyphs[gen.name].refresh_tex(gen))
 
 
 func _process(_delta: float) -> void:
@@ -63,14 +64,16 @@ func gen_glyphs(i0: int, i1: int) -> void:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
-	var gs: Array[Glyph] = []
+	vglyphs.clear()
 	for c in range(i0, i1):
-		var glyph := node_glyphs.get_child(c - i0)
-		glyph.ind = c
-		glyph.data_code = c
-		glyph.show()
-		gs.push_back(glyph)
+		var g := node_glyphs.get_child(c - i0)
+		g.ind = c
+		g.data_code = c
+		g.show()
+		vglyphs[g.data_name] = g
 
+	var gs: Array[Glyph]
+	gs.assign(vglyphs.values())
 	update_imgs(gs)
 
 
@@ -99,14 +102,5 @@ func update_imgs(gs: Array[Glyph]) -> void:
 	if not suc:
 		return
 
-	for r in StateVars.db_saves.query_result:
-		var bm: Bitmap = map[r.name].bitmap
-		bm.update_cells(r)
-		set_thumb_tex(r.name, bm.cells)
-
-
-func set_thumb_tex(n: String, cs: Image) -> void:
-	if n not in thumbs:
-		thumbs[n] = ImageTexture.create_from_image(cs)
-	else:
-		thumbs[n].update(cs)
+	for gen in StateVars.db_saves.query_result:
+		vglyphs[gen.name].refresh_tex(gen)
