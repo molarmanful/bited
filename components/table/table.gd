@@ -16,6 +16,8 @@ var to_update = false
 
 func _ready() -> void:
 	sel.table = self
+	# FIXME: remove
+	sel.test()
 
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)

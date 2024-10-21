@@ -27,10 +27,10 @@ func select(g: Glyph) -> void:
 
 
 func select_range(g: Glyph) -> void:
-	var a := anchor
-	clear()
-	anchor = max(0, a)
 	end = g.ind
+	var rs := [anchor, end + 1]
+	rs.sort()
+	ranges.assign(rs)
 	refresh()
 
 
@@ -38,37 +38,110 @@ func select_inv(g: Glyph) -> void:
 	anchor = g.ind
 	end = anchor
 	mode = !is_selected(g.ind)
-	g.selected = mode
+	print("next")
 	commit()
+	g.selected = mode
 
 
 func select_range_inv(g: Glyph) -> void:
 	if anchor < 0:
 		return
 
+	commit()
 	end = g.ind
 	commit()
 	refresh()
 
 
 func commit() -> void:
-	var a := min(anchor, end) as int
-	var b := (max(anchor, end) as int) + 1
+	if anchor < 0 or end < 0:
+		return
+
+	var x := min(anchor, end) as int
+	var y := (max(anchor, end) as int) + 1
 
 	var res: Array[int] = []
+
+	var stage := 0
 	for i in range(0, ranges.size(), 2):
-		var ra := ranges[i]
-		var rb := ranges[i + 1]
-		if mode:
-			if rb < a or ra > b:
-				res.append_array([ra, rb])
-			else:
-				a = min(ra, a)
-				b = max(rb, b)
+		var a := ranges[i]
+		var b := ranges[i + 1]
+
+		if b <= x or a >= y:
+			res.push_back(a)
+			res.push_back(b)
+		elif a < x and b > x and b <= y:
+			res.push_back(a)
+			res.push_back(x)
+		elif a >= x and a < y and b > y:
+			res.push_back(y)
+			res.push_back(b)
+		elif a < x and b > y:
+			res.push_back(a)
+			res.push_back(x)
+			res.push_back(y)
+			res.push_back(b)
 
 	ranges.assign(res)
-	print(ranges)
+	printt(ranges)
 	end = -1
+
+
+# FIXME: remove
+func test() -> void:
+	ranges = [1, 9]
+	anchor = 2
+	end = 5
+	mode = false
+	commit()
+	clear()
+	print([1, 2, 6, 9])
+	print("---")
+
+	ranges = [1, 9]
+	anchor = 1
+	end = 3
+	mode = false
+	commit()
+	clear()
+	print([4, 9])
+	print("---")
+
+	ranges = [1, 9]
+	anchor = 3
+	end = 9
+	mode = false
+	commit()
+	clear()
+	print([1, 3])
+	print("---")
+
+	ranges = [1, 9]
+	anchor = 1
+	end = 9
+	mode = false
+	commit()
+	clear()
+	print([])
+	print("---")
+
+	ranges = [1, 9]
+	anchor = 0
+	end = 5
+	mode = false
+	commit()
+	clear()
+	print([6, 9])
+	print("---")
+
+	ranges = [1, 9]
+	anchor = 3
+	end = 10
+	mode = false
+	commit()
+	clear()
+	print([1, 3])
+	print("---")
 
 
 func clear() -> void:
