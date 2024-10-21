@@ -149,4 +149,4 @@ func commit() -> void:
 
 
 func is_alone() -> bool:
-	return anchor >= 0 and end < 0 and ranges.is_empty()
+	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
