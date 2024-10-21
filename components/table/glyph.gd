@@ -103,5 +103,5 @@ func onpress():
 
 
 static func is_noprint(n: int) -> bool:
-	const R: Array[int] = [0xD800 - 1, 0xDFFF]
-	return R.bsearch(n) % 2
+	const R: Array[int] = [0xD800, 0xDFFF + 1]
+	return R.bsearch(n, false) % 2
