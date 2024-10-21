@@ -23,14 +23,13 @@ func is_selected(i: int) -> bool:
 func select(g: Glyph) -> void:
 	clear()
 	anchor = g.ind
+	ranges.assign([anchor, anchor + 1])
 	g.selected = true
 
 
 func select_range(g: Glyph) -> void:
 	end = g.ind
-	var rs := [anchor, end + 1]
-	rs.sort()
-	ranges.assign(rs)
+	ranges.assign(norm())
 	refresh()
 
 
@@ -46,7 +45,6 @@ func select_range_inv(g: Glyph) -> void:
 	if anchor < 0:
 		return
 
-	commit()
 	end = g.ind
 	commit()
 	refresh()
@@ -60,36 +58,49 @@ func clear() -> void:
 	refresh()
 
 
-# TODO: clear grid if active
+# TODO: clear editor if active
+# FIXME
 func delete() -> void:
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1]
 
-		(
+		var q := (
 			StateVars
+			. db_saves
 			. query_with_bindings(
 				(
 					"""
-					delete from font_%s
-					limit ? offset ?
-					;"""
-					% StateVars.font.id
+					delete from font_{0}
+					where name in (
+						select name from font_{0}
+						order by code, name
+						limit ? offset ?
+					);"""
+					. format([StateVars.font.id])
 				),
-				[a - b, a]
+				[b - a, a]
 			)
 		)
-		# table.thumbs.erase(n)
-		# if n in table.vglyphs:
-		# 	table.vglyphs[n].set_thumb()
+		if not q:
+			return
+
+	var gs: Array[Glyph]
+	gs.assign(table.vglyphs.values())
+	table.update_imgs(gs)
+
+
+func norm() -> Array[int]:
+	return [min(anchor, end) as int, (max(anchor, end) as int) + 1]
 
 
 func commit() -> void:
 	if anchor < 0 or end < 0:
 		return
 
-	var x := min(anchor, end) as int
-	var y := (max(anchor, end) as int) + 1
+	var xy := norm()
+	var x := xy[0]
+	var y := xy[1]
 
 	var res: Array[int] = []
 	var merged = false
