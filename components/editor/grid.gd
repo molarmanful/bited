@@ -109,14 +109,16 @@ func update_grid() -> void:
 
 func set_info() -> void:
 	var q := StateVars.db_uc.select_rows("data", "id = %d" % bitmap.data_code, ["name", "category"])
+
 	if bitmap.data_code < 0:
 		node_info.text = "%s  (custom)" % bitmap.data_name
-	elif q.is_empty():
+		return
+	if q.is_empty():
 		node_info.text = "U+%s  #%d  (undefined)" % [bitmap.data_name, bitmap.data_code]
-	else:
-		node_info.text = (
-			"U+%s  #%d  %s  %s" % [bitmap.data_name, bitmap.data_code, q[0].category, q[0].name]
-		)
+		return
+	node_info.text = (
+		"U+%s  #%d  %s  %s" % [bitmap.data_name, bitmap.data_code, q[0].category, q[0].name]
+	)
 
 
 func update_cells() -> void:

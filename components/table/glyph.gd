@@ -33,12 +33,10 @@ var selected := false:
 			return
 		selected = x
 		if selected:
-			sel.sel[data_name] = true
 			var sb := get_theme_stylebox("panel").duplicate()
 			sb.bg_color = get_theme_color("sel")
 			add_theme_stylebox_override("panel", sb)
 		else:
-			sel.sel.erase(data_name)
 			remove_theme_stylebox_override("panel")
 
 
@@ -51,13 +49,11 @@ static func create(t: Table) -> Glyph:
 func _ready() -> void:
 	set_thumb()
 
-	sel.reselect.connect(refresh)
 	btn.pressed.connect(onpress)
 
 
 func refresh() -> void:
 	node_code.text = label
-	selected = data_name in sel.sel
 	set_thumb()
 
 
@@ -87,26 +83,23 @@ func onpress():
 	var shift := Input.is_physical_key_pressed(KEY_SHIFT)
 	var ctrl := Input.is_physical_key_pressed(KEY_CTRL)
 
-	if shift and ctrl and sel.anchor_sel >= 0:
-		# TODO
+	if shift and ctrl:
+		sel.select_range_inv(self)
 		return
 
-	if shift and sel.anchor_sel >= 0:
-		# TODO
+	if shift:
+		sel.select_range(self)
 		return
 
 	if ctrl:
-		sel.anchor_inv = ind
-		selected = !selected
+		sel.select_inv(self)
 		return
 
-	if selected and sel.sel.size() <= 1:
+	if selected and sel.is_alone():
 		StateVars.edit.emit(self)
 		return
 
-	sel.clear()
-	sel.anchor_sel = ind
-	selected = true
+	sel.select(self)
 
 
 static func is_noprint(n: int) -> bool:

@@ -14,7 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
 table = NodePath("Body/Main/ScrollContainer2/MarginContainer/Table")
-editor = NodePath("Body/Main/ScrollContainer/Editor")
+editor = NodePath("Body/Main/PanelContainer/ScrollContainer/Editor")
 metadata/_edit_lock_ = true
 
 [node name="ThemeSwitcher" type="Node" parent="." node_paths=PackedStringArray("node")]
@@ -30,11 +30,16 @@ metadata/_edit_lock_ = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MainHSplit"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Editor" parent="Body/Main/ScrollContainer" instance=ExtResource("2_q0u5u")]
+[node name="Editor" parent="Body/Main/PanelContainer/ScrollContainer" instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
