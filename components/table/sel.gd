@@ -38,7 +38,6 @@ func select_inv(g: Glyph) -> void:
 	anchor = g.ind
 	end = anchor
 	mode = !is_selected(g.ind)
-	print("next")
 	commit()
 	g.selected = mode
 
@@ -53,97 +52,6 @@ func select_range_inv(g: Glyph) -> void:
 	refresh()
 
 
-func commit() -> void:
-	if anchor < 0 or end < 0:
-		return
-
-	var x := min(anchor, end) as int
-	var y := (max(anchor, end) as int) + 1
-
-	var res: Array[int] = []
-
-	var stage := 0
-	for i in range(0, ranges.size(), 2):
-		var a := ranges[i]
-		var b := ranges[i + 1]
-
-		if b <= x or a >= y:
-			res.push_back(a)
-			res.push_back(b)
-		elif a < x and b > x and b <= y:
-			res.push_back(a)
-			res.push_back(x)
-		elif a >= x and a < y and b > y:
-			res.push_back(y)
-			res.push_back(b)
-		elif a < x and b > y:
-			res.push_back(a)
-			res.push_back(x)
-			res.push_back(y)
-			res.push_back(b)
-
-	ranges.assign(res)
-	printt(ranges)
-	end = -1
-
-
-# FIXME: remove
-func test() -> void:
-	ranges = [1, 9]
-	anchor = 2
-	end = 5
-	mode = false
-	commit()
-	clear()
-	print([1, 2, 6, 9])
-	print("---")
-
-	ranges = [1, 9]
-	anchor = 1
-	end = 3
-	mode = false
-	commit()
-	clear()
-	print([4, 9])
-	print("---")
-
-	ranges = [1, 9]
-	anchor = 3
-	end = 9
-	mode = false
-	commit()
-	clear()
-	print([1, 3])
-	print("---")
-
-	ranges = [1, 9]
-	anchor = 1
-	end = 9
-	mode = false
-	commit()
-	clear()
-	print([])
-	print("---")
-
-	ranges = [1, 9]
-	anchor = 0
-	end = 5
-	mode = false
-	commit()
-	clear()
-	print([6, 9])
-	print("---")
-
-	ranges = [1, 9]
-	anchor = 3
-	end = 10
-	mode = false
-	commit()
-	clear()
-	print([1, 3])
-	print("---")
-
-
 func clear() -> void:
 	anchor = -1
 	end = -1
@@ -154,12 +62,79 @@ func clear() -> void:
 
 # TODO: clear grid if active
 func delete() -> void:
-	pass
-	# for n in yay:
-	# 	StateVars.db_saves.delete_rows("font_" + StateVars.font.id, "name = " + JSON.stringify(n))
-	# 	table.thumbs.erase(n)
-	# 	if n in table.vglyphs:
-	# 		table.vglyphs[n].set_thumb()
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1]
+
+		(
+			StateVars
+			. query_with_bindings(
+				(
+					"""
+					delete from font_%s
+					limit ? offset ?
+					;"""
+					% StateVars.font.id
+				),
+				[a - b, a]
+			)
+		)
+		# table.thumbs.erase(n)
+		# if n in table.vglyphs:
+		# 	table.vglyphs[n].set_thumb()
+
+
+func commit() -> void:
+	if anchor < 0 or end < 0:
+		return
+
+	var x := min(anchor, end) as int
+	var y := (max(anchor, end) as int) + 1
+
+	var res: Array[int] = []
+	var merged = false
+
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1]
+
+		if mode:
+			if b < x:
+				res.push_back(a)
+				res.push_back(b)
+			elif a > y:
+				if not merged:
+					res.push_back(x)
+					res.push_back(y)
+					merged = true
+				res.push_back(a)
+				res.push_back(b)
+			else:
+				x = min(a, x)
+				y = max(b, y)
+
+		else:
+			if b <= x or a >= y:
+				res.push_back(a)
+				res.push_back(b)
+			elif a < x and b > x and b <= y:
+				res.push_back(a)
+				res.push_back(x)
+			elif a >= x and a < y and b > y:
+				res.push_back(y)
+				res.push_back(b)
+			elif a < x and b > y:
+				res.push_back(a)
+				res.push_back(x)
+				res.push_back(y)
+				res.push_back(b)
+
+	if mode and not merged:
+		res.push_back(x)
+		res.push_back(y)
+
+	ranges.assign(res)
+	end = -1
 
 
 func is_alone() -> bool:

@@ -16,8 +16,6 @@ var to_update = false
 
 func _ready() -> void:
 	sel.table = self
-	# FIXME: remove
-	sel.test()
 
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
@@ -87,6 +85,7 @@ func gen_glyphs_range(i0: int, i1: int) -> void:
 	var gs: Array[Glyph]
 	gs.assign(vglyphs.values())
 	update_imgs(gs)
+	sel.refresh()
 
 
 func update_imgs(gs: Array[Glyph]) -> void:
