@@ -4,14 +4,15 @@ extends Resource
 var table: Table
 
 var ranges: Array[int] = []
+var names := {}
 var anchor := -1
 var end := -1
 var mode := true
 
 
 func refresh() -> void:
-	for g1 in table.vglyphs.values():
-		g1.selected = is_selected(g1.ind)
+	for g in table.vglyphs.values():
+		g.selected = is_selected(g.ind)
 
 
 func is_selected(i: int) -> bool:
@@ -25,12 +26,14 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
+	add_name(g)
 
 
 func select_range(g: Glyph) -> void:
 	end = g.ind
 	ranges.assign(norm())
 	refresh()
+	add_name(g)
 
 
 func select_inv(g: Glyph) -> void:
@@ -39,6 +42,7 @@ func select_inv(g: Glyph) -> void:
 	mode = !is_selected(g.ind)
 	commit()
 	g.selected = mode
+	add_name(g)
 
 
 func select_range_inv(g: Glyph) -> void:
@@ -48,6 +52,7 @@ func select_range_inv(g: Glyph) -> void:
 	end = g.ind
 	commit()
 	refresh()
+	add_name(g)
 
 
 func clear() -> void:
@@ -55,15 +60,18 @@ func clear() -> void:
 	end = -1
 	mode = true
 	ranges.clear()
+	names.clear()
 	refresh()
 
 
 # TODO: clear editor if active
-# FIXME
+# TODO: account for def-glyphs filter
 func delete() -> void:
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
-		var b := ranges[i + 1]
+		var b := ranges[i + 1] - 1
+		var ca: int = names[a].code
+		var cb: int = names[b].code
 
 		var q := (
 			StateVars
@@ -71,23 +79,19 @@ func delete() -> void:
 			. query_with_bindings(
 				(
 					"""
-					delete from font_{0}
-					where name in (
-						select name from font_{0}
-						order by code, name
-						limit ? offset ?
-					);"""
-					. format([StateVars.font.id])
+					delete from font_%s
+					where code between ? and ?
+					;"""
+					% StateVars.font.id
 				),
-				[b - a, a]
+				[ca, cb]
 			)
 		)
 		if not q:
 			return
 
-	var gs: Array[Glyph]
-	gs.assign(table.vglyphs.values())
-	table.update_imgs(gs)
+	table.thumbs.clear()
+	table.to_update = true
 
 
 func norm() -> Array[int]:
@@ -150,3 +154,7 @@ func commit() -> void:
 
 func is_alone() -> bool:
 	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
+
+
+func add_name(g: Glyph) -> void:
+	names[g.ind] = {name = g.data_name, code = g.data_code}
