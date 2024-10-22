@@ -64,6 +64,9 @@ class _Tool:
 		c_tool = t
 		c_grid = c_tool.grid
 
+	func pre() -> void:
+		c_grid.node_cells.mouse_default_cursor_shape = Control.CURSOR_CROSS
+
 	func handle(state := State.X) -> void:
 		if state == State.END:
 			end()
@@ -174,6 +177,9 @@ class ToolMove:
 	func _init(t: Tool) -> void:
 		super(t)
 		name = "move"
+
+	func pre() -> void:
+		c_grid.node_cells.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func start() -> void:
 		super()

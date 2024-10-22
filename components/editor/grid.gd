@@ -40,7 +40,10 @@ var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
 
 var toolman := Tool.new(self)
-var tool_sel := "pen"
+var tool_sel := "pen":
+	set(t):
+		tool_sel = t
+		toolman.tools[tool_sel].pre()
 
 var bitmap := Bitmap.new(dim_grid, cells, 97, "0061")
 

@@ -95,7 +95,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("1_88smh")
-text = "m"
+text = "✥"
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
