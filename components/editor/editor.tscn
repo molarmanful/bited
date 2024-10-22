@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
-[ext_resource type="Script" path="res://components/editor/grid.gd" id="1_ccvcr"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
 [ext_resource type="Script" path="res://components/editor/gridlines.gd" id="2_jsp0s"]
 [ext_resource type="Texture2D" uid="uid://bkq4iy7vqadw3" path="res://assets/cmode/inv.svg" id="2_od75m"]
@@ -10,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bwgdu8vufmqcl" path="res://assets/cmode/t.svg" id="6_mqen1"]
 [ext_resource type="Texture2D" uid="uid://qef2nehtarn1" path="res://assets/cmode/f.svg" id="7_ukwbh"]
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
+[ext_resource type="Script" path="res://components/editor/grid.gd" id="9_8b0ie"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/Grid/Lines/SubViewport")
@@ -87,6 +87,15 @@ theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("1_88smh")
 text = "█"
+
+[node name="move" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "move"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Tool"
+toggle_mode = true
+button_group = ExtResource("1_88smh")
+text = "m"
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
@@ -166,7 +175,7 @@ expand_icon = true
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
-script = ExtResource("1_ccvcr")
+script = ExtResource("9_8b0ie")
 node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")

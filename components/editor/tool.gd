@@ -18,7 +18,12 @@ var tools: Dictionary
 
 func _init(g: Grid) -> void:
 	grid = g
-	tools = {pen = ToolPen.new(self), line = ToolLine.new(self), rect = ToolRect.new(self)}
+	tools = {
+		pen = ToolPen.new(self),
+		line = ToolLine.new(self),
+		rect = ToolRect.new(self),
+		move = ToolMove.new(self)
+	}
 
 
 func interp(p: Vector2i, f: Callable) -> void:
@@ -161,3 +166,22 @@ class ToolRect:
 					c_grid.cells.set_pixelv(v, get_c(v))
 		else:
 			c_grid.cells.fill_rect(rect, get_c(p))
+
+
+class ToolMove:
+	extends _Tool
+
+	func _init(t: Tool) -> void:
+		super(t)
+		name = "move"
+
+	func start() -> void:
+		super()
+		c_tool.pivot = p
+
+	func update() -> void:
+		super()
+		c_grid.cells.fill(Color.TRANSPARENT)
+		c_grid.cells.blit_rect(
+			c_tool.prev, Rect2i(Vector2i.ZERO, c_tool.prev.get_size()), p - c_tool.pivot
+		)
