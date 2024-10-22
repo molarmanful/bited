@@ -150,6 +150,7 @@ func op(f: Callable) -> void:
 	f.call()
 	to_update_cells = true
 	act_cells(prev)
+	bitmap.save()
 
 
 func flip_x() -> void:
