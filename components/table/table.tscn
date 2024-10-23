@@ -15,8 +15,8 @@ script = ExtResource("1_21spc")
 node_inner = NodePath("Inner")
 node_glyphs = NodePath("Inner/VBoxContainer/HFlowContainer")
 node_pad = NodePath("Inner/VBoxContainer/Pad")
-node_info = NodePath("MarginContainer/Info")
-node_info_text = NodePath("MarginContainer/Info/MarginContainer/InfoText")
+node_info = NodePath("")
+node_info_text = NodePath("")
 virt = ExtResource("3_vj2v8")
 sel = ExtResource("3_qums1")
 metadata/_edit_lock_ = true
@@ -41,25 +41,3 @@ theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 alignment = 1
 last_wrap_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
-
-[node name="Info" type="PanelContainer" parent="MarginContainer"]
-visible = false
-layout_mode = 2
-theme_type_variation = &"Border"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Info"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="InfoText" type="Label" parent="MarginContainer/Info/MarginContainer"]
-layout_mode = 2
