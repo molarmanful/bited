@@ -169,4 +169,29 @@ func add_name(g: Glyph) -> void:
 
 # TODO
 func get_info(g: Glyph) -> void:
-	pass
+	if g.data_code < 0:
+		table.node_info_text.text = "%s\n(custom)" % g.data_name
+		return
+
+	(
+		StateVars
+		. db_uc
+		. query_with_bindings(
+			"""
+			select name, category from data
+			where id = ?
+			;""",
+			[g.data_code]
+		)
+	)
+	var qs := StateVars.db_uc.query_result
+
+	table.node_info_text.text = (
+		"U+%s  #%d%s\n%s"
+		% [
+			g.data_name,
+			g.data_code,
+			"" if qs.is_empty() else "  " + qs[0].category,
+			"(undefined)" if qs.is_empty() else qs[0].name,
+		]
+	)

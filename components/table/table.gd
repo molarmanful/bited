@@ -1,6 +1,7 @@
 class_name Table
 extends PanelContainer
 
+@export var node_wrap: MarginContainer
 @export var node_inner: Container
 @export var node_glyphs: Container
 @export var node_pad: Container
@@ -20,6 +21,9 @@ func _ready() -> void:
 	sel.table = self
 
 	resized.connect(onresize)
+	node_info.resized.connect(
+		func(): node_wrap.add_theme_constant_override("margin_bottom", 32 + int(node_info.size.y))
+	)
 	virt.refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
 

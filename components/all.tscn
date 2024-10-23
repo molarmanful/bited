@@ -13,7 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
-table = NodePath("Body/Main/HSplitContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("Body/Main/HSplitContainer/MarginContainer/ScrollContainer2/MarginContainer/Table")
 editor = NodePath("Body/Main/HSplitContainer/PanelContainer/ScrollContainer/Editor")
 metadata/_edit_lock_ = true
 
@@ -49,12 +49,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/_edit_lock_ = true
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 follow_focus = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/ScrollContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/ScrollContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -63,31 +67,35 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/HSplitContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
-node_info = NodePath("../../../../Info")
-node_info_text = NodePath("../../../../Info/PanelContainer/MarginContainer/InfoText")
+node_wrap = NodePath("..")
+node_info = NodePath("../../../Info")
+node_info_text = NodePath("../../../Info/PanelContainer/MarginContainer/InfoText")
 
-[node name="Info" type="MarginContainer" parent="Body/Main"]
+[node name="Info" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+mouse_filter = 2
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = -1
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/Info"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/Info"]
 layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/Info/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/Info/PanelContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="InfoText" type="Label" parent="Body/Main/Info/PanelContainer/MarginContainer"]
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/Info/PanelContainer/MarginContainer"]
 layout_mode = 2
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]

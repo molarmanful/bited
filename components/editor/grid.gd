@@ -22,7 +22,7 @@ var dim_grid := 32:
 	set(n):
 		dim_grid = n
 		update_grid()
-var w_cell := 16:
+var w_cell := 12:
 	set(n):
 		w_cell = n
 		update_grid()
