@@ -4,6 +4,8 @@ extends PanelContainer
 @export var node_inner: Container
 @export var node_glyphs: Container
 @export var node_pad: Container
+@export var node_info: Container
+@export var node_info_text: Label
 @export var virt: Virt
 @export var sel: Sel
 

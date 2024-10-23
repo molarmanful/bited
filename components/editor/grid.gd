@@ -74,7 +74,7 @@ func _process(_delta: float) -> void:
 
 
 func oninput(e: InputEvent) -> void:
-	if not (e is InputEventMouseButton or e is InputEventScreenTouch):
+	if e is not InputEventMouseButton:
 		return
 	if (
 		e is InputEventMouseButton

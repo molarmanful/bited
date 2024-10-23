@@ -26,6 +26,8 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
+	get_info(g)
+	table.node_info.show()
 	add_name(g)
 
 
@@ -61,6 +63,7 @@ func clear() -> void:
 	mode = true
 	ranges.clear()
 	names.clear()
+	table.node_info.hide()
 	refresh()
 
 
@@ -156,5 +159,14 @@ func is_alone() -> bool:
 	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
 
 
+func is_empty() -> bool:
+	return ranges.is_empty()
+
+
 func add_name(g: Glyph) -> void:
 	names[g.ind] = {name = g.data_name, code = g.data_code}
+
+
+# TODO
+func get_info(g: Glyph) -> void:
+	pass

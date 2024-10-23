@@ -8,7 +8,8 @@ const ScnGlyph := preload("res://components/table/glyph.tscn")
 @export var node_code: Label
 @export var node_tex_cont: Container
 @export var node_tex: TextureRect
-@export var btn: Button
+@export var btn_l: Button
+@export var btn_r: Button
 
 var table: Table
 var ind := -1
@@ -49,7 +50,13 @@ static func create(t: Table) -> Glyph:
 func _ready() -> void:
 	set_thumb()
 
-	btn.pressed.connect(onpress)
+
+func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseButton:
+		if e.button_index == MOUSE_BUTTON_LEFT and not e.pressed:
+			lclick()
+		elif e.button_index == MOUSE_BUTTON_RIGHT and not e.pressed:
+			rclick()
 
 
 func refresh() -> void:
@@ -79,7 +86,7 @@ func set_thumb() -> void:
 	node_tex.self_modulate.a = .69
 
 
-func onpress():
+func lclick() -> void:
 	var shift := Input.is_physical_key_pressed(KEY_SHIFT)
 	var ctrl := Input.is_physical_key_pressed(KEY_CTRL)
 
@@ -100,6 +107,10 @@ func onpress():
 		return
 
 	sel.select(self)
+
+
+func rclick() -> void:
+	pass
 
 
 static func is_noprint(n: int) -> bool:

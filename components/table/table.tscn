@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_qums1"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
 
-[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad")]
+[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad", "node_info", "node_info_text")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,6 +15,8 @@ script = ExtResource("1_21spc")
 node_inner = NodePath("Inner")
 node_glyphs = NodePath("Inner/VBoxContainer/HFlowContainer")
 node_pad = NodePath("Inner/VBoxContainer/Pad")
+node_info = NodePath("MarginContainer/Info")
+node_info_text = NodePath("MarginContainer/Info/MarginContainer/InfoText")
 virt = ExtResource("3_vj2v8")
 sel = ExtResource("3_qums1")
 metadata/_edit_lock_ = true
@@ -39,3 +41,25 @@ theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 alignment = 1
 last_wrap_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Info" type="PanelContainer" parent="MarginContainer"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"Border"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Info"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="InfoText" type="Label" parent="MarginContainer/Info/MarginContainer"]
+layout_mode = 2
