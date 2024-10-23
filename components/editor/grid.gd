@@ -1,10 +1,12 @@
 class_name Grid
 extends PanelContainer
 
+@export var node_wrapper: Container
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: Node2D
 @export var node_info: Label
+@export var node_placeholder: Label
 
 @export_group("Button Groups")
 @export var tools_group: ButtonGroup
@@ -44,9 +46,7 @@ var tool_sel := "pen":
 	set(t):
 		tool_sel = t
 		toolman.tools[tool_sel].pre()
-
-var bitmap := Bitmap.new(dim_grid, cells, 97, "0061")
-
+var bitmap := Bitmap.new(dim_grid, cells)
 var undoman := UndoRedo.new()
 
 
@@ -56,6 +56,7 @@ func _ready() -> void:
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
 	StateVars.edit.connect(start_edit)
+	StateVars.edit_refresh.connect(refresh)
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
@@ -91,12 +92,20 @@ func start_edit(g: Glyph) -> void:
 	bitmap.data_code = g.data_code
 	bitmap.data_name = g.data_name
 	bitmap.clear_cells()
-	refresh()
 	bitmap.save(false)
+	refresh()
 
 
 func refresh() -> void:
 	bitmap.restore()
+
+	if not bitmap.data_name:
+		node_wrapper.hide()
+		node_placeholder.show()
+		return
+	node_placeholder.hide()
+	node_wrapper.show()
+
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()

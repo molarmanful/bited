@@ -88,9 +88,12 @@ func restore() -> void:
 		]
 	)
 	if q.is_empty():
+		data_code = -1
+		data_name = ""
 		return
 
 	var gen: Dictionary = q[0]
+	StateVars.refresh.emit(gen)
 	from_gen(gen)
 	update_cells(gen)
 

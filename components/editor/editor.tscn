@@ -171,15 +171,17 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_cells", "node_view_lines", "node_lines", "node_info", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_info", "node_placeholder", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
+node_wrapper = NodePath("..")
 node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 node_info = NodePath("../2/info")
+node_placeholder = NodePath("../../Placeholder")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
 btn_undo = NodePath("../8/undo")
@@ -268,3 +270,12 @@ tooltip_text = "rotate cw"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "⟳"
+
+[node name="Placeholder" type="Label" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"Muted"
+theme_override_font_sizes/font_size = 32
+text = "select a glyph to start..."
+horizontal_alignment = 1
+vertical_alignment = 1

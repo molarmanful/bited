@@ -1,6 +1,7 @@
 extends Node
 
 signal edit(glyph: Glyph)
+signal edit_refresh
 signal refresh(gen: Dictionary)
 
 var font := BFont.new()

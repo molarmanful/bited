@@ -67,7 +67,6 @@ func clear() -> void:
 	refresh()
 
 
-# TODO: clear editor if active
 # TODO: account for def-glyphs filter
 func delete() -> void:
 	for i in range(0, ranges.size(), 2):
@@ -93,6 +92,7 @@ func delete() -> void:
 		if not q:
 			return
 
+	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
 	table.to_update = true
 
