@@ -164,7 +164,6 @@ func commit() -> void:
 		res.push_back(y)
 
 	ranges.assign(res)
-	printt(ranges)
 	end = -1
 
 
