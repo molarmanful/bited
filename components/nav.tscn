@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("node_theme", "font_name")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("font_name", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 33.0
 grow_horizontal = 2
 script = ExtResource("1_i15a6")
-node_theme = NodePath("MarginContainer/HBoxContainer/CheckButton")
 font_name = NodePath("MarginContainer/HBoxContainer/Label")
+btn_settings = NodePath("MarginContainer/HBoxContainer/Settings")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -34,7 +34,11 @@ justification_flags = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer"]
-visible = false
+[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-button_pressed = true
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "settings"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⚙️"
