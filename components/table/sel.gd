@@ -9,6 +9,15 @@ var anchor := -1
 var end := -1
 var mode := true
 
+var length: int:
+	get:
+		var sum := 0
+		for i in range(0, ranges.size(), 2):
+			var a := ranges[i]
+			var b := ranges[i + 1]
+			sum += b - a
+		return sum
+
 
 func refresh() -> void:
 	for g in table.vglyphs.values():
@@ -35,15 +44,17 @@ func select_range(g: Glyph) -> void:
 	end = g.ind
 	ranges.assign(norm())
 	refresh()
+	get_sel_text()
 	add_name(g)
 
 
 func select_inv(g: Glyph) -> void:
+	mode = not is_selected(g.ind)
 	anchor = g.ind
-	end = anchor
-	mode = !is_selected(g.ind)
+	end = g.ind
 	commit()
 	g.selected = mode
+	get_sel_text()
 	add_name(g)
 
 
@@ -54,6 +65,7 @@ func select_range_inv(g: Glyph) -> void:
 	end = g.ind
 	commit()
 	refresh()
+	get_sel_text()
 	add_name(g)
 
 
@@ -152,6 +164,7 @@ func commit() -> void:
 		res.push_back(y)
 
 	ranges.assign(res)
+	printt(ranges)
 	end = -1
 
 
@@ -195,3 +208,11 @@ func get_info(g: Glyph) -> void:
 			"(undefined)" if qs.is_empty() else qs[0].name,
 		]
 	)
+
+
+func get_sel_text() -> void:
+	if is_empty():
+		table.node_info.hide()
+		return
+	table.node_info.show()
+	table.node_info_text.text = "%d item%s selected" % [length, "s" if length != 1 else ""]

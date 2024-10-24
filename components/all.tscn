@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=8 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 [ext_resource type="Script" path="res://components/settings.gd" id="6_ucayi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg3q6"]
+draw_center = false
 
 [node name="All" type="PanelContainer" node_paths=PackedStringArray("table", "editor")]
 anchors_preset = 15
@@ -77,11 +80,10 @@ node_info_text = NodePath("../../../Info/PanelContainer/MarginContainer/InfoText
 [node name="Info" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = -1
+theme_override_constants/margin_bottom = 12
 
 [node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/Info"]
 layout_mode = 2
@@ -104,12 +106,14 @@ layout_mode = 2
 theme_type_variation = &"Nav"
 settings = NodePath("../../Settings")
 
-[node name="Settings" type="Window" parent="."]
+[node name="Settings" type="Window" parent="." node_paths=PackedStringArray("node_tree")]
 title = "Settings"
 initial_position = 2
 size = Vector2i(854, 480)
 transient = true
+exclusive = true
 script = ExtResource("6_ucayi")
+node_tree = NodePath("PanelContainer/HSplitContainer/PanelContainer/Tree")
 
 [node name="PanelContainer" type="PanelContainer" parent="Settings"]
 anchors_preset = 15
@@ -118,10 +122,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Settings/PanelContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Settings/PanelContainer"]
+layout_mode = 2
+split_offset = 160
+
+[node name="PanelContainer" type="PanelContainer" parent="Settings/PanelContainer/HSplitContainer"]
+layout_mode = 2
+theme_type_variation = &"MainHSplit"
+
+[node name="Tree" type="Tree" parent="Settings/PanelContainer/HSplitContainer/PanelContainer"]
+layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_tg3q6")
+hide_root = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Settings/PanelContainer/HSplitContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Settings/PanelContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Settings/PanelContainer/HSplitContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 16
@@ -129,7 +146,10 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Label" type="Label" parent="Settings/PanelContainer/ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Settings/PanelContainer/HSplitContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Settings/PanelContainer/HSplitContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_vertical = 0
