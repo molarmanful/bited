@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=34 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=39 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -140,6 +140,43 @@ border_width_left = 1
 border_width_top = 1
 border_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgckf"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phc6k"]
+bg_color = Color(1, 1, 1, 1)
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vk7fj"]
+bg_color = Color(0.639216, 0.639216, 0.639216, 1)
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ruok"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+draw_center = false
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2he3"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+draw_center = false
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+corner_detail = 6
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_i3i8j"]
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -253,11 +290,8 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.639216, 0.639216, 0.639216, 1)
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
 border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -268,9 +302,6 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(1, 1, 1, 1)
 border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -281,9 +312,6 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.639216, 0.639216, 0.639216, 1)
 border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -292,7 +320,9 @@ content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
 content_margin_bottom = 0.0
-bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+draw_center = false
+border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -301,7 +331,11 @@ content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
 content_margin_bottom = 0.0
-bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -341,6 +375,11 @@ Grid/colors/origin = Color(0.321569, 0.321569, 0.321569, 1)
 Grid/colors/w = Color(0.0784314, 0.32549, 0.176471, 1)
 Grid/colors/x = Color(0.443137, 0.247059, 0.0705882, 1)
 Grid/styles/panel = SubResource("StyleBoxFlat_uc33t")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_sgckf")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_phc6k")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_vk7fj")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_7ruok")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_n2he3")
 HSeparator/constants/separation = 5
 HSeparator/styles/separator = SubResource("StyleBoxLine_i3i8j")
 Inner/base_type = &"PanelContainer"
