@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://csa3ukn3fcr2n"]
+
+[ext_resource type="Script" path="res://components/settings.gd" id="1_f5q05"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg3q6"]
+draw_center = false
+
+[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tree")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f5q05")
+node_tree = NodePath("HSplitContainer/PanelContainer/ScrollContainer/MarginContainer/Tree")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+split_offset = 160
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme_type_variation = &"MainHSplit"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_top = 12
+
+[node name="Tree" type="Tree" parent="HSplitContainer/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/focus = SubResource("StyleBoxFlat_tg3q6")
+hide_root = true
+scroll_horizontal_enabled = false
+scroll_vertical_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="HSplitContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "test"
+
+[node name="LineEdit" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

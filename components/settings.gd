@@ -1,17 +1,14 @@
-extends Window
+extends PanelContainer
 
+@export var window: Window
 @export var node_tree: Tree
 
 
-func _init() -> void:
-	hide()
-	force_native = true
-
-
 func _ready() -> void:
+	window.force_native = true
 	build_tree()
 
-	close_requested.connect(hide)
+	window.close_requested.connect(window.hide)
 
 
 func build_tree() -> void:

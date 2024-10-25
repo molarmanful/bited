@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=39 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=42 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -194,6 +194,47 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bntey"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ceup"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8bhvi"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3oxq"]
 bg_color = Color(0, 0, 0, 0)
 border_width_right = 1
@@ -354,7 +395,17 @@ default_font = ExtResource("1_stftx")
 default_font_size = 16
 Border/base_type = &"PanelContainer"
 Border/styles/panel = SubResource("StyleBoxFlat_iexhb")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(1, 1, 1, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.5)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
 Button/colors/icon_pressed_color = Color(0, 0, 0, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_xnme3")
 Button/styles/focus = SubResource("StyleBoxFlat_ef52g")
@@ -386,6 +437,17 @@ Inner/base_type = &"PanelContainer"
 Inner/styles/panel = SubResource("StyleBoxFlat_fivk6")
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
+LineEdit/colors/caret_color = Color(1, 1, 1, 1)
+LineEdit/colors/clear_button_color = Color(1, 1, 1, 1)
+LineEdit/colors/clear_button_color_pressed = Color(0.639216, 0.639216, 0.639216, 1)
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_placeholder_color = Color(0.45098, 0.45098, 0.45098, 1)
+LineEdit/colors/font_selected_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_uneditable_color = Color(1, 1, 1, 0.5)
+LineEdit/colors/selection_color = Color(0.117647, 0.25098, 0.686275, 1)
+LineEdit/styles/focus = SubResource("StyleBoxFlat_bntey")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_2ceup")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_8bhvi")
 MainHSplit/base_type = &"PanelContainer"
 MainHSplit/styles/panel = SubResource("StyleBoxFlat_c3oxq")
 Muted/base_type = &"Label"
