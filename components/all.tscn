@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://components/theme_switcher.gd" id="1_v7yw2"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
-[ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings.tscn" id="7_axgl6"]
+[ext_resource type="PackedScene" path="res://components/settings.tscn" id="7_axgl6"]
 
 [node name="All" type="PanelContainer" node_paths=PackedStringArray("table", "editor")]
 anchors_preset = 15

@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=3 format=3 uid="uid://bo7i7ktccdipf"]
 
 [ext_resource type="Script" path="res://components/settings.gd" id="1_f5q05"]
 
@@ -50,16 +50,35 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="GridContainer" type="GridContainer" parent="HSplitContainer/ScrollContainer/MarginContainer"]
+[node name="Font" type="GridContainer" parent="HSplitContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/GridContainer"]
+[node name="Label3" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "test"
+text = "id
+"
 
-[node name="LineEdit" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/GridContainer"]
+[node name="ID" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "family name"
+
+[node name="Family" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "weight"
+
+[node name="Weight" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
 layout_mode = 2
 size_flags_horizontal = 3
