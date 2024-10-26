@@ -72,7 +72,7 @@ class BFont:
 	var pt_size := 150
 	var resolution := Vector2i(75, 75)
 	var spacing := "P"
-	var avg_w := 80
+	var avg_w := 8
 	var ch_reg := "ISO10646"
 	var ch_enc := "1"
 	var bb := Vector2i(8, 16)
@@ -111,7 +111,7 @@ class BFont:
 					resolution.x,
 					resolution.y,
 					spacing,
-					avg_w,
+					avg_w * 10,
 					ch_reg,
 					ch_enc,
 				]

@@ -1,0 +1,214 @@
+[gd_scene load_steps=3 format=3 uid="uid://csa3ukn3fcr2n"]
+
+[ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg3q6"]
+draw_center = false
+
+[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tree")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f5q05")
+node_tree = NodePath("HSplitContainer/PanelContainer/ScrollContainer/MarginContainer/Tree")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+split_offset = 160
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme_type_variation = &"MainHSplit"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_top = 16
+
+[node name="Tree" type="Tree" parent="HSplitContainer/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/focus = SubResource("StyleBoxFlat_tg3q6")
+hide_root = true
+scroll_horizontal_enabled = false
+scroll_vertical_enabled = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Font" type="GridContainer" parent="HSplitContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label3" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "id"
+
+[node name="id" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label4" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "foundry name"
+
+[node name="foundry" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "family name"
+
+[node name="family" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "weight name"
+
+[node name="weight" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "slant"
+
+[node name="slant" type="OptionButton" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+selected = 0
+item_count = 5
+popup/item_0/text = "R (Roman)"
+popup/item_1/text = "I (Italic)"
+popup/item_1/id = 1
+popup/item_2/text = "O (Oblique)"
+popup/item_2/id = 2
+popup/item_3/text = "RI (Reverse Italic)"
+popup/item_3/id = 3
+popup/item_4/text = "RO (Reverse Oblique)"
+popup/item_4/id = 4
+
+[node name="Label6" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "setwidth name"
+
+[node name="setwidth" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label7" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "add style name"
+
+[node name="add_style" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label8" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "pixel size"
+
+[node name="px_size" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+allow_greater = true
+suffix = "px"
+
+[node name="Label9" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "point size"
+
+[node name="pt_size" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+allow_greater = true
+suffix = "dpt"
+
+[node name="Label10" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "resolution"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+
+[node name="resolution_x" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 75.0
+allow_greater = true
+suffix = "dpi"
+
+[node name="resolution_y" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 75.0
+allow_greater = true
+suffix = "dpi"
+
+[node name="Label11" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "spacing"
+
+[node name="spacing" type="OptionButton" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "M (Monospaced)"
+popup/item_1/text = "P (Proportional)"
+popup/item_1/id = 1
+popup/item_2/text = "C (Character Cell)"
+popup/item_2/id = 2
+
+[node name="Label12" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "average width"
+
+[node name="pt_size2" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+allow_greater = true
+suffix = "px"
+
+[node name="Label13" type="Label" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "charset"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HSplitContainer/ScrollContainer/MarginContainer/Font"]
+layout_mode = 2
+
+[node name="ch_reg" type="LineEdit" parent="HSplitContainer/ScrollContainer/MarginContainer/Font/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "registry..."
+
+[node name="ch_enc" type="SpinBox" parent="HSplitContainer/ScrollContainer/MarginContainer/Font/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true

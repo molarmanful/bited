@@ -13,26 +13,30 @@ grow_vertical = 2
 size_flags_vertical = 0
 script = ExtResource("1_21spc")
 node_inner = NodePath("Inner")
-node_glyphs = NodePath("Inner/VBoxContainer/HFlowContainer")
-node_pad = NodePath("Inner/VBoxContainer/Pad")
+node_glyphs = NodePath("Inner/PanelContainer/VBoxContainer/HFlowContainer")
+node_pad = NodePath("Inner/PanelContainer/VBoxContainer/Pad")
 virt = ExtResource("3_vj2v8")
 sel = ExtResource("3_qums1")
 metadata/_edit_lock_ = true
 
-[node name="Inner" type="PanelContainer" parent="."]
+[node name="Inner" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="PanelContainer" type="PanelContainer" parent="Inner"]
+layout_mode = 2
 theme_type_variation = &"Inner"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Inner"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Inner/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Pad" type="MarginContainer" parent="Inner/VBoxContainer"]
+[node name="Pad" type="MarginContainer" parent="Inner/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="HFlowContainer" type="HFlowContainer" parent="Inner/VBoxContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="Inner/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 1
