@@ -68,8 +68,12 @@ class BFont:
 	var slant := "R"
 	var setwidth := "Normal"
 	var add_style := ""
-	var px_size := 16
-	var pt_size := 150
+	var px_size: int:
+		get:
+			return bb.y
+	var pt_size: int:
+		get:
+			return px_size * 72 / resolution.y * 10
 	var resolution := Vector2i(75, 75)
 	var spacing := "P"
 	var avg_w := 8
@@ -83,8 +87,12 @@ class BFont:
 	var vvector := Vector2i(4, 14)
 	var cap_h := 9
 	var x_h := 7
-	var asc := 14
-	var desc := 2
+	var asc: int:
+		get:
+			return bb.y - desc
+	var desc: int:
+		get:
+			return abs(bb_off.y)
 	var props := {}
 
 	var size_calc: Vector2i:
