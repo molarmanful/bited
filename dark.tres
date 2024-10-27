@@ -1,7 +1,16 @@
-[gd_resource type="Theme" load_steps=42 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=52 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
+[ext_resource type="Texture2D" uid="uid://e7q6a5lrkrye" path="res://assets/ui-dark/radio_checked.png" id="2_cl6yn"]
+[ext_resource type="Texture2D" uid="uid://b1wv858uxwfoi" path="res://assets/ui-dark/select_arrow.png" id="2_j4r67"]
+[ext_resource type="Texture2D" uid="uid://0ayhxut4yp0f" path="res://assets/ui-dark/radio_checked_disabled.png" id="3_hhofj"]
+[ext_resource type="Texture2D" uid="uid://dvrbqmi7vkbqc" path="res://assets/ui-dark/radio_unchecked.png" id="4_tfjua"]
+[ext_resource type="Texture2D" uid="uid://cd84qahek141n" path="res://assets/ui-dark/radio_unchecked_disabled.png" id="5_k5bx0"]
+[ext_resource type="Texture2D" uid="uid://cuinrvxmdut1x" path="res://assets/ui-dark/updown.png" id="7_h4bw5"]
+[ext_resource type="Texture2D" uid="uid://baloy40n8qjsx" path="res://assets/ui-dark/tree_arrow_collapsed.png" id="8_4rta4"]
+[ext_resource type="Texture2D" uid="uid://cnb4uew8jei22" path="res://assets/ui-dark/tree_arrow.png" id="8_xrcs3"]
+[ext_resource type="Texture2D" uid="uid://dicr8qgre1y51" path="res://assets/ui-dark/tree_arrow_collapsed_mirrored.png" id="9_imbqb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iexhb"]
 bg_color = Color(0, 0, 0, 1)
@@ -246,6 +255,18 @@ bg_color = Color(0, 0, 0, 1)
 border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x0txl"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq3sf"]
 bg_color = Color(0, 0, 0, 1)
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
@@ -417,6 +438,8 @@ CMode/styles/focus = SubResource("StyleBoxFlat_olr07")
 CMode/styles/hover = SubResource("StyleBoxFlat_1vw27")
 CMode/styles/normal = SubResource("StyleBoxFlat_haq8v")
 CMode/styles/pressed = SubResource("StyleBoxFlat_3pgdr")
+Double/base_type = &"Label"
+Double/font_sizes/font_size = 32
 Grid/base_type = &"PanelContainer"
 Grid/colors/asc = Color(0.513726, 0.0941176, 0.262745, 1)
 Grid/colors/bord = Color(0.0901961, 0.0901961, 0.0901961, 1)
@@ -461,12 +484,19 @@ Node/colors/fg = Color(1, 1, 1, 1)
 Node/colors/sel = Color(0.117647, 0.25098, 0.686275, 1)
 Op/base_type = &"Button"
 Op/fonts/font = ExtResource("1_vc1qu")
+OptionButton/icons/arrow = ExtResource("2_j4r67")
+Panel/styles/panel = SubResource("StyleBoxFlat_x0txl")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_yq3sf")
+PopupMenu/icons/radio_checked = ExtResource("2_cl6yn")
+PopupMenu/icons/radio_checked_disabled = ExtResource("3_hhofj")
+PopupMenu/icons/radio_unchecked = ExtResource("4_tfjua")
+PopupMenu/icons/radio_unchecked_disabled = ExtResource("5_k5bx0")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_1jb8g")
 PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_iuvlp")
 PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_ui7gb")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_fps1t")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_37y7g")
+SpinBox/icons/updown = ExtResource("7_h4bw5")
 Tool/base_type = &"Op"
 Tool/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
 Tool/colors/font_hover_color = Color(1, 1, 1, 1)
@@ -481,6 +511,9 @@ Tree/colors/relationship_line_color = Color(0.14902, 0.14902, 0.14902, 1)
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 1
 Tree/constants/inner_item_margin_left = 4
+Tree/icons/arrow = ExtResource("8_xrcs3")
+Tree/icons/arrow_collapsed = ExtResource("8_4rta4")
+Tree/icons/arrow_collapsed_mirrored = ExtResource("9_imbqb")
 Tree/styles/focus = SubResource("StyleBoxFlat_sbn1k")
 Tree/styles/panel = SubResource("StyleBoxFlat_id3oo")
 Tree/styles/selected = SubResource("StyleBoxFlat_ugd8m")

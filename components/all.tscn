@@ -107,10 +107,9 @@ settings = NodePath("../../Window")
 gui_embed_subwindows = true
 title = "Settings"
 initial_position = 2
-size = Vector2i(854, 480)
+size = Vector2i(600, 600)
 visible = false
 transient = true
-exclusive = true
 
 [node name="Settings" parent="Window" node_paths=PackedStringArray("window") instance=ExtResource("7_axgl6")]
 window = NodePath("..")
