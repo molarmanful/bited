@@ -97,7 +97,7 @@ func start_edit(g: Glyph) -> void:
 
 
 func refresh() -> void:
-	bitmap.restore()
+	bitmap.load()
 
 	if not bitmap.data_name:
 		node_wrapper.hide()

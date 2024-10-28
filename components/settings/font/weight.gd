@@ -5,5 +5,5 @@ func save() -> void:
 	StateVars.font.weight = text
 
 
-func restore() -> void:
+func load() -> void:
 	text = StateVars.font.weight

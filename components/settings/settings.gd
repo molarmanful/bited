@@ -10,8 +10,9 @@ func _ready() -> void:
 	window.force_native = true
 	build_tree()
 
-	window.about_to_popup.connect(restore)
+	window.about_to_popup.connect(load)
 	window.close_requested.connect(window.hide)
+	btn_save.pressed.connect(save)
 	btn_cancel.pressed.connect(window.hide)
 
 
@@ -28,6 +29,6 @@ func save() -> void:
 		child.save()
 
 
-func restore() -> void:
+func load() -> void:
 	for child in get_tree().get_nodes_in_group("font"):
-		child.restore()
+		child.load()

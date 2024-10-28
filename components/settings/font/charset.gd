@@ -9,6 +9,6 @@ func save() -> void:
 	StateVars.font.ch_enc = line_enc.text
 
 
-func restore() -> void:
+func load() -> void:
 	line_reg.text = StateVars.font.ch_reg
 	line_enc.text = StateVars.font.ch_enc

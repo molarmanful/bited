@@ -7,5 +7,5 @@ func save() -> void:
 	StateVars.font.slant = opts[selected]
 
 
-func restore() -> void:
+func load() -> void:
 	selected = opts.find(StateVars.font.slant)

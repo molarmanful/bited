@@ -9,6 +9,6 @@ func save() -> void:
 	StateVars.font.resolution.y = spin_y.value
 
 
-func restore() -> void:
+func load() -> void:
 	spin_x.value = StateVars.font.resolution.x
 	spin_y.value = StateVars.font.resolution.y

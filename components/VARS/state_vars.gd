@@ -19,11 +19,12 @@ func _ready():
 	db_saves.open_db()
 
 	init_font_metas()
-	init_font(font.id)
+	# TODO: prompt for font at startup
+	font.init_font()
 
 
-func init_font_metas() -> bool:
-	return (
+func init_font_metas() -> void:
+	(
 		db_saves
 		. create_table(
 			"fonts",
@@ -33,94 +34,3 @@ func init_font_metas() -> bool:
 			}
 		)
 	)
-
-
-func init_font(id: String) -> bool:
-	db_saves.query_with_bindings(
-		"insert or ignore into fonts (id, data) values (?, ?)", [id, var_to_bytes(font)]
-	)
-	return (
-		db_saves
-		. create_table(
-			"font_" + id,
-			{
-				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
-				code = {data_type = "int", not_null = true},
-				dwidth_x = {data_type = "int", not_null = true},
-				dwidth_y = {data_type = "int", not_null = true},
-				dwidth1_x = {data_type = "int"},
-				dwidth1_y = {data_type = "int"},
-				vvector_x = {data_type = "int"},
-				vvector_y = {data_type = "int"},
-				off_x = {data_type = "int", not_null = true},
-				off_y = {data_type = "int", not_null = true},
-				img = {data_type = "blob"},
-			}
-		)
-	)
-
-
-class BFont:
-	var id := "new_font"
-	var foundry := "bited"
-	var family := "new font"
-	var weight := "Medium"
-	var slant := "R"
-	var setwidth := "Normal"
-	var add_style := ""
-	var px_size: int:
-		get:
-			return bb.y
-	var pt_size: int:
-		get:
-			return px_size * 72 / resolution.y * 10
-	var resolution := Vector2i(75, 75)
-	var spacing := "P"
-	var avg_w := 8
-	var ch_reg := "ISO10646"
-	var ch_enc := "1"
-	var bb := Vector2i(8, 16)
-	var bb_off := Vector2i(0, -2)
-	var metricsset := 0
-	var dwidth := Vector2i(8, 0)
-	var dwidth1 := Vector2i(16, 0)
-	var vvector := Vector2i(4, 14)
-	var cap_h := 9
-	var x_h := 7
-	var asc: int:
-		get:
-			return bb.y - desc
-	var desc: int:
-		get:
-			return abs(bb_off.y)
-	var props := {}
-
-	var size_calc: Vector2i:
-		get:
-			return Vector2i(dwidth.x, px_size)
-
-	var center: Vector2i:
-		get:
-			return size_calc * Vector2i(1, -1) / 2
-
-	var xlfd: String:
-		get:
-			return (
-				"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
-				% [
-					foundry,
-					family,
-					weight,
-					slant,
-					setwidth,
-					add_style,
-					px_size,
-					pt_size,
-					resolution.x,
-					resolution.y,
-					spacing,
-					avg_w * 10,
-					ch_reg,
-					ch_enc,
-				]
-			)

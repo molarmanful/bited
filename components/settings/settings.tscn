@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=17 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://components/settings/font/add_style.gd" id="8_iwt5s"]
 [ext_resource type="Script" path="res://components/settings/font/resolution.gd" id="10_ms5sx"]
 [ext_resource type="Script" path="res://components/settings/font/spacing.gd" id="11_x5ybt"]
-[ext_resource type="Script" path="res://components/settings/font/avg_w.gd" id="12_tbjh0"]
 [ext_resource type="Script" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
 [ext_resource type="Script" path="res://components/settings/font/charset.gd" id="13_xmogf"]
 [ext_resource type="Script" path="res://components/settings/font/bb_off.gd" id="14_o6q0j"]
@@ -232,19 +231,6 @@ popup/item_1/id = 1
 popup/item_2/text = "C (Character Cell)"
 popup/item_2/id = 2
 script = ExtResource("11_x5ybt")
-
-[node name="Label12" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "average width"
-vertical_alignment = 1
-
-[node name="avg_w" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
-layout_mode = 2
-allow_greater = true
-suffix = "px"
-script = ExtResource("12_tbjh0")
 
 [node name="Label13" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
 layout_mode = 2

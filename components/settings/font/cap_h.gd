@@ -5,5 +5,5 @@ func save() -> void:
 	StateVars.font.cap_h = value
 
 
-func restore() -> void:
+func load() -> void:
 	value = StateVars.font.cap_h

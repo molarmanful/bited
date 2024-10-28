@@ -31,7 +31,7 @@ func _draw() -> void:
 		draw_line(Vector2i(0, y), Vector2i(w_grid, y), grid.get_theme_color(k))
 
 	var lines_v := {
-		w = StateVars.font.dwidth.x,
+		w = StateVars.font.dwidth,
 		origin = 0,
 	}
 

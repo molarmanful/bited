@@ -7,5 +7,5 @@ func save() -> void:
 	StateVars.font.spacing = opts[selected]
 
 
-func restore() -> void:
+func load() -> void:
 	selected = opts.find(StateVars.font.spacing)

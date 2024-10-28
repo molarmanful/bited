@@ -104,12 +104,14 @@ theme_type_variation = &"Nav"
 settings = NodePath("../../Window")
 
 [node name="Window" type="Window" parent="."]
+canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
 title = "Settings"
 initial_position = 2
-size = Vector2i(600, 600)
+size = Vector2i(800, 600)
 visible = false
 transient = true
+content_scale_stretch = 1
 
 [node name="Settings" parent="Window" node_paths=PackedStringArray("window") instance=ExtResource("7_axgl6")]
 window = NodePath("..")

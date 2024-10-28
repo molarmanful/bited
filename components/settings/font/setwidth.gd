@@ -5,5 +5,5 @@ func save() -> void:
 	StateVars.font.setwidth = text
 
 
-func restore() -> void:
+func load() -> void:
 	text = StateVars.font.setwidth

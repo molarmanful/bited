@@ -5,9 +5,8 @@ var dim := 0
 var cells: Image
 var data_code := -1
 var data_name := ""
-var dwidth: Vector2i = StateVars.font.dwidth
-var dwidth1: Vector2i = StateVars.font.dwidth1
-var vvector: Vector2i = StateVars.font.vvector
+var dwidth := StateVars.font.dwidth
+var dwidth1 := StateVars.font.dwidth1
 
 var corner_bl: Vector2i:
 	get:
@@ -38,12 +37,8 @@ func save(over := true) -> bool:
 	var gen := {
 		name = data_name,
 		code = data_code,
-		dwidth_x = dwidth.x,
-		dwidth_y = dwidth.y,
-		dwidth1_x = dwidth1.x,
-		dwidth1_y = dwidth1.y,
-		vvector_x = vvector.x,
-		vvector_y = vvector.y,
+		dwidth = dwidth,
+		dwidth1 = dwidth1,
 		off_x = off.x,
 		off_y = off.y,
 		img = img,
@@ -58,9 +53,9 @@ func save(over := true) -> bool:
 				"""
 				insert or %s
 				into font_%s
-				(name, code, dwidth_x, dwidth_y, dwidth1_x, dwidth1_y, vvector_x, vvector_y, off_x, off_y, img)
+				(name, code, dwidth, dwidth1, off_x, off_y, img)
 				values
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+				(?, ?, ?, ?, ?, ?, ?)
 				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
 			),
@@ -69,23 +64,11 @@ func save(over := true) -> bool:
 	)
 
 
-func restore() -> void:
+func load() -> void:
 	var q := StateVars.db_saves.select_rows(
 		"font_" + StateVars.font.id,
 		"name = %s" % JSON.stringify(data_name),
-		[
-			"name",
-			"code",
-			"dwidth_x",
-			"dwidth_y",
-			"dwidth1_x",
-			"dwidth1_y",
-			"vvector_x",
-			"vvector_y",
-			"off_x",
-			"off_y",
-			"img"
-		]
+		["name", "code", "dwidth", "dwidth1", "off_x", "off_y", "img"]
 	)
 	if q.is_empty():
 		data_code = -1
@@ -101,9 +84,8 @@ func restore() -> void:
 func from_gen(gen: Dictionary) -> void:
 	data_name = gen.name
 	data_code = gen.code
-	dwidth = Vector2i(gen.dwidth_x, gen.dwidth_y)
-	dwidth1 = Vector2i(gen.dwidth1_x, gen.dwidth1_y)
-	vvector = Vector2i(gen.vvector_x, gen.vvector_y)
+	dwidth = gen.dwidth
+	dwidth1 = gen.dwidth1
 
 
 func clear_cells() -> void:

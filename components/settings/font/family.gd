@@ -5,5 +5,5 @@ func save() -> void:
 	StateVars.font.family = text
 
 
-func restore() -> void:
+func load() -> void:
 	text = StateVars.font.family
