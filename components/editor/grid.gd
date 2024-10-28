@@ -55,6 +55,7 @@ func _ready() -> void:
 
 	theme_changed.connect(update_grid)
 	gui_input.connect(oninput)
+	StateVars.settings.connect(refresh)
 	StateVars.edit.connect(start_edit)
 	StateVars.edit_refresh.connect(refresh)
 

@@ -1,5 +1,6 @@
 extends Node
 
+signal settings
 signal edit(glyph: Glyph)
 signal edit_refresh
 signal refresh(gen: Dictionary)

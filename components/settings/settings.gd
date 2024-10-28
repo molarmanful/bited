@@ -7,7 +7,6 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	window.force_native = true
 	build_tree()
 
 	window.about_to_popup.connect(load)
@@ -24,9 +23,12 @@ func build_tree() -> void:
 		item.set_text(0, "testing testing %d" % i)
 
 
+# TODO: validation
 func save() -> void:
 	for child in get_tree().get_nodes_in_group("font"):
 		child.save()
+	StateVars.settings.emit()
+	window.hide()
 
 
 func load() -> void:

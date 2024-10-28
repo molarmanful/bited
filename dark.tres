@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=52 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=56 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://baloy40n8qjsx" path="res://assets/ui-dark/tree_arrow_collapsed.png" id="8_4rta4"]
 [ext_resource type="Texture2D" uid="uid://cnb4uew8jei22" path="res://assets/ui-dark/tree_arrow.png" id="8_xrcs3"]
 [ext_resource type="Texture2D" uid="uid://dicr8qgre1y51" path="res://assets/ui-dark/tree_arrow_collapsed_mirrored.png" id="9_imbqb"]
+[ext_resource type="Texture2D" uid="uid://qu8crpagnvsj" path="res://assets/ui-dark/close.png" id="11_m4yao"]
+[ext_resource type="Texture2D" uid="uid://budpiq4l1v3sf" path="res://assets/ui-dark/close_pressed.png" id="12_uvwh3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iexhb"]
 bg_color = Color(0, 0, 0, 1)
@@ -411,6 +413,28 @@ grow_begin = 0.0
 grow_end = 0.0
 vertical = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0y250"]
+content_margin_left = 10.0
+content_margin_top = 28.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+expand_margin_left = 1.0
+expand_margin_top = 32.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qihpe"]
+content_margin_left = 10.0
+content_margin_top = 28.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+expand_margin_left = 1.0
+expand_margin_top = 32.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
 [resource]
 default_font = ExtResource("1_stftx")
 default_font_size = 16
@@ -524,3 +548,11 @@ VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_60igl")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_vjuva")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_twknu")
 VSeparator/styles/separator = SubResource("StyleBoxLine_f8mdf")
+Window/colors/title_color = Color(1, 1, 1, 1)
+Window/constants/close_h_offset = 24
+Window/constants/close_v_offset = 24
+Window/constants/title_height = 32
+Window/icons/close = ExtResource("11_m4yao")
+Window/icons/close_pressed = ExtResource("12_uvwh3")
+Window/styles/embedded_border = SubResource("StyleBoxFlat_0y250")
+Window/styles/embedded_unfocused_border = SubResource("StyleBoxFlat_qihpe")
