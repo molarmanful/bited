@@ -1,36 +1,40 @@
 extends PanelContainer
 
 @export var window: Window
-@export var node_tree: Tree
+@export var node_tabs: TabBar
 @export var btn_save: Button
 @export var btn_cancel: Button
 
+var entries = ["general", "font"]
+var tree_root: TreeItem
+
 
 func _ready() -> void:
-	build_tree()
-
 	window.about_to_popup.connect(load)
 	window.close_requested.connect(window.hide)
+	node_tabs.tab_changed.connect(select)
 	btn_save.pressed.connect(save)
 	btn_cancel.pressed.connect(window.hide)
 
 
-func build_tree() -> void:
-	var root := node_tree.create_item()
-
-	for i in 100:
-		var item := root.create_child()
-		item.set_text(0, "testing testing %d" % i)
+func select(tab: int) -> void:
+	for child in get_tree().get_nodes_in_group("entry"):
+		if child.name == entries[tab]:
+			child.show()
+			continue
+		child.hide()
 
 
 # TODO: validation
 func save() -> void:
-	for child in get_tree().get_nodes_in_group("font"):
-		child.save()
+	for entry in entries:
+		for child in get_tree().get_nodes_in_group(entry):
+			child.save()
 	StateVars.settings.emit()
 	window.hide()
 
 
 func load() -> void:
-	for child in get_tree().get_nodes_in_group("font"):
-		child.load()
+	for entry in entries:
+		for child in get_tree().get_nodes_in_group(entry):
+			child.load()

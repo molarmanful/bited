@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=16 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -16,17 +16,14 @@
 [ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg3q6"]
-draw_center = false
-
-[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tree", "btn_save", "btn_cancel")]
+[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tabs", "btn_save", "btn_cancel")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f5q05")
-node_tree = NodePath("VBoxContainer/HSplitContainer/PanelContainer/ScrollContainer/MarginContainer/Tree")
+node_tabs = NodePath("VBoxContainer/MarginContainer/TabBar")
 btn_save = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/save")
 btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
 
@@ -34,113 +31,113 @@ btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContaine
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-split_offset = 160
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer"]
-layout_mode = 2
-theme_type_variation = &"MainHSplit"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/PanelContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_top = 16
-
-[node name="Tree" type="Tree" parent="VBoxContainer/HSplitContainer/PanelContainer/ScrollContainer/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_styles/focus = SubResource("StyleBoxFlat_tg3q6")
-hide_root = true
-scroll_horizontal_enabled = false
-scroll_vertical_enabled = false
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HSplitContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Font" type="MarginContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+
+[node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+current_tab = 0
+tab_count = 2
+tab_0/title = "GENERAL"
+tab_1/title = "FONT"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font"]
+[node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/general"]
+layout_mode = 2
+text = "TESTING TESTING 123"
+
+[node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label3" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "id"
 vertical_alignment = 1
 
-[node name="id" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="id" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
 script = ExtResource("2_8xqh3")
 
-[node name="Label4" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "foundry name"
 vertical_alignment = 1
 
-[node name="foundry" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="foundry" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "foundry..."
 script = ExtResource("3_iv5cu")
 
-[node name="Label" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "family name"
 vertical_alignment = 1
 
-[node name="family" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="family" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "family..."
 script = ExtResource("4_3lktb")
 
-[node name="Label2" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "weight name"
 vertical_alignment = 1
 
-[node name="weight" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="weight" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "weight..."
 script = ExtResource("5_ey81o")
 
-[node name="Label5" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label5" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "slant"
 vertical_alignment = 1
 
-[node name="slant" type="OptionButton" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="slant" type="OptionButton" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 selected = 0
 item_count = 5
@@ -155,46 +152,46 @@ popup/item_4/text = "RO (Reverse Oblique)"
 popup/item_4/id = 4
 script = ExtResource("6_2x7pt")
 
-[node name="Label6" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label6" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "setwidth name"
 vertical_alignment = 1
 
-[node name="setwidth" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="setwidth" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "setwidth..."
 script = ExtResource("7_phs2n")
 
-[node name="Label7" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label7" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "add style name"
 vertical_alignment = 1
 
-[node name="add_style" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="add_style" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "add style..."
 script = ExtResource("8_iwt5s")
 
-[node name="Label10" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label10" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "resolution"
 vertical_alignment = 1
 
-[node name="resolution" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" node_paths=PackedStringArray("spin_x", "spin_y") groups=["font"]]
+[node name="resolution" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" node_paths=PackedStringArray("spin_x", "spin_y") groups=["font"]]
 layout_mode = 2
 script = ExtResource("10_ms5sx")
 spin_x = NodePath("resolution_x")
 spin_y = NodePath("resolution_y")
 
-[node name="resolution_x" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer/resolution"]
+[node name="resolution_x" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer/resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
@@ -204,7 +201,7 @@ allow_greater = true
 prefix = "x:"
 suffix = "dpi"
 
-[node name="resolution_y" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer/resolution"]
+[node name="resolution_y" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer/resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
@@ -214,14 +211,14 @@ allow_greater = true
 prefix = "y:"
 suffix = "dpi"
 
-[node name="Label11" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label11" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "spacing"
 vertical_alignment = 1
 
-[node name="spacing" type="OptionButton" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" groups=["font"]]
+[node name="spacing" type="OptionButton" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
 layout_mode = 2
 selected = 0
 item_count = 3
@@ -232,80 +229,80 @@ popup/item_2/text = "C (Character Cell)"
 popup/item_2/id = 2
 script = ExtResource("11_x5ybt")
 
-[node name="Label13" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer"]
+[node name="Label13" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "charset"
 vertical_alignment = 1
 
-[node name="charset" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer" node_paths=PackedStringArray("line_reg", "line_enc") groups=["font"]]
+[node name="charset" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" node_paths=PackedStringArray("line_reg", "line_enc") groups=["font"]]
 layout_mode = 2
 script = ExtResource("13_xmogf")
 line_reg = NodePath("ch_reg")
 line_enc = NodePath("ch_enc")
 
-[node name="ch_reg" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer/charset"]
+[node name="ch_reg" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer/charset"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "registry..."
 
-[node name="ch_enc" type="LineEdit" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer/charset"]
+[node name="ch_enc" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer/charset"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "encoding..."
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
 layout_mode = 2
 
-[node name="GridContainer2" type="GridContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer"]
+[node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label3" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2"]
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "bounding box"
 vertical_alignment = 1
 
-[node name="bb" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2" node_paths=PackedStringArray("spin_bb_x", "spin_bb_y") groups=["font"]]
+[node name="bb" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2" node_paths=PackedStringArray("spin_bb_x", "spin_bb_y") groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("13_jg4tp")
 spin_bb_x = NodePath("bb_x")
 spin_bb_y = NodePath("bb_y")
 
-[node name="bb_x" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2/bb"]
+[node name="bb_x" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2/bb"]
 layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
 prefix = "w:"
 
-[node name="bb_y" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2/bb"]
+[node name="bb_y" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2/bb"]
 layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
 prefix = "h:"
 
-[node name="Label4" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2"]
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "bounding box offset"
 vertical_alignment = 1
 
-[node name="bb_off" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2" node_paths=PackedStringArray("spin_bb_off_x", "spin_bb_off_y") groups=["font"]]
+[node name="bb_off" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2" node_paths=PackedStringArray("spin_bb_off_x", "spin_bb_off_y") groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("14_o6q0j")
 spin_bb_off_x = NodePath("bb_off_x")
 spin_bb_off_y = NodePath("bb_off_y")
 
-[node name="bb_off_x" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2/bb_off"]
+[node name="bb_off_x" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2/bb_off"]
 layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
@@ -313,7 +310,7 @@ allow_greater = true
 allow_lesser = true
 prefix = "x:"
 
-[node name="bb_off_y" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2/bb_off"]
+[node name="bb_off_y" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2/bb_off"]
 layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
@@ -321,26 +318,26 @@ allow_greater = true
 allow_lesser = true
 prefix = "y:"
 
-[node name="Label12" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2"]
+[node name="Label12" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "cap height"
 vertical_alignment = 1
 
-[node name="cap_h" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2" groups=["font"]]
+[node name="cap_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2" groups=["font"]]
 layout_mode = 2
 allow_greater = true
 script = ExtResource("15_oq3fj")
 
-[node name="Label13" type="Label" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2"]
+[node name="Label13" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "x-height"
 vertical_alignment = 1
 
-[node name="x_h" type="SpinBox" parent="VBoxContainer/HSplitContainer/ScrollContainer/Font/VBoxContainer/GridContainer2" groups=["font"]]
+[node name="x_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer2" groups=["font"]]
 layout_mode = 2
 allow_greater = true
 script = ExtResource("16_26mdr")
