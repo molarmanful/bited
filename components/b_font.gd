@@ -33,7 +33,7 @@ var asc: int:
 		return bb.y - desc
 var desc: int:
 	get:
-		return abs(bb_off.y)
+		return -bb_off.y
 var props := {}
 
 var size_calc: Vector2i:
@@ -43,28 +43,6 @@ var size_calc: Vector2i:
 var center: Vector2i:
 	get:
 		return size_calc * Vector2i(1, -1) / 2
-
-var xlfd: String:
-	get:
-		return (
-			"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
-			% [
-				foundry,
-				family,
-				weight,
-				slant,
-				setwidth,
-				add_style,
-				px_size,
-				pt_size,
-				resolution.x,
-				resolution.y,
-				spacing,
-				avg_w() * 10,
-				ch_reg,
-				ch_enc,
-			]
-		)
 
 
 func init_font() -> void:
@@ -100,6 +78,105 @@ func load_font() -> void:
 	if qs.is_empty():
 		return
 	from_dict(bytes_to_var(qs[0].data))
+
+
+func to_bdf() -> String:
+	var res: Array[String] = [
+		"STARTFONT 2.2",
+		"FONT %s" % xlfd(),
+		"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
+		"FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
+		"METRICSSET %d" % metricsset,
+	]
+
+	if metricsset % 2 == 0:
+		res.append_array(["SWIDTH %d 0" % swidth(dwidth), "DWIDTH %d 0" % dwidth])
+	if metricsset > 0:
+		res.append_array(["SWIDTH1 %d 0" % swidth(dwidth1), "DWIDTH1 %d 0" % dwidth1])
+
+	res.append_array(to_bdf_properties())
+	res.append_array(to_bdf_chars())
+
+	res.push_back("ENDFONT")
+	return "\n".join(res)
+
+
+func to_bdf_properties() -> Array[String]:
+	var res: Array[String] = [
+		"FOUNDRY %s" % foundry,
+		"FAMILY_NAME %s" % family,
+		"WEIGHT_NAME %s" % weight,
+		"SLANT %s" % slant,
+		"SETWIDTH_NAME %s" % setwidth,
+		"ADD_STYLE_NAME %s" % add_style,
+		"PIXEL_SIZE %d" % px_size,
+		"POINT_SIZE %d" % pt_size,
+		"RESOLUTION_X %d" % resolution.x,
+		"RESOLUTION_Y %d" % resolution.y,
+		"SPACING %s" % spacing,
+		"AVERAGE_WIDTH %d" % avg_w(),
+		"CHARSET_REGISTRY %s" % ch_reg,
+		"CHARSET_ENCODING %s" % ch_enc,
+		"FONT_ASCENT %d" % asc,
+		"FONT_DESCENT %d" % desc,
+		"CAP_HEIGHT %d" % cap_h,
+		"X_HEIGHT %d" % x_h,
+	]
+
+	for k in props:
+		res.append("%s %s" % [k.to_upper(), props[k]])
+
+	res.push_front("START_PROPERTIES %d" % res.size())
+	res.push_back("END_PROPERTIES")
+	return res
+
+
+func to_bdf_chars() -> Array[String]:
+	var res: Array[String] = []
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select name, code, dwidth, dwidth1, off_x, off_y, img
+				from font_%s
+				order by code, name
+				;"""
+				% id
+			)
+		)
+	)
+	var qs := StateVars.db_saves.query_result
+
+	res.push_back("CHARS %d" % qs.size())
+
+	for q in qs:
+		var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
+		var sz := Vector2i.ZERO
+		if q.img:
+			img.load_png_from_buffer(q.img)
+			sz = img.get_size()
+
+		res.append_array(
+			[
+				"STARTCHAR %s%s" % ["" if q.code < 0 else "U+", q.name],
+				"ENCODING %d" % q.code,
+				"BBX %d %d %d %d" % [sz.x, sz.y, q.off_x, q.off_y]
+			]
+		)
+
+		if metricsset % 2 == 0:
+			res.append_array(["SWIDTH %d 0" % swidth(q.dwidth), "DWIDTH %d 0" % q.dwidth])
+		if metricsset > 0:
+			res.append_array(["SWIDTH1 %d 0" % swidth(q.dwidth1), "DWIDTH1 %d 0" % q.dwidth1])
+
+		res.push_back("BITMAP")
+		res.append_array(Util.bits_to_hexes(Util.alpha_to_bits(img), img.get_width()))
+		res.push_back("ENDCHAR")
+
+	return res
 
 
 func to_dict() -> Dictionary:
@@ -148,8 +225,36 @@ func from_dict(d: Dictionary) -> void:
 	props = d.props
 
 
+func xlfd() -> String:
+	return (
+		"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
+		% [
+			foundry,
+			family,
+			weight,
+			slant,
+			setwidth,
+			add_style,
+			px_size,
+			pt_size,
+			resolution.x,
+			resolution.y,
+			spacing,
+			avg_w(),
+			ch_reg,
+			ch_enc,
+		]
+	)
+
+
 func avg_w() -> int:
-	var qs := StateVars.db_saves.select_rows("font_" + id, "", ["avg(dwidth) as avg"])
+	var qs := StateVars.db_saves.select_rows(
+		"font_" + id, "", ["cast(avg(dwidth) * 10 as int) as avg"]
+	)
 	if qs.is_empty():
 		return 0
 	return qs[0].avg
+
+
+func swidth(dw: int) -> int:
+	return dw * 72000 / (pt_size / 10 * resolution.x)

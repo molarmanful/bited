@@ -22,6 +22,7 @@ func _ready():
 	init_font_metas()
 	# TODO: prompt for font at startup
 	font.init_font()
+	print(font.to_bdf())
 
 
 func init_font_metas() -> void:

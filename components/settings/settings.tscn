@@ -61,6 +61,7 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
@@ -69,7 +70,6 @@ layout_mode = 2
 text = "TESTING TESTING 123"
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
@@ -341,6 +341,27 @@ vertical_alignment = 1
 layout_mode = 2
 allow_greater = true
 script = ExtResource("16_26mdr")
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+layout_mode = 2
+
+[node name="GridContainer3" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "copyright"
+vertical_alignment = 1
+
+[node name="copyright" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3" groups=["font"]]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "copyright..."
+script = ExtResource("2_8xqh3")
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
