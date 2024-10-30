@@ -253,7 +253,7 @@ func avg_w() -> int:
 	)
 	if qs.is_empty():
 		return 0
-	return qs[0].avg
+	return qs[0].avg or 0
 
 
 func swidth(dw: int) -> int:
