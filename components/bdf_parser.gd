@@ -12,6 +12,7 @@ var started := false
 var ended := false
 
 var defs := {}
+var glyphs := {}
 
 var gen := gen_default
 var gen_defs := {}
@@ -280,12 +281,12 @@ func parse_bm(line: Dictionary) -> String:
 
 func endchar() -> void:
 	mode = Mode.X
+	glyphs[gen.name] = gen
 	clrchar()
 
 
 func clrchar() -> void:
-	gen.clear()
-	gen.merge(gen_default)
+	gen = {}
 	gen_defs.clear()
 	gen_w = 0
 	gen_h = 0
