@@ -90,12 +90,14 @@ func parse_x(line: Dictionary) -> String:
 			var xs := arr_int(4, line.v)
 
 			if xs.size() < 4:
-				warn("FONTBOUNDINGBOX has <4 entries, filling with 0")
+				warn("FONTBOUNDINGBOX has <4 valid entries, filling with 0")
 				xs.resize(4)
 			if xs[0] < 0:
-				return "bounding box x must be >0"
+				warn("bounding box x must be >0, defaulting to 0")
+				xs[0] = 0
 			if xs[1] < 0:
-				return "bounding box y must be >0"
+				warn("bounding box y must be >0, defaulting to 0")
+				xs[1] = 0
 
 			font.bb.x = xs[0]
 			font.bb.y = xs[1]
@@ -139,6 +141,7 @@ func parse_x(line: Dictionary) -> String:
 
 		"STARTCHAR":
 			mode = Mode.CHAR
+			# TODO: incorporate line.v
 
 		"ENDFONT":
 			# TODO: make sure all required entries exist
