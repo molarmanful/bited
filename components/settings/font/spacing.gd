@@ -1,6 +1,6 @@
 extends OptionButton
 
-var opts = ["M", "P", "C"]
+var opts := ["M", "P", "C"]
 
 
 func save() -> void:

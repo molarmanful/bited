@@ -10,7 +10,7 @@ func _draw() -> void:
 
 	var res: Array[Vector2i] = []
 	for i in w_grid:
-		var iw = i * w_cell
+		var iw := i * w_cell
 		res.push_back(Vector2i(0, iw))
 		res.push_back(Vector2i(w_grid, iw))
 		res.push_back(Vector2i(iw, 0))

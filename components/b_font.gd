@@ -39,7 +39,6 @@ var props := {}
 var size_calc: Vector2i:
 	get:
 		return Vector2i(dwidth, bb.y)
-
 var center: Vector2i:
 	get:
 		return size_calc * Vector2i(1, -1) / 2
@@ -167,9 +166,9 @@ func to_bdf_chars() -> Array[String]:
 			]
 		)
 
-		if metricsset % 2 == 0:
+		if dwidth != q.dwidth and metricsset % 2 == 0:
 			res.append_array(["SWIDTH %d 0" % swidth(q.dwidth), "DWIDTH %d 0" % q.dwidth])
-		if metricsset > 0:
+		if dwidth1 != q.dwidth1 and metricsset > 0:
 			res.append_array(["SWIDTH1 %d 0" % swidth(q.dwidth1), "DWIDTH1 %d 0" % q.dwidth1])
 
 		res.push_back("BITMAP")
@@ -177,6 +176,11 @@ func to_bdf_chars() -> Array[String]:
 		res.push_back("ENDCHAR")
 
 	return res
+
+
+# TODO
+func from_bdf() -> void:
+	pass
 
 
 func to_dict() -> Dictionary:

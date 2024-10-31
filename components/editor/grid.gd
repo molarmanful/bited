@@ -159,7 +159,7 @@ func act_cells(prev: Image) -> void:
 
 
 func op(f: Callable) -> void:
-	var prev = Util.img_copy(cells)
+	var prev := Util.img_copy(cells)
 	f.call()
 	to_update_cells = true
 	act_cells(prev)

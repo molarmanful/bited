@@ -42,7 +42,7 @@ var selected := false:
 
 
 static func create(t: Table) -> Glyph:
-	var glyph = ScnGlyph.instantiate()
+	var glyph := ScnGlyph.instantiate()
 	glyph.table = t
 	return glyph
 

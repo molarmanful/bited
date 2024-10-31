@@ -1,13 +1,21 @@
 extends Node
+## Global state and signal bus for non-style-related data.
 
+## Emits when settings are saved.
 signal settings
+## Emits when a glyph is sent to the editor.
 signal edit(glyph: Glyph)
+## Emits when an action requires the editor to refresh (e.g. glyph deletion hiding grid).
 signal edit_refresh
+## Emits when an action requires the table to refresh.
 signal refresh(gen: Dictionary)
 
+## Current font data.
 var font := BFont.new()
 
+## Static database for Unicode metadata.
 var db_uc := SQLite.new()
+## Database for font data.
 var db_saves := SQLite.new()
 
 
@@ -25,6 +33,7 @@ func _ready():
 	print(font.to_bdf())
 
 
+## Initializes master table for saved fonts.
 func init_font_metas() -> void:
 	(
 		db_saves

@@ -1,8 +1,13 @@
 extends Node
+## Global state and signal bus for style-related data.
 
+## Emits when a global theme change is requested.
 signal set_theme(theme: Theme)
+## Emits when a global theme is finished changing.
 signal apply_theme
+## Emits when font styling (e.g. size) changes.
 signal set_font
+## Emits when thumbnail styling (e.g. size) changes.
 signal set_thumb
 
 var font_scale := 1:

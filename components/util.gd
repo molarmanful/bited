@@ -12,9 +12,9 @@ func img_copy(im: Image) -> Image:
 
 
 func alpha_to_bits(img: Image) -> PackedByteArray:
-	var res = PackedByteArray()
-	var byte = 0
-	var pos = 7
+	var res := PackedByteArray()
+	var byte := 0
+	var pos := 7
 	var w8 := (img.get_width() + 7) & ~7
 	for y in range(img.get_height()):
 		for x in range(w8):

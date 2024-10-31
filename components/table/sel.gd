@@ -122,7 +122,7 @@ func commit() -> void:
 	var y := xy[1]
 
 	var res: Array[int] = []
-	var merged = false
+	var merged := false
 
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]

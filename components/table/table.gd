@@ -13,8 +13,8 @@ extends PanelContainer
 # TODO: consider lru-ing
 var vglyphs := {}
 var thumbs := {}
-var debounced = false
-var to_update = false
+var debounced := false
+var to_update := false
 
 
 func _ready() -> void:

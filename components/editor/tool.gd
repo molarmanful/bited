@@ -92,7 +92,7 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		var pv = Util.img_copy(c_tool.prev)
+		var pv := Util.img_copy(c_tool.prev)
 		c_grid.act_cells(pv)
 		c_grid.bitmap.save()
 
@@ -165,7 +165,7 @@ class ToolRect:
 		if c_tool.cmode == CMode.INV:
 			for x in rect.size.x:
 				for y in rect.size.y:
-					var v = Vector2i(x, y) + rect.position
+					var v := Vector2i(x, y) + rect.position
 					c_grid.cells.set_pixelv(v, get_c(v))
 		else:
 			c_grid.cells.fill_rect(rect, get_c(p))

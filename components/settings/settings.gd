@@ -5,7 +5,7 @@ extends PanelContainer
 @export var btn_save: Button
 @export var btn_cancel: Button
 
-var entries = ["general", "font"]
+var entries := ["general", "font"]
 var tree_root: TreeItem
 
 
