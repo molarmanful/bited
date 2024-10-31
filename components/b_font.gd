@@ -18,16 +18,13 @@ var resolution := Vector2i(75, 75)
 var spacing := "P"
 var ch_reg := "ISO10646"
 var ch_enc := "1"
-var bb := Vector2i(8, 16)
-var bb_off := Vector2i(0, -2)
-var metricsset := 0
-var dwidth := 8
-var dwidth1 := 16
-var vvector: Vector2i:
+var bb := Vector2i(0, 0)
+var bb_off := Vector2i(0, 0)
+var dwidth: int:
 	get:
-		return Vector2i(bb.x / 2, bb.y + bb_off.y)
-var cap_h := 9
-var x_h := 7
+		return bb.x + bb_off.x
+var cap_h := 0
+var x_h := 0
 var asc: int:
 	get:
 		return bb.y - desc
@@ -44,6 +41,15 @@ var center: Vector2i:
 		return size_calc * Vector2i(1, -1) / 2
 
 
+static func sensible() -> BFont:
+	var res := BFont.new()
+	res.bb = Vector2i(8, 16)
+	res.bb_off = Vector2i(0, -2)
+	res.cap_h = 9
+	res.x_h = 7
+	return res
+
+
 func init_font() -> void:
 	save_font(true)
 	(
@@ -55,7 +61,6 @@ func init_font() -> void:
 				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
 				code = {data_type = "int", not_null = true},
 				dwidth = {data_type = "int", not_null = true},
-				dwidth1 = {data_type = "int"},
 				off_x = {data_type = "int", not_null = true},
 				off_y = {data_type = "int", not_null = true},
 				img = {data_type = "blob"},
@@ -81,17 +86,11 @@ func load_font() -> void:
 
 func to_bdf() -> String:
 	var res: Array[String] = [
-		"STARTFONT 2.2",
+		"STARTFONT 2.1",
 		"FONT %s" % xlfd(),
 		"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
 		"FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
-		"METRICSSET %d" % metricsset,
 	]
-
-	if metricsset % 2 == 0:
-		res.append_array(["SWIDTH %d 0" % swidth(dwidth), "DWIDTH %d 0" % dwidth])
-	if metricsset > 0:
-		res.append_array(["SWIDTH1 %d 0" % swidth(dwidth1), "DWIDTH1 %d 0" % dwidth1])
 
 	res.append_array(to_bdf_properties())
 	res.append_array(to_bdf_chars())
@@ -139,7 +138,7 @@ func to_bdf_chars() -> Array[String]:
 		. query(
 			(
 				"""
-				select name, code, dwidth, dwidth1, off_x, off_y, img
+				select name, code, dwidth, off_x, off_y, img
 				from font_%s
 				order by code, name
 				;"""
@@ -158,20 +157,20 @@ func to_bdf_chars() -> Array[String]:
 			img.load_png_from_buffer(q.img)
 			sz = img.get_size()
 
-		res.append_array(
-			[
-				"STARTCHAR %s%s" % ["" if q.code < 0 else "U+", q.name],
-				"ENCODING %d" % q.code,
-				"BBX %d %d %d %d" % [sz.x, sz.y, q.off_x, q.off_y]
-			]
+		(
+			res
+			. append_array(
+				[
+					"STARTCHAR %s%s" % ["" if q.code < 0 else "U+", q.name],
+					"ENCODING %d" % q.code,
+					"BBX %d %d %d %d" % [sz.x, sz.y, q.off_x, q.off_y],
+					"SWIDTH %d 0" % swidth(q.dwidth),
+					"DWIDTH %d 0" % q.dwidth,
+					"BITMAP",
+				]
+			)
 		)
 
-		if dwidth != q.dwidth and metricsset % 2 == 0:
-			res.append_array(["SWIDTH %d 0" % swidth(q.dwidth), "DWIDTH %d 0" % q.dwidth])
-		if dwidth1 != q.dwidth1 and metricsset > 0:
-			res.append_array(["SWIDTH1 %d 0" % swidth(q.dwidth1), "DWIDTH1 %d 0" % q.dwidth1])
-
-		res.push_back("BITMAP")
 		res.append_array(Util.bits_to_hexes(Util.alpha_to_bits(img), img.get_width()))
 		res.push_back("ENDCHAR")
 
@@ -198,9 +197,7 @@ func to_dict() -> Dictionary:
 		ch_enc = ch_enc,
 		bb = bb,
 		bb_off = bb_off,
-		metricsset = metricsset,
 		dwidth = dwidth,
-		dwidth1 = dwidth1,
 		cap_h = cap_h,
 		x_h = x_h,
 		props = props,
@@ -221,9 +218,7 @@ func from_dict(d: Dictionary) -> void:
 	ch_enc = d.ch_enc
 	bb = d.bb
 	bb_off = d.bb_off
-	metricsset = d.metricsset
 	dwidth = d.dwidth
-	dwidth1 = d.dwidth1
 	cap_h = d.cap_h
 	x_h = d.x_h
 	props = d.props

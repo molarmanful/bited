@@ -80,7 +80,7 @@ func oninput(e: InputEvent) -> void:
 		return
 	if (
 		e is InputEventMouseButton
-		and e.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP]
+		and [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP].has(e.button_index)
 	):
 		return
 

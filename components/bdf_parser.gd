@@ -2,20 +2,31 @@
 class_name BDFParser
 extends RefCounted
 
-enum Mode { X, PROPS, CHAR, BM }
+enum Mode { X, PROPS, CHAR, CHAR_IGNORE, BM }
 
-var font: Font
+var font := BFont.new()
 
 var n_line := 0
 var mode := Mode.X
 var started := false
+var ended := false
+
 var defs := {}
 
+var gen := gen_default
+var gen_w := 0
+var gen_h := 0
+var gen_bm := PackedByteArray()
+
 var r_ws := RegEx.create_from_string("\\s+")
-
-
-func _init(f: Font) -> void:
-	font = f
+var gen_default := {
+	name = "",
+	code = -1,
+	dwidth = 0,
+	off_x = 0,
+	off_y = 0,
+	img = null,
+}
 
 
 func from_file(path: String) -> void:
@@ -35,24 +46,28 @@ func parse(f: Callable, end: Callable) -> String:
 
 		var line := kv(f.call())
 
-		if line.k == "STARTFONT":
+		if line.k == "STARTFONT" and notdef("STARTFONT"):
 			if not started:
 				started = true
-			else:
-				warn("extra STARTFONT entry, ignoring")
 
 		elif started:
+			var e := ""
 			match mode:
 				Mode.PROPS:
-					pass
+					e = parse_props(line)
 				Mode.CHAR:
-					pass
+					e = parse_char(line)
+				Mode.CHAR_IGNORE:
+					e = parse_char_ignore(line)
 				Mode.BM:
-					pass
-				_:
-					var e := parse_x(line)
-					if e:
-						return e
+					e = parse_bm(line)
+				Mode.X:
+					e = parse_x(line)
+			if e:
+				return e
+
+		if ended:
+			return ""
 
 	warn("file ended without ENDFONT")
 	return ""
@@ -62,98 +77,220 @@ func parse_x(line: Dictionary) -> String:
 	match line.k:
 		"FONT":
 			if notdef("FONT"):
-				var xs: Array[String] = line.v.split("-")
+				var xs: Array[String] = line.v.split("-").map(func(x: String): x.strip_edges())
 
 				if line.v[0] != "-":
 					return "XLFD must start with '-'"
 				if xs.size() < 15:
 					return "XLFD must have 14 entries"
-				if xs.size() > 15:
-					warn("XLFD has >14 entries")
 
-				font.foundry = xs[1]
-				font.family = xs[2]
-				font.weight = xs[3]
-				font.slant = xs[4]
-				font.setwidth = xs[5]
-				font.addstyle = xs[6]
-				font.resolution.x = xs[9]
-				font.resolution.y = xs[10]
-				font.spacing = xs[11]
-				font.ch_reg = xs[13]
-				font.ch_enc = xs[14]
+				if not xs[1]:
+					warn("XLFD foundry name is empty, defaulting to '%s'" % font.foundry)
+				else:
+					font.foundry = xs[1]
+
+				if not xs[2]:
+					warn("XLFD family name is empty, defaulting to '%s'" % font.family)
+				else:
+					font.family = xs[2]
+
+				if not xs[3]:
+					warn("XLFD weight name is empty, defaulting to '%s'" % font.weight)
+				else:
+					font.weight = xs[3]
+
+				if not xs[4]:
+					warn("XLFD slant is empty, defaulting to '%s'" % font.slant)
+				else:
+					font.slant = xs[4]
+
+				if not xs[5]:
+					warn("XLFD setwidth name is empty, defaulting to '%s'" % font.setwidth)
+				else:
+					font.setwidth = xs[5]
+
+				if xs[6]:
+					font.addstyle = xs[6]
+
+				if not xs[9].is_valid_int() or int(xs[9]) < 1:
+					warn(
+						(
+							"XLFD resolution x is not a valid int >0, defaulting to %d"
+							% font.resolution.x
+						)
+					)
+				else:
+					font.resolution.x = int(xs[9])
+
+				if not xs[10].is_valid_int() or int(xs[10]) < 1:
+					warn(
+						(
+							"XLFD resolution y is not a valid int >0, defaulting to %d"
+							% font.resolution.y
+						)
+					)
+				else:
+					font.resolution.y = int(xs[10])
+
+				xs[11] = xs[11].to_upper()
+				if not ["P", "M", "C"].has(xs[11]):
+					warn("XLFD spacing is not one of (P, M, C), defaulting to %s" % font.spacing)
+				else:
+					font.spacing = xs[11]
+
+				# font.ch_reg = xs[13]
+				# font.ch_enc = xs[14]
 
 		"SIZE":
 			pass
 
 		"FONTBOUNDINGBOX":
-			var xs := arr_int(4, line.v)
+			if notdef("FONTBOUNDINGBOX"):
+				var xs := arr_int(4, line.v)
 
-			if xs.size() < 4:
-				warn("FONTBOUNDINGBOX has <4 valid entries, filling with 0")
-				xs.resize(4)
-			if xs[0] < 0:
-				warn("bounding box x must be >0, defaulting to 0")
-				xs[0] = 0
-			if xs[1] < 0:
-				warn("bounding box y must be >0, defaulting to 0")
-				xs[1] = 0
+				if xs.size() < 4:
+					warn("FONTBOUNDINGBOX has <4 valid entries, filling with 0")
+					xs.resize(4)
+				if xs[0] < 0:
+					warn("bounding box x is <0, defaulting to 0")
+					xs[0] = 0
+				if xs[1] < 0:
+					warn("bounding box y is <0, defaulting to 0")
+					xs[1] = 0
 
-			font.bb.x = xs[0]
-			font.bb.y = xs[1]
-			font.bb_off.x = xs[2]
-			font.bb_off.y = xs[3]
+				font.bb.x = xs[0]
+				font.bb.y = xs[1]
+				font.bb_off.x = xs[2]
+				font.bb_off.y = xs[3]
 
-		"METRICSSET":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty():
-				warn("unable to parse METRICSSET, defaulting to 0")
-				font.metricsset = 0
-			else:
-				font.metricsset = xs[0]
-
-		"SWIDTH":
-			pass
-
-		"DWIDTH":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty():
-				warn("unable to parse DWIDTH, skipping")
-			else:
-				font.dwidth = xs[0]
-
-		"SWIDTH1":
-			pass
-
-		"DWIDTH1":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty():
-				warn("unable to parse DWIDTH1, skipping")
-			else:
-				font.dwidth1 = xs[0]
-
-		# TODO: consider using this to calculate dwidths
-		"VVECTOR":
+		"CONTENTVERSION", "METRICSSET", "SWIDTH", "DWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
 
 		"STARTPROPERTIES":
 			mode = Mode.PROPS
 
+		"CHARS":
+			pass
+
 		"STARTCHAR":
-			mode = Mode.CHAR
-			# TODO: incorporate line.v
+			var x: String = line.v.strip_edges()
+			if notdef("char " + x):
+				mode = Mode.CHAR
+				gen.name = x
+			else:
+				mode = Mode.CHAR_IGNORE
 
 		"ENDFONT":
 			# TODO: make sure all required entries exist
+			ended = true
 			return ""
 
 		_:
-			if mode == Mode.PROPS:
-				pass
-			else:
-				warn("unknown keyword %s" % line.k)
+			warn("unknown keyword %s in glyph '%s', skipping" % [line.k, gen.name])
 
 	return ""
+
+
+func parse_props(line: Dictionary) -> String:
+	if line.k == "ENDPROPERTIES":
+		mode = Mode.X
+
+	elif notdef("prop " + line.k):
+		font.props[line.k] = line.v
+
+		match line.k:
+			"CAP_HEIGHT":
+				var xs := arr_int(1, line.v)
+				if xs.is_empty() or xs[0] < 0:
+					warn("CAP_HEIGHT is not a valid int >=0, defaulting to 0")
+				else:
+					font.cap_h = xs[0]
+
+			"X_HEIGHT":
+				var xs := arr_int(1, line.v)
+				if xs.is_empty() or xs[0] < 0:
+					warn("X_HEIGHT is not a valid int >=0, defaulting to 0")
+				else:
+					font.x_h = xs[0]
+
+	return ""
+
+
+func parse_char(line: Dictionary) -> String:
+	match line.k:
+		"ENCODING":
+			var xs := arr_int(1, line.v)
+			if xs.is_empty():
+				warn("ENCODING is not a valid int, defaulting to -1")
+			else:
+				gen.code = xs[0]
+
+		"BBX":
+			if notdef("BBX"):
+				var xs := arr_int(4, line.v)
+
+				if xs.size() < 4:
+					warn("BBX has <4 valid entries, filling with 0")
+					xs.resize(4)
+				if xs[0] < 0:
+					warn("bounding box x is <0, defaulting to 0")
+					xs[0] = 0
+				if xs[1] < 0:
+					warn("bounding box y is <0, defaulting to 0")
+					xs[1] = 0
+
+				gen_w = xs[0]
+				gen_h = xs[1]
+				gen.off_x = xs[2]
+				gen.off_y = xs[3]
+
+		"DWIDTH":
+			var xs := arr_int(1, line.v)
+			if xs.is_empty():
+				warn("DWIDTH must be a valid int, defaulting to 0")
+			else:
+				gen.dwidth = xs[0]
+
+		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
+			pass
+
+		"BITMAP":
+			mode = Mode.BM
+
+		"ENDCHAR":
+			endchar()
+
+		_:
+			warn("unknown keyword %s, skipping" % line.k)
+
+	return ""
+
+
+func parse_char_ignore(line: Dictionary) -> String:
+	match line.k:
+		"ENDCHAR":
+			mode = Mode.X
+	return ""
+
+
+func parse_bm(line: Dictionary) -> String:
+	match line.k:
+		"ENDCHAR":
+			endchar()
+	return ""
+
+
+func endchar() -> void:
+	mode = Mode.X
+	clrchar()
+
+
+func clrchar() -> void:
+	gen.clear()
+	gen.merge(gen_default)
+	gen_w = 0
+	gen_h = 0
+	gen_bm.clear()
 
 
 func kv(l: String) -> Dictionary:
@@ -182,5 +319,7 @@ func err(msg: String) -> void:
 func notdef(k: String) -> bool:
 	var ret := k in defs
 	if ret:
-		warn("%s already defined, ignoring" % k)
+		warn("%s already defined, skipping" % k)
+	else:
+		defs[k] = true
 	return not ret

@@ -11,7 +11,7 @@ signal edit_refresh
 signal refresh(gen: Dictionary)
 
 ## Current font data.
-var font := BFont.new()
+var font := BFont.sensible()
 
 ## Static database for Unicode metadata.
 var db_uc := SQLite.new()
