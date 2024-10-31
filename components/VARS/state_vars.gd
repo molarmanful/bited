@@ -29,6 +29,9 @@ func _ready():
 
 	init_font_metas()
 	# TODO: prompt for font at startup
+	var bdfp = BDFParser.new()
+	bdfp.from_file("res://assets/test.bdf")
+	font = bdfp.font
 	font.init_font()
 	print(font.to_bdf())
 

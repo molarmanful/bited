@@ -19,18 +19,18 @@ var spacing := "P"
 var ch_reg := "ISO10646"
 var ch_enc := "1"
 var bb := Vector2i(0, 0)
-var bb_off := Vector2i(0, 0)
+var off_y := 0
 var dwidth: int:
 	get:
-		return bb.x + bb_off.x
+		return bb.x
 var cap_h := 0
 var x_h := 0
 var asc: int:
 	get:
-		return bb.y - desc
+		return px_size - desc
 var desc: int:
 	get:
-		return -bb_off.y
+		return -off_y
 var props := {}
 
 var size_calc: Vector2i:
@@ -44,14 +44,14 @@ var center: Vector2i:
 static func sensible() -> BFont:
 	var res := BFont.new()
 	res.bb = Vector2i(8, 16)
-	res.bb_off = Vector2i(0, -2)
+	res.off_y = -2
 	res.cap_h = 9
 	res.x_h = 7
 	return res
 
 
 func init_font() -> void:
-	save_font(true)
+	save_font()
 	(
 		StateVars
 		. db_saves
@@ -89,7 +89,8 @@ func to_bdf() -> String:
 		"STARTFONT 2.1",
 		"FONT %s" % xlfd(),
 		"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-		"FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
+		# FIXME
+		# "FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
 	]
 
 	res.append_array(to_bdf_properties())
@@ -122,7 +123,29 @@ func to_bdf_properties() -> Array[String]:
 	]
 
 	for k in props:
-		res.append("%s %s" % [k.to_upper(), props[k]])
+		if not (
+			[
+				"FOUNDRY",
+				"FAMILY_NAME",
+				"SLANT",
+				"SETWIDTH_NAME",
+				"ADD_STYLE_NAME",
+				"PIXEL_SIZE",
+				"POINT_SIZE",
+				"RESOLUTION_X",
+				"RESOLUTION_Y",
+				"SPACING",
+				"AVERAGE_WIDTH",
+				"CHARSET_REGISTRY",
+				"CHARSET_ENCODING",
+				"FONT_ASCENT",
+				"FONT_DESCENT",
+				"CAP_HEIGHT",
+				"X_HEIGHT"
+			]
+			. has(k.to_upper())
+		):
+			res.append("%s %s" % [k.to_upper(), props[k]])
 
 	res.push_front("START_PROPERTIES %d" % res.size())
 	res.push_back("END_PROPERTIES")
@@ -177,11 +200,6 @@ func to_bdf_chars() -> Array[String]:
 	return res
 
 
-# TODO
-func from_bdf() -> void:
-	pass
-
-
 func to_dict() -> Dictionary:
 	return {
 		id = id,
@@ -196,7 +214,7 @@ func to_dict() -> Dictionary:
 		ch_reg = ch_reg,
 		ch_enc = ch_enc,
 		bb = bb,
-		bb_off = bb_off,
+		off_y = off_y,
 		dwidth = dwidth,
 		cap_h = cap_h,
 		x_h = x_h,
@@ -217,7 +235,7 @@ func from_dict(d: Dictionary) -> void:
 	ch_reg = d.ch_reg
 	ch_enc = d.ch_enc
 	bb = d.bb
-	bb_off = d.bb_off
+	off_y = d.off_y
 	dwidth = d.dwidth
 	cap_h = d.cap_h
 	x_h = d.x_h

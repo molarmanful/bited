@@ -14,6 +14,7 @@ var ended := false
 var defs := {}
 
 var gen := gen_default
+var gen_defs := {}
 var gen_w := 0
 var gen_h := 0
 var gen_bm := PackedByteArray()
@@ -77,7 +78,9 @@ func parse_x(line: Dictionary) -> String:
 	match line.k:
 		"FONT":
 			if notdef("FONT"):
-				var xs: Array[String] = line.v.split("-").map(func(x: String): x.strip_edges())
+				var xs: PackedStringArray = line.v.split("-")
+				for i in range(xs.size()):
+					xs[i] = xs[i].strip_edges()
 
 				if line.v[0] != "-":
 					return "XLFD must start with '-'"
@@ -112,6 +115,11 @@ func parse_x(line: Dictionary) -> String:
 				if xs[6]:
 					font.addstyle = xs[6]
 
+				if not xs[7].is_valid_int() or int(xs[9]) < 0:
+					warn("XLFD pixel size is not a valid int >=0, defaulting to 0")
+				else:
+					font.bb.y = int(xs[7])
+
 				if not xs[9].is_valid_int() or int(xs[9]) < 1:
 					warn(
 						(
@@ -141,29 +149,17 @@ func parse_x(line: Dictionary) -> String:
 				# font.ch_reg = xs[13]
 				# font.ch_enc = xs[14]
 
-		"SIZE":
+		"SIZE", "FONTBOUNDINGBOX":
 			pass
 
-		"FONTBOUNDINGBOX":
-			if notdef("FONTBOUNDINGBOX"):
-				var xs := arr_int(4, line.v)
-
-				if xs.size() < 4:
-					warn("FONTBOUNDINGBOX has <4 valid entries, filling with 0")
-					xs.resize(4)
-				if xs[0] < 0:
-					warn("bounding box x is <0, defaulting to 0")
-					xs[0] = 0
-				if xs[1] < 0:
-					warn("bounding box y is <0, defaulting to 0")
-					xs[1] = 0
-
+		"DWIDTH":
+			var xs := arr_int(1, line.v)
+			if xs.is_empty() or xs[0] < 0:
+				warn("DWIDTH x is not a valid int >=0, defaulting to 0")
+			else:
 				font.bb.x = xs[0]
-				font.bb.y = xs[1]
-				font.bb_off.x = xs[2]
-				font.bb_off.y = xs[3]
 
-		"CONTENTVERSION", "METRICSSET", "SWIDTH", "DWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
+		"CONTENTVERSION", "METRICSSET", "SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
 
 		"STARTPROPERTIES":
@@ -219,14 +215,15 @@ func parse_props(line: Dictionary) -> String:
 func parse_char(line: Dictionary) -> String:
 	match line.k:
 		"ENCODING":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty():
-				warn("ENCODING is not a valid int, defaulting to -1")
-			else:
-				gen.code = xs[0]
+			if notdef_gen("ENCODING"):
+				var xs := arr_int(1, line.v)
+				if xs.is_empty():
+					warn("ENCODING is not a valid int, defaulting to -1")
+				else:
+					gen.code = xs[0]
 
 		"BBX":
-			if notdef("BBX"):
+			if notdef_gen("BBX"):
 				var xs := arr_int(4, line.v)
 
 				if xs.size() < 4:
@@ -245,11 +242,12 @@ func parse_char(line: Dictionary) -> String:
 				gen.off_y = xs[3]
 
 		"DWIDTH":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty():
-				warn("DWIDTH must be a valid int, defaulting to 0")
-			else:
-				gen.dwidth = xs[0]
+			if notdef_gen("DWIDTH"):
+				var xs := arr_int(1, line.v)
+				if xs.is_empty() or xs[0] < 0:
+					warn("DWIDTH x is not a valid int >=0, defaulting to %d" % gen.dwidth)
+				else:
+					gen.dwidth = xs[0]
 
 		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
@@ -288,6 +286,7 @@ func endchar() -> void:
 func clrchar() -> void:
 	gen.clear()
 	gen.merge(gen_default)
+	gen_defs.clear()
 	gen_w = 0
 	gen_h = 0
 	gen_bm.clear()
@@ -322,4 +321,13 @@ func notdef(k: String) -> bool:
 		warn("%s already defined, skipping" % k)
 	else:
 		defs[k] = true
+	return not ret
+
+
+func notdef_gen(k: String) -> bool:
+	var ret := k in gen_defs
+	if ret:
+		warn("%s already defined in glyph '%s', skipping" % [k, gen.name])
+	else:
+		gen_defs[k] = true
 	return not ret
