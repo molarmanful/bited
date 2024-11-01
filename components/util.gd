@@ -60,11 +60,11 @@ func hexes_to_bits(hexes: PackedStringArray, w: int, h: int) -> PackedByteArray:
 	var res := PackedByteArray()
 	res.resize(h * chunk)
 
-	var i_res := 0
+	var i_row := 0
 	for row in hexes:
 		for i in range(0, row.length(), 2):
-			res[i_res] = row.substr(i, 2).hex_to_int()
-			i_res += 1
+			res[i_row + i / 2] = row.substr(i, 2).hex_to_int()
+		i_row += 1
 
 	return res
 

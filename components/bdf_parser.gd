@@ -26,17 +26,20 @@ var defs := {}
 ## In-memory storage of parsed glyphs.
 var glyphs := {}
 
+## Data built per glyph parsing iteration.
 var gen := gen_default
+## Already-defined keywords for detecting conflicting definitions within a glyph.
 var gen_defs := {}
-var gen_w := 0
-var gen_h := 0
-var gen_bm := PackedByteArray()
+## Hex data built per glyph.
+var gen_bm := PackedStringArray()
 
 var r_ws := RegEx.create_from_string("\\s+")
 var gen_default := {
 	name = "",
 	code = -1,
 	dwidth = 0,
+	bb_x = 0,
+	bb_y = 0,
 	off_x = 0,
 	off_y = 0,
 	img = null,
@@ -56,7 +59,10 @@ func from_file(path: String) -> void:
 func parse(f: Callable, end: Callable) -> String:
 	while not end.call():
 		n_line += 1
-		var line := kv(f.call())
+		var l: String = f.call()
+		if l.is_empty():
+			continue
+		var line := kv(l)
 		var e := ""
 
 		match mode:
@@ -250,8 +256,8 @@ func parse_char(line: Dictionary) -> String:
 					warn("bounding box y is <0, defaulting to 0")
 					xs[1] = 0
 
-				gen_w = xs[0]
-				gen_h = xs[1]
+				gen.bb_x = xs[0]
+				gen.bb_y = xs[1]
 				gen.off_x = xs[2]
 				gen.off_y = xs[3]
 
@@ -290,11 +296,18 @@ func parse_bm(line: Dictionary) -> String:
 	match line.k:
 		"ENDCHAR":
 			endchar()
+		_:
+			if line.k.is_valid_hex_number():
+				gen_bm.append(line.k)
+			else:
+				warn("'%s' is not valid hex, replacing with empty line" % line.k)
+				gen_bm.append("")
 	return ""
 
 
 func endchar() -> void:
 	mode = Mode.X
+	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
 	glyphs[gen.name] = gen
 	clrchar()
 
@@ -302,8 +315,6 @@ func endchar() -> void:
 func clrchar() -> void:
 	gen = {}
 	gen_defs.clear()
-	gen_w = 0
-	gen_h = 0
 	gen_bm.clear()
 
 
@@ -313,9 +324,9 @@ func kv(l: String) -> Dictionary:
 	return {k = res[0].to_upper(), v = res[1] if res.size() > 1 else ""}
 
 
-func arr_int(n: int, v: String) -> Array[int]:
+func arr_int(n: int, v: String) -> PackedInt64Array:
 	var xs := r_ws.sub(v, " ").split(" ")
-	var res: Array[int] = []
+	var res := PackedInt64Array()
 	for x in xs.slice(0, n):
 		if x.is_valid_int():
 			res.append(int(x))

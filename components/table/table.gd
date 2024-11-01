@@ -95,7 +95,7 @@ func gen_glyphs_range(i0: int, i1: int) -> void:
 
 
 func update_imgs(gs: Array[Glyph]) -> void:
-	var qs: Array[String] = []
+	var qs := PackedStringArray()
 	qs.resize(gs.size())
 	qs.fill("?")
 

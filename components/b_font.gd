@@ -81,13 +81,15 @@ func load_font() -> void:
 
 
 func to_bdf() -> String:
-	var res: Array[String] = [
-		"STARTFONT 2.1",
-		"FONT %s" % xlfd(),
-		"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-		# FIXME
-		# "FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
-	]
+	var res := PackedStringArray(
+		[
+			"STARTFONT 2.1",
+			"FONT %s" % xlfd(),
+			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
+			# FIXME
+			# "FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
+		]
+	)
 
 	res.append_array(to_bdf_properties())
 	res.append_array(to_bdf_chars())
@@ -96,7 +98,7 @@ func to_bdf() -> String:
 	return "\n".join(res)
 
 
-func to_bdf_properties() -> Array[String]:
+func to_bdf_properties() -> PackedStringArray:
 	var res: Array[String] = [
 		"FOUNDRY %s" % JSON.stringify(foundry),
 		"FAMILY_NAME %s" % JSON.stringify(family),
@@ -149,8 +151,8 @@ func to_bdf_properties() -> Array[String]:
 	return res
 
 
-func to_bdf_chars() -> Array[String]:
-	var res: Array[String] = []
+func to_bdf_chars() -> PackedStringArray:
+	var res := PackedStringArray()
 
 	(
 		StateVars
@@ -190,6 +192,33 @@ func to_bdf_chars() -> Array[String]:
 		res.push_back("ENDCHAR")
 
 	return res
+
+
+func save_glyphs(gens: Array[Dictionary], over := true) -> void:
+	StateVars.db_saves.query("begin transaction")
+	for gen in gens:
+		save_glyph(gen, over)
+	StateVars.db_saves.query("commit")
+
+
+func save_glyph(gen: Dictionary, over := true) -> bool:
+	return (
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				insert or %s
+				into font_%s
+				(name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+				values
+				(?, ?, ?, ?, ?, ?, ?, ?)
+				;"""
+				% ["replace" if over else "ignore", StateVars.font.id]
+			),
+			gen.values()
+		)
+	)
 
 
 func to_dict() -> Dictionary:

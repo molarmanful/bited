@@ -45,23 +45,7 @@ func save(over := true) -> bool:
 	}
 	StateVars.refresh.emit(gen)
 
-	return (
-		StateVars
-		. db_saves
-		. query_with_bindings(
-			(
-				"""
-				insert or %s
-				into font_%s
-				(name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
-				values
-				(?, ?, ?, ?, ?, ?, ?, ?)
-				;"""
-				% ["replace" if over else "ignore", StateVars.font.id]
-			),
-			gen.values()
-		)
-	)
+	return StateVars.font.save_glyph(gen, over)
 
 
 func load() -> void:

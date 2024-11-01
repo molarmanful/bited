@@ -33,7 +33,11 @@ func _ready():
 	bdfp.from_file("res://assets/test.bdf")
 	font = bdfp.font
 	font.init_font()
-	print(font.to_bdf())
+	var gsv: Array[Dictionary] = []
+	gsv.assign(bdfp.glyphs.values())
+	font.save_glyphs(gsv)
+	bdfp.glyphs.clear()
+	# print(font.to_bdf())
 
 
 ## Initializes master table for saved fonts.

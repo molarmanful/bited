@@ -3,14 +3,10 @@ FONT -molarmanful-test font-Medium-R-Normal--16-150-75-75-M-60-iso10646-1
 SIZE 15 75 75
 FONTBOUNDINGBOX 14 16 -3 -4
 STARTPROPERTIES 10
-FAMILY_NAME "kirsch"
-WEIGHT_NAME "Medium"
 FONT_VERSION "Version 1.0"
 COPYRIGHT "Copyright 2024 The kirsch Project Authors (https://github.com/molarmanful/kirsch)"
-FOUNDRY "molarmanful"
 FONT_ASCENT 12
 FONT_DESCENT 4
-POINT_SIZE 16
 X_HEIGHT 5
 CAP_HEIGHT 9
 ENDPROPERTIES
