@@ -19,32 +19,26 @@ var spacing := "P"
 var ch_reg := "ISO10646"
 var ch_enc := "1"
 var bb := Vector2i(0, 0)
-var off_y := 0
 var dwidth: int:
 	get:
 		return bb.x
-var cap_h := 0
-var x_h := 0
 var asc: int:
 	get:
 		return px_size - desc
-var desc: int:
-	get:
-		return -off_y
+var desc := 0
+var cap_h := 0
+var x_h := 0
 var props := {}
 
-var size_calc: Vector2i:
-	get:
-		return Vector2i(dwidth, bb.y)
 var center: Vector2i:
 	get:
-		return size_calc * Vector2i(1, -1) / 2
+		return bb * Vector2i(1, -1) / 2
 
 
 static func sensible() -> BFont:
 	var res := BFont.new()
 	res.bb = Vector2i(8, 16)
-	res.off_y = -2
+	res.desc = 2
 	res.cap_h = 9
 	res.x_h = 7
 	return res
@@ -61,6 +55,8 @@ func init_font() -> void:
 				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
 				code = {data_type = "int", not_null = true},
 				dwidth = {data_type = "int", not_null = true},
+				bb_x = {data_type = "int", not_null = true},
+				bb_y = {data_type = "int", not_null = true},
 				off_x = {data_type = "int", not_null = true},
 				off_y = {data_type = "int", not_null = true},
 				img = {data_type = "blob"},
@@ -102,20 +98,20 @@ func to_bdf() -> String:
 
 func to_bdf_properties() -> Array[String]:
 	var res: Array[String] = [
-		"FOUNDRY %s" % foundry,
-		"FAMILY_NAME %s" % family,
-		"WEIGHT_NAME %s" % weight,
-		"SLANT %s" % slant,
-		"SETWIDTH_NAME %s" % setwidth,
-		"ADD_STYLE_NAME %s" % add_style,
+		"FOUNDRY %s" % JSON.stringify(foundry),
+		"FAMILY_NAME %s" % JSON.stringify(family),
+		"WEIGHT_NAME %s" % JSON.stringify(weight),
+		"SLANT %s" % JSON.stringify(slant),
+		"SETWIDTH_NAME %s" % JSON.stringify(setwidth),
+		"ADD_STYLE_NAME %s" % JSON.stringify(add_style),
 		"PIXEL_SIZE %d" % px_size,
 		"POINT_SIZE %d" % pt_size,
 		"RESOLUTION_X %d" % resolution.x,
 		"RESOLUTION_Y %d" % resolution.y,
-		"SPACING %s" % spacing,
+		"SPACING %s" % JSON.stringify(spacing),
 		"AVERAGE_WIDTH %d" % avg_w(),
-		"CHARSET_REGISTRY %s" % ch_reg,
-		"CHARSET_ENCODING %s" % ch_enc,
+		"CHARSET_REGISTRY %s" % JSON.stringify(ch_reg),
+		"CHARSET_ENCODING %s" % JSON.stringify(ch_enc),
 		"FONT_ASCENT %d" % asc,
 		"FONT_DESCENT %d" % desc,
 		"CAP_HEIGHT %d" % cap_h,
@@ -127,6 +123,7 @@ func to_bdf_properties() -> Array[String]:
 			[
 				"FOUNDRY",
 				"FAMILY_NAME",
+				"WEIGHT_NAME",
 				"SLANT",
 				"SETWIDTH_NAME",
 				"ADD_STYLE_NAME",
@@ -161,7 +158,7 @@ func to_bdf_chars() -> Array[String]:
 		. query(
 			(
 				"""
-				select name, code, dwidth, off_x, off_y, img
+				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				order by code, name
 				;"""
@@ -194,7 +191,14 @@ func to_bdf_chars() -> Array[String]:
 			)
 		)
 
-		res.append_array(Util.bits_to_hexes(Util.alpha_to_bits(img), img.get_width()))
+		var a := Util.alpha_to_bits(img)
+		var b := Util.bits_to_hexes(a, img.get_width(), img.get_height())
+		res.append_array(b)
+		var c := Util.hexes_to_bits(b, img.get_width(), img.get_height())
+		var d := Util.bits_to_alpha(c, img.get_width(), img.get_height())
+		print(img.get_data())
+		print(d.get_data())
+		print("---")
 		res.push_back("ENDCHAR")
 
 	return res
@@ -214,8 +218,7 @@ func to_dict() -> Dictionary:
 		ch_reg = ch_reg,
 		ch_enc = ch_enc,
 		bb = bb,
-		off_y = off_y,
-		dwidth = dwidth,
+		desc = desc,
 		cap_h = cap_h,
 		x_h = x_h,
 		props = props,
@@ -235,8 +238,7 @@ func from_dict(d: Dictionary) -> void:
 	ch_reg = d.ch_reg
 	ch_enc = d.ch_enc
 	bb = d.bb
-	off_y = d.off_y
-	dwidth = d.dwidth
+	desc = d.desc
 	cap_h = d.cap_h
 	x_h = d.x_h
 	props = d.props

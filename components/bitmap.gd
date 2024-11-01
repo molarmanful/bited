@@ -37,6 +37,8 @@ func save(over := true) -> bool:
 		name = data_name,
 		code = data_code,
 		dwidth = dwidth,
+		bb_x = bounds.size.x,
+		bb_y = bounds.size.y,
 		off_x = off.x,
 		off_y = off.y,
 		img = img,
@@ -51,9 +53,9 @@ func save(over := true) -> bool:
 				"""
 				insert or %s
 				into font_%s
-				(name, code, dwidth, off_x, off_y, img)
+				(name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 				values
-				(?, ?, ?, ?, ?, ?)
+				(?, ?, ?, ?, ?, ?, ?, ?)
 				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
 			),
@@ -66,7 +68,7 @@ func load() -> void:
 	var q := StateVars.db_saves.select_rows(
 		"font_" + StateVars.font.id,
 		"name = %s" % JSON.stringify(data_name),
-		["name", "code", "dwidth", "off_x", "off_y", "img"]
+		["name", "code", "dwidth", "bb_x", "bb_y", "off_x", "off_y", "img"]
 	)
 	if q.is_empty():
 		data_code = -1

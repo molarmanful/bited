@@ -1,17 +1,29 @@
 # gdlint: disable=max-returns
 class_name BDFParser
 extends RefCounted
+## Custom BDF parser that builds to [BFont].
 
-enum Mode { X, PROPS, CHAR, CHAR_IGNORE, BM }
+enum Mode {
+	PRE,  ## Initial state prior to STARTFONT.
+	X,  ## Base state between STARTFONT and ENDFONT.
+	PROPS,  ## State between STARTPROPERTIES and ENDPROPERTIES.
+	CHAR,  ## State between STARTCHAR and ENDCHAR.
+	CHAR_IGNORE,  ## Error state that ignores conflicting or improperly parsed glyphs.
+	BM,  ## State between BITMAP and ENDCHAR.
+	POST,  ## Ending state after ENDFONT.
+}
 
+## [BFont] to build to.
 var font := BFont.new()
 
+## Line number for debugging purposes.
 var n_line := 0
-var mode := Mode.X
-var started := false
-var ended := false
+## Current mode for the parser state machine.
+var mode := Mode.PRE
 
+## Already-defined keywords for detecting conflicting definitions.
 var defs := {}
+## In-memory storage of parsed glyphs.
 var glyphs := {}
 
 var gen := gen_default
@@ -41,37 +53,33 @@ func from_file(path: String) -> void:
 		err(e)
 
 
-# TODO: return bool based on success
 func parse(f: Callable, end: Callable) -> String:
 	while not end.call():
 		n_line += 1
-
 		var line := kv(f.call())
+		var e := ""
 
-		if line.k == "STARTFONT" and notdef("STARTFONT"):
-			if not started:
-				started = true
+		match mode:
+			Mode.PRE:
+				if line.k == "STARTFONT" and notdef("STARTFONT"):
+					mode = Mode.X
+			Mode.PROPS:
+				e = parse_props(line)
+			Mode.CHAR:
+				e = parse_char(line)
+			Mode.CHAR_IGNORE:
+				e = parse_char_ignore(line)
+			Mode.BM:
+				e = parse_bm(line)
+			Mode.X:
+				e = parse_x(line)
 
-		elif started:
-			var e := ""
-			match mode:
-				Mode.PROPS:
-					e = parse_props(line)
-				Mode.CHAR:
-					e = parse_char(line)
-				Mode.CHAR_IGNORE:
-					e = parse_char_ignore(line)
-				Mode.BM:
-					e = parse_bm(line)
-				Mode.X:
-					e = parse_x(line)
-			if e:
-				return e
-
-		if ended:
+		if e:
+			return e
+		if mode == Mode.POST:
 			return ""
 
-	warn("file ended without ENDFONT")
+	warn("reached file end without finding ENDFONT")
 	return ""
 
 
@@ -178,9 +186,7 @@ func parse_x(line: Dictionary) -> String:
 				mode = Mode.CHAR_IGNORE
 
 		"ENDFONT":
-			# TODO: make sure all required entries exist
-			ended = true
-			return ""
+			mode = Mode.POST
 
 		_:
 			warn("unknown keyword %s in glyph '%s', skipping" % [line.k, gen.name])
@@ -196,6 +202,13 @@ func parse_props(line: Dictionary) -> String:
 		font.props[line.k] = line.v
 
 		match line.k:
+			"FONT_DESCENT":
+				var xs := arr_int(1, line.v)
+				if xs.is_empty():
+					warn("FONT_DESCENT is not a valid int, defaulting to 0")
+				else:
+					font.desc = xs[0]
+
 			"CAP_HEIGHT":
 				var xs := arr_int(1, line.v)
 				if xs.is_empty() or xs[0] < 0:
