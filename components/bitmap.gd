@@ -31,7 +31,7 @@ func save(over := true) -> bool:
 	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
 	var img: PackedByteArray
 	if bounds:
-		img = cells.get_region(bounds).save_png_to_buffer()
+		img = Util.alpha_to_bits(cells.get_region(bounds))
 
 	var gen := {
 		name = data_name,
@@ -65,7 +65,7 @@ func save(over := true) -> bool:
 
 
 func load() -> void:
-	var q := StateVars.db_saves.select_rows(
+	var q: Array[Dictionary] = StateVars.db_saves.select_rows(
 		"font_" + StateVars.font.id,
 		"name = %s" % JSON.stringify(data_name),
 		["name", "code", "dwidth", "bb_x", "bb_y", "off_x", "off_y", "img"]
@@ -75,7 +75,7 @@ func load() -> void:
 		data_name = ""
 		return
 
-	var gen: Dictionary = q[0]
+	var gen := q[0]
 	StateVars.refresh.emit(gen)
 	from_gen(gen)
 	update_cells(gen)
@@ -96,8 +96,6 @@ func update_cells(gen: Dictionary) -> void:
 	if not gen.img:
 		return
 
-	var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
-	img.load_png_from_buffer(gen.img)
-	var sz := img.get_size()
-	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, sz.y)
-	cells.blit_rect(img, Rect2i(Vector2i.ZERO, sz), off)
+	var img := Util.bits_to_alpha(gen.img, gen.bb_x, gen.bb_y)
+	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, gen.bb_y)
+	cells.blit_rect(img, Rect2i(Vector2i.ZERO, Vector2i(gen.bb_x, gen.bb_y)), off)

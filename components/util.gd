@@ -70,19 +70,20 @@ func hexes_to_bits(hexes: PackedStringArray, w: int, h: int) -> PackedByteArray:
 
 
 func bits_to_alpha(bits: PackedByteArray, w: int, h: int) -> Image:
-	var data := PackedByteArray()
-	data.resize(w * h * 2)
-	data.fill(255)
+	var img := Image.create_empty(w, h, false, Image.FORMAT_LA8)
 
 	var pos := 7
-	var i_data := 1
-	for bit in bits:
-		for _w in w:
-			data[i_data] *= (bit >> pos) & 1
-			i_data += 2
+	var i_bits := 0
+	for y in h:
+		pos = 7
+		for x in w:
+			img.set_pixel(x, y, Color(1, 1, 1, (bits[i_bits] >> pos) & 1))
 			pos -= 1
+
 			if pos < 0:
 				pos = 7
-		pos = 7
+				i_bits += 1
 
-	return Image.create_from_data(w, h, false, Image.FORMAT_LA8, data)
+		i_bits += int(w % 8 > 0)
+
+	return img

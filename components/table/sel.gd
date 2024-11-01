@@ -179,7 +179,6 @@ func add_name(g: Glyph) -> void:
 	names[g.ind] = {name = g.data_name, code = g.data_code}
 
 
-# TODO
 func get_info(g: Glyph) -> void:
 	if g.data_code < 0:
 		table.node_info_text.text = "%s\n(custom)" % g.data_name

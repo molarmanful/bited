@@ -171,19 +171,13 @@ func to_bdf_chars() -> Array[String]:
 	res.push_back("CHARS %d" % qs.size())
 
 	for q in qs:
-		var img := Image.create_empty(1, 1, false, Image.FORMAT_LA8)
-		var sz := Vector2i.ZERO
-		if q.img:
-			img.load_png_from_buffer(q.img)
-			sz = img.get_size()
-
 		(
 			res
 			. append_array(
 				[
 					"STARTCHAR %s%s" % ["" if q.code < 0 else "U+", q.name],
 					"ENCODING %d" % q.code,
-					"BBX %d %d %d %d" % [sz.x, sz.y, q.off_x, q.off_y],
+					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
 					"SWIDTH %d 0" % swidth(q.dwidth),
 					"DWIDTH %d 0" % q.dwidth,
 					"BITMAP",
@@ -191,14 +185,8 @@ func to_bdf_chars() -> Array[String]:
 			)
 		)
 
-		var a := Util.alpha_to_bits(img)
-		var b := Util.bits_to_hexes(a, img.get_width(), img.get_height())
-		res.append_array(b)
-		var c := Util.hexes_to_bits(b, img.get_width(), img.get_height())
-		var d := Util.bits_to_alpha(c, img.get_width(), img.get_height())
-		print(img.get_data())
-		print(d.get_data())
-		print("---")
+		if q.img:
+			res.append_array(Util.bits_to_hexes(q.img, q.bb_x, q.bb_y))
 		res.push_back("ENDCHAR")
 
 	return res

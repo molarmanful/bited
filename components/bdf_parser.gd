@@ -270,6 +270,7 @@ func parse_char(line: Dictionary) -> String:
 			mode = Mode.BM
 
 		"ENDCHAR":
+			warn("glyph %s is missing a BITMAP entry" % gen.name)
 			endchar()
 
 		_:
