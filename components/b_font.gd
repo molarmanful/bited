@@ -199,6 +199,7 @@ func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	for gen in gens:
 		save_glyph(gen, over)
 	StateVars.db_saves.query("commit")
+	StateVars.table_refresh.emit()
 
 
 func save_glyph(gen: Dictionary, over := true) -> bool:

@@ -25,6 +25,7 @@ func _ready() -> void:
 		func(): node_wrap.add_theme_constant_override("margin_bottom", 32 + int(node_info.size.y))
 	)
 	virt.refresh.connect(func(): to_update = true)
+	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
 
 

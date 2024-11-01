@@ -7,7 +7,9 @@ signal settings
 signal edit(glyph: Glyph)
 ## Emits when an action requires the editor to refresh (e.g. glyph deletion hiding grid).
 signal edit_refresh
-## Emits when an action requires the table to refresh.
+## Emits when an action requires the table to refresh (e.g. file loading).
+signal table_refresh
+## Emits when an action requires a specific glyph to refresh.
 signal refresh(gen: Dictionary)
 
 ## Current font data.
