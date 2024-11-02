@@ -40,9 +40,10 @@ theme_override_constants/margin_right = 8
 [node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 current_tab = 0
-tab_count = 2
+tab_count = 3
 tab_0/title = "GENERAL"
 tab_1/title = "FONT"
+tab_2/title = "DISPLAY"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
@@ -326,26 +327,14 @@ layout_mode = 2
 allow_greater = true
 script = ExtResource("16_26mdr")
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+[node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
+theme_override_constants/separation = 16
 
-[node name="GridContainer3" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
 layout_mode = 2
-size_flags_horizontal = 3
-columns = 2
-
-[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "copyright"
-vertical_alignment = 1
-
-[node name="copyright" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3" groups=["font"]]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "copyright..."
-script = ExtResource("2_8xqh3")
+text = "TESTING TESTING 123"
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2

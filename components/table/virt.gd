@@ -3,9 +3,9 @@ extends Resource
 
 signal refresh
 
-var length := 65536:
+var length := 0:
 	set(n):
-		length = n
+		length = max(0, n)
 		refresh.emit()
 var w_sizer := 0:
 	set(n):

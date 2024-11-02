@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=8 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
 [ext_resource type="Script" path="res://components/theme_switcher.gd" id="1_v7yw2"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
+[ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="7_axgl6"]
 
 [node name="All" type="PanelContainer" node_paths=PackedStringArray("table", "editor")]
@@ -14,7 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
-table = NodePath("Body/Main/HSplitContainer/MarginContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
 editor = NodePath("Body/Main/HSplitContainer/PanelContainer/ScrollContainer/Editor")
 metadata/_edit_lock_ = true
 
@@ -34,6 +35,7 @@ size_flags_vertical = 3
 [node name="HSplitContainer" type="HSplitContainer" parent="Body/Main"]
 layout_mode = 2
 size_flags_vertical = 3
+split_offset = -100
 
 [node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer"]
 layout_mode = 2
@@ -54,12 +56,21 @@ metadata/_edit_lock_ = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
+layout_mode = 2
+split_offset = -220
+
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MainHSplit"
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 follow_focus = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/ScrollContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -68,11 +79,17 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
 node_wrap = NodePath("..")
-node_info = NodePath("../../../Info")
-node_info_text = NodePath("../../../Info/PanelContainer/MarginContainer/InfoText")
+node_info = NodePath("../../../../../Info")
+node_info_text = NodePath("../../../../../Info/PanelContainer/MarginContainer/InfoText")
+
+[node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
+layout_mode = 2
+theme_type_variation = &"Charsets"
+hide_root = true
+script = ExtResource("5_uxapv")
 
 [node name="Info" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 visible = false

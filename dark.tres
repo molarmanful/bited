@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=61 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=63 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -145,6 +145,10 @@ border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldwsr"]
+draw_center = false
+border_color = Color(0.639216, 0.639216, 0.639216, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc33t"]
 bg_color = Color(0, 0, 0, 0)
 border_width_left = 1
@@ -249,6 +253,12 @@ corner_detail = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3oxq"]
 bg_color = Color(0, 0, 0, 0)
 border_width_right = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp8as"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 anti_aliasing = false
 
@@ -517,6 +527,8 @@ CMode/styles/focus = SubResource("StyleBoxFlat_olr07")
 CMode/styles/hover = SubResource("StyleBoxFlat_1vw27")
 CMode/styles/normal = SubResource("StyleBoxFlat_haq8v")
 CMode/styles/pressed = SubResource("StyleBoxFlat_3pgdr")
+Charsets/base_type = &"Tree"
+Charsets/styles/focus = SubResource("StyleBoxFlat_ldwsr")
 Double/base_type = &"Label"
 Double/font_sizes/font_size = 32
 Grid/base_type = &"PanelContainer"
@@ -552,6 +564,8 @@ LineEdit/styles/normal = SubResource("StyleBoxFlat_2ceup")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_8bhvi")
 MainHSplit/base_type = &"PanelContainer"
 MainHSplit/styles/panel = SubResource("StyleBoxFlat_c3oxq")
+MainHSplitR/base_type = &"PanelContainer"
+MainHSplitR/styles/panel = SubResource("StyleBoxFlat_xp8as")
 Muted/base_type = &"Label"
 Muted/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
 Nav/base_type = &"PanelContainer"

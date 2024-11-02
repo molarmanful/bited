@@ -16,6 +16,10 @@ var thumbs := {}
 var debounced := false
 var to_update := false
 
+var ranged := true
+var start := 0
+var end := 0
+
 
 func _ready() -> void:
 	sel.table = self
@@ -26,6 +30,7 @@ func _ready() -> void:
 	)
 	virt.refresh.connect(func(): to_update = true)
 	StateVars.table_refresh.connect(func(): to_update = true)
+	StateVars.table_range.connect(set_range)
 	StateVars.refresh.connect(refresh_tex)
 
 
@@ -64,11 +69,17 @@ func update() -> void:
 
 	node_inner.custom_minimum_size = virt.size_table
 	node_pad.custom_minimum_size.y = virt.pad_top
-	gen_glyphs_range(virt.i0, virt.i1)
+	gen_glyphs()
 
 
-# TODO: account for def-glyphs filter
-func gen_glyphs_range(i0: int, i1: int) -> void:
+func set_range(a: int, b: int) -> void:
+	ranged = true
+	start = a
+	end = b
+	virt.length = end - start - 1
+
+
+func gen_glyphs() -> void:
 	var len_glyphs := node_glyphs.get_child_count()
 
 	while len_glyphs < virt.len_ideal:
@@ -76,23 +87,30 @@ func gen_glyphs_range(i0: int, i1: int) -> void:
 		node_glyphs.add_child(glyph)
 		len_glyphs += 1
 
-	var len_i := i1 - i0
-	while len_glyphs > len_i:
+	while len_glyphs > virt.length:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
 	vglyphs.clear()
-	for c in range(i0, i1):
-		var g := node_glyphs.get_child(c - i0)
-		g.ind = c
-		g.data_code = c
-		g.show()
-		vglyphs[g.data_name] = g
+	if ranged:
+		gen_glyphs_range(virt.i0, virt.i1)
+	else:
+		pass  # TODO
 
 	var gs: Array[Glyph]
 	gs.assign(vglyphs.values())
 	update_imgs(gs)
 	sel.refresh()
+
+
+func gen_glyphs_range(i0: int, i1: int) -> void:
+	for c in range(i0, i1):
+		var g := node_glyphs.get_child(c - i0)
+		c += start
+		g.ind = c
+		g.data_code = c
+		g.show()
+		vglyphs[g.data_name] = g
 
 
 func update_imgs(gs: Array[Glyph]) -> void:
