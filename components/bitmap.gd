@@ -80,7 +80,6 @@ func clear_cells() -> void:
 
 func update_cells(gen: Dictionary) -> void:
 	clear_cells()
-	print(gen)
 	from_gen(gen)
 	if not gen.img:
 		return
