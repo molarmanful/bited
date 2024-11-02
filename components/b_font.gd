@@ -1,5 +1,6 @@
 class_name BFont
 extends RefCounted
+## BDF font abstraction for holding (meta)data.
 
 var id := "new_font"
 var foundry := "bited"

@@ -5,11 +5,13 @@ extends PanelContainer
 @export var btn_save: Button
 @export var btn_cancel: Button
 
-var entries := ["general", "font"]
 var tree_root: TreeItem
+@onready var entries := get_tree().get_nodes_in_group("entry").map(func(x: Node): return x.name)
 
 
 func _ready() -> void:
+	select(0)
+
 	window.about_to_popup.connect(load)
 	window.close_requested.connect(window.hide)
 	node_tabs.tab_changed.connect(select)
