@@ -86,8 +86,7 @@ func to_bdf() -> String:
 			"STARTFONT 2.1",
 			"FONT %s" % xlfd(),
 			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-			# FIXME
-			# "FONTBOUNDINGBOX %d %d %d %d" % [bb.x, bb.y, bb_off.x, bb_off.y],
+			"FONTBOUNDINGBOX %d %d %d %d" % fbbx().values(),
 		]
 	)
 
@@ -177,7 +176,7 @@ func to_bdf_chars() -> PackedStringArray:
 			res
 			. append_array(
 				[
-					"STARTCHAR %s%s" % ["" if q.code < 0 else "U+", q.name],
+					"STARTCHAR %s%s" % ["U+" if q.code >= 0 else "", q.name],
 					"ENCODING %d" % q.code,
 					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
 					"SWIDTH %d 0" % swidth(q.dwidth),
@@ -295,3 +294,14 @@ func avg_w() -> int:
 
 func swidth(dw: int) -> int:
 	return dw * 72000 / (pt_size / 10 * resolution.x)
+
+
+func fbbx() -> Dictionary:
+	var qs := StateVars.db_saves.select_rows(
+		"font_" + id,
+		"",
+		["max(bb_x) as bb_x", "max(bb_y) as bb_y", "min(off_x) as off_x", "min(off_y) as off_y"]
+	)
+	if qs.is_empty():
+		return {}
+	return qs[0]

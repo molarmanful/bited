@@ -19,11 +19,11 @@ func _draw() -> void:
 	draw_multiline(res, grid.get_theme_color("bord"))
 
 	var lines_h := {
+		origin = 0,
 		asc = StateVars.font.asc,
 		cap = StateVars.font.cap_h,
 		x = StateVars.font.x_h,
 		desc = -StateVars.font.desc,
-		origin = 0,
 	}
 
 	for k in lines_h:
@@ -31,8 +31,8 @@ func _draw() -> void:
 		draw_line(Vector2i(0, y), Vector2i(w_grid, y), grid.get_theme_color(k))
 
 	var lines_v := {
-		w = StateVars.font.dwidth,
 		origin = 0,
+		w = grid.bitmap.dwidth,
 	}
 
 	for k in lines_v:

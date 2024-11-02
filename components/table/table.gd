@@ -106,7 +106,7 @@ func update_imgs(gs: Array[Glyph]) -> void:
 		. query_with_bindings(
 			(
 				"""
-				select name, code, bb_x, bb_y, off_x, off_y, img
+				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				where name in (%s)
 				;"""

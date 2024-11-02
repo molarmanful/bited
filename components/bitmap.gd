@@ -7,10 +7,13 @@ var data_code := -1
 var data_name := ""
 var dwidth := StateVars.font.dwidth
 
+var center: Vector2i:
+	get:
+		return Vector2i(dwidth, -StateVars.font.bb.y) / 2
 var corner_bl: Vector2i:
 	get:
-		var center := Vector2i(dim, dim) / 2
-		return center - StateVars.font.center
+		var center_img := Vector2i(dim, dim) / 2
+		return center_img - center
 var origin: Vector2i:
 	get:
 		return corner_bl - Vector2i(0, StateVars.font.desc)
@@ -77,6 +80,8 @@ func clear_cells() -> void:
 
 func update_cells(gen: Dictionary) -> void:
 	clear_cells()
+	print(gen)
+	from_gen(gen)
 	if not gen.img:
 		return
 

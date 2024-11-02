@@ -1,16 +1,20 @@
 extends Node
 
 
+## Check if [param x] is between [param n0] and [param n1] (inclusive).
 func between(x: int, n0: int, n1: int) -> bool:
 	var a := min(n0, n1) as int
 	var b := max(n0, n1) as int
 	return a <= x and x <= b
 
 
+## Copies an [Image].
 func img_copy(im: Image) -> Image:
 	return im.get_region(Rect2i(Vector2i.ZERO, im.get_size()))
 
 
+## Converts an [Image] alpha channel to a byte array, where each bit
+## corresponds to a pixel in the source.
 func alpha_to_bits(img: Image) -> PackedByteArray:
 	var res := PackedByteArray()
 	var h := img.get_height()
@@ -38,6 +42,8 @@ func alpha_to_bits(img: Image) -> PackedByteArray:
 	return res
 
 
+## Converts a byte array to an array of hex values.
+## Each "row" is padded up to the nearest byte.
 func bits_to_hexes(bits: PackedByteArray, w: int, h: int) -> PackedStringArray:
 	var chunk := (w + 7) >> 3
 	var res := PackedStringArray()
@@ -55,6 +61,7 @@ func bits_to_hexes(bits: PackedByteArray, w: int, h: int) -> PackedStringArray:
 	return res
 
 
+## Converts an array of hex values to a byte array.
 func hexes_to_bits(hexes: PackedStringArray, w: int, h: int) -> PackedByteArray:
 	var chunk := (w + 7) >> 3
 	var res := PackedByteArray()
@@ -69,6 +76,7 @@ func hexes_to_bits(hexes: PackedStringArray, w: int, h: int) -> PackedByteArray:
 	return res
 
 
+## Converts a byte array to an [Image] alpha channel.
 func bits_to_alpha(bits: PackedByteArray, w: int, h: int) -> Image:
 	var img := Image.create_empty(w, h, false, Image.FORMAT_LA8)
 

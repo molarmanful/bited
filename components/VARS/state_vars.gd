@@ -35,10 +35,9 @@ func _ready():
 	bdfp.from_file("res://assets/test.bdf")
 	font = bdfp.font
 	font.init_font()
-	var gsv: Array[Dictionary] = []
-	gsv.assign(bdfp.glyphs.values())
-	font.save_glyphs(gsv)
-	bdfp.glyphs.clear()
+	var gens: Array[Dictionary]
+	gens.assign(bdfp.glyphs.values())
+	font.save_glyphs(gens)
 	# print(font.to_bdf())
 
 

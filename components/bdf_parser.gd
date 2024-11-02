@@ -2,6 +2,12 @@
 class_name BDFParser
 extends RefCounted
 ## Custom BDF parser that builds to [BFont].
+##
+## This parser targets BDF version 2.2 with 2.1 compatibility. However, the
+## implementation is more lenient than the spec and skips parsing unneeded
+## fields. Aside from the XLFD (which errors without at least 14 properly
+## hyphenated entries), this parser uses warnings to point out potential areas
+## of concern for the user.
 
 enum Mode {
 	PRE,  ## Initial state prior to STARTFONT.
@@ -46,6 +52,7 @@ var gen_default := {
 }
 
 
+## Parses BDF file.
 func from_file(path: String) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	var e := parse(
@@ -56,6 +63,7 @@ func from_file(path: String) -> void:
 		err(e)
 
 
+## Parses lines from successive calls of [param f] until [param end] returns true.
 func parse(f: Callable, end: Callable) -> String:
 	while not end.call():
 		n_line += 1
@@ -89,6 +97,7 @@ func parse(f: Callable, end: Callable) -> String:
 	return ""
 
 
+## Handles parsing during [constant Mode.X].
 func parse_x(line: Dictionary) -> String:
 	match line.k:
 		"FONT":
@@ -200,6 +209,7 @@ func parse_x(line: Dictionary) -> String:
 	return ""
 
 
+## Handles parsing during [constant Mode.PROPS].
 func parse_props(line: Dictionary) -> String:
 	if line.k == "ENDPROPERTIES":
 		mode = Mode.X
@@ -232,6 +242,7 @@ func parse_props(line: Dictionary) -> String:
 	return ""
 
 
+## Handles parsing during [constant Mode.CHAR].
 func parse_char(line: Dictionary) -> String:
 	match line.k:
 		"ENCODING":
@@ -241,6 +252,8 @@ func parse_char(line: Dictionary) -> String:
 					warn("ENCODING is not a valid int, defaulting to -1")
 				else:
 					gen.code = xs[0]
+					if gen.code >= 0:
+						gen.name = "%04X" % gen.code
 
 		"BBX":
 			if notdef_gen("BBX"):
@@ -285,6 +298,7 @@ func parse_char(line: Dictionary) -> String:
 	return ""
 
 
+## Handles parsing during [constant Mode.CHAR_IGNORE].
 func parse_char_ignore(line: Dictionary) -> String:
 	match line.k:
 		"ENDCHAR":
@@ -292,6 +306,7 @@ func parse_char_ignore(line: Dictionary) -> String:
 	return ""
 
 
+## Handles parsing during [constant Mode.BM].
 func parse_bm(line: Dictionary) -> String:
 	match line.k:
 		"ENDCHAR":
@@ -305,6 +320,7 @@ func parse_bm(line: Dictionary) -> String:
 	return ""
 
 
+## Saves currently-parsing glyph.
 func endchar() -> void:
 	mode = Mode.X
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
@@ -312,18 +328,23 @@ func endchar() -> void:
 	clrchar()
 
 
+## Resets data for next glyph parsing iteration.
 func clrchar() -> void:
 	gen = {}
 	gen_defs.clear()
 	gen_bm.clear()
 
 
+## Tokenizes a line into a key-value pair denoted by keys [code]k[/code] and
+## [code]v[/code].
+## For single-token lines, [code]v[/code] is empty.
 func kv(l: String) -> Dictionary:
 	var res := r_ws.sub(l.strip_edges(true, false), " ").split(" ", true, 1)
 	res[0] = res[0].to_upper()
 	return {k = res[0].to_upper(), v = res[1] if res.size() > 1 else ""}
 
 
+## Tokenizes a string into a series of up to [param n] valid integers.
 func arr_int(n: int, v: String) -> PackedInt64Array:
 	var xs := r_ws.sub(v, " ").split(" ")
 	var res := PackedInt64Array()
@@ -333,14 +354,18 @@ func arr_int(n: int, v: String) -> PackedInt64Array:
 	return res
 
 
+## Handles warnings.
 func warn(msg: String) -> void:
 	print("WARN @ %d: %s" % [n_line, msg])
 
 
+## Handles errors.
 func err(msg: String) -> void:
 	print("ERR @ %d: %s" % [n_line, msg])
 
 
+## Returns whether a keyword [param k] is already defined.
+## Warns or adds to [member BDFParser.defs] as side-effects.
 func notdef(k: String) -> bool:
 	var ret := k in defs
 	if ret:
@@ -350,6 +375,8 @@ func notdef(k: String) -> bool:
 	return not ret
 
 
+## Returns whether a keyword [param k] is already defined in the current glyph.
+## Warns or adds to [member BDFParser.gen_defs] as side-effects.
 func notdef_gen(k: String) -> bool:
 	var ret := k in gen_defs
 	if ret:
