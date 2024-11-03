@@ -113,11 +113,12 @@ node_wrap = NodePath("..")
 node_info = NodePath("../../../../../TableInfo")
 node_info_text = NodePath("../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
 
-[node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
+[node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" node_paths=PackedStringArray("table")]
 layout_mode = 2
 theme_type_variation = &"Charsets"
 hide_root = true
 script = ExtResource("5_uxapv")
+table = NodePath("../PanelContainer/ScrollContainer2/MarginContainer/Table")
 
 [node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 visible = false

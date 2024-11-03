@@ -9,8 +9,6 @@ signal edit(glyph: Glyph)
 signal edit_refresh
 ## Emits when an action requires the table to refresh (e.g. file loading).
 signal table_refresh
-## Emits when the table needs to refresh with a range of glyphs.
-signal table_range(start: int, end: int)
 ## Emits when an action requires a specific glyph to refresh.
 signal refresh(gen: Dictionary)
 

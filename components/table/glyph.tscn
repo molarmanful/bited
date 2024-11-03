@@ -30,7 +30,6 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 4
-theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2

@@ -20,6 +20,7 @@ var to_update := false
 var ranged := true
 var start := 0
 var end := 0
+var arr: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -31,7 +32,6 @@ func _ready() -> void:
 	)
 	virt.refresh.connect(func(): to_update = true)
 	StateVars.table_refresh.connect(func(): to_update = true)
-	StateVars.table_range.connect(set_range)
 	StateVars.refresh.connect(refresh_tex)
 
 
@@ -74,46 +74,63 @@ func update() -> void:
 
 
 func set_range(a: int, b: int) -> void:
-	ranged = true
 	start = a
 	end = b
+	ranged = true
 	virt.length = end - start - 1
+	sel.clear()
+	reset_scroll()
+
+
+func set_glyphs() -> void:
+	StateVars.db_saves.query(
+		"select name, code from font_%s order by code, name" % StateVars.font.id
+	)
+	var qs := StateVars.db_saves.query_result
+	arr.assign(qs)
+	ranged = false
+	virt.length = qs.size()
+	sel.clear()
+	reset_scroll()
+
+
+func reset_scroll() -> void:
 	virt.v_scroll = 0
 	node_scroll.set_deferred("scroll_vertical", 0)
 
 
 func gen_glyphs() -> void:
 	var len_glyphs := node_glyphs.get_child_count()
+	var i0 := virt.i0
+	var i1 := virt.i1
 
 	while len_glyphs < virt.len_ideal:
 		var glyph := Glyph.create(self)
 		node_glyphs.add_child(glyph)
 		len_glyphs += 1
 
-	while len_glyphs > virt.i1 - virt.i0:
+	while len_glyphs > i1 - i0:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
 	vglyphs.clear()
-	if ranged:
-		gen_glyphs_range(virt.i0, virt.i1)
-	else:
-		pass  # TODO
+	for c in range(i0, i1):
+		var g := node_glyphs.get_child(c - i0)
+		if ranged:
+			arr.clear()
+			c += start
+			g.data_code = c
+		else:
+			g.data_name = arr[c].name
+			g.data_code = arr[c].code
+		g.ind = c
+		g.show()
+		vglyphs[g.data_name] = g
 
 	var gs: Array[Glyph]
 	gs.assign(vglyphs.values())
 	update_imgs(gs)
 	sel.refresh()
-
-
-func gen_glyphs_range(i0: int, i1: int) -> void:
-	for c in range(i0, i1):
-		var g := node_glyphs.get_child(c - i0)
-		c += start
-		g.ind = c
-		g.data_code = c
-		g.show()
-		vglyphs[g.data_name] = g
 
 
 func update_imgs(gs: Array[Glyph]) -> void:

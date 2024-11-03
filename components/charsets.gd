@@ -1,5 +1,8 @@
 extends Tree
 
+@export var table: Table
+
+var glyphs: TreeItem
 var unicode: TreeItem
 
 var blocks := {}
@@ -7,6 +10,8 @@ var blocks := {}
 
 func _init() -> void:
 	create_item()
+	glyphs = create_item()
+	glyphs.set_text(0, "Font Glyphs")
 	unicode = create_item()
 	unicode.set_text(0, "UNICODE")
 
@@ -22,10 +27,12 @@ func load_blocks() -> void:
 	for q in StateVars.db_uc.query_result:
 		var x := unicode.create_child()
 		x.set_text(0, q.name)
-		blocks[q.name] = [q.start, q.end]
+		blocks[x] = [q.start, q.end]
 
 
 func selected() -> void:
-	var txt := get_selected().get_text(0)
-	if txt in blocks:
-		StateVars.table_range.emit(blocks[txt][0], blocks[txt][1])
+	var sel := get_selected()
+	if sel == glyphs:
+		table.set_glyphs()
+	elif sel in blocks:
+		table.set_range(blocks[sel][0], blocks[sel][1])
