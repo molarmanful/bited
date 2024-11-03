@@ -1,5 +1,5 @@
 class_name Tool
-extends Node
+extends RefCounted
 
 enum State { X, START, END }
 enum CMode { DEFAULT, T, F, INV, CELL, MAX }

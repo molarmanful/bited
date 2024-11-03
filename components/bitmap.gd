@@ -1,5 +1,5 @@
 class_name Bitmap
-extends Node
+extends RefCounted
 
 var dim := 0
 var cells: Image

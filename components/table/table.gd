@@ -105,8 +105,7 @@ func gen_glyphs() -> void:
 	var i1 := virt.i1
 
 	while len_glyphs < virt.len_ideal:
-		var glyph := Glyph.create(self)
-		node_glyphs.add_child(glyph)
+		node_glyphs.add_child(Glyph.create(self))
 		len_glyphs += 1
 
 	while len_glyphs > i1 - i0:
