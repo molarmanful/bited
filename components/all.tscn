@@ -46,11 +46,38 @@ theme_type_variation = &"MainHSplit"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" instance=ExtResource("2_q0u5u")]
+[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" node_paths=PackedStringArray("node_info", "node_info_text") instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+node_info = NodePath("../../EditorInfo")
+node_info_text = NodePath("../../EditorInfo/PanelContainer/MarginContainer/InfoText")
 metadata/_edit_lock_ = true
+
+[node name="EditorInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Border"
+
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer/MarginContainer"]
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer"]
 layout_mode = 2
@@ -79,11 +106,12 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_scroll", "node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
+node_scroll = NodePath("../..")
 node_wrap = NodePath("..")
-node_info = NodePath("../../../../../Info")
-node_info_text = NodePath("../../../../../Info/PanelContainer/MarginContainer/InfoText")
+node_info = NodePath("../../../../../TableInfo")
+node_info_text = NodePath("../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
 
 [node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
 layout_mode = 2
@@ -91,7 +119,7 @@ theme_type_variation = &"Charsets"
 hide_root = true
 script = ExtResource("5_uxapv")
 
-[node name="Info" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
+[node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -99,12 +127,12 @@ size_flags_vertical = 8
 mouse_filter = 2
 theme_override_constants/margin_bottom = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/Info"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo"]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/Info/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 16
@@ -112,7 +140,7 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/Info/PanelContainer/MarginContainer"]
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer"]
 layout_mode = 2
 
 [node name="Nav" parent="Body" node_paths=PackedStringArray("settings") instance=ExtResource("2_rafec")]

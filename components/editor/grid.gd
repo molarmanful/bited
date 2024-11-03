@@ -1,11 +1,11 @@
 class_name Grid
 extends PanelContainer
 
+@export var editor: Editor
 @export var node_wrapper: Container
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: Node2D
-@export var node_info: Label
 @export var node_placeholder: Label
 
 @export_group("Button Groups")
@@ -101,16 +101,18 @@ func refresh() -> void:
 	bitmap.load()
 
 	if not bitmap.data_name:
+		editor.node_info.hide()
 		node_wrapper.hide()
 		node_placeholder.show()
 		return
+	editor.node_info.show()
 	node_placeholder.hide()
 	node_wrapper.show()
 
+	editor.node_info_text.text = StateVars.get_info(bitmap.data_name, bitmap.data_code)
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()
-	set_info()
 
 
 func update_grid() -> void:
@@ -118,20 +120,6 @@ func update_grid() -> void:
 	node_cells.self_modulate = get_theme_color("fg")
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()
-
-
-func set_info() -> void:
-	var q := StateVars.db_uc.select_rows("data", "id = %d" % bitmap.data_code, ["name", "category"])
-
-	if bitmap.data_code < 0:
-		node_info.text = "%s  (custom)" % bitmap.data_name
-		return
-	if q.is_empty():
-		node_info.text = "U+%s  #%d  (undefined)" % [bitmap.data_name, bitmap.data_code]
-		return
-	node_info.text = (
-		"U+%s  #%d  %s  %s" % [bitmap.data_name, bitmap.data_code, q[0].category, q[0].name]
-	)
 
 
 func update_cells() -> void:

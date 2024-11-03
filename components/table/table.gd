@@ -1,6 +1,7 @@
 class_name Table
 extends PanelContainer
 
+@export var node_scroll: ScrollContainer
 @export var node_wrap: MarginContainer
 @export var node_inner: Container
 @export var node_glyphs: Container
@@ -50,8 +51,8 @@ func onresize() -> void:
 
 
 func onscroll() -> void:
-	if debounced:
-		return
+	# if debounced:
+	# 	return
 
 	var cur := -int(get_global_transform_with_canvas().get_origin().y)
 	if virt.v_scroll == cur:
@@ -77,6 +78,8 @@ func set_range(a: int, b: int) -> void:
 	start = a
 	end = b
 	virt.length = end - start - 1
+	virt.v_scroll = 0
+	node_scroll.set_deferred("scroll_vertical", 0)
 
 
 func gen_glyphs() -> void:
@@ -87,7 +90,7 @@ func gen_glyphs() -> void:
 		node_glyphs.add_child(glyph)
 		len_glyphs += 1
 
-	while len_glyphs > virt.length:
+	while len_glyphs > virt.i1 - virt.i0:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 

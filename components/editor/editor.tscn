@@ -38,13 +38,7 @@ layout_mode = 2
 
 [node name="2" type="HBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_constants/separation = 8
-
-[node name="info" type="Label" parent="CenterContainer/GridContainer/2"]
-layout_mode = 2
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="3" type="Control" parent="CenterContainer/GridContainer"]
 custom_minimum_size = Vector2(24, 0)
@@ -171,16 +165,16 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_info", "node_placeholder", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
+editor = NodePath("../../..")
 node_wrapper = NodePath("..")
 node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
-node_info = NodePath("../2/info")
 node_placeholder = NodePath("../../Placeholder")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")

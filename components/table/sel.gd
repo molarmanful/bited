@@ -35,7 +35,7 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
-	get_info(g)
+	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code)
 	table.node_info.show()
 	add_name(g)
 
@@ -177,35 +177,6 @@ func is_empty() -> bool:
 
 func add_name(g: Glyph) -> void:
 	names[g.ind] = {name = g.data_name, code = g.data_code}
-
-
-func get_info(g: Glyph) -> void:
-	if g.data_code < 0:
-		table.node_info_text.text = "%s\n(custom)" % g.data_name
-		return
-
-	(
-		StateVars
-		. db_uc
-		. query_with_bindings(
-			"""
-			select name, category from data
-			where id = ?
-			;""",
-			[g.data_code]
-		)
-	)
-	var qs := StateVars.db_uc.query_result
-
-	table.node_info_text.text = (
-		"U+%s  #%d%s\n%s"
-		% [
-			g.data_name,
-			g.data_code,
-			"" if qs.is_empty() else "  " + qs[0].category,
-			"(undefined)" if qs.is_empty() else qs[0].name,
-		]
-	)
 
 
 func get_sel_text() -> void:

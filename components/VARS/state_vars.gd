@@ -55,3 +55,32 @@ func init_font_metas() -> void:
 			}
 		)
 	)
+
+
+## Retrieves Unicode metadata.
+func get_info(data_name: String, data_code: int) -> String:
+	if data_code < 0:
+		return "%s\n(custom)" % data_name
+
+	(
+		StateVars
+		. db_uc
+		. query_with_bindings(
+			"""
+			select name, category from data
+			where id = ?
+			;""",
+			[data_code]
+		)
+	)
+	var qs := StateVars.db_uc.query_result
+
+	return (
+		"U+%s  #%d%s\n%s"
+		% [
+			data_name,
+			data_code,
+			"" if qs.is_empty() else "  " + qs[0].category,
+			"(undefined)" if qs.is_empty() else qs[0].name,
+		]
+	)
