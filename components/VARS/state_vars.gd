@@ -65,7 +65,8 @@ func get_info(data_name: String, data_code: int) -> String:
 		. db_uc
 		. query_with_bindings(
 			"""
-			select name, category from data
+			select name, category
+			from data
 			where id = ?
 			;""",
 			[data_code]

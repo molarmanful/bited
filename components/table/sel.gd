@@ -4,7 +4,6 @@ extends Resource
 var table: Table
 
 var ranges: Array[int] = []
-var names := {}
 var anchor := -1
 var end := -1
 var mode := true
@@ -20,7 +19,7 @@ var length: int:
 
 
 func refresh() -> void:
-	for g in table.vglyphs.values():
+	for g in table.names.values():
 		g.selected = is_selected(g.ind)
 
 
@@ -37,7 +36,6 @@ func select(g: Glyph) -> void:
 	g.selected = true
 	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code)
 	table.node_info.show()
-	add_name(g)
 
 
 func select_range(g: Glyph) -> void:
@@ -45,7 +43,6 @@ func select_range(g: Glyph) -> void:
 	ranges.assign(norm())
 	refresh()
 	get_sel_text()
-	add_name(g)
 
 
 func select_inv(g: Glyph) -> void:
@@ -55,7 +52,6 @@ func select_inv(g: Glyph) -> void:
 	commit()
 	g.selected = mode
 	get_sel_text()
-	add_name(g)
 
 
 func select_range_inv(g: Glyph) -> void:
@@ -66,7 +62,6 @@ func select_range_inv(g: Glyph) -> void:
 	commit()
 	refresh()
 	get_sel_text()
-	add_name(g)
 
 
 func clear() -> void:
@@ -74,7 +69,6 @@ func clear() -> void:
 	end = -1
 	mode = true
 	ranges.clear()
-	names.clear()
 	table.node_info.hide()
 	refresh()
 
@@ -88,8 +82,24 @@ func delete() -> void:
 		. query(
 			(
 				"""
+				create table temp.ordered as
+				select name, row_number() over (order by code, name) as row
+				from font_%s
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
 				create table temp.to_del as
-				select name from font_%s where 0
+				select name
+				from font_%s
+				where 0
 				;"""
 				% StateVars.font.id
 			)
@@ -98,21 +108,20 @@ func delete() -> void:
 
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
-		var b := ranges[i + 1]
+		var b := ranges[i + 1] - 1
 		(
 			StateVars
 			. db_saves
 			. query_with_bindings(
-				(
-					"""
-					insert into temp.to_del (name)
-					select name from font_%s
-					order by code, name
-					limit ? offset ?
-					;"""
-					% StateVars.font.id
-				),
-				[b - a, a]
+				"""
+				insert into temp.to_del (name)
+				select name
+				from temp.ordered
+				where row between
+					(select row from temp.ordered where name = ?) and
+					(select row from temp.ordered where name = ?)
+				;""",
+				[table.inds[a].data_name, table.inds[b].data_name]
 			)
 		)
 
@@ -124,11 +133,19 @@ func delete() -> void:
 				"""
 				delete from font_%s
 				where name in (select name from temp.to_del)
-				;
-				drop table temp.to_del;
-				"""
+				;"""
 				% StateVars.font.id
 			)
+		)
+	)
+	(
+		StateVars
+		. db_saves
+		. query(
+			"""
+			drop table temp.ordered;
+			drop table temp.to_del;
+			"""
 		)
 	)
 	StateVars.db_saves.query("commit;")
@@ -204,10 +221,6 @@ func is_alone() -> bool:
 
 func is_empty() -> bool:
 	return ranges.is_empty()
-
-
-func add_name(g: Glyph) -> void:
-	names[g.ind] = {name = g.data_name, code = g.data_code}
 
 
 func get_sel_text() -> void:

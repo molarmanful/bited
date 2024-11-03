@@ -12,9 +12,9 @@ extends PanelContainer
 @export var virt: Virt
 @export var sel: Sel
 
-# TODO: consider lru-ing
-var vglyphs := {}
+var names := {}
 var thumbs := {}
+var inds := {}
 var debounced := false
 var to_update := false
 
@@ -78,7 +78,7 @@ func set_range(a: int, b: int) -> void:
 	start = a
 	end = b
 	ranged = true
-	virt.length = end - start - 1
+	virt.length = end - start
 	after_set()
 
 
@@ -136,7 +136,7 @@ func gen_glyphs() -> void:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
-	vglyphs.clear()
+	names.clear()
 	for c in range(i0, i1):
 		var g := node_glyphs.get_child(c - i0)
 		if ranged:
@@ -147,11 +147,12 @@ func gen_glyphs() -> void:
 			g.data_name = arr[c].name
 			g.data_code = arr[c].code
 		g.ind = c
+		inds[g.ind] = g
 		g.show()
-		vglyphs[g.data_name] = g
+		names[g.data_name] = g
 
 	var gs: Array[Glyph]
-	gs.assign(vglyphs.values())
+	gs.assign(names.values())
 	update_imgs(gs)
 	sel.refresh()
 
@@ -184,6 +185,6 @@ func update_imgs(gs: Array[Glyph]) -> void:
 
 
 func refresh_tex(gen: Dictionary) -> void:
-	if gen.name not in vglyphs:
+	if gen.name not in names:
 		return
-	vglyphs[gen.name].refresh_tex(gen)
+	names[gen.name].refresh_tex(gen)
