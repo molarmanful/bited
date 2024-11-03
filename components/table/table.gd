@@ -8,6 +8,7 @@ extends PanelContainer
 @export var node_pad: Container
 @export var node_info: Container
 @export var node_info_text: Label
+@export var node_placeholder: Container
 @export var virt: Virt
 @export var sel: Sel
 
@@ -78,18 +79,38 @@ func set_range(a: int, b: int) -> void:
 	end = b
 	ranged = true
 	virt.length = end - start - 1
-	sel.clear()
-	reset_scroll()
+	after_set()
 
 
 func set_glyphs() -> void:
-	StateVars.db_saves.query(
-		"select name, code from font_%s order by code, name" % StateVars.font.id
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select name, code
+				from font_%s
+				order by code, name
+				;"""
+				% StateVars.font.id
+			)
+		)
 	)
 	var qs := StateVars.db_saves.query_result
 	arr.assign(qs)
 	ranged = false
 	virt.length = qs.size()
+	after_set()
+
+
+func after_set() -> void:
+	if virt.length:
+		node_placeholder.hide()
+		node_inner.show()
+	else:
+		node_inner.hide()
+		node_placeholder.show()
 	sel.clear()
 	reset_scroll()
 
@@ -100,6 +121,9 @@ func reset_scroll() -> void:
 
 
 func gen_glyphs() -> void:
+	if not virt.length:
+		return
+
 	var len_glyphs := node_glyphs.get_child_count()
 	var i0 := virt.i0
 	var i1 := virt.i1

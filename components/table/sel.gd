@@ -81,31 +81,62 @@ func clear() -> void:
 
 # TODO: account for def-glyphs filter
 func delete() -> void:
+	StateVars.db_saves.query("begin transaction;")
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table temp.to_del as
+				select name from font_%s where 0
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
-		var b := ranges[i + 1] - 1
-		var ca: int = names[a].code
-		var cb: int = names[b].code
-
-		var q := (
+		var b := ranges[i + 1]
+		(
 			StateVars
 			. db_saves
 			. query_with_bindings(
 				(
 					"""
-					delete from font_%s
-					where code between ? and ?
+					insert into temp.to_del (name)
+					select name from font_%s
+					order by code, name
+					limit ? offset ?
 					;"""
 					% StateVars.font.id
 				),
-				[ca, cb]
+				[b - a, a]
 			)
 		)
-		if not q:
-			return
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				delete from font_%s
+				where name in (select name from temp.to_del)
+				;
+				drop table temp.to_del;
+				"""
+				% StateVars.font.id
+			)
+		)
+	)
+	StateVars.db_saves.query("commit;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
+	if not table.ranged:
+		table.set_glyphs()
 	table.to_update = true
 
 

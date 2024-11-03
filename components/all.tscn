@@ -106,12 +106,25 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 32
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_scroll", "node_wrap", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_scroll", "node_wrap", "node_info", "node_info_text", "node_placeholder") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
 node_scroll = NodePath("../..")
 node_wrap = NodePath("..")
 node_info = NodePath("../../../../../TableInfo")
 node_info_text = NodePath("../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
+node_placeholder = NodePath("../Placeholder")
+
+[node name="Placeholder" type="CenterContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Placeholder"]
+layout_mode = 2
+theme_type_variation = &"Muted"
+theme_override_font_sizes/font_size = 32
+text = "no glyphs... yet."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" node_paths=PackedStringArray("table")]
 layout_mode = 2

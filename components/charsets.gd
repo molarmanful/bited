@@ -20,10 +20,21 @@ func _ready() -> void:
 	load_blocks()
 
 	item_selected.connect(selected)
+	glyphs.select(0)
 
 
 func load_blocks() -> void:
-	StateVars.db_uc.query("select name, start, end from blocks order by start, end desc")
+	(
+		StateVars
+		. db_uc
+		. query(
+			"""
+			select name, start, end
+			from blocks
+			order by start, end desc
+			;"""
+		)
+	)
 	for q in StateVars.db_uc.query_result:
 		var x := unicode.create_child()
 		x.set_text(0, q.name)

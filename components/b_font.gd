@@ -69,7 +69,7 @@ func init_font() -> void:
 
 func save_font(ignore = false) -> void:
 	StateVars.db_saves.query_with_bindings(
-		"insert or %s into fonts (id, data) values (?, ?)" % ("ignore" if ignore else "replace"),
+		"insert or %s into fonts (id, data) values (?, ?);" % ("ignore" if ignore else "replace"),
 		[id, var_to_bytes(to_dict())]
 	)
 
@@ -195,10 +195,10 @@ func to_bdf_chars() -> PackedStringArray:
 
 
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
-	StateVars.db_saves.query("begin transaction")
+	StateVars.db_saves.query("begin transaction;")
 	for gen in gens:
 		save_glyph(gen, over)
-	StateVars.db_saves.query("commit")
+	StateVars.db_saves.query("commit;")
 	StateVars.table_refresh.emit()
 
 
