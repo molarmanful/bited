@@ -13,7 +13,8 @@ func _init() -> void:
 	glyphs = create_item()
 	glyphs.set_text(0, "Font Glyphs")
 	unicode = create_item()
-	unicode.set_text(0, "UNICODE")
+	unicode.set_text(0, "Unicode (Full)")
+	blocks[unicode] = [0, 1114112]
 
 
 func _ready() -> void:
@@ -43,7 +44,10 @@ func load_blocks() -> void:
 
 func selected() -> void:
 	var sel := get_selected()
+	table.node_header.text = sel.get_text(0)
+	table.node_subheader.text = ""
 	if sel == glyphs:
 		table.set_glyphs()
 	elif sel in blocks:
 		table.set_range(blocks[sel][0], blocks[sel][1])
+		table.node_subheader.text = "U+%04X - U+%04X" % [blocks[sel][0], blocks[sel][1] - 1]

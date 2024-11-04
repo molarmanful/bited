@@ -75,7 +75,19 @@ func save_font(ignore = false) -> void:
 
 
 func load_font() -> void:
-	var qs := StateVars.db_saves.select_rows("fonts", "id = " + JSON.stringify(id), ["data"])
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			"""
+			select data
+			from fonts
+			where id = ?
+			;""",
+			[id]
+		)
+	)
+	var qs := StateVars.db_saves.query_result
 	if qs.is_empty():
 		return
 	from_dict(bytes_to_var(qs[0].data))

@@ -2,13 +2,15 @@ class_name Table
 extends PanelContainer
 
 @export var node_scroll: ScrollContainer
-@export var node_wrap: MarginContainer
 @export var node_inner: Container
+@export var node_header: Label
+@export var node_subheader: Label
 @export var node_glyphs: Container
 @export var node_pad: Container
 @export var node_info: Container
 @export var node_info_text: Label
 @export var node_placeholder: Container
+@export var node_grid_panel: Container
 @export var virt: Virt
 @export var sel: Sel
 
@@ -38,9 +40,6 @@ func _ready() -> void:
 	)
 
 	resized.connect(onresize)
-	node_info.resized.connect(
-		func(): node_wrap.add_theme_constant_override("margin_bottom", 32 + int(node_info.size.y))
-	)
 	virt.refresh.connect(func(): to_update = true)
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
@@ -128,9 +127,9 @@ func after_set() -> void:
 
 	if virt.length:
 		node_placeholder.hide()
-		node_inner.show()
+		node_grid_panel.show()
 	else:
-		node_inner.hide()
+		node_grid_panel.hide()
 		node_placeholder.show()
 	sel.clear()
 	reset_scroll()

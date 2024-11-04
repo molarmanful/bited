@@ -52,17 +52,28 @@ func save(over := true) -> bool:
 
 
 func load() -> void:
-	var q: Array[Dictionary] = StateVars.db_saves.select_rows(
-		"font_" + StateVars.font.id,
-		"name = %s" % JSON.stringify(data_name),
-		["name", "code", "dwidth", "bb_x", "bb_y", "off_x", "off_y", "img"]
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				from font_%s
+				where name = ?
+				;"""
+				% StateVars.font.id
+			),
+			data_name
+		)
 	)
-	if q.is_empty():
+	var qs := StateVars.db_saves.query_result
+	if qs.is_empty():
 		data_code = -1
 		data_name = ""
 		return
 
-	var gen := q[0]
+	var gen := qs[0]
 	StateVars.refresh.emit(gen)
 	from_gen(gen)
 	update_cells(gen)
