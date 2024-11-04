@@ -56,7 +56,9 @@ func init_font_metas() -> void:
 
 
 ## Retrieves Unicode metadata.
-func get_info(data_name: String, data_code: int) -> String:
+func get_info(data_name: String, data_code: int, nop = false) -> String:
+	if nop:
+		return "%s\n(undefined)" % data_name
 	if data_code < 0:
 		return "%s\n(custom)" % data_name
 

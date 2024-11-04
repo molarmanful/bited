@@ -20,6 +20,7 @@ var data_code := -1:
 		if c >= 0:
 			data_name = "%04X" % data_code
 		refresh()
+var nop := false
 var label: String:
 	get:
 		if data_code < 0 or is_noprint(data_code):

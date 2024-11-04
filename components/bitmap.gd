@@ -64,7 +64,7 @@ func load() -> void:
 				;"""
 				% StateVars.font.id
 			),
-			data_name
+			[data_name]
 		)
 	)
 	var qs := StateVars.db_saves.query_result

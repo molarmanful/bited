@@ -34,7 +34,7 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
-	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code)
+	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
 	table.node_info.show()
 
 
@@ -79,7 +79,7 @@ func delete() -> void:
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
-		if table.ranged:
+		if table.viewmode == Table.Mode.RANGE:
 			(
 				StateVars
 				. db_saves

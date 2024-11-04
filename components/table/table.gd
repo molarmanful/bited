@@ -1,6 +1,8 @@
 class_name Table
 extends PanelContainer
 
+enum Mode { RANGE, GLYPHS, SBCS }
+
 @export var node_scroll: ScrollContainer
 @export var node_inner: Container
 @export var node_header: Label
@@ -19,7 +21,7 @@ var thumbs := {}
 var debounced := false
 var to_update := false
 
-var ranged := true
+var viewmode := Mode.GLYPHS
 var start := 0
 var end := 0
 
@@ -84,7 +86,7 @@ func update() -> void:
 
 
 func reset_full() -> void:
-	if ranged:
+	if viewmode == Mode.RANGE:
 		return
 	set_glyphs()
 
@@ -92,7 +94,7 @@ func reset_full() -> void:
 func set_range(a: int, b: int) -> void:
 	start = a
 	end = b
-	ranged = true
+	viewmode = Mode.RANGE
 	virt.length = end - start
 	after_set()
 
@@ -115,16 +117,31 @@ func set_glyphs() -> void:
 			)
 		)
 	)
-	ranged = false
+	viewmode = Mode.GLYPHS
+	virt.length = (
+		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
+	)
+	after_set()
+
+
+func set_sbcs(ch: PackedInt32Array) -> void:
+	StateVars.db_saves.delete_rows("temp.full", "")
+	StateVars.db_saves.query("begin transaction;")
+
+	for i in 256:
+		StateVars.db_saves.insert_row(
+			"temp.full",
+			{row = i, name = "%04X" % ch[i] if ch[i] >= 0 else "UN-%02X" % i, code = ch[i]}
+		)
+
+	StateVars.db_saves.query("commit;")
+
+	viewmode = Mode.SBCS
+	virt.length = 256
 	after_set()
 
 
 func after_set() -> void:
-	if not ranged:
-		virt.length = (
-			StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
-		)
-
 	if virt.length:
 		node_placeholder.hide()
 		node_grid_panel.show()
@@ -157,7 +174,7 @@ func gen_glyphs() -> void:
 		len_glyphs -= 1
 
 	var qs: Array[Dictionary]
-	if not ranged:
+	if viewmode != Mode.RANGE:
 		(
 			StateVars
 			. db_saves
@@ -177,10 +194,13 @@ func gen_glyphs() -> void:
 	var i := 0
 	for c in range(i0, i1):
 		var g := node_glyphs.get_child(i)
-		if ranged:
+		g.nop = false
+		if viewmode == Mode.RANGE:
 			c += start
 			g.data_code = c
 		else:
+			if viewmode == Mode.SBCS:
+				g.nop = qs[i].code < 0
 			g.data_name = qs[i].name
 			g.data_code = qs[i].code
 		g.ind = c

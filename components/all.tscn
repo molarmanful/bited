@@ -85,7 +85,7 @@ size_flags_horizontal = 3
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
 layout_mode = 2
-split_offset = -220
+split_offset = -200
 
 [node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
 layout_mode = 2
