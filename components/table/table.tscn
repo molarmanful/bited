@@ -41,5 +41,3 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
-alignment = 1
-last_wrap_alignment = 1
