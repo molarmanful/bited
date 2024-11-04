@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_qums1"]
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
 
-[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad", "node_placeholder")]
+[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,7 +15,6 @@ script = ExtResource("1_21spc")
 node_inner = NodePath("Inner")
 node_glyphs = NodePath("Inner/PanelContainer/VBoxContainer/HFlowContainer")
 node_pad = NodePath("Inner/PanelContainer/VBoxContainer/Pad")
-node_placeholder = NodePath("")
 virt = ExtResource("3_vj2v8")
 sel = ExtResource("3_qums1")
 metadata/_edit_lock_ = true

@@ -73,87 +73,50 @@ func clear() -> void:
 	refresh()
 
 
-# TODO: account for def-glyphs filter
 func delete() -> void:
 	StateVars.db_saves.query("begin transaction;")
-	(
-		StateVars
-		. db_saves
-		. query(
-			(
-				"""
-				create table temp.ordered as
-				select name, row_number() over (order by code, name) as row
-				from font_%s
-				;"""
-				% StateVars.font.id
-			)
-		)
-	)
-	(
-		StateVars
-		. db_saves
-		. query(
-			(
-				"""
-				create table temp.to_del as
-				select name
-				from font_%s
-				where 0
-				;"""
-				% StateVars.font.id
-			)
-		)
-	)
 
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
-		(
-			StateVars
-			. db_saves
-			. query_with_bindings(
-				"""
-				insert into temp.to_del (name)
-				select name
-				from temp.ordered
-				where row between
-					(select row from temp.ordered where name = ?) and
-					(select row from temp.ordered where name = ?)
-				;""",
-				[table.inds[a].data_name, table.inds[b].data_name]
-			)
-		)
-
-	(
-		StateVars
-		. db_saves
-		. query(
+		if table.ranged:
 			(
-				"""
-				delete from font_%s
-				where name in (select name from temp.to_del)
-				;"""
-				% StateVars.font.id
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						delete from font_%s
+						where code between ? and ?;"""
+						% StateVars.font.id
+					),
+					[a, b]
+				)
 			)
-		)
-	)
-	(
-		StateVars
-		. db_saves
-		. query(
-			"""
-			drop table temp.ordered;
-			drop table temp.to_del;
-			"""
-		)
-	)
+		else:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						delete from font_%s
+						where name in (
+							select name
+							from temp.full
+							where row between ? and ?
+						);"""
+						% StateVars.font.id
+					),
+					[a, b]
+				)
+			)
+
 	StateVars.db_saves.query("commit;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
-	if not table.ranged:
-		table.set_glyphs()
+	table.reset_full()
 	table.to_update = true
 
 

@@ -14,18 +14,28 @@ extends PanelContainer
 
 var names := {}
 var thumbs := {}
-var inds := {}
 var debounced := false
 var to_update := false
 
 var ranged := true
 var start := 0
 var end := 0
-var arr: Array[Dictionary] = []
 
 
 func _ready() -> void:
 	sel.table = self
+	(
+		StateVars
+		. db_saves
+		. create_table(
+			"temp.full",
+			{
+				row = {data_type = "int", not_null = true, primary_key = true, unique = true},
+				name = {data_type = "text", not_null = true, unique = true},
+				code = {data_type = "int", not_null = true},
+			}
+		)
+	)
 
 	resized.connect(onresize)
 	node_info.resized.connect(
@@ -74,6 +84,12 @@ func update() -> void:
 	gen_glyphs()
 
 
+func reset_full() -> void:
+	if ranged:
+		return
+	set_glyphs()
+
+
 func set_range(a: int, b: int) -> void:
 	start = a
 	end = b
@@ -83,28 +99,33 @@ func set_range(a: int, b: int) -> void:
 
 
 func set_glyphs() -> void:
+	StateVars.db_saves.delete_rows("temp.full", "")
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
-				select name, code
+				insert into temp.full
+				select
+					row_number() over (order by code, name) - 1 as row,
+					name, code
 				from font_%s
-				order by code, name
 				;"""
 				% StateVars.font.id
 			)
 		)
 	)
-	var qs := StateVars.db_saves.query_result
-	arr.assign(qs)
 	ranged = false
-	virt.length = qs.size()
 	after_set()
 
 
 func after_set() -> void:
+	if not ranged:
+		virt.length = (
+			StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
+		)
+
 	if virt.length:
 		node_placeholder.hide()
 		node_inner.show()
@@ -136,33 +157,50 @@ func gen_glyphs() -> void:
 		node_glyphs.get_child(len_glyphs - 1).hide()
 		len_glyphs -= 1
 
+	var qs: Array[Dictionary]
+	if not ranged:
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				"""
+				select row, name, code
+				from temp.full
+				where row between ? and ?
+				order by row
+				;""",
+				[i0, i1 - 1]
+			)
+		)
+		qs.assign(StateVars.db_saves.query_result)
+
 	names.clear()
+	var i := 0
 	for c in range(i0, i1):
-		var g := node_glyphs.get_child(c - i0)
+		var g := node_glyphs.get_child(i)
 		if ranged:
-			arr.clear()
 			c += start
 			g.data_code = c
 		else:
-			g.data_name = arr[c].name
-			g.data_code = arr[c].code
+			g.data_name = qs[i].name
+			g.data_code = qs[i].code
 		g.ind = c
-		inds[g.ind] = g
 		g.show()
 		names[g.data_name] = g
+		i += 1
 
 	var gs: Array[Glyph]
 	gs.assign(names.values())
-	update_imgs(gs)
+	update_glyphs(gs)
 	sel.refresh()
 
 
-func update_imgs(gs: Array[Glyph]) -> void:
+func update_glyphs(gs: Array[Glyph]) -> void:
 	var qs := PackedStringArray()
 	qs.resize(gs.size())
 	qs.fill("?")
 
-	var suc := (
+	(
 		StateVars
 		. db_saves
 		. query_with_bindings(
@@ -177,8 +215,6 @@ func update_imgs(gs: Array[Glyph]) -> void:
 			gs.map(func(g: Glyph): return g.data_name)
 		)
 	)
-	if not suc:
-		return
 
 	for gen in StateVars.db_saves.query_result:
 		refresh_tex(gen)
