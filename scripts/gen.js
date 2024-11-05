@@ -1,6 +1,6 @@
-const id = "lang05ab1e";
-const name = "05AB1E";
-const category = "Eso/Golf/etc.";
+const id = "";
+const name = "";
+const category = "";
 const x = `
 
 
@@ -22,10 +22,11 @@ let map = new Map(
       return ["c" + +k, +v];
     }),
 );
-//map = new Map(
-//  "ǝʒαβγδεζηθ\nвимнтΓΔΘιΣΩ≠∊∍∞₁₂₃₄₅₆ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~Ƶ€Λ‚ƒ„…†‡ˆ‰Š‹ŒĆŽƶĀ‘’“”•–—˜™š›œćžŸā¡¢£¤¥¦§¨©ª«¬λ®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-//    .split``.map((x, i) => ["c" + i, x.codePointAt()]),
-//);
-console.log(
+map = new Map(
+  [
+    ..."；∧∨“”⊞⊟➙⧴″¶‴＆｜↶↷⟲←↑→↓⎇‽↧↥⌊⌈±↖↗↘↙ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~⭆？⪫⪪℅◧◨⮌≡№⊙⸿⬤≔≕▷▶✂ΣΠ↨⍘✳↔≦≧ⅈⅉ⌕⊕⊖⊗⊘⎚¬₂Φ§﹪ææ«»×⁺æ⁻·÷⁰¹²³⁴⁵⁶⁷⁸⁹¦‖‹⁼›¿æＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ⟦∕⟧æ…´αβχδεφγηιæκλμν¤πθρστυςωξψζ⦃æ⦄～æ",
+  ].map((x, i) => ["c" + i, x.codePointAt()]),
+);
+nsole.log(
   `insert into sbcs (id, name, category, ${[...map.keys()]})\nvalues ('${id}', '${name}', '${category}', ${[...map.values()]});`,
 );
