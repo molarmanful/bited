@@ -20,7 +20,6 @@ var data_code := -1:
 		if c >= 0:
 			data_name = "%04X" % data_code
 		refresh()
-var nop := false
 var label: String:
 	get:
 		if data_code < 0 or is_noprint(data_code):
@@ -40,6 +39,15 @@ var selected := false:
 			add_theme_stylebox_override("panel", sb)
 		else:
 			remove_theme_stylebox_override("panel")
+var nop := false:
+	set(x):
+		if nop == x:
+			return
+		nop = x
+		if nop:
+			theme_type_variation = "GlyphNop"
+		else:
+			theme_type_variation = ""
 
 
 static func create(t: Table) -> Glyph:
@@ -103,7 +111,7 @@ func lclick() -> void:
 		sel.select_inv(self)
 		return
 
-	if selected and sel.is_alone():
+	if not nop and selected and sel.is_alone():
 		StateVars.edit.emit(self)
 		return
 

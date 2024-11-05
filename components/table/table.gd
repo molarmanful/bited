@@ -24,6 +24,7 @@ var to_update := false
 var viewmode := Mode.GLYPHS
 var start := 0
 var end := 0
+var sbcs := PackedInt32Array()
 
 
 func _ready() -> void:
@@ -86,9 +87,9 @@ func update() -> void:
 
 
 func reset_full() -> void:
-	if viewmode == Mode.RANGE:
-		return
-	set_glyphs()
+	match viewmode:
+		Mode.GLYPHS:
+			set_glyphs()
 
 
 func set_range(a: int, b: int) -> void:
@@ -125,6 +126,7 @@ func set_glyphs() -> void:
 
 
 func set_sbcs(ch: PackedInt32Array) -> void:
+	sbcs = ch
 	StateVars.db_saves.delete_rows("temp.full", "")
 	StateVars.db_saves.query("begin transaction;")
 
