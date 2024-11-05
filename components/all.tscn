@@ -1,20 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=9 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
 [ext_resource type="Script" path="res://components/theme_switcher.gd" id="1_v7yw2"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
+[ext_resource type="PackedScene" uid="uid://bppfxecm1o8pn" path="res://components/start/start.tscn" id="3_v6hkg"]
 [ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="7_axgl6"]
 
-[node name="All" type="PanelContainer" node_paths=PackedStringArray("table", "editor")]
+[node name="All" type="PanelContainer" node_paths=PackedStringArray("node_start", "node_body", "table", "editor")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
+node_start = NodePath("Start")
+node_body = NodePath("Body")
 table = NodePath("Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
 editor = NodePath("Body/Main/HSplitContainer/PanelContainer/ScrollContainer/Editor")
 metadata/_edit_lock_ = true
@@ -23,7 +26,11 @@ metadata/_edit_lock_ = true
 script = ExtResource("1_v7yw2")
 node = NodePath("..")
 
+[node name="Start" parent="." instance=ExtResource("3_v6hkg")]
+layout_mode = 2
+
 [node name="Body" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_edit_lock_ = true
@@ -146,9 +153,9 @@ layout_mode = 2
 [node name="Nav" parent="Body" node_paths=PackedStringArray("settings") instance=ExtResource("2_rafec")]
 layout_mode = 2
 theme_type_variation = &"Nav"
-settings = NodePath("../../Window")
+settings = NodePath("../../WindowSettings")
 
-[node name="Window" type="Window" parent="."]
+[node name="WindowSettings" type="Window" parent="."]
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
 title = "Settings"
@@ -158,5 +165,5 @@ visible = false
 transient = true
 content_scale_stretch = 1
 
-[node name="Settings" parent="Window" node_paths=PackedStringArray("window") instance=ExtResource("7_axgl6")]
+[node name="Settings" parent="WindowSettings" node_paths=PackedStringArray("window") instance=ExtResource("7_axgl6")]
 window = NodePath("..")

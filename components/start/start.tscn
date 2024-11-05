@@ -1,0 +1,140 @@
+[gd_scene load_steps=4 format=3 uid="uid://bppfxecm1o8pn"]
+
+[ext_resource type="Script" path="res://components/start/start.gd" id="1_xhk5b"]
+[ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
+[ext_resource type="Script" path="res://components/start/new.gd" id="2_ntphd"]
+
+[node name="Start" type="CenterContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xhk5b")
+btn_new = NodePath("VBoxContainer/VBoxContainer/new")
+btn_db = NodePath("VBoxContainer/VBoxContainer/db")
+btn_bdf = NodePath("VBoxContainer/VBoxContainer/bdf")
+window_new = NodePath("WindowNew")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Double"
+text = "bited"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="new" type="Button" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "new"
+
+[node name="db" type="Button" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "load"
+
+[node name="bdf" type="Button" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "import"
+
+[node name="WindowNew" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "new font"
+initial_position = 2
+size = Vector2i(300, 145)
+transient = true
+exclusive = true
+min_size = Vector2i(0, 145)
+
+[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_ntphd")
+window = NodePath("..")
+btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowNew/New"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowNew/New/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="WindowNew/New/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label3" type="Label" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "id"
+vertical_alignment = 1
+
+[node name="id" type="LineEdit" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "id..."
+script = ExtResource("2_j80b5")
+
+[node name="Label4" type="Label" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "preset"
+vertical_alignment = 1
+
+[node name="preset" type="OptionButton" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "empty"
+popup/item_1/text = "sensible 8x16"
+popup/item_1/id = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="WindowNew/New/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowNew/New/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="start" type="Button" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "start"
+
+[node name="cancel" type="Button" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "cancel"
