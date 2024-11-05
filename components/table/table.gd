@@ -67,10 +67,9 @@ func onscroll() -> void:
 	# if debounced:
 	# 	return
 
-	var cur := -int(get_global_transform_with_canvas().get_origin().y)
-	if virt.v_scroll == cur:
-		return
-	virt.v_scroll = cur
+	var cur = -int(get_global_transform_with_canvas().get_origin().y)
+	if virt.v_scroll != cur:
+		virt.v_scroll = cur
 
 	# debounced = true
 	# get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
@@ -89,7 +88,7 @@ func update() -> void:
 func reset_full() -> void:
 	match viewmode:
 		Mode.GLYPHS:
-			set_glyphs()
+			set_glyphs(false)
 
 
 func set_range(a: int, b: int) -> void:
@@ -100,7 +99,7 @@ func set_range(a: int, b: int) -> void:
 	after_set()
 
 
-func set_glyphs() -> void:
+func set_glyphs(top := true) -> void:
 	StateVars.db_saves.delete_rows("temp.full", "")
 	(
 		StateVars
@@ -122,7 +121,7 @@ func set_glyphs() -> void:
 	virt.length = (
 		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
 	)
-	after_set()
+	after_set(top)
 
 
 func set_sbcs(ch: PackedInt32Array) -> void:
@@ -143,7 +142,7 @@ func set_sbcs(ch: PackedInt32Array) -> void:
 	after_set()
 
 
-func after_set() -> void:
+func after_set(top := true) -> void:
 	if virt.length:
 		node_placeholder.hide()
 		node_grid_panel.show()
@@ -151,12 +150,9 @@ func after_set() -> void:
 		node_grid_panel.hide()
 		node_placeholder.show()
 	sel.clear()
-	reset_scroll()
-
-
-func reset_scroll() -> void:
-	virt.v_scroll = 0
-	node_scroll.set_deferred("scroll_vertical", 0)
+	if top:
+		node_scroll.set_v_scroll(0)
+	virt.v_scroll = node_scroll.get_v_scroll()
 
 
 func gen_glyphs() -> void:

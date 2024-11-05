@@ -17,7 +17,7 @@ var h_view := 0:
 		refresh.emit()
 var v_scroll := 0:
 	set(n):
-		v_scroll = n
+		v_scroll = min(n, rows * size_item_gap.y - h_view)
 		refresh.emit()
 
 var w_item: int:
