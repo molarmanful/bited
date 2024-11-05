@@ -46,18 +46,14 @@ func load_blocks() -> void:
 
 
 func load_sbcs() -> void:
-	(
-		StateVars
-		. db_uc
-		. query(
-			(
-				"""
-				select name, category, %s
-				from sbcs
-				order by category, id
-				;"""
-				% ",".join(range(256).map(func(n: int): return "c%d" % n))
-			)
+	StateVars.db_uc.query(
+		(
+			"""
+			select name, category, %s
+			from sbcs
+			order by category, id
+			;"""
+			% ",".join(range(256).map(func(n: int): return "c%d" % n))
 		)
 	)
 	for q in StateVars.db_uc.query_result:
@@ -66,7 +62,7 @@ func load_sbcs() -> void:
 			if q.category not in sbcs_cats:
 				var y := create_item()
 				y.set_text(0, q.category)
-				y.set_selectable(0, false)
+				# y.set_selectable(0, false)
 				sbcs_cats[q.category] = y
 			x = sbcs_cats[q.category].create_child()
 		else:
