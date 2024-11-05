@@ -6,7 +6,7 @@ func _ready() -> void:
 	text_changed.connect(validate)
 
 
-func validate(new: String) -> String:
+func validate(new := text) -> String:
 	var r := RegEx.create_from_string("[^\\w]")
 	var old_len := text.length()
 	var old_caret := caret_column

@@ -1,4 +1,4 @@
-extends CenterContainer
+extends PanelContainer
 
 @export var btn_new: Button
 @export var btn_db: Button

@@ -13,12 +13,16 @@ signal table_refresh
 signal refresh(gen: Dictionary)
 
 ## Current font data.
-var font := BFont.sensible()
+var font: BFont
 
 ## Static database for Unicode metadata.
 var db_uc := SQLite.new()
 ## Database for font data.
 var db_saves := SQLite.new()
+
+var root: Node
+var start: Node
+var scn_all: Resource
 
 
 func _ready():
@@ -31,15 +35,41 @@ func _ready():
 
 	init_font_metas()
 
-	# TODO: prompt for font at startup
-	var bdfp = BDFParser.new()
-	bdfp.from_file("res://assets/test.bdf")
-	font = bdfp.font
-	font.init_font()
-	var gens: Array[Dictionary]
-	gens.assign(bdfp.glyphs.values())
-	font.save_glyphs(gens)
+	ResourceLoader.load_threaded_request("res://components/all.tscn")
+	root = get_tree().root
+	start = root.get_child(root.get_child_count() - 1)
+
+	# var bdfp = BDFParser.new()
+	# bdfp.from_file("res://assets/test.bdf")
+	# font = bdfp.font
+	# font.init_font()
+	# var gens: Array[Dictionary]
+	# gens.assign(bdfp.glyphs.values())
+	# font.save_glyphs(gens)
 	# print(font.to_bdf())
+
+
+## Transitions from "start" to "all."
+func start_all() -> void:
+	start_all_defer.call_deferred()
+
+
+func start_all_defer() -> void:
+	if not scn_all:
+		scn_all = ResourceLoader.load_threaded_get("res://components/all.tscn")
+
+	root.remove_child(start)
+	root.add_child(scn_all.instantiate())
+
+
+## Transitions from "all" to "start."
+func all_start() -> void:
+	all_start_defer.call_deferred()
+
+
+func all_start_defer() -> void:
+	root.get_child(root.get_child_count() - 1).free()
+	root.add_child(start)
 
 
 ## Initializes master table for saved fonts.

@@ -4,44 +4,47 @@
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
 [ext_resource type="Script" path="res://components/start/new.gd" id="2_ntphd"]
 
-[node name="Start" type="CenterContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new")]
+[node name="Start" type="PanelContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xhk5b")
-btn_new = NodePath("VBoxContainer/VBoxContainer/new")
-btn_db = NodePath("VBoxContainer/VBoxContainer/db")
-btn_bdf = NodePath("VBoxContainer/VBoxContainer/bdf")
+btn_new = NodePath("CenterContainer/VBoxContainer/VBoxContainer/new")
+btn_db = NodePath("CenterContainer/VBoxContainer/VBoxContainer/db")
+btn_bdf = NodePath("CenterContainer/VBoxContainer/VBoxContainer/bdf")
 window_new = NodePath("WindowNew")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Double"
 text = "bited"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="new" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="new" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "new"
 
-[node name="db" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="db" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "load"
 
-[node name="bdf" type="Button" parent="VBoxContainer/VBoxContainer"]
+[node name="bdf" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "import"
@@ -53,11 +56,12 @@ gui_embed_subwindows = true
 title = "new font"
 initial_position = 2
 size = Vector2i(300, 145)
+visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
 
-[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel")]
+[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "input_id", "input_preset")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -67,6 +71,8 @@ script = ExtResource("2_ntphd")
 window = NodePath("..")
 btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
 btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
+input_preset = NodePath("VBoxContainer/MarginContainer/GridContainer/preset")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="WindowNew/New"]
 layout_mode = 2
@@ -111,7 +117,7 @@ mouse_default_cursor_shape = 2
 selected = 0
 item_count = 2
 popup/item_0/text = "empty"
-popup/item_1/text = "sensible 8x16"
+popup/item_1/text = "unifont 8×16"
 popup/item_1/id = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="WindowNew/New/VBoxContainer"]

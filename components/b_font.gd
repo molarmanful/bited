@@ -36,7 +36,7 @@ var center: Vector2i:
 		return bb * Vector2i(1, -1) / 2
 
 
-static func sensible() -> BFont:
+static func unifontex() -> BFont:
 	var res := BFont.new()
 	res.bb = Vector2i(8, 16)
 	res.desc = 2

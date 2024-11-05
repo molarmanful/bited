@@ -3,6 +3,8 @@ extends PanelContainer
 @export var window: Window
 @export var btn_start: Button
 @export var btn_cancel: Button
+@export var input_id: IDVal
+@export var input_preset: OptionButton
 
 
 func _ready() -> void:
@@ -12,4 +14,18 @@ func _ready() -> void:
 
 
 func start() -> void:
-	pass
+	# TODO: err msg
+	# TODO: confirm overwrite of existing font
+	if input_id.validate():
+		return
+
+	StateVars.font = BFont.new()
+	match input_preset.selected:
+		1:
+			StateVars.font = BFont.unifontex()
+
+	StateVars.font.id = input_id.text
+	StateVars.font.init_font()
+	window.hide()
+
+	StateVars.start_all()
