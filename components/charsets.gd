@@ -51,7 +51,7 @@ func load_sbcs() -> void:
 			"""
 			select name, category, %s
 			from sbcs
-			order by category, id
+			order by category nulls last, id
 			;"""
 			% ",".join(range(256).map(func(n: int): return "c%d" % n))
 		)
