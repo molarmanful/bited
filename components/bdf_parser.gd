@@ -73,6 +73,9 @@ func parse(f: Callable, end: Callable) -> String:
 		var line := kv(l)
 		var e := ""
 
+		if line.k == "COMMENT":
+			continue
+
 		match mode:
 			Mode.PRE:
 				if line.k == "STARTFONT" and notdef("STARTFONT"):
@@ -323,6 +326,8 @@ func parse_bm(line: Dictionary) -> String:
 ## Saves currently-parsing glyph.
 func endchar() -> void:
 	mode = Mode.X
+	if not "dwidth" in gen:
+		gen.dwidth = gen.bb_x
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
 	glyphs[gen.name] = gen
 	clrchar()
@@ -338,6 +343,7 @@ func clrchar() -> void:
 ## Tokenizes a line into a key-value pair denoted by keys [code]k[/code] and
 ## [code]v[/code].
 ## For single-token lines, [code]v[/code] is empty.
+# TODO: optimize
 func kv(l: String) -> Dictionary:
 	var res := r_ws.sub(l.strip_edges(true, false), " ").split(" ", true, 1)
 	res[0] = res[0].to_upper()
