@@ -328,6 +328,8 @@ func parse_bm(line: Dictionary) -> String:
 func endchar() -> void:
 	mode = Mode.X
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
+	print(gen_bm)
+	print(Util.bits_to_hexes(gen.img, gen.bb_x, gen.bb_y))
 	glyphs[gen.name] = gen
 	clrchar()
 

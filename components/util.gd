@@ -71,7 +71,7 @@ func hexes_to_bits(hexes: PackedStringArray, w: int, h: int) -> PackedByteArray:
 	for row in hexes:
 		for i in range(0, row.length(), 2):
 			res[i_row + i / 2] = row.substr(i, 2).hex_to_int()
-		i_row += 1
+		i_row += chunk
 
 	return res
 
