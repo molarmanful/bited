@@ -43,7 +43,7 @@ var r_ws := RegEx.create_from_string("\\s+")
 var gen_default := {
 	name = "",
 	code = -1,
-	dwidth = 0,
+	dwidth = -1,
 	bb_x = 0,
 	bb_y = 0,
 	off_x = 0,
@@ -199,6 +199,7 @@ func parse_x(line: Dictionary) -> String:
 			var x: String = line.v.strip_edges()
 			if notdef("char " + x):
 				mode = Mode.CHAR
+				gen = gen_default
 				gen.name = x
 			else:
 				mode = Mode.CHAR_IGNORE
@@ -326,8 +327,6 @@ func parse_bm(line: Dictionary) -> String:
 ## Saves currently-parsing glyph.
 func endchar() -> void:
 	mode = Mode.X
-	if not "dwidth" in gen:
-		gen.dwidth = gen.bb_x
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
 	glyphs[gen.name] = gen
 	clrchar()
