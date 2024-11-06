@@ -13,7 +13,7 @@ signal table_refresh
 signal refresh(gen: Dictionary)
 
 ## Current font data.
-var font: BFont
+var font := BFont.new()
 
 ## Static database for Unicode metadata.
 var db_uc := SQLite.new()

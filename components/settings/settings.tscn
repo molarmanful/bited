@@ -41,8 +41,8 @@ theme_override_constants/margin_right = 8
 layout_mode = 2
 current_tab = 0
 tab_count = 3
-tab_0/title = "GENERAL"
-tab_1/title = "FONT"
+tab_0/title = "FONT"
+tab_1/title = "GENERAL"
 tab_2/title = "DISPLAY"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
@@ -60,15 +60,6 @@ theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
-
-[node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/general"]
-layout_mode = 2
-text = "TESTING TESTING 123"
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 visible = false
@@ -326,6 +317,15 @@ vertical_alignment = 1
 layout_mode = 2
 allow_greater = true
 script = ExtResource("16_26mdr")
+
+[node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/general"]
+layout_mode = 2
+text = "TESTING TESTING 123"
 
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 visible = false

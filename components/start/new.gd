@@ -19,13 +19,12 @@ func start() -> void:
 	if input_id.validate():
 		return
 
-	StateVars.font = BFont.new()
 	match input_preset.selected:
 		1:
 			StateVars.font = BFont.unifontex()
 
 	StateVars.font.id = input_id.text
 	StateVars.font.init_font()
-	window.hide()
 
+	window.hide()
 	StateVars.start_all()

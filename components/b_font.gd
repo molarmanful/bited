@@ -45,8 +45,8 @@ static func unifontex() -> BFont:
 	return res
 
 
-func init_font() -> void:
-	save_font()
+func init_font(ignore := false) -> void:
+	save_font(ignore)
 	(
 		StateVars
 		. db_saves

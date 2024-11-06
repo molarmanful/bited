@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=5 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/start.gd" id="1_xhk5b"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
 [ext_resource type="Script" path="res://components/start/new.gd" id="2_ntphd"]
+[ext_resource type="Script" path="res://components/start/db.gd" id="4_a2a2n"]
 
-[node name="Start" type="PanelContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new")]
+[node name="Start" type="PanelContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new", "window_db")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,6 +16,7 @@ btn_new = NodePath("CenterContainer/VBoxContainer/VBoxContainer/new")
 btn_db = NodePath("CenterContainer/VBoxContainer/VBoxContainer/db")
 btn_bdf = NodePath("CenterContainer/VBoxContainer/VBoxContainer/bdf")
 window_new = NodePath("WindowNew")
+window_db = NodePath("WindowDb")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -117,7 +119,7 @@ mouse_default_cursor_shape = 2
 selected = 0
 item_count = 2
 popup/item_0/text = "empty"
-popup/item_1/text = "unifont 8×16"
+popup/item_1/text = "unifontex 8×16"
 popup/item_1/id = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="WindowNew/New/VBoxContainer"]
@@ -141,6 +143,72 @@ mouse_default_cursor_shape = 2
 text = "start"
 
 [node name="cancel" type="Button" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "cancel"
+
+[node name="WindowDb" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "load font"
+initial_position = 2
+size = Vector2i(300, 300)
+transient = true
+exclusive = true
+min_size = Vector2i(0, 145)
+
+[node name="Db" type="PanelContainer" parent="WindowDb" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "tree")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_a2a2n")
+window = NodePath("..")
+btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+tree = NodePath("VBoxContainer/MarginContainer/Tree")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowDb/Db"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowDb/Db/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Tree" type="Tree" parent="WindowDb/Db/VBoxContainer/MarginContainer"]
+layout_mode = 2
+columns = 2
+hide_root = true
+select_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="WindowDb/Db/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowDb/Db/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="start" type="Button" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "load"
+
+[node name="cancel" type="Button" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"

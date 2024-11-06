@@ -32,6 +32,7 @@ func save() -> void:
 	for entry in entries:
 		for child in get_tree().get_nodes_in_group(entry):
 			child.save()
+	StateVars.font.save_font()
 	StateVars.settings.emit()
 	window.hide()
 

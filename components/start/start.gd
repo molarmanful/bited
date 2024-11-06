@@ -11,21 +11,9 @@ extends PanelContainer
 
 func _ready() -> void:
 	window_new.hide()
-	# window_db.hide()
+	window_db.hide()
 	# window_bdf.hide()
 
-	btn_new.pressed.connect(act_new)
-	btn_db.pressed.connect(act_db)
-	btn_bdf.pressed.connect(act_bdf)
-
-
-func act_new() -> void:
-	window_new.show()
-
-
-func act_db() -> void:
-	pass
-
-
-func act_bdf() -> void:
-	pass
+	btn_new.pressed.connect(window_new.popup)
+	btn_db.pressed.connect(window_db.popup)
+	# btn_bdf.pressed.connect(window_bdf.popup)
