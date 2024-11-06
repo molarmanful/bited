@@ -47,6 +47,8 @@ static func unifontex() -> BFont:
 
 func init_font(ignore := false) -> void:
 	save_font(ignore)
+	if not ignore:
+		StateVars.db_saves.query("drop table if exists font_%s;" % id)
 	(
 		StateVars
 		. db_saves
@@ -193,7 +195,7 @@ func to_bdf_chars() -> PackedStringArray:
 					"ENCODING %d" % q.code,
 					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
 					"SWIDTH %d 0" % swidth(q.dwidth),
-					"DWIDTH %d 0" % q.dwidth,
+					"DWIDTH %d 0" % (dwidth if q.dwidth < 0 else q.dwidth),
 					"BITMAP",
 				]
 			)
@@ -298,7 +300,9 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id, "", ["cast(avg(dwidth) * 10 as int) as avg"]
+		"font_" + id,
+		"",
+		["cast(avg(case when dwidth < 0 then %d else dwidth) * 10 as int) as avg" % dwidth]
 	)
 	if qs.is_empty():
 		return 0

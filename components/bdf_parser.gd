@@ -199,7 +199,7 @@ func parse_x(line: Dictionary) -> String:
 			var x: String = line.v.strip_edges()
 			if notdef("char " + x):
 				mode = Mode.CHAR
-				gen = gen_default
+				gen.merge(gen_default, true)
 				gen.name = x
 			else:
 				mode = Mode.CHAR_IGNORE
@@ -282,7 +282,7 @@ func parse_char(line: Dictionary) -> String:
 			if notdef_gen("DWIDTH"):
 				var xs := arr_int(1, line.v)
 				if xs.is_empty() or xs[0] < 0:
-					warn("DWIDTH x is not a valid int >=0, defaulting to %d" % gen.dwidth)
+					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
 				else:
 					gen.dwidth = xs[0]
 

@@ -5,11 +5,14 @@ var dim := 0
 var cells: Image
 var data_code := -1
 var data_name := ""
-var dwidth := StateVars.font.dwidth
+var dwidth := -1
+var dwidth_calc: int:
+	get:
+		return StateVars.font.dwidth if dwidth < 0 else dwidth
 
 var center: Vector2i:
 	get:
-		return Vector2i(dwidth, -StateVars.font.bb.y) / 2
+		return Vector2i(dwidth_calc, -StateVars.font.bb.y) / 2
 var corner_bl: Vector2i:
 	get:
 		var center_img := Vector2i(dim, dim) / 2

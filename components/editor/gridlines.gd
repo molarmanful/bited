@@ -32,7 +32,7 @@ func _draw() -> void:
 
 	var lines_v := {
 		origin = 0,
-		w = grid.bitmap.dwidth,
+		w = grid.bitmap.dwidth_calc,
 	}
 
 	for k in lines_v:
