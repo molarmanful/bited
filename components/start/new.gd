@@ -8,14 +8,24 @@ extends PanelContainer
 
 
 func _ready() -> void:
+	btn_start.hide()
+
 	window.close_requested.connect(window.hide)
 	btn_start.pressed.connect(start)
 	btn_cancel.pressed.connect(window.hide)
+	input_id.text_changed.connect(act_valid)
 
 
+# TODO: err msg
+func act_valid(_new := input_id.text) -> void:
+	if input_id.validate():
+		btn_start.hide()
+		return
+	btn_start.show()
+
+
+# TODO: confirm overwrite of existing font
 func start() -> void:
-	# TODO: err msg
-	# TODO: confirm overwrite of existing font
 	if input_id.validate():
 		return
 

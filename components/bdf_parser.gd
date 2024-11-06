@@ -204,7 +204,7 @@ func parse_x(line: Dictionary) -> String:
 			mode = Mode.POST
 
 		_:
-			warn("unknown keyword %s in glyph '%s', skipping" % [line.k, gen.name])
+			warn("unknown keyword %s, skipping" % line.k)
 
 	return ""
 
@@ -293,7 +293,7 @@ func parse_char(line: Dictionary) -> String:
 			endchar()
 
 		_:
-			warn("unknown keyword %s, skipping" % line.k)
+			warn("unknown keyword %s in glyph '%s', skipping" % [line.k, gen.name])
 
 	return ""
 
