@@ -30,6 +30,7 @@ func start() -> void:
 	if input_id.validate():
 		return
 
+	window.hide()
 	var ok := await over_warn.warn(input_id.text)
 	if not ok:
 		window.show()
@@ -42,5 +43,4 @@ func start() -> void:
 	StateVars.font.id = input_id.text
 	StateVars.font.init_font()
 
-	window.hide()
 	StateVars.start_all()
