@@ -3,6 +3,7 @@ extends PanelContainer
 @export var window: Window
 @export var btn_start: Button
 @export var btn_cancel: Button
+@export var over_warn: NodeOverWarn
 @export var input_id: IDVal
 @export var input_preset: OptionButton
 
@@ -27,6 +28,11 @@ func act_valid(_new := input_id.text) -> void:
 # TODO: confirm overwrite of existing font
 func start() -> void:
 	if input_id.validate():
+		return
+
+	var ok := await over_warn.warn(input_id.text)
+	if not ok:
+		window.show()
 		return
 
 	match input_preset.selected:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=9 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/start.gd" id="1_xhk5b"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://components/start/bdf.gd" id="5_8u1a4"]
 [ext_resource type="Script" path="res://components/start/bdf_err.gd" id="6_bxd2i"]
 [ext_resource type="Script" path="res://components/start/bdf_warn.gd" id="7_3cr7j"]
+[ext_resource type="Script" path="res://components/start/over_warn.gd" id="8_55q3b"]
 
 [node name="Start" type="PanelContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new", "window_db", "window_bdf")]
 anchors_preset = 15
@@ -67,7 +68,7 @@ transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
 
-[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "input_id", "input_preset")]
+[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "over_warn", "input_id", "input_preset")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -77,6 +78,7 @@ script = ExtResource("2_ntphd")
 window = NodePath("..")
 btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
 btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+over_warn = NodePath("../../WindowOverWarn/OverWarn")
 input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
 input_preset = NodePath("VBoxContainer/MarginContainer/GridContainer/preset")
 
@@ -230,7 +232,7 @@ transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
 
-[node name="BDF" type="PanelContainer" parent="WindowBDF" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "dialog_file", "bdf_err", "bdf_warn", "input_path", "input_id", "input_w")]
+[node name="BDF" type="PanelContainer" parent="WindowBDF" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "dialog_file", "bdf_err", "bdf_warn", "over_warn", "input_path", "input_id", "input_w")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -243,6 +245,7 @@ btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContaine
 dialog_file = NodePath("../../FileDialog")
 bdf_err = NodePath("../../WindowBDFError/BDFError")
 bdf_warn = NodePath("../../WindowBDFWarn/BDFWarn")
+over_warn = NodePath("../../WindowOverWarn/OverWarn")
 input_path = NodePath("VBoxContainer/MarginContainer/GridContainer/path")
 input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
 input_w = NodePath("VBoxContainer/MarginContainer/GridContainer/w")
@@ -490,3 +493,73 @@ text = " ok "
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
+
+[node name="WindowOverWarn" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "db font overwrite warning"
+initial_position = 2
+size = Vector2i(300, 145)
+visible = false
+transient = true
+exclusive = true
+min_size = Vector2i(0, 145)
+
+[node name="OverWarn" type="PanelContainer" parent="WindowOverWarn" node_paths=PackedStringArray("window", "btn_ok", "btn_back", "label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_55q3b")
+window = NodePath("..")
+btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+btn_back = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/back")
+label = NodePath("VBoxContainer/MarginContainer/VBoxContainer/Label")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowOverWarn/OverWarn"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowOverWarn/OverWarn/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowOverWarn/OverWarn/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="WindowOverWarn/OverWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="WindowOverWarn/OverWarn/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "overwrite"
+
+[node name="back" type="Button" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "go back"

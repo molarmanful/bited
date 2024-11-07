@@ -6,6 +6,7 @@ extends PanelContainer
 @export var dialog_file: FileDialog
 @export var bdf_err: NodeBDFErr
 @export var bdf_warn: NodeBDFWarn
+@export var over_warn: NodeOverWarn
 @export var input_path: LineEdit
 @export var input_id: IDVal
 @export var input_w: SpinBox
@@ -23,29 +24,29 @@ func _ready() -> void:
 	btn_start.pressed.connect(start)
 	btn_cancel.pressed.connect(window.hide)
 	dialog_file.file_selected.connect(file_sel)
-	dialog_file.canceled.connect(window.call_deferred.bind("hide"))
+	dialog_file.canceled.connect(window.hide.call_deferred)
 	input_id.text_changed.connect(act_valid)
 
 
 func file_sel(path: String) -> void:
-	# TODO: show warns
 	bdfp = BDFParser.new()
 	var err := bdfp.from_file(path)
 	if err:
-		window.call_deferred("hide")
-		bdf_err.call_deferred("err", err)
+		window.hide.call_deferred()
+		bdf_err.err.call_deferred(err)
 		return
 
 	if not bdfp.warns.is_empty():
-		window.call_deferred("hide")
-		bdf_warn.call_deferred("warn", "\n".join(bdfp.warns))
-		var ok: bool = await bdf_warn.close
+		window.hide.call_deferred()
+		bdf_warn.warn.call_deferred("\n".join(bdfp.warns))
+		var ok: bool = await bdf_warn.out
 		if not ok:
 			return
 
 	window.show()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
+	input_id.text = ""
 	input_w.value = bdfp.font.dwidth
 	act_valid()
 
@@ -58,9 +59,14 @@ func act_valid(_new := input_id.text) -> void:
 	btn_start.show()
 
 
-# TODO: confirm overwrite of existing font
 func start() -> void:
 	if input_id.validate() or not dialog_file.current_file:
+		return
+
+	window.hide()
+	var ok := await over_warn.warn(input_id.text)
+	if not ok:
+		window.show()
 		return
 
 	StateVars.font = bdfp.font
@@ -70,5 +76,4 @@ func start() -> void:
 	gens.assign(bdfp.glyphs.values())
 	StateVars.font.save_glyphs(gens)
 
-	window.hide()
 	StateVars.start_all()

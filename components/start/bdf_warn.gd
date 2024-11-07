@@ -1,7 +1,7 @@
 class_name NodeBDFWarn
 extends PanelContainer
 
-signal close(ok: bool)
+signal out(ok: bool)
 
 @export var window: Window
 @export var btn_ok: Button
@@ -12,12 +12,13 @@ signal close(ok: bool)
 func _ready() -> void:
 	window.hide()
 
-	close.connect(func(_ok: bool): window.hide())
-	window.close_requested.connect(close.emit.bind(false))
-	btn_ok.pressed.connect(close.emit.bind(true))
-	btn_cancel.pressed.connect(close.emit.bind(false))
+	out.connect(func(_ok: bool): window.hide())
+	window.close_requested.connect(out.emit.bind(false))
+	btn_ok.pressed.connect(out.emit.bind(true))
+	btn_cancel.pressed.connect(out.emit.bind(false))
 
 
-func warn(e: String) -> void:
+func warn(e: String) -> bool:
 	input.text = e
 	window.popup()
+	return await out
