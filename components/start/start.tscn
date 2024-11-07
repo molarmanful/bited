@@ -361,6 +361,7 @@ gui_embed_subwindows = true
 title = "db font delete warning"
 initial_position = 2
 size = Vector2i(300, 128)
+visible = false
 transient = true
 exclusive = true
 script = ExtResource("6_0y2i2")
@@ -411,6 +412,7 @@ alignment = 2
 [node name="ok" type="Button" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDanger"
 text = "delete"
 
 [node name="back" type="Button" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
@@ -565,7 +567,8 @@ alignment = 2
 [node name="ok" type="Button" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = " ok "
+theme_type_variation = &"ButtonWarn"
+text = "continue"
 
 [node name="cancel" type="Button" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -630,6 +633,7 @@ alignment = 2
 [node name="ok" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDanger"
 text = "overwrite"
 
 [node name="back" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]

@@ -1,8 +1,13 @@
 class_name IDVal
 extends LineEdit
 
+var popup := PopupMenu.new()
+
 
 func _ready() -> void:
+	popup.unfocusable = true
+	popup.add_item("")
+
 	text_changed.connect(validate)
 
 
@@ -14,5 +19,12 @@ func validate(new := text) -> String:
 	caret_column = old_caret + text.length() - old_len
 
 	if text.is_empty():
-		return "id cannot be empty"
+		var msg := "id cannot be empty"
+		tooltip_text = msg
+		theme_type_variation = "LineEditErr"
+		return msg
+
+	tooltip_text = ""
+	popup.hide()
+	theme_type_variation = ""
 	return ""

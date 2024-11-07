@@ -16,7 +16,6 @@ func _ready() -> void:
 	input_id.text_changed.connect(act_valid)
 
 
-# TODO: err msg
 func act_valid(_new := input_id.text) -> void:
 	if input_id.validate():
 		btn_start.hide()

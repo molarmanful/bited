@@ -50,7 +50,6 @@ func file_sel(path: String) -> void:
 	act_valid()
 
 
-# TODO: err msg
 func act_valid(_new := input_id.text) -> void:
 	if input_id.validate() or not dialog_file.current_file:
 		btn_start.hide()

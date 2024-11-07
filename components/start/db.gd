@@ -70,6 +70,7 @@ func del() -> void:
 	build_tree()
 
 
+# TODO
 func rename() -> void:
 	var sel := tree.get_selected()
 	if not sel:

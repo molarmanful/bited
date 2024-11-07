@@ -38,6 +38,7 @@ theme_override_fonts/font = ExtResource("2_2cf3a")
 horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
+text_overrun_behavior = 3
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 self_modulate = Color(1, 1, 1, 0.69)
