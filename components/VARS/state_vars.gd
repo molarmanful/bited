@@ -39,15 +39,6 @@ func _ready():
 	root = get_tree().root
 	start = root.get_child(root.get_child_count() - 1)
 
-	# var bdfp = BDFParser.new()
-	# bdfp.from_file("res://assets/test.bdf")
-	# font = bdfp.font
-	# font.init_font()
-	# var gens: Array[Dictionary]
-	# gens.assign(bdfp.glyphs.values())
-	# font.save_glyphs(gens)
-	# print(font.to_bdf())
-
 
 ## Transitions from "start" to "all."
 func start_all() -> void:

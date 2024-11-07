@@ -132,6 +132,7 @@ func to_bdf_properties() -> PackedStringArray:
 		"FONT_DESCENT %d" % desc,
 		"CAP_HEIGHT %d" % cap_h,
 		"X_HEIGHT %d" % x_h,
+		"BITED_DWIDTH %d" % dwidth,
 	]
 
 	for k in props:
@@ -154,11 +155,12 @@ func to_bdf_properties() -> PackedStringArray:
 				"FONT_ASCENT",
 				"FONT_DESCENT",
 				"CAP_HEIGHT",
-				"X_HEIGHT"
+				"X_HEIGHT",
+				"BITED_DWIDTH"
 			]
 			. has(k.to_upper())
 		):
-			res.append("%s %s" % [k.to_upper(), props[k]])
+			res.append("%s %s" % [k.to_upper(), JSON.stringify(props[k])])
 
 	res.push_front("START_PROPERTIES %d" % res.size())
 	res.push_back("END_PROPERTIES")

@@ -196,7 +196,7 @@ func parse_x(line: Dictionary) -> String:
 			pass
 
 		"STARTCHAR":
-			var x: String = line.v.strip_edges()
+			var x: String = line.v
 			if notdef("char " + x):
 				mode = Mode.CHAR
 				gen.merge(gen_default, true)
@@ -219,31 +219,48 @@ func parse_props(line: Dictionary) -> String:
 		mode = Mode.X
 
 	elif notdef("prop " + line.k):
-		font.props[line.k] = line.v
+		var v = parse_type(line.v)
+		if v == null:
+			warn("unable to parse property %s, skipping" % line.k)
+		else:
+			font.props[line.k] = v
 
-		match line.k:
-			"FONT_DESCENT":
-				var xs := arr_int(1, line.v)
-				if xs.is_empty():
-					warn("FONT_DESCENT is not a valid int, defaulting to 0")
-				else:
-					font.desc = xs[0]
+			match line.k:
+				"FONT_DESCENT":
+					if v is not int:
+						warn("FONT_DESCENT is not a valid int, defaulting to 0")
+					else:
+						font.desc = v
 
-			"CAP_HEIGHT":
-				var xs := arr_int(1, line.v)
-				if xs.is_empty() or xs[0] < 0:
-					warn("CAP_HEIGHT is not a valid int >=0, defaulting to 0")
-				else:
-					font.cap_h = xs[0]
+				"CAP_HEIGHT":
+					if v is not int or v < 0:
+						warn("CAP_HEIGHT is not a valid int >=0, defaulting to 0")
+					else:
+						font.cap_h = v
 
-			"X_HEIGHT":
-				var xs := arr_int(1, line.v)
-				if xs.is_empty() or xs[0] < 0:
-					warn("X_HEIGHT is not a valid int >=0, defaulting to 0")
-				else:
-					font.x_h = xs[0]
+				"X_HEIGHT":
+					if v is not int or v < 0:
+						warn("X_HEIGHT is not a valid int >=0, defaulting to 0")
+					else:
+						font.x_h = v
+
+				"BITED_DWIDTH":
+					if v is not int or v < 0:
+						warn("BITED_DWIDTH is not a valid int >=0, defaulting to 0")
+					else:
+						font.bb.x = v
 
 	return ""
+
+
+# Parses a value into a string or number.
+func parse_type(v: String) -> Variant:
+	if v and v[0] == '"':
+		return JSON.parse_string(v)
+	var res := arr_int(1, v)
+	if res.is_empty():
+		return null
+	return res[0]
 
 
 ## Handles parsing during [constant Mode.CHAR].
@@ -328,7 +345,6 @@ func parse_bm(line: Dictionary) -> String:
 func endchar() -> void:
 	mode = Mode.X
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
-	print(gen_bm)
 	print(Util.bits_to_hexes(gen.img, gen.bb_x, gen.bb_y))
 	glyphs[gen.name] = gen
 	clrchar()
@@ -344,10 +360,8 @@ func clrchar() -> void:
 ## Tokenizes a line into a key-value pair denoted by keys [code]k[/code] and
 ## [code]v[/code].
 ## For single-token lines, [code]v[/code] is empty.
-# TODO: optimize
 func kv(l: String) -> Dictionary:
-	var res := r_ws.sub(l.strip_edges(true, false), " ").split(" ", true, 1)
-	res[0] = res[0].to_upper()
+	var res := r_ws.sub(l.strip_edges(), " ").split(" ", true, 1)
 	return {k = res[0].to_upper(), v = res[1] if res.size() > 1 else ""}
 
 
