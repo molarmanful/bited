@@ -1,18 +1,17 @@
-class_name NodeBDFErr
-extends PanelContainer
+class_name BDFErr
+extends Window
 
-@export var window: Window
 @export var btn_ok: Button
 @export var input: TextEdit
 
 
 func _ready() -> void:
-	window.hide()
+	hide()
 
-	window.close_requested.connect(window.hide)
-	btn_ok.pressed.connect(window.hide)
+	close_requested.connect(hide)
+	btn_ok.pressed.connect(hide)
 
 
 func err(e: String) -> void:
 	input.text = e
-	window.popup()
+	popup()

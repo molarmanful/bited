@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=10 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/start.gd" id="1_xhk5b"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
 [ext_resource type="Script" path="res://components/start/new.gd" id="2_ntphd"]
 [ext_resource type="Script" path="res://components/start/db.gd" id="4_a2a2n"]
 [ext_resource type="Script" path="res://components/start/bdf.gd" id="5_8u1a4"]
+[ext_resource type="Script" path="res://components/start/del_warn.gd" id="6_0y2i2"]
 [ext_resource type="Script" path="res://components/start/bdf_err.gd" id="6_bxd2i"]
 [ext_resource type="Script" path="res://components/start/bdf_warn.gd" id="7_3cr7j"]
 [ext_resource type="Script" path="res://components/start/over_warn.gd" id="8_55q3b"]
@@ -19,9 +20,9 @@ script = ExtResource("1_xhk5b")
 btn_new = NodePath("CenterContainer/VBoxContainer/VBoxContainer/new")
 btn_db = NodePath("CenterContainer/VBoxContainer/VBoxContainer/db")
 btn_bdf = NodePath("CenterContainer/VBoxContainer/VBoxContainer/bdf")
-window_new = NodePath("WindowNew")
-window_db = NodePath("WindowDb")
-window_bdf = NodePath("WindowBDF")
+window_new = NodePath("New")
+window_db = NodePath("Db")
+window_bdf = NodePath("BDF")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -56,7 +57,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "import"
 
-[node name="WindowNew" type="Window" parent="."]
+[node name="New" type="Window" parent="." node_paths=PackedStringArray("btn_start", "btn_cancel", "over_warn", "input_id", "input_preset")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
@@ -67,25 +68,24 @@ visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
+script = ExtResource("2_ntphd")
+btn_start = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+over_warn = NodePath("../OverWarn")
+input_id = NodePath("PanelContainer/VBoxContainer/MarginContainer/GridContainer/id")
+input_preset = NodePath("PanelContainer/VBoxContainer/MarginContainer/GridContainer/preset")
 
-[node name="New" type="PanelContainer" parent="WindowNew" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "over_warn", "input_id", "input_preset")]
+[node name="PanelContainer" type="PanelContainer" parent="New"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_ntphd")
-window = NodePath("..")
-btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
-btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
-over_warn = NodePath("../../WindowOverWarn/OverWarn")
-input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
-input_preset = NodePath("VBoxContainer/MarginContainer/GridContainer/preset")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowNew/New"]
+[node name="VBoxContainer" type="VBoxContainer" parent="New/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowNew/New/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="New/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -94,32 +94,32 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="GridContainer" type="GridContainer" parent="WindowNew/New/VBoxContainer/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="New/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label3" type="Label" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+[node name="Label3" type="Label" parent="New/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "font id"
 vertical_alignment = 1
 
-[node name="id" type="LineEdit" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+[node name="id" type="LineEdit" parent="New/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
 script = ExtResource("2_j80b5")
 
-[node name="Label4" type="Label" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+[node name="Label4" type="Label" parent="New/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "preset"
 vertical_alignment = 1
 
-[node name="preset" type="OptionButton" parent="WindowNew/New/VBoxContainer/MarginContainer/GridContainer"]
+[node name="preset" type="OptionButton" parent="New/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 selected = 0
@@ -128,32 +128,32 @@ popup/item_0/text = "empty"
 popup/item_1/text = "unifontex 8×16"
 popup/item_1/id = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowNew/New/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="New/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowNew/New/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="New/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="New/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="start" type="Button" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="start" type="Button" parent="New/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "start"
 
-[node name="cancel" type="Button" parent="WindowNew/New/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="New/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
 
-[node name="WindowDb" type="Window" parent="."]
+[node name="Db" type="Window" parent="." node_paths=PackedStringArray("btn_start", "btn_cancel", "btn_del", "btn_rename", "del_warn", "tree")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
@@ -164,23 +164,25 @@ visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
+script = ExtResource("4_a2a2n")
+btn_start = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+btn_del = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/del")
+btn_rename = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/rename")
+del_warn = NodePath("../DelWarn")
+tree = NodePath("PanelContainer/VBoxContainer/MarginContainer/Tree")
 
-[node name="Db" type="PanelContainer" parent="WindowDb" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "tree")]
+[node name="PanelContainer" type="PanelContainer" parent="Db"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("4_a2a2n")
-window = NodePath("..")
-btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
-btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
-tree = NodePath("VBoxContainer/MarginContainer/Tree")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowDb/Db"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Db/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowDb/Db/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Db/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -189,38 +191,53 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Tree" type="Tree" parent="WindowDb/Db/VBoxContainer/MarginContainer"]
+[node name="Tree" type="Tree" parent="Db/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 columns = 2
 hide_root = true
 select_mode = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowDb/Db/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Db/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowDb/Db/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Db/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="start" type="Button" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="del" type="Button" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "delete"
+
+[node name="rename" type="Button" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "rename"
+
+[node name="Spacer" type="Control" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="start" type="Button" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "load"
 
-[node name="cancel" type="Button" parent="WindowDb/Db/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="Db/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
 
-[node name="WindowBDF" type="Window" parent="."]
+[node name="BDF" type="Window" parent="." node_paths=PackedStringArray("btn_start", "btn_cancel", "dialog_file", "bdf_err", "bdf_warn", "over_warn", "input_path", "input_id", "input_w")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
@@ -231,29 +248,28 @@ visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
+script = ExtResource("5_8u1a4")
+btn_start = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+dialog_file = NodePath("../FileDialog")
+bdf_err = NodePath("../BDFErr")
+bdf_warn = NodePath("../BDFWarn")
+over_warn = NodePath("../OverWarn")
+input_path = NodePath("PanelContainer/VBoxContainer/MarginContainer/GridContainer/path")
+input_id = NodePath("PanelContainer/VBoxContainer/MarginContainer/GridContainer/id")
+input_w = NodePath("PanelContainer/VBoxContainer/MarginContainer/GridContainer/w")
 
-[node name="BDF" type="PanelContainer" parent="WindowBDF" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "dialog_file", "bdf_err", "bdf_warn", "over_warn", "input_path", "input_id", "input_w")]
+[node name="PanelContainer" type="PanelContainer" parent="BDF"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_8u1a4")
-window = NodePath("..")
-btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
-btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
-dialog_file = NodePath("../../FileDialog")
-bdf_err = NodePath("../../WindowBDFError/BDFError")
-bdf_warn = NodePath("../../WindowBDFWarn/BDFWarn")
-over_warn = NodePath("../../WindowOverWarn/OverWarn")
-input_path = NodePath("VBoxContainer/MarginContainer/GridContainer/path")
-input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
-input_w = NodePath("VBoxContainer/MarginContainer/GridContainer/w")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDF/BDF"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BDF/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDF/BDF/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDF/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -262,70 +278,70 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="GridContainer" type="GridContainer" parent="WindowBDF/BDF/VBoxContainer/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="BDF/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="Label5" type="Label" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="Label5" type="Label" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "bdf path"
 vertical_alignment = 1
 
-[node name="path" type="LineEdit" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="path" type="LineEdit" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 placeholder_text = "path..."
 editable = false
 structured_text_bidi_override = 2
 
-[node name="Label3" type="Label" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="Label3" type="Label" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "font id"
 vertical_alignment = 1
 
-[node name="id" type="LineEdit" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="id" type="LineEdit" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
 script = ExtResource("2_j80b5")
 
-[node name="Label4" type="Label" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="Label4" type="Label" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "default width"
 vertical_alignment = 1
 
-[node name="w" type="SpinBox" parent="WindowBDF/BDF/VBoxContainer/MarginContainer/GridContainer"]
+[node name="w" type="SpinBox" parent="BDF/PanelContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 rounded = true
 allow_greater = true
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowBDF/BDF/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BDF/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDF/BDF/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDF/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowBDF/BDF/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="BDF/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="start" type="Button" parent="WindowBDF/BDF/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="start" type="Button" parent="BDF/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "import"
 
-[node name="cancel" type="Button" parent="WindowBDF/BDF/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="BDF/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
@@ -338,7 +354,71 @@ file_mode = 0
 access = 2
 use_native_dialog = true
 
-[node name="WindowBDFError" type="Window" parent="."]
+[node name="DelWarn" type="Window" parent="." node_paths=PackedStringArray("btn_ok", "btn_back", "label")]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "db font delete warning"
+initial_position = 2
+size = Vector2i(300, 128)
+transient = true
+exclusive = true
+script = ExtResource("6_0y2i2")
+btn_ok = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+btn_back = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/back")
+label = NodePath("PanelContainer/VBoxContainer/MarginContainer/Label")
+
+[node name="PanelContainer" type="PanelContainer" parent="DelWarn"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DelWarn/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="DelWarn/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Label" type="Label" parent="DelWarn/PanelContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_vertical = 0
+autowrap_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="DelWarn/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "delete"
+
+[node name="back" type="Button" parent="DelWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "go back"
+
+[node name="BDFErr" type="Window" parent="." node_paths=PackedStringArray("btn_ok", "input")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
@@ -349,22 +429,21 @@ visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
+script = ExtResource("6_bxd2i")
+btn_ok = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+input = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Err")
 
-[node name="BDFError" type="PanelContainer" parent="WindowBDFError" node_paths=PackedStringArray("window", "btn_ok", "input")]
+[node name="PanelContainer" type="PanelContainer" parent="BDFErr"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("6_bxd2i")
-window = NodePath("..")
-btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
-input = NodePath("VBoxContainer/MarginContainer/VBoxContainer/Err")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFError/BDFError"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BDFErr/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDFError/BDFError/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDFErr/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -373,44 +452,44 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BDFErr/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="BDFErr/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 text = "Error encountered during parsing:"
 autowrap_mode = 3
 
-[node name="Err" type="TextEdit" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Err" type="TextEdit" parent="BDFErr/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "error..."
 editable = false
 wrap_mode = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowBDFError/BDFError/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BDFErr/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDFErr/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="BDFErr/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="ok" type="Button" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ok" type="Button" parent="BDFErr/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = " ok "
 
-[node name="WindowBDFWarn" type="Window" parent="."]
+[node name="BDFWarn" type="Window" parent="." node_paths=PackedStringArray("btn_ok", "btn_cancel", "input")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
@@ -421,23 +500,22 @@ visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
+script = ExtResource("7_3cr7j")
+btn_ok = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+input = NodePath("PanelContainer/VBoxContainer/MarginContainer/VBoxContainer/Warn")
 
-[node name="BDFWarn" type="PanelContainer" parent="WindowBDFWarn" node_paths=PackedStringArray("window", "btn_ok", "btn_cancel", "input")]
+[node name="PanelContainer" type="PanelContainer" parent="BDFWarn"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("7_3cr7j")
-window = NodePath("..")
-btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
-btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
-input = NodePath("VBoxContainer/MarginContainer/VBoxContainer/Warn")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFWarn/BDFWarn"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BDFWarn/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDFWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -446,80 +524,80 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="BDFWarn/PanelContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="BDFWarn/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 text = "Warning(s) encountered during parsing:"
 autowrap_mode = 3
 
-[node name="Warn" type="TextEdit" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Warn" type="TextEdit" parent="BDFWarn/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 placeholder_text = "warnings..."
 editable = false
 wrap_mode = 1
 
-[node name="Label2" type="Label" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="BDFWarn/PanelContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 text = "Continue?"
 autowrap_mode = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="BDFWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="ok" type="Button" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ok" type="Button" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = " ok "
 
-[node name="cancel" type="Button" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="BDFWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
 
-[node name="WindowOverWarn" type="Window" parent="."]
+[node name="OverWarn" type="Window" parent="." node_paths=PackedStringArray("btn_ok", "btn_back", "label")]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
 title = "db font overwrite warning"
 initial_position = 2
 size = Vector2i(300, 128)
+visible = false
 transient = true
 exclusive = true
+script = ExtResource("8_55q3b")
+btn_ok = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+btn_back = NodePath("PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/back")
+label = NodePath("PanelContainer/VBoxContainer/MarginContainer/Label")
 
-[node name="OverWarn" type="PanelContainer" parent="WindowOverWarn" node_paths=PackedStringArray("window", "btn_ok", "btn_back", "label")]
+[node name="PanelContainer" type="PanelContainer" parent="OverWarn"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("8_55q3b")
-window = NodePath("..")
-btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
-btn_back = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/back")
-label = NodePath("VBoxContainer/MarginContainer/Label")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WindowOverWarn/OverWarn"]
+[node name="VBoxContainer" type="VBoxContainer" parent="OverWarn/PanelContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowOverWarn/OverWarn/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -528,33 +606,33 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Label" type="Label" parent="WindowOverWarn/OverWarn/VBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="OverWarn/PanelContainer/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_vertical = 0
 autowrap_mode = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="WindowOverWarn/OverWarn/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Nav"
 
-[node name="MarginContainer" type="MarginContainer" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="ok" type="Button" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="ok" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "overwrite"
 
-[node name="back" type="Button" parent="WindowOverWarn/OverWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="back" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "go back"

@@ -1,9 +1,8 @@
-extends PanelContainer
+extends Window
 
-@export var window: Window
 @export var btn_start: Button
 @export var btn_cancel: Button
-@export var over_warn: NodeOverWarn
+@export var over_warn: OverWarn
 @export var input_id: IDVal
 @export var input_preset: OptionButton
 
@@ -11,9 +10,9 @@ extends PanelContainer
 func _ready() -> void:
 	btn_start.hide()
 
-	window.close_requested.connect(window.hide)
+	close_requested.connect(hide)
 	btn_start.pressed.connect(start)
-	btn_cancel.pressed.connect(window.hide)
+	btn_cancel.pressed.connect(hide)
 	input_id.text_changed.connect(act_valid)
 
 
@@ -25,15 +24,14 @@ func act_valid(_new := input_id.text) -> void:
 	btn_start.show()
 
 
-# TODO: confirm overwrite of existing font
 func start() -> void:
 	if input_id.validate():
 		return
 
-	window.hide()
+	hide()
 	var ok := await over_warn.warn(input_id.text)
 	if not ok:
-		window.show()
+		show()
 		return
 
 	match input_preset.selected:

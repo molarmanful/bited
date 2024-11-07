@@ -1,19 +1,18 @@
-class_name NodeOverWarn
-extends PanelContainer
+class_name OverWarn
+extends Window
 
 signal out(ok: bool)
 
-@export var window: Window
 @export var btn_ok: Button
 @export var btn_back: Button
 @export var label: Label
 
 
 func _ready() -> void:
-	window.hide()
+	hide()
 
-	out.connect(func(_ok: bool): window.hide())
-	window.close_requested.connect(out.emit.bind(false))
+	out.connect(func(_ok: bool): hide())
+	close_requested.connect(out.emit.bind(false))
 	btn_ok.pressed.connect(out.emit.bind(true))
 	btn_back.pressed.connect(out.emit.bind(false))
 
@@ -24,5 +23,5 @@ func warn(id: String) -> bool:
 		return true
 
 	label.text = "Font with ID '%s' already exists in the database. Overwrite?" % id
-	window.popup()
+	popup()
 	return await out
