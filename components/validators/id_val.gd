@@ -1,13 +1,8 @@
 class_name IDVal
 extends LineEdit
 
-var popup := PopupMenu.new()
-
 
 func _ready() -> void:
-	popup.unfocusable = true
-	popup.add_item("")
-
 	text_changed.connect(validate)
 
 
@@ -25,6 +20,5 @@ func validate(new := text) -> String:
 		return msg
 
 	tooltip_text = ""
-	popup.hide()
 	theme_type_variation = ""
 	return ""

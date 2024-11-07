@@ -20,4 +20,5 @@ func _ready() -> void:
 func warn(id: String) -> bool:
 	label.text = "You are about to delete the font at ID '%s'. Continue?" % id
 	popup()
+	grab_focus()
 	return await out
