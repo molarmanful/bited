@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=8 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/start.gd" id="1_xhk5b"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
 [ext_resource type="Script" path="res://components/start/new.gd" id="2_ntphd"]
 [ext_resource type="Script" path="res://components/start/db.gd" id="4_a2a2n"]
 [ext_resource type="Script" path="res://components/start/bdf.gd" id="5_8u1a4"]
+[ext_resource type="Script" path="res://components/start/bdf_err.gd" id="6_bxd2i"]
+[ext_resource type="Script" path="res://components/start/bdf_warn.gd" id="7_3cr7j"]
 
 [node name="Start" type="PanelContainer" node_paths=PackedStringArray("btn_new", "btn_db", "btn_bdf", "window_new", "window_db", "window_bdf")]
 anchors_preset = 15
@@ -223,11 +225,12 @@ gui_embed_subwindows = true
 title = "import font from bdf"
 initial_position = 2
 size = Vector2i(300, 173)
+visible = false
 transient = true
 exclusive = true
 min_size = Vector2i(0, 145)
 
-[node name="BDF" type="PanelContainer" parent="WindowBDF" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "dialog_file", "input_path", "input_id", "input_w")]
+[node name="BDF" type="PanelContainer" parent="WindowBDF" node_paths=PackedStringArray("window", "btn_start", "btn_cancel", "dialog_file", "bdf_err", "bdf_warn", "input_path", "input_id", "input_w")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -238,6 +241,8 @@ window = NodePath("..")
 btn_start = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/start")
 btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
 dialog_file = NodePath("../../FileDialog")
+bdf_err = NodePath("../../WindowBDFError/BDFError")
+bdf_warn = NodePath("../../WindowBDFWarn/BDFWarn")
 input_path = NodePath("VBoxContainer/MarginContainer/GridContainer/path")
 input_id = NodePath("VBoxContainer/MarginContainer/GridContainer/id")
 input_w = NodePath("VBoxContainer/MarginContainer/GridContainer/w")
@@ -329,3 +334,159 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 use_native_dialog = true
+
+[node name="WindowBDFError" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "bdf parse error"
+initial_position = 2
+size = Vector2i(300, 200)
+visible = false
+transient = true
+exclusive = true
+min_size = Vector2i(0, 145)
+
+[node name="BDFError" type="PanelContainer" parent="WindowBDFError" node_paths=PackedStringArray("window", "btn_ok", "input")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_bxd2i")
+window = NodePath("..")
+btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+input = NodePath("VBoxContainer/MarginContainer/VBoxContainer/Err")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFError/BDFError"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowBDFError/BDFError/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+text = "Error encountered during parsing:"
+autowrap_mode = 3
+
+[node name="Err" type="TextEdit" parent="WindowBDFError/BDFError/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "error..."
+editable = false
+wrap_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="WindowBDFError/BDFError/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="WindowBDFError/BDFError/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = " ok "
+
+[node name="WindowBDFWarn" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "bdf parse warning(s)"
+initial_position = 2
+size = Vector2i(300, 232)
+visible = false
+transient = true
+exclusive = true
+min_size = Vector2i(0, 145)
+
+[node name="BDFWarn" type="PanelContainer" parent="WindowBDFWarn" node_paths=PackedStringArray("window", "btn_ok", "btn_cancel", "input")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_3cr7j")
+window = NodePath("..")
+btn_ok = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/ok")
+btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
+input = NodePath("VBoxContainer/MarginContainer/VBoxContainer/Warn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFWarn/BDFWarn"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+text = "Warning(s) encountered during parsing:"
+autowrap_mode = 3
+
+[node name="Warn" type="TextEdit" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "warnings..."
+editable = false
+wrap_mode = 1
+
+[node name="Label2" type="Label" parent="WindowBDFWarn/BDFWarn/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+text = "Continue?"
+autowrap_mode = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = " ok "
+
+[node name="cancel" type="Button" parent="WindowBDFWarn/BDFWarn/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "cancel"

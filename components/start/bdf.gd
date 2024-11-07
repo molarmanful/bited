@@ -4,6 +4,8 @@ extends PanelContainer
 @export var btn_start: Button
 @export var btn_cancel: Button
 @export var dialog_file: FileDialog
+@export var bdf_err: NodeBDFErr
+@export var bdf_warn: NodeBDFWarn
 @export var input_path: LineEdit
 @export var input_id: IDVal
 @export var input_w: SpinBox
@@ -21,23 +23,31 @@ func _ready() -> void:
 	btn_start.pressed.connect(start)
 	btn_cancel.pressed.connect(window.hide)
 	dialog_file.file_selected.connect(file_sel)
-	dialog_file.canceled.connect(cancel)
+	dialog_file.canceled.connect(window.call_deferred.bind("hide"))
 	input_id.text_changed.connect(act_valid)
 
 
 func file_sel(path: String) -> void:
-	# TODO: show errs/warns
+	# TODO: show warns
 	bdfp = BDFParser.new()
-	bdfp.from_file(path)
+	var err := bdfp.from_file(path)
+	if err:
+		window.call_deferred("hide")
+		bdf_err.call_deferred("err", err)
+		return
+
+	if not bdfp.warns.is_empty():
+		window.call_deferred("hide")
+		bdf_warn.call_deferred("warn", "\n".join(bdfp.warns))
+		var ok: bool = await bdf_warn.close
+		if not ok:
+			return
+
+	window.show()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
 	input_w.value = bdfp.font.dwidth
 	act_valid()
-
-
-func cancel() -> void:
-	input_path.text = ""
-	window.hide.call_deferred()
 
 
 # TODO: err msg

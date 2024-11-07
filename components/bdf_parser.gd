@@ -21,6 +21,7 @@ enum Mode {
 
 ## [BFont] to build to.
 var font := BFont.new()
+var warns := []
 
 ## Line number for debugging purposes.
 var n_line := 0
@@ -53,14 +54,15 @@ var gen_default := {
 
 
 ## Parses BDF file.
-func from_file(path: String) -> void:
+func from_file(path: String) -> String:
 	var file := FileAccess.open(path, FileAccess.READ)
 	var e := parse(
 		func(): return file.get_line(),
 		func(): return file.get_position() >= file.get_length(),
 	)
 	if e:
-		err(e)
+		return err(e)
+	return e
 
 
 ## Parses lines from successive calls of [param f] until [param end] returns true.
@@ -345,7 +347,6 @@ func parse_bm(line: Dictionary) -> String:
 func endchar() -> void:
 	mode = Mode.X
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
-	print(Util.bits_to_hexes(gen.img, gen.bb_x, gen.bb_y))
 	glyphs[gen.name] = gen
 	clrchar()
 
@@ -377,12 +378,16 @@ func arr_int(n: int, v: String) -> PackedInt64Array:
 
 ## Handles warnings.
 func warn(msg: String) -> void:
-	print("WARN @ %d: %s" % [n_line, msg])
+	var s := "WARN @ line %d: %s" % [n_line, msg]
+	print(s)
+	warns.push_back(s)
 
 
 ## Handles errors.
-func err(msg: String) -> void:
-	print("ERR @ %d: %s" % [n_line, msg])
+func err(msg: String) -> String:
+	var s := "ERR @ line %d: %s" % [n_line, msg]
+	print(s)
+	return s
 
 
 ## Returns whether a keyword [param k] is already defined.
