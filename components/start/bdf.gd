@@ -42,12 +42,12 @@ func file_sel(path: String) -> void:
 		if not ok:
 			return
 
+	input_id.grab_focus()
 	show()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
 	input_id.text = ""
 	input_w.value = bdfp.font.dwidth
-	act_valid()
 
 
 func act_valid(_new := input_id.text) -> void:

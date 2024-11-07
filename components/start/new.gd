@@ -11,6 +11,7 @@ func _ready() -> void:
 	btn_start.hide()
 
 	close_requested.connect(hide)
+	about_to_popup.connect(input_id.grab_focus)
 	btn_start.pressed.connect(start)
 	btn_cancel.pressed.connect(hide)
 	input_id.text_changed.connect(act_valid)
