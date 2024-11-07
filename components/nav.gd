@@ -6,6 +6,10 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	font_name.text = StateVars.font.family
+	refresh()
 
 	btn_settings.pressed.connect(settings.popup)
+	StateVars.settings.connect(refresh)
+
+func refresh() -> void:
+	font_name.text = StateVars.font.family
