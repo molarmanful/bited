@@ -1,5 +1,5 @@
-class_name OverWarn
-extends Window
+class_name PgOverWarn
+extends PanelContainer
 
 signal out(ok: bool)
 
@@ -12,7 +12,6 @@ func _ready() -> void:
 	hide()
 
 	out.connect(func(_ok: bool): hide())
-	close_requested.connect(out.emit.bind(false))
 	btn_ok.pressed.connect(out.emit.bind(true))
 	btn_back.pressed.connect(out.emit.bind(false))
 
@@ -23,5 +22,5 @@ func warn(id: String) -> bool:
 		return true
 
 	label.text = "Font with ID '%s' already exists in the database. Overwrite?" % id
-	popup()
+	show()
 	return await out

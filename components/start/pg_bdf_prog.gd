@@ -1,5 +1,5 @@
-class_name BDFProg
-extends Window
+class_name PgBDFProg
+extends PanelContainer
 
 @export var label: Label
 

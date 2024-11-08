@@ -1,23 +1,29 @@
-extends Window
+class_name PgDB
+extends PanelContainer
+
+@export var pg_x: Container
+@export var pg_del_warn: PgDelWarn
+
+@export var tree: Tree
+@export var placeholder: Control
 
 @export var btn_start: Button
 @export var btn_cancel: Button
 @export var btn_del: Button
 @export var btn_rename: Button
-@export var del_warn: DelWarn
-@export var tree: Tree
-@export var placeholder: Control
 
 
 func _ready() -> void:
 	hide()
 
-	about_to_popup.connect(build_tree)
-	close_requested.connect(hide)
 	tree.item_selected.connect(onselect)
 	tree.item_activated.connect(start)
 	btn_start.pressed.connect(start)
-	btn_cancel.pressed.connect(hide)
+	btn_cancel.pressed.connect(
+		func():
+			hide()
+			pg_x.show()
+	)
 	btn_del.pressed.connect(del)
 	btn_rename.pressed.connect(rename)
 
@@ -43,6 +49,7 @@ func build_tree() -> void:
 		x.set_text(0, q.id)
 		x.set_text(1, "%s %s %d\u00d7%d" % [data.family, data.weight, data.bb.x, data.bb.y])
 
+	show()
 	tree.grab_focus()
 
 
@@ -72,11 +79,11 @@ func del() -> void:
 	var id := sel.get_text(0)
 
 	hide()
-	var ok := await del_warn.warn(id)
+	var ok := await pg_del_warn.warn(id)
 	if ok:
 		StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
 		StateVars.db_saves.drop_table("font_" + id)
-	popup()
+	build_tree()
 
 
 # TODO

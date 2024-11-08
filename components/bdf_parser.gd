@@ -21,8 +21,10 @@ enum Mode {
 
 ## [BFont] to build to.
 var font := BFont.new()
+## Error message, if any.
 var e := ""
-var warns := []
+## Warning messages, if any.
+var warns := PackedStringArray()
 
 ## Line number for debugging purposes.
 var n_line := 0
