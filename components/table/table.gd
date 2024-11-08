@@ -217,20 +217,16 @@ func update_glyphs(gs: Array[Glyph]) -> void:
 	qs.resize(gs.size())
 	qs.fill("?")
 
-	(
-		StateVars
-		. db_saves
-		. query_with_bindings(
-			(
-				"""
+	StateVars.db_saves.query_with_bindings(
+		(
+			"""
 				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				where name in (%s)
 				;"""
-				% [StateVars.font.id, ",".join(qs)]
-			),
-			gs.map(func(g: Glyph): return g.data_name)
-		)
+			% [StateVars.font.id, ",".join(qs)]
+		),
+		gs.map(func(g: Glyph): return g.data_name)
 	)
 
 	for gen in StateVars.db_saves.query_result:

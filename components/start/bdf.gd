@@ -3,6 +3,7 @@ extends Window
 @export var btn_start: Button
 @export var btn_cancel: Button
 @export var dialog_file: FileDialog
+@export var bdf_prog: BDFProg
 @export var bdf_err: BDFErr
 @export var bdf_warn: BDFWarn
 @export var over_warn: OverWarn
@@ -29,10 +30,17 @@ func _ready() -> void:
 
 func file_sel(path: String) -> void:
 	bdfp = BDFParser.new()
-	var err := bdfp.from_file(path)
-	if err:
-		hide.call_deferred()
-		bdf_err.err.call_deferred(err)
+	hide.call_deferred()
+	bdf_prog.show.call_deferred()
+	await bdfp.from_file(
+		path,
+		func():
+			bdf_prog.label.text = "Loaded %d chars" % bdfp.glyphs.size()
+			await get_tree().process_frame
+	)
+	bdf_prog.hide()
+	if bdfp.e:
+		bdf_err.err.call_deferred(bdfp.e)
 		return
 
 	if not bdfp.warns.is_empty():
@@ -42,8 +50,8 @@ func file_sel(path: String) -> void:
 		if not ok:
 			return
 
-	input_id.grab_focus()
 	show()
+	input_id.grab_focus()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
 	input_id.text = ""

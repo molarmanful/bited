@@ -21,6 +21,7 @@ enum Mode {
 
 ## [BFont] to build to.
 var font := BFont.new()
+var e := ""
 var warns := []
 
 ## Line number for debugging purposes.
@@ -54,15 +55,18 @@ var gen_default := {
 
 
 ## Parses BDF file.
-func from_file(path: String) -> String:
+func from_file(path: String, poll := func(): pass) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
-	var e := parse(
-		func(): return file.get_line(),
-		func(): return file.get_position() >= file.get_length(),
-	)
-	if e:
-		return err(e)
-	return e
+	await mparse(file.get_line, func(): return file.get_position() >= file.get_length(), poll)
+
+
+## Executes [method parse] on a separate thread.
+## Periodically calls [param poll] for data retrieval.
+func mparse(f: Callable, end: Callable, poll := func(): pass) -> void:
+	var id := WorkerThreadPool.add_task(func(): e = parse(f, end), true)
+	while not WorkerThreadPool.is_task_completed(id):
+		await poll.call()
+	WorkerThreadPool.wait_for_task_completion(id)
 
 
 ## Parses lines from successive calls of [param f] until [param end] returns true.
@@ -73,7 +77,6 @@ func parse(f: Callable, end: Callable) -> String:
 		if l.is_empty():
 			continue
 		var line := kv(l)
-		var e := ""
 
 		if line.k == "COMMENT":
 			continue
