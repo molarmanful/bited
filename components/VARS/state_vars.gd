@@ -107,3 +107,15 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 			"(undefined)" if qs.is_empty() else qs[0].name,
 		]
 	)
+
+
+## Deletes font [param id].
+func delete_font(id: String) -> void:
+	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
+	StateVars.db_saves.drop_table("font_" + id)
+
+
+## Renames font [param old] to [param new].
+func rename_font(old: String, new: String) -> void:
+	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
+	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])

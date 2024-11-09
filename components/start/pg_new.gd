@@ -25,6 +25,7 @@ func _ready() -> void:
 
 
 func begin() -> void:
+	input_id.text = ""
 	focus()
 
 

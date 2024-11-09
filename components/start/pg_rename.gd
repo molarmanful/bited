@@ -26,6 +26,7 @@ func _ready() -> void:
 
 func begin(id: String) -> void:
 	input_old_id.text = id
+	input_new_id.text = ""
 	focus()
 
 
@@ -57,7 +58,6 @@ func start() -> void:
 		focus()
 		return
 
-	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
-	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])
+	StateVars.rename_font(old, new)
 
 	pg_db.begin()

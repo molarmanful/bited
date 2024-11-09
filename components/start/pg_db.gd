@@ -86,8 +86,7 @@ func del() -> void:
 	hide()
 	var ok := await pg_del_warn.warn(id)
 	if ok:
-		StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
-		StateVars.db_saves.drop_table("font_" + id)
+		StateVars.delete_font(id)
 	build_tree()
 
 

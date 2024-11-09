@@ -64,11 +64,11 @@ func file_sel(path: String) -> void:
 		if not ok:
 			return
 
+	input_id.text = ""
 	show()
 	input_id.grab_focus()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
-	input_id.text = ""
 	input_w.value = bdfp.font.dwidth
 
 
