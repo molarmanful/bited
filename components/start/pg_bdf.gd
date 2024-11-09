@@ -91,6 +91,7 @@ func start() -> void:
 
 	StateVars.font = bdfp.font
 	StateVars.font.id = input_id.text
+	StateVars.font.bb.x = input_w.value
 	StateVars.font.init_font()
 	var gens: Array[Dictionary]
 	gens.assign(bdfp.glyphs.values())
