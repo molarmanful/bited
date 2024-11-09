@@ -53,6 +53,8 @@ func start() -> void:
 
 	match input_preset.selected:
 		1:
+			StateVars.font = BFont.creep2()
+		2:
 			StateVars.font = BFont.unifontex()
 
 	StateVars.font.id = input_id.text

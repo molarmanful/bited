@@ -129,10 +129,12 @@ vertical_alignment = 1
 layout_mode = 2
 mouse_default_cursor_shape = 2
 selected = 0
-item_count = 2
+item_count = 3
 popup/item_0/text = "empty"
-popup/item_1/text = "unifontex 8×16"
+popup/item_1/text = "5×11 creep2"
 popup/item_1/id = 1
+popup/item_2/text = "8×16 unifontex"
+popup/item_2/id = 2
 
 [node name="Footer" type="PanelContainer" parent="CenterContainer/New/VBoxContainer"]
 layout_mode = 2

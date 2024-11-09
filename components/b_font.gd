@@ -36,6 +36,15 @@ var center: Vector2i:
 		return bb * Vector2i(1, -1) / 2
 
 
+static func creep2() -> BFont:
+	var res := BFont.new()
+	res.bb = Vector2i(5, 11)
+	res.desc = 2
+	res.cap_h = 4
+	res.x_h = 4
+	return res
+
+
 static func unifontex() -> BFont:
 	var res := BFont.new()
 	res.bb = Vector2i(8, 16)
