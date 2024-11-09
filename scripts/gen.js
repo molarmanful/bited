@@ -1,5 +1,5 @@
 (async () => {
-  const $ = "737";
+  const $ = "437";
   const id = `ibm${$.padStart(5, "0")}`;
   const name = `IBM-${$}`;
   const category = "IBM";
@@ -31,17 +31,17 @@
   //    ..."；∧∨“”⊞⊟➙⧴″¶‴＆｜↶↷⟲←↑→↓⎇‽↧↥⌊⌈±↖↗↘↙ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~⭆？⪫⪪℅◧◨⮌≡№⊙⸿⬤≔≕▷▶✂ΣΠ↨⍘✳↔≦≧ⅈⅉ⌕⊕⊖⊗⊘⎚¬₂Φ§﹪ææ«»×⁺æ⁻·÷⁰¹²³⁴⁵⁶⁷⁸⁹¦‖‹⁼›¿æＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ⟦∕⟧æ…´αβχδεφγηιæκλμν¤πθρστυςωξψζ⦃æ⦄～æ",
   //  ].map((x, i) => ["c" + i, x.codePointAt()]),
   //);
-  map = new Map(
-    x.split("\n").flatMap((a) => {
-      const m = a.match(/<U(\w{4})>\s+\\x(\w{2})\s+\|0/i);
-      if (!m) return [];
-      const k = parseInt(m[2], 16);
-      const v = parseInt(m[1], 16);
-      if (isNaN(k) || isNaN(v)) return [];
-      uniq.add(v);
-      return [["c" + k, v]];
-    }),
-  );
+  //map = new Map(
+  //  x.split("\n").flatMap((a) => {
+  //    const m = a.match(/<U(\w{4})>\s+\\x(\w{2})\s+\|0/i);
+  //    if (!m) return [];
+  //    const k = parseInt(m[2], 16);
+  //    const v = parseInt(m[1], 16);
+  //    if (isNaN(k) || isNaN(v)) return [];
+  //    uniq.add(v);
+  //    return [["c" + k, v]];
+  //  }),
+  //);
   if (map.size != uniq.size)
     console.log(
       "WARN: NOT UNIQ",
