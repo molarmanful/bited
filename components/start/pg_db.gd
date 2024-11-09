@@ -3,6 +3,7 @@ extends PanelContainer
 
 @export var pg_x: Container
 @export var pg_del_warn: PgDelWarn
+@export var pg_rename: PgRename
 
 @export var tree: Tree
 @export var placeholder: Control
@@ -26,6 +27,10 @@ func _ready() -> void:
 	)
 	btn_del.pressed.connect(del)
 	btn_rename.pressed.connect(rename)
+
+
+func begin() -> void:
+	build_tree()
 
 
 func build_tree() -> void:
@@ -86,9 +91,11 @@ func del() -> void:
 	build_tree()
 
 
-# TODO
 func rename() -> void:
 	var sel := tree.get_selected()
 	if not sel:
 		return
 	var id := sel.get_text(0)
+
+	hide()
+	pg_rename.begin(id)

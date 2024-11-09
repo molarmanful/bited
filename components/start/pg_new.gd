@@ -2,13 +2,13 @@ class_name PgNew
 extends PanelContainer
 
 @export var pg_x: Container
+@export var pg_over_warn: PgOverWarn
 
 @export var input_id: IDVal
 @export var input_preset: OptionButton
 
 @export var btn_start: Button
 @export var btn_cancel: Button
-@export var over_warn: PgOverWarn
 
 
 func _ready() -> void:
@@ -22,6 +22,10 @@ func _ready() -> void:
 			pg_x.show()
 	)
 	input_id.text_changed.connect(act_valid)
+
+
+func begin() -> void:
+	focus()
 
 
 func focus() -> void:
@@ -41,7 +45,7 @@ func start() -> void:
 		return
 
 	hide()
-	var ok := await over_warn.warn(input_id.text)
+	var ok := await pg_over_warn.warn(input_id.text)
 	if not ok:
 		focus()
 		return

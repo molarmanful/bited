@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=12 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/pg_x.gd" id="1_n1aw4"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://components/start/pg_bdf.gd" id="5_3r7xg"]
 [ext_resource type="Script" path="res://components/start/pg_del_warn.gd" id="6_0y2i2"]
 [ext_resource type="Script" path="res://components/start/pg_over_warn.gd" id="8_55q3b"]
+[ext_resource type="Script" path="res://components/start/pg_rename.gd" id="8_100ss"]
 [ext_resource type="Script" path="res://components/start/pg_bdf_prog.gd" id="8_ea8vm"]
 [ext_resource type="Script" path="res://components/start/pg_bdf_err.gd" id="9_ff176"]
 [ext_resource type="Script" path="res://components/start/pg_bdf_warn.gd" id="10_xfdkg"]
@@ -58,18 +59,18 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "import"
 
-[node name="New" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "input_id", "input_preset", "btn_start", "btn_cancel", "over_warn")]
+[node name="New" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_over_warn", "input_id", "input_preset", "btn_start", "btn_cancel")]
 visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 theme_type_variation = &"Border"
 script = ExtResource("2_ntphd")
 pg_x = NodePath("../X")
+pg_over_warn = NodePath("../OverWarn")
 input_id = NodePath("VBoxContainer/Body/GridContainer/id")
 input_preset = NodePath("VBoxContainer/Body/GridContainer/preset")
 btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
 btn_cancel = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
-over_warn = NodePath("../OverWarn")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/New"]
 layout_mode = 2
@@ -158,7 +159,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
 
-[node name="DB" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
+[node name="DB" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "pg_rename", "tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
 visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
@@ -166,6 +167,7 @@ theme_type_variation = &"Border"
 script = ExtResource("4_2ajca")
 pg_x = NodePath("../X")
 pg_del_warn = NodePath("../DelWarn")
+pg_rename = NodePath("../Rename")
 tree = NodePath("VBoxContainer/Body/Tree")
 placeholder = NodePath("VBoxContainer/Body/Placeholder")
 btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
@@ -511,6 +513,103 @@ text = "delete"
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "go back"
+
+[node name="Rename" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_db", "pg_over_warn", "input_old_id", "input_new_id", "btn_start", "btn_cancel")]
+visible = false
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_type_variation = &"Border"
+script = ExtResource("8_100ss")
+pg_db = NodePath("../DB")
+pg_over_warn = NodePath("../OverWarn")
+input_old_id = NodePath("VBoxContainer/Body/GridContainer/old_id")
+input_new_id = NodePath("VBoxContainer/Body/GridContainer/new_id")
+btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Rename"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="PanelContainer" parent="CenterContainer/Rename/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Inner"
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Rename/VBoxContainer/Header"]
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="CenterContainer/Rename/VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+text = "rename db font"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Body" type="MarginContainer" parent="CenterContainer/Rename/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/Rename/VBoxContainer/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label5" type="Label" parent="CenterContainer/Rename/VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "old font id"
+vertical_alignment = 1
+
+[node name="old_id" type="LineEdit" parent="CenterContainer/Rename/VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "id..."
+editable = false
+
+[node name="Label3" type="Label" parent="CenterContainer/Rename/VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "new font id"
+vertical_alignment = 1
+
+[node name="new_id" type="LineEdit" parent="CenterContainer/Rename/VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "id..."
+script = ExtResource("2_j80b5")
+
+[node name="Footer" type="PanelContainer" parent="CenterContainer/Rename/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Rename/VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Rename/VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="start" type="Button" parent="CenterContainer/Rename/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "rename"
+
+[node name="cancel" type="Button" parent="CenterContainer/Rename/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "cancel"
 
 [node name="BDFProg" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("label")]
 visible = false

@@ -15,15 +15,15 @@ func _ready() -> void:
 	btn_new.pressed.connect(
 		func():
 			hide()
-			pg_new.focus()
+			pg_new.begin()
 	)
 	btn_db.pressed.connect(
 		func():
 			hide()
-			pg_db.build_tree()
+			pg_db.begin()
 	)
 	btn_bdf.pressed.connect(
 		func():
 			hide()
-			pg_bdf.prompt_file()
+			pg_bdf.begin()
 	)

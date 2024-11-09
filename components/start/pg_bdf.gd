@@ -38,7 +38,7 @@ func _ready() -> void:
 	input_id.text_changed.connect(act_valid)
 
 
-func prompt_file() -> void:
+func begin() -> void:
 	dialog_file.popup()
 
 

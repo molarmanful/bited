@@ -240,7 +240,6 @@ func save_glyph(gen: Dictionary, over := true) -> bool:
 
 func to_dict() -> Dictionary:
 	return {
-		id = id,
 		foundry = foundry,
 		family = family,
 		weight = weight,
@@ -260,7 +259,6 @@ func to_dict() -> Dictionary:
 
 
 func from_dict(d: Dictionary) -> void:
-	id = d.id
 	foundry = d.foundry
 	family = d.family
 	weight = d.weight
