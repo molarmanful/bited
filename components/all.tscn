@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=7 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 [ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
-[ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="7_axgl6"]
 
 [node name="All" type="PanelContainer" node_paths=PackedStringArray("node_body", "table", "editor")]
 anchors_preset = 15
@@ -142,20 +141,6 @@ theme_override_constants/margin_bottom = 16
 [node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Nav" parent="Body" node_paths=PackedStringArray("settings") instance=ExtResource("2_rafec")]
+[node name="Nav" parent="Body" instance=ExtResource("2_rafec")]
 layout_mode = 2
 theme_type_variation = &"Nav"
-settings = NodePath("../../WindowSettings")
-
-[node name="WindowSettings" type="Window" parent="."]
-canvas_item_default_texture_filter = 0
-gui_embed_subwindows = true
-title = "Settings"
-initial_position = 2
-size = Vector2i(600, 600)
-visible = false
-transient = true
-content_scale_stretch = 1
-
-[node name="Settings" parent="WindowSettings" node_paths=PackedStringArray("window") instance=ExtResource("7_axgl6")]
-window = NodePath("..")

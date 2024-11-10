@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=3 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
+[ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("font_name", "btn_settings")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("font_name", "settings", "btn_save", "dialog_file", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -10,6 +11,9 @@ offset_bottom = 33.0
 grow_horizontal = 2
 script = ExtResource("1_i15a6")
 font_name = NodePath("MarginContainer/HBoxContainer/Label")
+settings = NodePath("WindowSettings")
+btn_save = NodePath("MarginContainer/HBoxContainer/Save")
+dialog_file = NodePath("FileDialog")
 btn_settings = NodePath("MarginContainer/HBoxContainer/Settings")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -61,3 +65,17 @@ ok_button_text = "Save"
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true
+
+[node name="WindowSettings" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+title = "settings"
+initial_position = 2
+size = Vector2i(600, 600)
+visible = false
+transient = true
+content_scale_stretch = 1
+
+[node name="Settings" parent="WindowSettings" node_paths=PackedStringArray("window") instance=ExtResource("2_csear")]
+window = NodePath("..")

@@ -19,6 +19,8 @@ var font := BFont.new()
 var db_uc := SQLite.new()
 ## Database for font data.
 var db_saves := SQLite.new()
+## Database for local data (i.e. machine-specific, not meant to be synced).
+var db_locals := SQLite.new()
 
 var root: Node
 var start: Node
@@ -33,7 +35,11 @@ func _ready():
 	db_saves.path = "user://saves.db"
 	db_saves.open_db()
 
+	db_locals.path = "user://locals.db"
+	db_locals.open_db()
+
 	init_font_metas()
+	init_locals_paths()
 
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
 	root = get_tree().root
@@ -72,6 +78,20 @@ func init_font_metas() -> void:
 			{
 				id = {data_type = "text", not_null = true, primary_key = true, unique = true},
 				data = {data_type = "blob", not_null = true},
+			}
+		)
+	)
+
+
+## Initializes local table for font save paths.
+func init_locals_paths() -> void:
+	(
+		db_locals
+		. create_table(
+			"paths",
+			{
+				id = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				path = {data_type = "string", not_null = true},
 			}
 		)
 	)
