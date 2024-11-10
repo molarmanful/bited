@@ -30,6 +30,19 @@ text = "bited"
 vertical_alignment = 1
 justification_flags = 0
 
+[node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Save" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "save to bdf"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🖫"
+
 [node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -42,3 +55,9 @@ tooltip_text = "settings"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "⚙️"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+ok_button_text = "Save"
+access = 2
+filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
+use_native_dialog = true

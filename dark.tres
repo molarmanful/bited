@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=81 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=85 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -450,6 +450,36 @@ border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6xev"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x0wt8"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lk011"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oexsd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mqkj"]
 bg_color = Color(0, 0, 0, 1)
 border_width_top = 1
@@ -822,6 +852,15 @@ MainHSplit/base_type = &"PanelContainer"
 MainHSplit/styles/panel = SubResource("StyleBoxFlat_c3oxq")
 MainHSplitR/base_type = &"PanelContainer"
 MainHSplitR/styles/panel = SubResource("StyleBoxFlat_xp8as")
+MenuBar/colors/font_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_disabled_color = Color(1, 1, 1, 0.5)
+MenuBar/colors/font_focus_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_hover_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_pressed_color = Color(0, 0, 0, 1)
+MenuBar/styles/disabled = SubResource("StyleBoxFlat_p6xev")
+MenuBar/styles/hover = SubResource("StyleBoxFlat_x0wt8")
+MenuBar/styles/normal = SubResource("StyleBoxFlat_lk011")
+MenuBar/styles/pressed = SubResource("StyleBoxFlat_oexsd")
 Muted/base_type = &"Label"
 Muted/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
 Nav/base_type = &"PanelContainer"

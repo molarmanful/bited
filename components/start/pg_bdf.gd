@@ -20,8 +20,6 @@ var bdfp: BDFParser
 
 func _ready() -> void:
 	btn_start.hide()
-	dialog_file.add_filter("*.bdf", "BDF Fonts")
-	dialog_file.add_filter("*", "All Files")
 
 	btn_start.pressed.connect(start)
 	btn_cancel.pressed.connect(
