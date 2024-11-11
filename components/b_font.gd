@@ -287,7 +287,7 @@ func from_dict(d: Dictionary) -> void:
 
 func xlfd() -> String:
 	return (
-		"-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s"
+		"-%s-%s-%s-%s-%s-%s-%d-%d-%d-%d-%s-%d-%s-%s"
 		% [
 			foundry,
 			family,
@@ -311,11 +311,11 @@ func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
 		"font_" + id,
 		"",
-		["cast(avg(case when dwidth < 0 then %d else dwidth) * 10 as int) as avg" % dwidth]
+		["cast(avg(case when dwidth < 0 then %d else dwidth end) * 10 as int) as avg" % dwidth]
 	)
 	if qs.is_empty():
 		return 0
-	return qs[0].avg or 0
+	return qs[0].avg if qs[0].avg else 0
 
 
 func swidth(dw: int) -> int:

@@ -1,10 +1,10 @@
-class_name PgOverWarn
-extends PanelContainer
+class_name WinOverWarn
+extends Window
 
 signal out(ok: bool)
 
 @export var btn_ok: Button
-@export var btn_back: Button
+@export var btn_nvm: Button
 @export var label: Label
 
 
@@ -12,8 +12,9 @@ func _ready() -> void:
 	hide()
 
 	out.connect(func(_ok: bool): hide())
+	close_requested.connect(out.emit.bind(false))
 	btn_ok.pressed.connect(out.emit.bind(true))
-	btn_back.pressed.connect(out.emit.bind(false))
+	btn_nvm.pressed.connect(out.emit.bind(false))
 
 
 func warn(id: String) -> bool:
@@ -22,5 +23,5 @@ func warn(id: String) -> bool:
 
 	label.text = "Font with ID '%s' already exists in the database. Overwrite?" % id
 	show()
-	btn_back.grab_focus()
+	btn_nvm.grab_focus()
 	return await out

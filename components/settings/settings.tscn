@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=18 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -15,6 +15,8 @@
 [ext_resource type="Script" path="res://components/settings/font/charset.gd" id="13_xmogf"]
 [ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
+[ext_resource type="Script" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
+[ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
 
 [node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tabs", "btn_save", "btn_cancel")]
 anchors_preset = 15
@@ -77,11 +79,12 @@ size_flags_vertical = 1
 text = "font id"
 vertical_alignment = 1
 
-[node name="id" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" groups=["font"]]
+[node name="id" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer" node_paths=PackedStringArray("win_over_warn") groups=["font"]]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
 script = ExtResource("2_8xqh3")
+win_over_warn = NodePath("../../../../../../OverWarn")
 
 [node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer"]
 layout_mode = 2
@@ -317,6 +320,41 @@ layout_mode = 2
 allow_greater = true
 script = ExtResource("16_26mdr")
 
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+layout_mode = 2
+
+[node name="GridContainer3" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "bdf save path"
+vertical_alignment = 1
+
+[node name="save_path" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="path" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3/save_path" node_paths=PackedStringArray("btn", "dialog_file") groups=["font"]]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "path..."
+structured_text_bidi_override = 2
+script = ExtResource("16_qrqxx")
+btn = NodePath("../btn_path")
+dialog_file = NodePath("../../../../../../../FileDialog")
+
+[node name="btn_path" type="Button" parent="VBoxContainer/ScrollContainer/MarginContainer/font/GridContainer3/save_path"]
+layout_mode = 2
+tooltip_text = "browse"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🗎"
+
 [node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 visible = false
 layout_mode = 2
@@ -359,3 +397,77 @@ text = "save"
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "cancel"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+size = Vector2i(200, 147)
+ok_button_text = "Save"
+access = 2
+filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
+use_native_dialog = true
+
+[node name="OverWarn" type="Window" parent="." node_paths=PackedStringArray("btn_ok", "btn_nvm", "label")]
+gui_embed_subwindows = true
+title = "db font overwrite warning"
+initial_position = 2
+size = Vector2i(300, 152)
+visible = false
+transient = true
+exclusive = true
+script = ExtResource("17_4k0nd")
+btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
+btn_nvm = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/nvm")
+label = NodePath("PanelContainer/VBoxContainer/Body/Label")
+
+[node name="PanelContainer" type="PanelContainer" parent="OverWarn"]
+custom_minimum_size = Vector2(300, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OverWarn/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Body" type="MarginContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Label" type="Label" parent="OverWarn/PanelContainer/VBoxContainer/Body"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+size_flags_vertical = 0
+autowrap_mode = 3
+
+[node name="Footer" type="PanelContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="OverWarn/PanelContainer/VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OverWarn/PanelContainer/VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ButtonDanger"
+text = "overwrite"
+
+[node name="nvm" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "keep existing"

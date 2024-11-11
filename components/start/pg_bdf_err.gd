@@ -21,3 +21,4 @@ func _ready() -> void:
 func err(e: String) -> void:
 	input.text = e
 	show()
+	btn_ok.grab_focus()

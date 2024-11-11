@@ -20,4 +20,5 @@ func _ready() -> void:
 func warn(e: String) -> bool:
 	input.text = e
 	show()
+	btn_cancel.grab_focus()
 	return await out

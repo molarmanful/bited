@@ -61,6 +61,8 @@ theme_type_variation = &"Op"
 text = "⚙️"
 
 [node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+size = Vector2i(200, 147)
 ok_button_text = "Save"
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
@@ -69,7 +71,6 @@ use_native_dialog = true
 [node name="WindowSettings" type="Window" parent="."]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
-gui_embed_subwindows = true
 title = "settings"
 initial_position = 2
 size = Vector2i(600, 600)
