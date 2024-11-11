@@ -1,18 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=4 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
+[ext_resource type="PackedScene" uid="uid://cepls5o15ojw1" path="res://preview.tscn" id="3_ups5f"]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("font_name", "settings", "btn_save", "dialog_file", "btn_settings")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "btn_save", "btn_preview", "dialog_file", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 33.0
+offset_bottom = 32.0
 grow_horizontal = 2
 script = ExtResource("1_i15a6")
+preview = NodePath("WindowPreview/Preview")
 font_name = NodePath("MarginContainer/HBoxContainer/Label")
 settings = NodePath("WindowSettings")
-btn_save = NodePath("MarginContainer/HBoxContainer/Save")
+btn_save = NodePath("MarginContainer/HBoxContainer/HBoxContainer/save")
+btn_preview = NodePath("MarginContainer/HBoxContainer/HBoxContainer/preview")
 dialog_file = NodePath("FileDialog")
 btn_settings = NodePath("MarginContainer/HBoxContainer/Settings")
 
@@ -38,7 +41,10 @@ justification_flags = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Save" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="save" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -46,6 +52,15 @@ tooltip_text = "save to bdf"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "🖫"
+
+[node name="preview" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "preview font"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "👁"
 
 [node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -79,4 +94,18 @@ transient = true
 content_scale_stretch = 1
 
 [node name="Settings" parent="WindowSettings" node_paths=PackedStringArray("window") instance=ExtResource("2_csear")]
+window = NodePath("..")
+
+[node name="WindowPreview" type="Window" parent="."]
+auto_translate_mode = 1
+canvas_item_default_texture_filter = 0
+title = "font preview"
+initial_position = 2
+size = Vector2i(600, 600)
+visible = false
+transient = true
+force_native = true
+content_scale_stretch = 1
+
+[node name="Preview" parent="WindowPreview" node_paths=PackedStringArray("window") instance=ExtResource("3_ups5f")]
 window = NodePath("..")

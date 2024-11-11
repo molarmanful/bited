@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://cepls5o15ojw1"]
+
+[ext_resource type="Script" path="res://components/preview.gd" id="1_jy7h6"]
+[ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_8cdh3"]
+
+[node name="Preview" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jy7h6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_8cdh3")
+placeholder_text = "text..."
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Border"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/HSplitContainer/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/PanelContainer/ScrollContainer/MarginContainer/HFlowContainer"]
+layout_mode = 2
+text = "testing testing 123"
