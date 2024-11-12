@@ -1,0 +1,85 @@
+[gd_scene load_steps=5 format=3 uid="uid://igqtugaw0g61"]
+
+[ext_resource type="Script" path="res://components/preview/preview.gd" id="1_jy7h6"]
+[ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_8cdh3"]
+[ext_resource type="Script" path="res://components/preview/out.gd" id="3_wdqwx"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_rj7dp"]
+viewport_path = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport")
+
+[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "out", "scroll_out")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jy7h6")
+presets = NodePath("MarginContainer/HSplitContainer/VBoxContainer/OptionButton")
+input = NodePath("MarginContainer/HSplitContainer/VBoxContainer/TextEdit")
+out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
+scroll_out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+selected = 0
+allow_reselect = true
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_8cdh3")
+placeholder_text = "text..."
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"Border"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+texture = SubResource("ViewportTexture_rj7dp")
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect"]
+disable_3d = true
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+
+[node name="PreviewOut" type="Node2D" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport" node_paths=PackedStringArray("view")]
+script = ExtResource("3_wdqwx")
+view = NodePath("..")

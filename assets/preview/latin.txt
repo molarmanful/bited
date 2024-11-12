@@ -1,0 +1,228 @@
+# COMMON DIACRITICS
+
+À Á Â Ã Ä Å Ā Ă Ą Ǻ Ȁ Ȃ Æ Ǽ Ć Ç Ĉ Ċ Č Ď Đ Ð Ḍ Ǳ ǲ Ǆ ǅ È É Ê Ë Ē Ĕ Ė Ę Ẽ Ě Ẹ Ȅ Ȇ
+Ə Ǵ Ĝ Ğ Ġ Ģ Ĥ Ħ Ḥ Ĭ Ì Í Î Ï İ Ĩ Ī Į Ị Ȉ Ȋ Ĳ Ĵ Ķ Ĺ Ļ Ľ Ŀ Ł Ǉ ǈ Ñ Ń Ņ Ň Ṅ Ŋ Ǌ ǋ Ò
+Ó Ô Õ Ö Ō Ŏ Ő Ø Ǿ Ǫ Ọ Ȍ Ȏ Œ Þ Ŕ Ŗ Ř Ṛ Ȑ Ȓ Ś Ŝ Š Ș Ş Ṣ Ŧ Ť Ț Ţ Ṭ Ù Ú Û Ü Ũ Ū Ŭ Ů
+Ű Ų Ụ Ȕ Ȗ Ẁ Ẃ Ẅ Ŵ Ý Ŷ Ÿ Ỳ Ỹ Ź Ż Ž Ẓ
+
+à á â ã ä å ā ă ą ǻ ȁ ȃ æ ǽ ć ç ĉ ċ č ď đ ð ḍ ǳ ǆ è é ê ë ē ĕ ė ę ě ẽ ẹ ȅ ȇ ə ǵ
+ĝ ğ ġ ģ ĥ ħ ḥ ì í î ï ĩ ī į ĭ ị ȉ ȋ ĳ ĵ ķ ĸ ĺ ļ ľ ŀ ł ǉ ń ŉ ņ ň ñ ṅ ŋ ǌ ò ó ô õ
+ö ø ō ŏ ő ǿ ǫ ọ ȍ ȏ œ þ ŕ ŗ ř ṛ ȑ ȓ ś ŝ š ș ş ṣ ß ŧ ť ț ţ ṭ ù ú û ü ũ ū ŭ ů ű ų
+ụ ȕ ȗ µ μ ẁ ẃ ẅ ŵ ý ÿ ŷ ỳ ỹ ź ż ž ẓ
+
+ 
+
+# VIETNAMESE DIACRITICS
+
+À Á Â Ầ Ấ Ẫ Ẩ Ậ Ã Ă Ằ Ắ Ẵ Ẳ Ặ Ả Ạ Đ È É Ê Ề Ế Ễ Ể Ệ Ẽ Ẻ Ẹ Ì Í Ĩ Ỉ Ị Ò Ó Ô Ồ Ố Ỗ
+Ổ Ộ Õ Ỏ Ơ Ờ Ớ Ỡ Ở Ợ Ọ Ù Ú Ũ Ủ Ư Ừ Ứ Ữ Ử Ự Ụ Ỳ Ý Ỹ Ỷ Ỵ
+
+à á â ầ ấ ẫ ẩ ậ ã ă ằ ắ ẻ ẳ ặ ả ạ đ è é ê ề ế ễ ể ệ ẽ ẻ ẹ ì í ĩ ỉ ị ò ó ô ồ ố ỗ
+ổ ộ õ ỏ ơ ờ ớ ỡ ở ợ ọ ù ú ũ ủ ư ừ ứ ữ ử ự ụ ỳ ý ỹ ỷ ỵ
+
+ 
+
+# AZERI
+
+Zəfər, jaketini də papağını da götür, bu axşam hava çox soyuq olacaq.
+ZƏFƏR, JAKETINI DƏ PAPAĞINI DA GÖTÜR, BU AXŞAM HAVA ÇOX SOYUQ OLACAQ.
+
+
+
+# CATALAN
+
+Jove xef, porti whisky amb quinze glaçons d'hidrogen, coi!
+JOVE XEF, PORTI WHISKY AMB QUINZE GLAÇONS D'HIDROGEN, COI!
+
+
+
+# CROATIAN
+
+Gojazni đačić s biciklom drži hmelj i finu vatu u džepu nošnje.
+GOJAZNI ĐAČIĆ S BICIKLOM DRŽI HMELJ I FINU VATU U DŽEPU NOŠNJE.
+
+ 
+
+# CZECH
+
+Nechť již hříšné saxofony ďáblů rozzvučí síň úděsnými tóny waltzu, tanga a quickstepu
+NECHŤ JIŽ HŘÍŠNÉ SAXOFONY ĎÁBLŮ ROZZVUČÍ SÍŇ ÚDĚSNÝMI TÓNY WALTZU, TANGA A QUICKSTEPU
+
+ 
+
+# DANISH
+
+Høj bly gom vandt fræk sexquiz på wc
+HØJ BLY GOM VANDT FRÆK SEXQUIZ PÅ WC
+
+ 
+
+# DUTCH
+
+Lynx c.q. vos prikt bh: dag zwemjuf!
+LYNX C.Q. VOS PRIKT BH: DAG ZWEMJUF!
+
+ 
+
+# ESPERANTO
+
+Eble ĉiu kvazaŭ-deca fuŝĥoraĵo ĝojigos homtipon
+EBLE ĈIU KVAZAŬ-DECA FUŜĤORAĴO ĜOJIGOS HOMTIPON
+
+ 
+
+# ESTONIAN
+
+Põdur Zagrebi tšellomängija-följetonist Ciqo külmetas kehvas garaažis
+PÕDUR ZAGREBI TŠELLOMÄNGIJA-FÖLJETONIST CIQO KÜLMETAS KEHVAS GARAAŽIS
+
+ 
+
+# FILIPINO
+
+Ang buko ay para sa tao dahil wala nang pwedeng mainom na gatas.
+ANG BUKO AY PARA SA TAO DAHIL WALA NANG PWEDENG MAINOM NA GATAS.
+
+ 
+
+# FINNISH
+
+Törkylempijävongahdus Albert osti fagotin ja töräytti puhkuvan melodian
+TÖRKYLEMPIJÄVONGAHDUS ALBERT OSTI FAGOTIN JA TÖRÄYTTI PUHKUVAN MELODIAN
+
+ 
+
+# FRENCH
+
+Buvez de ce whisky que le patron juge fameux
+BUVEZ DE CE WHISKY QUE LE PATRON JUGE FAMEUX
+
+ 
+
+# WEST FRISIAN
+
+Alve bazige froulju wachtsje op dyn komst
+ALVE BAZIGE FROULJU WACHTSJE OP DYN KOMST
+
+ 
+
+# GERMAN
+
+Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich
+VICTOR JAGT ZWÖLF BOXKÄMPFER QUER ÜBER DEN GROẞEN SYLTER DEICH
+
+ 
+
+# HUNGARIAN
+
+Jó foxim és don Quijote húszwattos lámpánál ülve egy pár bűvös cipőt készít
+JÓ FOXIM ÉS DON QUIJOTE HÚSZWATTOS LÁMPÁNÁL ÜLVE EGY PÁR BŰVÖS CIPŐT KÉSZÍT
+
+ 
+
+# ICELANDIC
+
+Kæmi ný öxi hér, ykist þjófum nú bæði víl og ádrepa.
+KÆMI NÝ ÖXI HÉR, YKIST ÞJÓFUM NÚ BÆÐI VÍL OG ÁDREPA.
+
+ 
+
+# IRISH
+
+D'fhuascail Íosa Úrmhac na hÓighe Beannaithe pór Éava agus Ádhaimh
+D'FHUASCAIL ÍOSA ÚRMHAC NA HÓIGHE BEANNAITHE PÓR ÉAVA AGUS ÁDHAIMH
+
+ 
+
+# ITALIAN
+
+In quel campo si trovan funghi in abbondanza.
+IN QUEL CAMPO SI TROVAN FUNGHI IN ABBONDANZA.
+
+ 
+
+# LATVIAN
+
+Muļķa hipiji turpat brīvi mēģina nogaršot celofāna žņaudzējčūsku.
+MUĻĶA HIPIJI TURPAT BRĪVI MĒĢINA NOGARŠOT CELOFĀNA ŽŅAUDZĒJČŪSKU.
+
+ 
+
+# LITHUANIAN
+
+Įlinkdama fechtuotojo špaga sublykčiojusi pragręžė apvalų arbūzą
+ĮLINKDAMA FECHTUOTOJO ŠPAGA SUBLYKČIOJUSI PRAGRĘŽĖ APVALŲ ARBŪZĄ
+
+ 
+
+# NORWEGIAN
+
+Vår sære Zulu fra badeøya spilte jo whist og quickstep i min taxi.
+VÅR SÆRE ZULU FRA BADEØYA SPILTE JO WHIST OG QUICKSTEP I MIN TAXI.
+
+ 
+
+# POLISH
+
+Jeżu klątw, spłódź Finom część gry hańb!
+JEŻU KLĄTW, SPŁÓDŹ FINOM CZĘŚĆ GRY HAŃB!
+
+ 
+
+# PORTUGUESE
+
+Luís argüia à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.
+LUÍS ARGÜIA À JÚLIA QUE «BRAÇÕES, FÉ, CHÁ, ÓXIDO, PÔR, ZÂNGÃO» ERAM PALAVRAS DO PORTUGUÊS.
+
+ 
+
+# ROMANIAN
+
+Muzicologă în bej vând whisky și tequila, preț fix.
+MUZICOLOGĂ ÎN BEJ VÂND WHISKY ȘI TEQUILA, PREȚ FIX.
+
+ 
+
+# SERBIAN/CROATIAN/BOSNIAN
+
+Gojazni đačić s biciklom drži hmelj i finu vatu u džepu nošnje.
+GOJAZNI ĐAČIĆ S BICIKLOM DRŽI HMELJ I FINU VATU U DŽEPU NOŠNJE.
+
+ 
+
+# SLOVAK
+
+Kŕdeľ ďatľov učí koňa žrať kôru.
+KŔDEĽ ĎATĽOV UČÍ KOŇA ŽRAŤ KÔRU.
+
+ 
+
+# SLOVENIAN
+
+Šerif bo za vajo spet kuhal domače žgance. Piškur molče grabi fižol z dna cezijeve hoste.
+ŠERIF BO ZA VAJO SPET KUHAL DOMAČE ŽGANCE. PIŠKUR MOLČE GRABI FIŽOL Z DNA CEZIJEVE HOSTE.
+
+ 
+
+# SPANISH
+
+El veloz murciélago hindú comía feliz cardillo y kiwi. ¡qué figurota exhibe! La
+cigüeña tocaba el saxofón ¿Detrás del palenque de paja?
+
+EL VELOZ MURCIÉLAGO HINDÚ COMÍA FELIZ CARDILLO Y KIWI. ¡QUÉ FIGUROTA EXHIBE! LA
+CIGÜEÑA TOCABA EL SAXOFÓN ¿DETRÁS DEL PALENQUE DE PAJA?
+
+ 
+
+# SWEDISH
+
+Yxskaftbud, ge vår WC-zonmö IQ-hjälp.
+YXSKAFTBUD, GE VÅR WC-ZONMÖ IQ-HJÄLP.
+
+ 
+
+# TURKISH
+
+Fahiş bluz güvencesi yağdırma projesi çöktü.
+FAHIŞ BLUZ GÜVENCESI YAĞDIRMA PROJESI ÇÖKTÜ.
+

@@ -304,17 +304,14 @@ border_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sgckf"]
 bg_color = Color(0.14902, 0.14902, 0.14902, 1)
-border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phc6k"]
 bg_color = Color(1, 1, 1, 1)
-border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vk7fj"]
 bg_color = Color(0.639216, 0.639216, 0.639216, 1)
-border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ruok"]
@@ -324,7 +321,6 @@ content_margin_right = 0.0
 content_margin_bottom = 4.0
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 draw_center = false
-border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -335,7 +331,6 @@ content_margin_right = 0.0
 content_margin_bottom = 4.0
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 draw_center = false
-border_width_top = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -679,7 +674,6 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.14902, 0.14902, 0.14902, 1)
-border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -689,7 +683,6 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -699,7 +692,6 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.639216, 0.639216, 0.639216, 1)
-border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -710,7 +702,6 @@ content_margin_right = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 draw_center = false
-border_width_left = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -721,9 +712,6 @@ content_margin_right = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
 draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_bottom = 1
 border_color = Color(0.14902, 0.14902, 0.14902, 1)
 corner_detail = 6
 
@@ -833,6 +821,7 @@ Inner/base_type = &"PanelContainer"
 Inner/styles/panel = SubResource("StyleBoxFlat_fivk6")
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/line_spacing = 0
 LineEdit/colors/caret_color = Color(1, 1, 1, 1)
 LineEdit/colors/clear_button_color = Color(1, 1, 1, 1)
 LineEdit/colors/clear_button_color_pressed = Color(0.639216, 0.639216, 0.639216, 1)
@@ -901,6 +890,7 @@ TableHeader/font_sizes/font_size = 32
 TableSubHeader/base_type = &"Label"
 TableSubHeader/colors/font_color = Color(0.25098, 0.25098, 0.25098, 1)
 TableSubHeader/font_sizes/font_size = 32
+TextEdit/constants/line_spacing = 0
 TextEdit/styles/focus = SubResource("StyleBoxFlat_ip1bf")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_x5wcx")
 TextEdit/styles/read_only = SubResource("StyleBoxFlat_lwq7j")

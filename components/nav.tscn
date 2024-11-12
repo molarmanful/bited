@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
-[ext_resource type="PackedScene" uid="uid://cepls5o15ojw1" path="res://preview.tscn" id="3_ups5f"]
+[ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
 
 [node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "btn_save", "btn_preview", "dialog_file", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
@@ -99,6 +99,8 @@ window = NodePath("..")
 [node name="WindowPreview" type="Window" parent="."]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
+gui_embed_subwindows = true
+mode = 2
 title = "font preview"
 initial_position = 2
 size = Vector2i(600, 600)
