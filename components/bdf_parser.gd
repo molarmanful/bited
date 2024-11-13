@@ -87,6 +87,8 @@ func parse(f: Callable, end: Callable) -> String:
 			Mode.PRE:
 				if line.k == "STARTFONT" and notdef("STARTFONT"):
 					mode = Mode.X
+			Mode.X:
+				e = parse_x(line)
 			Mode.PROPS:
 				e = parse_props(line)
 			Mode.CHAR:
@@ -95,8 +97,6 @@ func parse(f: Callable, end: Callable) -> String:
 				e = parse_char_ignore(line)
 			Mode.BM:
 				e = parse_bm(line)
-			Mode.X:
-				e = parse_x(line)
 
 		if e:
 			return e
@@ -190,11 +190,12 @@ func parse_x(line: Dictionary) -> String:
 			pass
 
 		"DWIDTH":
-			var xs := arr_int(1, line.v)
-			if xs.is_empty() or xs[0] < 0:
-				warn("DWIDTH x is not a valid int >=0, defaulting to 0")
-			else:
-				font.bb.x = xs[0]
+			if notdef("DWIDTH"):
+				var xs := arr_int(1, line.v)
+				if xs.is_empty() or xs[0] < 0:
+					warn("DWIDTH x is not a valid int >=0, defaulting to 0")
+				else:
+					font.bb.x = xs[0]
 
 		"CONTENTVERSION", "METRICSSET", "SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
@@ -310,6 +311,8 @@ func parse_char(line: Dictionary) -> String:
 				var xs := arr_int(1, line.v)
 				if xs.is_empty() or xs[0] < 0:
 					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
+				elif font.spacing == "C" or (font.spacing == "M" and xs[0] == font.dwidth):
+					gen.dwidth = -1
 				else:
 					gen.dwidth = xs[0]
 

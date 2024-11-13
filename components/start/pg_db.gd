@@ -42,17 +42,17 @@ func build_tree() -> void:
 	if qs.is_empty():
 		tree.hide()
 		placeholder.show()
-		return
-	placeholder.hide()
-	tree.show()
+	else:
+		placeholder.hide()
+		tree.show()
 
-	tree.clear()
-	tree.create_item()
-	for q in qs:
-		var x := tree.create_item()
-		var data: Dictionary = bytes_to_var(q.data)
-		x.set_text(0, q.id)
-		x.set_text(1, "%s %s %d\u00d7%d" % [data.family, data.weight, data.bb.x, data.bb.y])
+		tree.clear()
+		tree.create_item()
+		for q in qs:
+			var x := tree.create_item()
+			var data: Dictionary = bytes_to_var(q.data)
+			x.set_text(0, q.id)
+			x.set_text(1, "%s %s %d\u00d7%d" % [data.family, data.weight, data.bb.x, data.bb.y])
 
 	show()
 	tree.grab_focus()

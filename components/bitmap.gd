@@ -5,6 +5,7 @@ var dim := 0
 var cells: Image
 var data_code := -1
 var data_name := ""
+
 var dwidth := -1
 var dwidth_calc: int:
 	get:
@@ -32,26 +33,16 @@ func _init(
 
 
 func save(over := true) -> bool:
-	var bounds := cells.get_used_rect()
-	var bl := Vector2i(bounds.position.x, bounds.end.y)
-	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
-	var img: PackedByteArray
-	if bounds:
-		img = Util.alpha_to_bits(cells.get_region(bounds))
-
-	var gen := {
-		name = data_name,
-		code = data_code,
-		dwidth = dwidth,
-		bb_x = bounds.size.x,
-		bb_y = bounds.size.y,
-		off_x = off.x,
-		off_y = off.y,
-		img = img,
-	}
+	var gen := to_gen()
 	StateVars.refresh.emit(gen)
-
 	return StateVars.font.save_glyph(gen, over)
+
+
+func save_dwidth() -> void:
+	StateVars.db_saves.query_with_bindings(
+		"update font_%s set dwidth = ? where name = ?;" % StateVars.font.id, [dwidth, data_name]
+	)
+	StateVars.refresh.emit(to_gen())
 
 
 func load() -> void:
@@ -80,6 +71,26 @@ func load() -> void:
 	StateVars.refresh.emit(gen)
 	from_gen(gen)
 	update_cells(gen)
+
+
+func to_gen() -> Dictionary:
+	var bounds := cells.get_used_rect()
+	var bl := Vector2i(bounds.position.x, bounds.end.y)
+	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
+	var img: PackedByteArray
+	if bounds:
+		img = Util.alpha_to_bits(cells.get_region(bounds))
+
+	return {
+		name = data_name,
+		code = data_code,
+		dwidth = dwidth,
+		bb_x = bounds.size.x,
+		bb_y = bounds.size.y,
+		off_x = off.x,
+		off_y = off.y,
+		img = img,
+	}
 
 
 func from_gen(gen: Dictionary) -> void:

@@ -60,6 +60,7 @@ func file_sel(path: String) -> void:
 		pg_bdf_warn.warn.call_deferred("\n".join(bdfp.warns))
 		var ok: bool = await pg_bdf_warn.out
 		if not ok:
+			pg_x.show()
 			return
 
 	input_id.text = ""

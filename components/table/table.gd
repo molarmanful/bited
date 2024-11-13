@@ -54,7 +54,7 @@ func _process(_delta: float) -> void:
 
 
 func _input(e: InputEvent) -> void:
-	if e.is_action_pressed("ui_text_delete") or e.is_action_pressed("ui_text_backspace"):
+	if e.is_action_pressed("ui_text_delete"):
 		sel.delete()
 
 

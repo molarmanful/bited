@@ -8,6 +8,9 @@ extends PanelContainer
 @export var node_lines: Node2D
 @export var node_placeholder: Label
 
+@export_group("Inputs")
+@export var input_dwidth: SpinBox
+
 @export_group("Button Groups")
 @export var tools_group: ButtonGroup
 @export var cmode_group: ButtonGroup
@@ -59,6 +62,8 @@ func _ready() -> void:
 	StateVars.edit.connect(start_edit)
 	StateVars.edit_refresh.connect(refresh)
 
+	input_dwidth.value_changed.connect(func(_new: float): dwidth())
+
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
@@ -109,6 +114,8 @@ func refresh() -> void:
 	node_placeholder.hide()
 	node_wrapper.show()
 
+	input_dwidth.value = bitmap.dwidth
+
 	editor.node_info_text.text = StateVars.get_info(bitmap.data_name, bitmap.data_code)
 	node_cells.texture = tex_cells
 	to_update_cells = true
@@ -135,13 +142,21 @@ func act_cells(prev: Image) -> void:
 
 	undoman.create_action(name)
 
-	undoman.add_undo_method(func(): cells.copy_from(prev) ; to_update_cells = true)
+	undoman.add_undo_method(
+		func():
+			cells.copy_from(prev)
+			bitmap.save()
+			to_update_cells = true
+	)
 	undoman.add_undo_reference(prev)
-	undoman.add_undo_method(bitmap.save)
 
-	undoman.add_do_method(func(): cells.copy_from(cs) ; to_update_cells = true)
+	undoman.add_do_method(
+		func():
+			cells.copy_from(cs)
+			bitmap.save()
+			to_update_cells = true
+	)
 	undoman.add_do_reference(cs)
-	undoman.add_do_method(bitmap.save)
 
 	undoman.commit_action(false)
 
@@ -168,3 +183,22 @@ func rot_ccw() -> void:
 
 func rot_cw() -> void:
 	op(bitmap.cells.rotate_90.bind(CLOCKWISE))
+
+
+func dwidth() -> void:
+	var old: int = bitmap.dwidth
+	var new: int = input_dwidth.value
+	undoman.create_action("dwidth")
+	undoman.add_undo_method(
+		func():
+			bitmap.dwidth = old
+			bitmap.save_dwidth()
+			refresh()
+	)
+	undoman.add_do_method(
+		func():
+			bitmap.dwidth = new
+			bitmap.save_dwidth()
+			refresh()
+	)
+	undoman.commit_action()
