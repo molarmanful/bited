@@ -5,6 +5,8 @@ extends Node2D
 
 var text := ""
 var cache := {}
+var hi := true
+var color_hi := Color.RED
 
 
 func _draw() -> void:
@@ -14,6 +16,15 @@ func _draw() -> void:
 		for c in line:
 			var uc := c.unicode_at(0)
 			if uc not in cache:
+				if hi:
+					var w: int = max(1, StateVars.font.dwidth)
+					draw_rect(
+						Rect2i(
+							pos - Vector2i(0, StateVars.font.asc), Vector2i(w, StateVars.font.bb.y)
+						),
+						color_hi
+					)
+					pos.x += w
 				continue
 
 			var q: Dictionary = cache[uc]

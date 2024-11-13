@@ -4,6 +4,7 @@ extends PanelContainer
 @export var window: Window
 @export var presets: OptionButton
 @export var input: TextEdit
+@export var btn_hi: Button
 @export var out: PreviewOut
 @export var scroll_out: ScrollContainer
 
@@ -75,6 +76,11 @@ func _ready() -> void:
 	)
 	presets.item_selected.connect(preset)
 	input.text_changed.connect(preview.bind(false))
+	btn_hi.toggled.connect(
+		func(on: bool):
+			out.hi = on
+			preview()
+	)
 
 
 func preset(i: int) -> void:
@@ -88,6 +94,7 @@ func preset(i: int) -> void:
 
 
 func preview(hard := false) -> void:
+	out.color_hi = get_theme_color("danger")
 	out.text = input.text
 	out.refresh(hard)
 	window.popup()
