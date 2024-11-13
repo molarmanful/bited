@@ -45,6 +45,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("2_8cdh3")
 placeholder_text = "text..."
+structured_text_bidi_override = 5
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
 layout_mode = 2

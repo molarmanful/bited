@@ -51,6 +51,11 @@ var preset_tree := {
 		"programming",
 		"apl",
 	],
+	"UNICODE":
+	[
+		"kuhn demo",
+		"antofthy demo",
+	],
 }
 
 
@@ -78,13 +83,13 @@ func preset(i: int) -> void:
 		"res://assets/preview/%s.txt" % presets.get_item_text(i), FileAccess.READ
 	)
 	input.text = file.get_as_text()
+	input.set_v_scroll(0)
+	scroll_out.set_v_scroll(0)
 	preview()
 
 
 func preview(hard := false) -> void:
 	out.text = input.text
-	input.set_v_scroll(0)
-	scroll_out.set_v_scroll(0)
 	out.refresh(hard)
 	window.popup()
 	input.grab_focus()
