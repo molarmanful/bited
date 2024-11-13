@@ -34,7 +34,7 @@ HHRWHH
 HHRYHH
 HHTJHH
 
- 
+
 
 Fannon Kannon Pannon Tannon Vannon Wannon Yannon
 Fcnnon Kcnnon Pcnnon Tcnnon Vcnnon Wcnnon Xcnnon Ycnnon
@@ -55,7 +55,7 @@ Txnnon Yxnnon
 Aynnon Kynnon Lynnon Tynnon Vynnon Wynnon Yynnon Xynnon
 Tznnon Yznnon
 
- 
+
 
 nonavnon nonvanon
 nonovonon nonvcnon nonvdnon nonvenon
@@ -63,7 +63,7 @@ nonoxonon nonxcnon nonxdnon nonxenon
 nonkcnon nonkdnon nonkenon nonkonon
 nonranon nonrcnon nonrdnon nonrenon nonronon
 
- 
+
 
 HH‘AHH HHA’HH HH’AHH HHL’HH
 HH“AHH HHA”HH HH”AHH HHL”HH
@@ -77,7 +77,7 @@ HH-T-HH HH-V-HH HH-W-HH HH-X-HH HH-Y-HH HH-Z-HH
 HHT:HH HHV:HH HHW:HH HHY:HH
 HHT;HH HHV;HH HHW;HH HHY;HH
 
- 
+
 
 nn.f.nn nn.o.nn nn.v.nn nn.w.nn nn.y.nn nnr.nn
 nn,f,nn nn,o,nn nn,v,nn nn,w,nn nn,y,nn nnr,nn
@@ -86,4 +86,3 @@ nonf"non nonf“non nonf”non nonf’non nonf‘non
 non¿jnon non(j)non non[j]non non{j}non
 nonk-non nonr-non non-x-non
 non’snon
-

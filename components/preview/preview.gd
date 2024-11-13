@@ -8,13 +8,14 @@ extends PanelContainer
 @export var scroll_out: ScrollContainer
 
 var preset_tree := {
-	"ALPHANUM":
+	"BASIC":
 	[
 		"hamburgefontsiv",
 		"grumpy wizards",
 		"boxing wizards",
 		"weird a-z",
 		"kerning",
+		"grids",
 		"briem",
 		"stephenson blake",
 		"kern king",
@@ -33,6 +34,17 @@ var preset_tree := {
 		"diacritics pseudo",
 		"diacritics extras",
 		"news headlines",
+	],
+	"CYRILLIC":
+	[
+		"cyrillic",
+		"cyr hamburgefontsiv",
+		"cyr a-z",
+		"cyr kerning",
+		"cyr grids",
+		"serbian",
+		"bulgarian",
+		"ukrainian",
 	],
 	"PROGRAMMING":
 	[
