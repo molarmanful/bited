@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=18 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/pg_x.gd" id="1_n1aw4"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
@@ -11,6 +11,30 @@
 [ext_resource type="Script" path="res://components/start/pg_bdf_prog.gd" id="8_ea8vm"]
 [ext_resource type="Script" path="res://components/start/pg_bdf_err.gd" id="9_ff176"]
 [ext_resource type="Script" path="res://components/start/pg_bdf_warn.gd" id="10_xfdkg"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_hnt50"]
+device = -1
+keycode = 49
+unicode = 49
+
+[sub_resource type="Shortcut" id="Shortcut_nx3rh"]
+events = [SubResource("InputEventKey_hnt50")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_aelqk"]
+device = -1
+keycode = 50
+unicode = 50
+
+[sub_resource type="Shortcut" id="Shortcut_j5snt"]
+events = [SubResource("InputEventKey_aelqk")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_nxatn"]
+device = -1
+keycode = 51
+unicode = 51
+
+[sub_resource type="Shortcut" id="Shortcut_oub8j"]
+events = [SubResource("InputEventKey_nxatn")]
 
 [node name="Start" type="PanelContainer"]
 anchors_preset = 15
@@ -47,16 +71,19 @@ layout_mode = 2
 [node name="new" type="Button" parent="CenterContainer/X/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_nx3rh")
 text = "new"
 
 [node name="db" type="Button" parent="CenterContainer/X/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_j5snt")
 text = "load"
 
 [node name="bdf" type="Button" parent="CenterContainer/X/VBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_oub8j")
 text = "import"
 
 [node name="New" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_over_warn", "input_id", "input_preset", "btn_start", "btn_cancel")]

@@ -51,7 +51,6 @@ size_flags_horizontal = 3
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-selected = 0
 allow_reselect = true
 
 [node name="TextEdit" type="TextEdit" parent="MarginContainer/HSplitContainer/VBoxContainer"]
