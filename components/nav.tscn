@@ -1,8 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=12 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
 [ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_jmw38"]
+action = &"bited_home"
+
+[sub_resource type="Shortcut" id="Shortcut_ryam3"]
+events = [SubResource("InputEventAction_jmw38")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_5pkif"]
+action = &"bited_save"
+
+[sub_resource type="Shortcut" id="Shortcut_ysk7k"]
+events = [SubResource("InputEventAction_5pkif")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_yfpmr"]
+action = &"bited_preview"
+
+[sub_resource type="Shortcut" id="Shortcut_wcks7"]
+events = [SubResource("InputEventAction_yfpmr")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_yaix3"]
+action = &"bited_settings"
+
+[sub_resource type="Shortcut" id="Shortcut_bve2s"]
+events = [SubResource("InputEventAction_yaix3")]
 
 [node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "btn_home", "btn_save", "btn_preview", "dialog_file", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
@@ -52,6 +76,7 @@ size_flags_vertical = 4
 tooltip_text = "go to start menu"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ryam3")
 text = "⁝Ξ"
 
 [node name="save" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
@@ -61,6 +86,7 @@ size_flags_vertical = 4
 tooltip_text = "save to bdf"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ysk7k")
 text = "🖫"
 
 [node name="preview" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
@@ -70,6 +96,7 @@ size_flags_vertical = 4
 tooltip_text = "preview font"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_wcks7")
 text = "👁"
 
 [node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
@@ -83,6 +110,7 @@ size_flags_vertical = 4
 tooltip_text = "settings"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_bve2s")
 text = "⚙️"
 
 [node name="FileDialog" type="FileDialog" parent="."]
