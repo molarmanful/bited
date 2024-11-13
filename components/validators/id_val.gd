@@ -1,6 +1,8 @@
 class_name IDVal
 extends LineEdit
 
+var f := func(_ok: bool): pass
+
 
 func _ready() -> void:
 	text_changed.connect(validate)
@@ -17,8 +19,10 @@ func validate(new := text) -> String:
 		var msg := "id cannot be empty"
 		tooltip_text = msg
 		theme_type_variation = "LineEditErr"
+		f.call(false)
 		return msg
 
 	tooltip_text = ""
 	theme_type_variation = ""
+	f.call(true)
 	return ""
