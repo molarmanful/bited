@@ -14,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jy7h6")
-presets = NodePath("MarginContainer/HSplitContainer/VBoxContainer/OptionButton")
+presets = NodePath("MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/OptionButton")
 input = NodePath("MarginContainer/HSplitContainer/VBoxContainer/TextEdit")
 out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
 scroll_out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
@@ -33,7 +33,20 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Muted"
+text = "input"
+
+[node name="spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 selected = 0
@@ -51,9 +64,18 @@ structured_text_bidi_override = 5
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Muted"
+text = "output"
+
+[node name="spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
 layout_mode = 2

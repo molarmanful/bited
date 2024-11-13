@@ -54,7 +54,6 @@ var preset_tree := {
 	"UNICODE":
 	[
 		"kuhn demo",
-		"antofthy demo",
 	],
 }
 
