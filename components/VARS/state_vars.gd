@@ -23,8 +23,8 @@ var db_saves := SQLite.new()
 var db_locals := SQLite.new()
 
 var root: Node
-var start: Node
 var scn_all: Resource
+var scn_start: Resource
 
 
 func _ready():
@@ -41,32 +41,33 @@ func _ready():
 	init_font_metas()
 	init_locals_paths()
 
+	ResourceLoader.load_threaded_request("res://components/start/start.tscn")
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
 	root = get_tree().root
-	start = root.get_child(root.get_child_count() - 1)
 
 
 ## Transitions from "start" to "all."
 func start_all() -> void:
+	if not scn_all:
+		scn_all = ResourceLoader.load_threaded_get("res://components/all.tscn")
 	start_all_defer.call_deferred()
 
 
 func start_all_defer() -> void:
-	if not scn_all:
-		scn_all = ResourceLoader.load_threaded_get("res://components/all.tscn")
-
-	root.remove_child(start)
+	root.get_child(root.get_child_count() - 1).free()
 	root.add_child(scn_all.instantiate())
 
 
 ## Transitions from "all" to "start."
 func all_start() -> void:
+	if not scn_start:
+		scn_start = ResourceLoader.load_threaded_get("res://components/start/start.tscn")
 	all_start_defer.call_deferred()
 
 
 func all_start_defer() -> void:
 	root.get_child(root.get_child_count() - 1).free()
-	root.add_child(start)
+	root.add_child(scn_start.instantiate())
 
 
 ## Initializes master table for saved fonts.

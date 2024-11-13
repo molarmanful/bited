@@ -136,8 +136,11 @@ func parse_x(line: Dictionary) -> String:
 				else:
 					font.weight = xs[3]
 
-				if not xs[4]:
-					warn("XLFD slant is empty, defaulting to '%s'" % font.slant)
+				xs[4] = xs[4].to_upper()
+				if not ["R", "I", "O", "RI", "RO"].has(xs[4]):
+					warn(
+						"XLFD slant is not one of (R, I, O, RI, RO), defaulting to %s" % font.slant
+					)
 				else:
 					font.slant = xs[4]
 

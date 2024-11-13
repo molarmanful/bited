@@ -55,6 +55,8 @@ func start() -> void:
 		1:
 			StateVars.font = BFont.creep2()
 		2:
+			StateVars.font = BFont.cozette()
+		3:
 			StateVars.font = BFont.unifontex()
 
 	StateVars.font.id = input_id.text

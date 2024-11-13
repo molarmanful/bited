@@ -45,6 +45,15 @@ static func creep2() -> BFont:
 	return res
 
 
+static func cozette() -> BFont:
+	var res := BFont.new()
+	res.bb = Vector2i(6, 13)
+	res.desc = 3
+	res.cap_h = 7
+	res.x_h = 5
+	return res
+
+
 static func unifontex() -> BFont:
 	var res := BFont.new()
 	res.bb = Vector2i(8, 16)

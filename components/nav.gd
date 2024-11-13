@@ -3,6 +3,7 @@ extends PanelContainer
 @export var preview: Preview
 @export var font_name: Label
 @export var settings: Window
+@export var btn_home: Button
 @export var btn_save: Button
 @export var btn_preview: Button
 @export var dialog_file: FileDialog
@@ -12,6 +13,7 @@ extends PanelContainer
 func _ready() -> void:
 	refresh()
 
+	btn_home.pressed.connect(StateVars.all_start)
 	btn_save.pressed.connect(save)
 	btn_preview.pressed.connect(preview.preview)
 	btn_settings.pressed.connect(settings.popup)

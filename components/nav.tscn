@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
 [ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "btn_save", "btn_preview", "dialog_file", "btn_settings")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "btn_home", "btn_save", "btn_preview", "dialog_file", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -14,6 +14,7 @@ script = ExtResource("1_i15a6")
 preview = NodePath("WindowPreview/Preview")
 font_name = NodePath("MarginContainer/HBoxContainer/Label")
 settings = NodePath("WindowSettings")
+btn_home = NodePath("MarginContainer/HBoxContainer/HBoxContainer/home")
 btn_save = NodePath("MarginContainer/HBoxContainer/HBoxContainer/save")
 btn_preview = NodePath("MarginContainer/HBoxContainer/HBoxContainer/preview")
 dialog_file = NodePath("FileDialog")
@@ -43,6 +44,15 @@ size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+
+[node name="home" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "go to start menu"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⁝Ξ"
 
 [node name="save" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
