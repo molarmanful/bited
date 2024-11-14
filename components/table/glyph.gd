@@ -87,6 +87,7 @@ func set_thumb() -> void:
 	var sz := Vector2(s, s)
 	node_tex_cont.custom_minimum_size = sz
 
+	node_tex.self_modulate = get_theme_color("fg")
 	if data_name in table.thumbs:
 		node_tex.texture = table.thumbs[data_name]
 		node_tex.self_modulate.a = 1

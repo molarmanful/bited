@@ -2,10 +2,12 @@ class_name PreviewOut
 extends Node2D
 
 @export var view: SubViewport
+@export var node_tex: TextureRect
 
 var text := ""
 var cache := {}
 var hi := true
+var color_fg := Color.WHITE
 var color_hi := Color.RED
 
 
@@ -41,6 +43,7 @@ func _draw() -> void:
 		pos.y += StateVars.font.bb.y
 		mx.y = pos.y
 
+	node_tex.material.set_shader_parameter("mod", color_fg)
 	view.size = mx
 
 

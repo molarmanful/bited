@@ -94,6 +94,7 @@ func preset(i: int) -> void:
 
 
 func preview(hard := false) -> void:
+	out.color_fg = get_theme_color("fg")
 	out.color_hi = get_theme_color("danger")
 	out.text = input.text
 	out.refresh(hard)

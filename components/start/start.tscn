@@ -114,6 +114,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/New/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "create new font"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -221,6 +222,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/DB/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "load font from db"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -324,6 +326,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/BDF/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "import font from bdf"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -430,6 +433,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/OverWarn/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "db font overwrite warning"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -500,6 +504,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/DelWarn/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "db font delete warning"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -573,6 +578,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/Rename/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "rename db font"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -665,6 +671,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/BDFProg/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "parsing bdf"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -704,6 +711,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/BDFErr/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "bdf parse error"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -780,6 +788,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="CenterContainer/BDFWarn/VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "bdf parse warning(s)"
 horizontal_alignment = 1
 text_overrun_behavior = 3
