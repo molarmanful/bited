@@ -19,7 +19,7 @@
 [ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
 [ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
 
-[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tabs", "btn_save", "btn_cancel")]
+[node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tabs", "btn_save", "btn_save_close", "btn_cancel")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -28,6 +28,7 @@ grow_vertical = 2
 script = ExtResource("1_f5q05")
 node_tabs = NodePath("VBoxContainer/MarginContainer/TabBar")
 btn_save = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/save")
+btn_save_close = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/save_close")
 btn_cancel = NodePath("VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/cancel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -409,6 +410,11 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "save"
+
+[node name="save_close" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "save & close"
 
 [node name="cancel" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2

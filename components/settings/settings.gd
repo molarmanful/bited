@@ -3,6 +3,7 @@ extends PanelContainer
 @export var window: Window
 @export var node_tabs: TabBar
 @export var btn_save: Button
+@export var btn_save_close: Button
 @export var btn_cancel: Button
 
 var tree_root: TreeItem
@@ -18,13 +19,20 @@ func _ready() -> void:
 				child.f = func(ok: bool):
 					if ok:
 						btn_save.show()
+						btn_save_close.show()
 					else:
 						btn_save.hide()
+						btn_save_close.hide()
 
 	window.about_to_popup.connect(load)
 	window.close_requested.connect(window.hide)
 	node_tabs.tab_changed.connect(select)
 	btn_save.pressed.connect(save)
+	btn_save.pressed.connect(
+		func():
+			save()
+			window.hide()
+	)
 	btn_cancel.pressed.connect(window.hide)
 
 
@@ -41,8 +49,10 @@ func is_valid() -> bool:
 		for child in get_tree().get_nodes_in_group(entry):
 			if child.has_method("validate") and child.validate():
 				btn_save.hide()
+				btn_save_close.hide()
 				return false
 	btn_save.show()
+	btn_save_close.hide()
 	return true
 
 
@@ -56,10 +66,11 @@ func save() -> void:
 	StateVars.font.save_font()
 	StateVars.cfg.save("user://settings.ini")
 	StateVars.settings.emit()
-	window.hide()
 
 
 func load() -> void:
 	for entry in entries:
 		for child in get_tree().get_nodes_in_group(entry):
 			child.load()
+
+	is_valid()

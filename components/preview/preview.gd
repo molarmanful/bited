@@ -69,6 +69,7 @@ func _ready() -> void:
 			presets.add_item(p)
 	presets.select(0)
 
+	StyleVars.theme_changed.connect(preview)
 	window.close_requested.connect(
 		func():
 			window.hide()
