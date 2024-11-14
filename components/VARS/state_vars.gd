@@ -42,6 +42,7 @@ func _ready():
 
 	init_font_metas()
 	init_locals_paths()
+	init_cfg()
 
 	ResourceLoader.load_threaded_request("res://components/start/start.tscn")
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
@@ -101,7 +102,7 @@ func init_locals_paths() -> void:
 
 
 ## Initializes local table for editor settings.
-func init_settings() -> void:
+func init_cfg() -> void:
 	cfg.load("user://settings.ini")
 
 
