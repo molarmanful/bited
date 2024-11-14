@@ -28,7 +28,7 @@ func _ready() -> void:
 	window.close_requested.connect(window.hide)
 	node_tabs.tab_changed.connect(select)
 	btn_save.pressed.connect(save)
-	btn_save.pressed.connect(
+	btn_save_close.pressed.connect(
 		func():
 			save()
 			window.hide()
@@ -52,7 +52,7 @@ func is_valid() -> bool:
 				btn_save_close.hide()
 				return false
 	btn_save.show()
-	btn_save_close.hide()
+	btn_save_close.show()
 	return true
 
 
