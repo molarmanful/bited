@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=42 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -11,8 +11,98 @@
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
 [ext_resource type="Script" path="res://components/editor/grid.gd" id="9_8b0ie"]
 
+[sub_resource type="InputEventAction" id="InputEventAction_osuyi"]
+action = &"bited_move"
+
+[sub_resource type="Shortcut" id="Shortcut_kyc1p"]
+events = [SubResource("InputEventAction_osuyi")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_43gh8"]
+action = &"bited_pen"
+
+[sub_resource type="Shortcut" id="Shortcut_lgybh"]
+events = [SubResource("InputEventAction_43gh8")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_fkyn5"]
+action = &"bited_line"
+
+[sub_resource type="Shortcut" id="Shortcut_el2rj"]
+events = [SubResource("InputEventAction_fkyn5")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_iqmbl"]
+action = &"bited_rect"
+
+[sub_resource type="Shortcut" id="Shortcut_p7pfg"]
+events = [SubResource("InputEventAction_iqmbl")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3cfxf"]
+action = &"bited_mode_default"
+
+[sub_resource type="Shortcut" id="Shortcut_ulfqc"]
+events = [SubResource("InputEventAction_3cfxf")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ahsaq"]
+action = &"bited_mode_t"
+
+[sub_resource type="Shortcut" id="Shortcut_fvamu"]
+events = [SubResource("InputEventAction_ahsaq")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_afy8t"]
+action = &"bited_mode_f"
+
+[sub_resource type="Shortcut" id="Shortcut_oxwf8"]
+events = [SubResource("InputEventAction_afy8t")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_larhf"]
+action = &"bited_mode_inv"
+
+[sub_resource type="Shortcut" id="Shortcut_s1vyv"]
+events = [SubResource("InputEventAction_larhf")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ow1e3"]
+action = &"bited_mode_cell"
+
+[sub_resource type="Shortcut" id="Shortcut_8wt2y"]
+events = [SubResource("InputEventAction_ow1e3")]
+
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/Grid/Lines/SubViewport")
+
+[sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
+action = &"ui_undo"
+
+[sub_resource type="Shortcut" id="Shortcut_8vm0w"]
+events = [SubResource("InputEventAction_mcj1b")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_tuttj"]
+action = &"ui_redo"
+
+[sub_resource type="Shortcut" id="Shortcut_iofcn"]
+events = [SubResource("InputEventAction_tuttj")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_2a0pl"]
+action = &"bited_flip_x"
+
+[sub_resource type="Shortcut" id="Shortcut_7qumc"]
+events = [SubResource("InputEventAction_2a0pl")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_hjiqe"]
+action = &"bited_flip_y"
+
+[sub_resource type="Shortcut" id="Shortcut_w6nfi"]
+events = [SubResource("InputEventAction_hjiqe")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_kd23h"]
+action = &"bited_rot_ccw"
+
+[sub_resource type="Shortcut" id="Shortcut_ctg0p"]
+events = [SubResource("InputEventAction_kd23h")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_poeox"]
+action = &"bited_rot_cw"
+
+[sub_resource type="Shortcut" id="Shortcut_ren1t"]
+events = [SubResource("InputEventAction_poeox")]
 
 [node name="Editor" type="PanelContainer" node_paths=PackedStringArray("grid")]
 anchors_preset = 15
@@ -63,6 +153,16 @@ alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="move" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+layout_mode = 2
+tooltip_text = "move"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Tool"
+toggle_mode = true
+button_group = ExtResource("1_88smh")
+shortcut = SubResource("Shortcut_kyc1p")
+text = "✥"
+
 [node name="pen" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
 layout_mode = 2
 tooltip_text = "pen"
@@ -71,6 +171,7 @@ theme_type_variation = &"Tool"
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("1_88smh")
+shortcut = SubResource("Shortcut_lgybh")
 text = "✎"
 
 [node name="line" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
@@ -80,6 +181,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("1_88smh")
+shortcut = SubResource("Shortcut_el2rj")
 text = "╲"
 
 [node name="rect" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
@@ -89,16 +191,8 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("1_88smh")
+shortcut = SubResource("Shortcut_p7pfg")
 text = "█"
-
-[node name="move" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
-layout_mode = 2
-tooltip_text = "move"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Tool"
-toggle_mode = true
-button_group = ExtResource("1_88smh")
-text = "✥"
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
@@ -118,6 +212,7 @@ theme_type_variation = &"CMode"
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_qbssp")
+shortcut = SubResource("Shortcut_ulfqc")
 icon = ExtResource("8_dxryl")
 icon_alignment = 1
 expand_icon = true
@@ -131,6 +226,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
+shortcut = SubResource("Shortcut_fvamu")
 icon = ExtResource("6_mqen1")
 icon_alignment = 1
 expand_icon = true
@@ -144,6 +240,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
+shortcut = SubResource("Shortcut_oxwf8")
 icon = ExtResource("7_ukwbh")
 icon_alignment = 1
 expand_icon = true
@@ -157,6 +254,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
+shortcut = SubResource("Shortcut_s1vyv")
 icon = ExtResource("2_od75m")
 icon_alignment = 1
 expand_icon = true
@@ -170,6 +268,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
+shortcut = SubResource("Shortcut_8wt2y")
 icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
@@ -234,6 +333,7 @@ layout_mode = 2
 tooltip_text = "undo"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_8vm0w")
 text = "⮪"
 
 [node name="redo" type="Button" parent="CenterContainer/GridContainer/8"]
@@ -241,6 +341,7 @@ layout_mode = 2
 tooltip_text = "redo"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_iofcn")
 text = "⮫"
 
 [node name="VSeparator" type="VSeparator" parent="CenterContainer/GridContainer/8"]
@@ -252,6 +353,7 @@ layout_mode = 2
 tooltip_text = "flip horiz"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_7qumc")
 text = "🡘"
 
 [node name="flip_y" type="Button" parent="CenterContainer/GridContainer/8"]
@@ -259,6 +361,7 @@ layout_mode = 2
 tooltip_text = "flip vert"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_w6nfi")
 text = "🡙"
 
 [node name="rot_ccw" type="Button" parent="CenterContainer/GridContainer/8"]
@@ -266,6 +369,7 @@ layout_mode = 2
 tooltip_text = "rotate ccw"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ctg0p")
 text = "⟲"
 
 [node name="rot_cw" type="Button" parent="CenterContainer/GridContainer/8"]
@@ -273,6 +377,7 @@ layout_mode = 2
 tooltip_text = "rotate cw"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ren1t")
 text = "⟳"
 
 [node name="Placeholder" type="Label" parent="CenterContainer"]
