@@ -1,14 +1,15 @@
 extends Node
 ## Global state and signal bus for style-related data.
 
-## Emits when a global theme change is requested.
-signal set_theme(theme: Theme)
-## Emits when a global theme is finished changing.
-signal apply_theme
+## Emits when theme changes.
+signal theme_changed
 ## Emits when font styling (e.g. size) changes.
 signal set_font
 ## Emits when thumbnail styling (e.g. size) changes.
 signal set_thumb
+
+var theme_dark := preload("res://dark.tres")
+var theme_light := preload("res://light.tres")
 
 var font_scale := 1:
 	set(n):
@@ -41,3 +42,24 @@ var thumb_size_pre: int:
 var thumb_size: int:
 	get:
 		return thumb_size_pre * thumb_px_scale_cor
+
+
+func _ready() -> void:
+	refresh_theme()
+
+	StateVars.settings.connect(refresh_theme)
+
+
+func refresh_theme() -> void:
+	var t: int = StateVars.cfg.get_value("display", "theme", 0)
+	var theme: Theme
+	match t:
+		1:
+			theme = StyleVars.theme_light
+		2:
+			theme = StyleVars.theme_dark
+		_:
+			theme = StyleVars.theme_dark if DisplayServer.is_dark_mode() else StyleVars.theme_light
+
+	StateVars.root.set_theme(theme)
+	theme_changed.emit()

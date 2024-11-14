@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=87 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=89 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -315,6 +315,12 @@ border_color = Color(0.639216, 0.639216, 0.639216, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxnl0"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42dut"]
+bg_color = Color(0.117647, 0.160784, 0.231373, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vwtu7"]
+bg_color = Color(0.117647, 0.25098, 0.686275, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uc33t"]
 bg_color = Color(0, 0, 0, 0)
@@ -819,6 +825,10 @@ Double/base_type = &"Label"
 Double/font_sizes/font_size = 32
 GlyphNop/base_type = &"PanelContainer"
 GlyphNop/styles/panel = SubResource("StyleBoxFlat_oxnl0")
+GlyphNopSel/base_type = &"PanelContainer"
+GlyphNopSel/styles/panel = SubResource("StyleBoxFlat_42dut")
+GlyphSel/base_type = &"PanelContainer"
+GlyphSel/styles/panel = SubResource("StyleBoxFlat_vwtu7")
 Grid/base_type = &"PanelContainer"
 Grid/colors/asc = Color(0.513726, 0.0941176, 0.262745, 1)
 Grid/colors/bord = Color(0.0901961, 0.0901961, 0.0901961, 1)

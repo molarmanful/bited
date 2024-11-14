@@ -33,21 +33,24 @@ var selected := false:
 		if selected == x:
 			return
 		selected = x
-		if selected:
-			var sb := get_theme_stylebox("panel").duplicate()
-			sb.bg_color = get_theme_color("sel")
-			add_theme_stylebox_override("panel", sb)
-		else:
-			remove_theme_stylebox_override("panel")
+		set_variation()
 var nop := false:
 	set(x):
 		if nop == x:
 			return
 		nop = x
-		if nop:
-			theme_type_variation = "GlyphNop"
-		else:
-			theme_type_variation = ""
+		set_variation()
+
+
+func set_variation() -> void:
+	if nop and selected:
+		theme_type_variation = "GlyphNopSel"
+	elif selected:
+		theme_type_variation = "GlyphSel"
+	elif nop:
+		theme_type_variation = "GlyphNop"
+	else:
+		theme_type_variation = ""
 
 
 static func create(t: Table) -> Glyph:
@@ -58,6 +61,8 @@ static func create(t: Table) -> Glyph:
 
 func _ready() -> void:
 	set_thumb()
+
+	StyleVars.theme_changed.connect(set_thumb)
 
 
 func _gui_input(e: InputEvent) -> void:
