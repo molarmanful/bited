@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=85 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=87 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -22,8 +22,37 @@ content_margin_bottom = 8.0
 bg_color = Color(0, 0, 0, 1)
 corner_detail = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phuxh"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_bottom = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8746x"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_left = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfu53"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_right = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ur7jy"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_top = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+anti_aliasing = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iexhb"]
 bg_color = Color(0, 0, 0, 1)
+draw_center = false
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -433,18 +462,6 @@ border_width_bottom = 1
 border_color = Color(0.862745, 0.14902, 0.14902, 1)
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3oxq"]
-bg_color = Color(0, 0, 0, 0)
-border_width_right = 1
-border_color = Color(0.14902, 0.14902, 0.14902, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp8as"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 1
-border_color = Color(0.14902, 0.14902, 0.14902, 1)
-anti_aliasing = false
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6xev"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -751,6 +768,14 @@ expand_margin_bottom = 1.0
 default_font = ExtResource("1_stftx")
 default_font_size = 16
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_ictl6")
+BordB/base_type = &"PanelContainer"
+BordB/styles/panel = SubResource("StyleBoxFlat_phuxh")
+BordL/base_type = &"PanelContainer"
+BordL/styles/panel = SubResource("StyleBoxFlat_8746x")
+BordR/base_type = &"PanelContainer"
+BordR/styles/panel = SubResource("StyleBoxFlat_hfu53")
+BordT/base_type = &"PanelContainer"
+BordT/styles/panel = SubResource("StyleBoxFlat_ur7jy")
 Border/base_type = &"PanelContainer"
 Border/styles/panel = SubResource("StyleBoxFlat_iexhb")
 Button/colors/font_color = Color(1, 1, 1, 1)
@@ -837,10 +862,6 @@ LineEditErr/base_type = &"LineEdit"
 LineEditErr/styles/focus = SubResource("StyleBoxFlat_4vp1k")
 LineEditErr/styles/normal = SubResource("StyleBoxFlat_igwyw")
 LineEditErr/styles/read_only = SubResource("StyleBoxFlat_g3xqu")
-MainHSplit/base_type = &"PanelContainer"
-MainHSplit/styles/panel = SubResource("StyleBoxFlat_c3oxq")
-MainHSplitR/base_type = &"PanelContainer"
-MainHSplitR/styles/panel = SubResource("StyleBoxFlat_xp8as")
 MenuBar/colors/font_color = Color(1, 1, 1, 1)
 MenuBar/colors/font_disabled_color = Color(1, 1, 1, 0.5)
 MenuBar/colors/font_focus_color = Color(1, 1, 1, 1)

@@ -683,6 +683,7 @@ layout_mode = 2
 visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
+theme_type_variation = &"Border"
 script = ExtResource("9_ff176")
 pg_x = NodePath("../X")
 input = NodePath("VBoxContainer/Body/VBoxContainer/Err")
