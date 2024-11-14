@@ -54,6 +54,7 @@ func save() -> void:
 		for child in get_tree().get_nodes_in_group(entry):
 			child.save()
 	StateVars.font.save_font()
+	StateVars.cfg.save("user://settings.ini")
 	StateVars.settings.emit()
 	window.hide()
 

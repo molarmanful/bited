@@ -14,6 +14,8 @@ signal refresh(gen: Dictionary)
 
 ## Current font data.
 var font := BFont.new()
+## Editor settings.
+var cfg := ConfigFile.new()
 
 ## Static database for Unicode metadata.
 var db_uc := SQLite.new()
@@ -96,6 +98,11 @@ func init_locals_paths() -> void:
 			}
 		)
 	)
+
+
+## Initializes local table for editor settings.
+func init_settings() -> void:
+	cfg.load("user://settings.ini")
 
 
 ## Retrieves Unicode metadata.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=19 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
 [ext_resource type="Script" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
 [ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
+[ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
 
 [node name="Settings" type="PanelContainer" node_paths=PackedStringArray("node_tabs", "btn_save", "btn_cancel")]
 anchors_preset = 15
@@ -360,18 +361,34 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/general"]
-layout_mode = 2
-text = "TESTING TESTING 123"
-
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
 layout_mode = 2
-text = "TESTING TESTING 123"
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "theme"
+vertical_alignment = 1
+
+[node name="theme" type="OptionButton" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer" groups=["font"]]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 3
+popup/item_0/text = "system"
+popup/item_1/text = "light"
+popup/item_1/id = 1
+popup/item_2/text = "dark"
+popup/item_2/id = 2
+script = ExtResource("17_j3ewv")
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
