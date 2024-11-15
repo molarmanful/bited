@@ -7,7 +7,8 @@ func _ready() -> void:
 
 
 func sub(new: String) -> String:
-	return RegEx.create_from_string("[^\\w]").sub(new, "", true)
+	var und := RegEx.create_from_string("\\s").sub(new, "_", true)
+	return RegEx.create_from_string("\\W").sub(und, "", true)
 
 
 func check() -> String:

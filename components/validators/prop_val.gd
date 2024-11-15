@@ -5,7 +5,8 @@ var props: Dictionary
 
 
 func sub(new: String) -> String:
-	return RegEx.create_from_string("[^\\w]").sub(new.to_upper(), "", true)
+	var und := RegEx.create_from_string("\\s").sub(new.to_upper(), "_", true)
+	return RegEx.create_from_string("\\W").sub(und, "", true)
 
 
 func check() -> String:
