@@ -234,8 +234,6 @@ func parse_props(line: Dictionary) -> String:
 		if v == null:
 			warn("unable to parse property %s, skipping" % line.k)
 		else:
-			font.props[line.k] = v
-
 			match line.k:
 				"FONT_DESCENT":
 					if v is not int:
@@ -260,6 +258,9 @@ func parse_props(line: Dictionary) -> String:
 						warn("BITED_DWIDTH is not a valid int >=0, defaulting to 0")
 					else:
 						font.bb.x = v
+
+			if BFont.is_other_prop(line.k):
+				font.props[line.k] = v
 
 	return ""
 

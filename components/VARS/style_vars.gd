@@ -8,8 +8,8 @@ signal set_font
 ## Emits when thumbnail styling (e.g. size) changes.
 signal set_thumb
 
-var theme_dark := preload("res://dark.tres")
-var theme_light := preload("res://light.tres")
+const ThemeDark := preload("res://dark.tres")
+const ThemeLight := preload("res://light.tres")
 
 var font_scale := 1:
 	set(n):
@@ -55,11 +55,11 @@ func refresh_theme() -> void:
 	var theme: Theme
 	match t:
 		1:
-			theme = StyleVars.theme_light
+			theme = ThemeLight
 		2:
-			theme = StyleVars.theme_dark
+			theme = ThemeDark
 		_:
-			theme = StyleVars.theme_dark if DisplayServer.is_dark_mode() else StyleVars.theme_light
+			theme = ThemeDark if DisplayServer.is_dark_mode() else ThemeLight
 
 	StateVars.root.set_theme(theme)
 	theme_changed.emit()

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=89 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=93 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -544,6 +544,18 @@ content_margin_right = 4.0
 content_margin_bottom = 0.0
 color = Color(0.14902, 0.14902, 0.14902, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pioxh"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yxe8"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pt34d"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vylx8"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ppusu"]
 content_margin_left = 8.0
 content_margin_top = 4.0
@@ -898,6 +910,11 @@ PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_iuvlp")
 PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_ui7gb")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_fps1t")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_37y7g")
+SettingsKey/base_type = &"Button"
+SettingsKey/styles/focus = SubResource("StyleBoxFlat_pioxh")
+SettingsKey/styles/hover = SubResource("StyleBoxFlat_7yxe8")
+SettingsKey/styles/normal = SubResource("StyleBoxFlat_pt34d")
+SettingsKey/styles/pressed = SubResource("StyleBoxFlat_vylx8")
 SpinBox/icons/updown = ExtResource("7_h4bw5")
 TabBar/colors/font_disabled_color = Color(1, 1, 1, 0.5)
 TabBar/colors/font_hovered_color = Color(0.639216, 0.639216, 0.639216, 1)

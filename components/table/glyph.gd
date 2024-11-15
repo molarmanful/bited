@@ -1,7 +1,7 @@
 class_name Glyph
 extends PanelContainer
 
-const ScnGlyph := preload("res://components/table/glyph.tscn")
+const ScnGlyph := preload("glyph.tscn")
 
 @export var virt: Virt
 @export var sel: Sel
@@ -40,17 +40,6 @@ var nop := false:
 			return
 		nop = x
 		set_variation()
-
-
-func set_variation() -> void:
-	if nop and selected:
-		theme_type_variation = "GlyphNopSel"
-	elif selected:
-		theme_type_variation = "GlyphSel"
-	elif nop:
-		theme_type_variation = "GlyphNop"
-	else:
-		theme_type_variation = ""
 
 
 static func create(t: Table) -> Glyph:
@@ -126,6 +115,17 @@ func lclick() -> void:
 
 func rclick() -> void:
 	pass
+
+
+func set_variation() -> void:
+	if nop and selected:
+		theme_type_variation = "GlyphNopSel"
+	elif selected:
+		theme_type_variation = "GlyphSel"
+	elif nop:
+		theme_type_variation = "GlyphNop"
+	else:
+		theme_type_variation = ""
 
 
 static func is_noprint(n: int) -> bool:

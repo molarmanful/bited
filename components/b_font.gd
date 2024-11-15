@@ -154,30 +154,7 @@ func to_bdf_properties() -> PackedStringArray:
 	]
 
 	for k in props:
-		if not (
-			[
-				"FOUNDRY",
-				"FAMILY_NAME",
-				"WEIGHT_NAME",
-				"SLANT",
-				"SETWIDTH_NAME",
-				"ADD_STYLE_NAME",
-				"PIXEL_SIZE",
-				"POINT_SIZE",
-				"RESOLUTION_X",
-				"RESOLUTION_Y",
-				"SPACING",
-				"AVERAGE_WIDTH",
-				"CHARSET_REGISTRY",
-				"CHARSET_ENCODING",
-				"FONT_ASCENT",
-				"FONT_DESCENT",
-				"CAP_HEIGHT",
-				"X_HEIGHT",
-				"BITED_DWIDTH"
-			]
-			. has(k.to_upper())
-		):
+		if is_other_prop(k):
 			res.append("%s %s" % [k.to_upper(), JSON.stringify(props[k])])
 
 	res.push_front("START_PROPERTIES %d" % res.size())
@@ -340,3 +317,30 @@ func fbbx() -> Dictionary:
 	if qs.is_empty():
 		return {}
 	return qs[0]
+
+
+static func is_other_prop(k: String) -> bool:
+	return not (
+		[
+			"FOUNDRY",
+			"FAMILY_NAME",
+			"WEIGHT_NAME",
+			"SLANT",
+			"SETWIDTH_NAME",
+			"ADD_STYLE_NAME",
+			"PIXEL_SIZE",
+			"POINT_SIZE",
+			"RESOLUTION_X",
+			"RESOLUTION_Y",
+			"SPACING",
+			"AVERAGE_WIDTH",
+			"CHARSET_REGISTRY",
+			"CHARSET_ENCODING",
+			"FONT_ASCENT",
+			"FONT_DESCENT",
+			"CAP_HEIGHT",
+			"X_HEIGHT",
+			"BITED_DWIDTH"
+		]
+		. has(k.to_upper())
+	)

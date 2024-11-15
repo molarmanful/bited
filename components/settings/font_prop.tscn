@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://cetkdokbj2mdi"]
+
+[ext_resource type="Script" path="res://components/settings/font_prop.gd" id="1_uqcut"]
+
+[node name="FontProp" type="HBoxContainer" node_paths=PackedStringArray("text_key", "input_type", "input_str", "input_num", "btn_del")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 24.0
+grow_horizontal = 2
+script = ExtResource("1_uqcut")
+text_key = NodePath("HBoxContainer/HBoxContainer/key")
+input_type = NodePath("HBoxContainer/type")
+input_str = NodePath("HBoxContainer2/str")
+input_num = NodePath("HBoxContainer2/num")
+btn_del = NodePath("HBoxContainer/MarginContainer/del")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 4
+
+[node name="del" type="Button" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🗑"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="key" type="Label" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="type" type="OptionButton" parent="HBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "string"
+popup/item_1/text = "number"
+popup/item_1/id = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="str" type="LineEdit" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "value..."
+
+[node name="num" type="SpinBox" parent="HBoxContainer2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+allow_greater = true
+allow_lesser = true
