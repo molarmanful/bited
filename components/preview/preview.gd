@@ -69,6 +69,16 @@ func _ready() -> void:
 			presets.add_item(p)
 	presets.select(0)
 
+	StateVars.refresh.connect(
+		func(_gen: Dictionary):
+			if window.visible:
+				preview(true)
+	)
+	StateVars.edit_refresh.connect(
+		func():
+			if window.visible:
+				preview(true)
+	)
 	StyleVars.theme_changed.connect(
 		func():
 			if window.visible:

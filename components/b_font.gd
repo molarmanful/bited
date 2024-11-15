@@ -213,8 +213,8 @@ func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	StateVars.table_refresh.emit()
 
 
-func save_glyph(gen: Dictionary, over := true) -> bool:
-	return (
+func save_glyph(gen: Dictionary, over := true) -> void:
+	(
 		StateVars
 		. db_saves
 		. query_with_bindings(

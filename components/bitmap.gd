@@ -32,10 +32,10 @@ func _init(
 	data_name = dn
 
 
-func save(over := true) -> bool:
+func save(over := true) -> void:
 	var gen := to_gen()
+	StateVars.font.save_glyph(gen, over)
 	StateVars.refresh.emit(gen)
-	return StateVars.font.save_glyph(gen, over)
 
 
 func save_dwidth() -> void:

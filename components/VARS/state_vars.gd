@@ -29,7 +29,7 @@ var scn_all: Resource
 var scn_start: Resource
 
 
-func _ready():
+func _ready() -> void:
 	db_uc.path = "res://assets/uc.db"
 	db_uc.read_only = true
 	db_uc.open_db()
