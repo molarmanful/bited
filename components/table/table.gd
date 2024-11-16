@@ -58,6 +58,9 @@ func _input(e: InputEvent) -> void:
 		sel.delete()
 	elif e.is_action_pressed("ui_copy"):
 		sel.copy()
+	elif e.is_action_pressed("ui_cut"):
+		sel.copy()
+		sel.delete()
 	elif e.is_action_pressed("ui_paste"):
 		sel.paste()
 
