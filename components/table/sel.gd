@@ -161,10 +161,7 @@ func copy() -> void:
 						"""
 						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 						select
-							row_number() over (order by code, name) + (
-								select case when count(*) > 0 then max(row) else -1 end
-								from temp.clip
-							),
+							row_number() over (order by code, name) + (select count(*) from temp.clip) - 1,
 							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
 						from font_%s
 						where code between ? and ?
@@ -183,10 +180,7 @@ func copy() -> void:
 						"""
 						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 						select
-							row_number() over (order by b.row) + (
-								select case when count(*) > 0 then max(row) else -1 end
-								from temp.clip
-							),
+							row_number() over (order by b.row) + (select count(*) from temp.clip) - 1,
 							a.name, a.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 						from font_%s as a
 						join temp.full as b
