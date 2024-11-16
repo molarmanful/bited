@@ -74,6 +74,9 @@ func clear() -> void:
 
 
 func delete() -> void:
+	if is_empty():
+		return
+
 	StateVars.db_saves.query("begin transaction;")
 
 	for i in range(0, ranges.size(), 2):
@@ -87,7 +90,8 @@ func delete() -> void:
 					(
 						"""
 						delete from font_%s
-						where code between ? and ?;"""
+						where code between ? and ?
+						;"""
 						% StateVars.font.id
 					),
 					[a, b]
@@ -113,6 +117,189 @@ func delete() -> void:
 			)
 
 	StateVars.db_saves.query("commit;")
+
+	StateVars.edit_refresh.emit()
+	table.thumbs.clear()
+	table.reset_full()
+	table.to_update = true
+
+
+func copy() -> void:
+	if is_empty():
+		return
+
+	StateVars.db_saves.query("begin transaction;")
+
+	StateVars.db_saves.query("drop table if exists temp.clip;")
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table temp.clip as
+				select
+					cast(null as integer) as row,
+					name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				from font_%s
+				where 0
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1] - 1
+		if table.viewmode == Table.Mode.RANGE:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+						select
+							row_number() over (order by code, name) - 1 as row,
+							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+						from font_%s
+						where code between ? and ?
+						;"""
+						% StateVars.font.id
+					),
+					[a, b]
+				)
+			)
+		else:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+						select
+							row_number() over (order by code, name) - 1 as row,
+							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+						from font_%s
+						where name in (
+							select name
+							from temp.full
+							where row between ? and ?
+						);"""
+						% StateVars.font.id
+					),
+					[a, b]
+				)
+			)
+
+	StateVars.db_saves.query("commit;")
+
+	StateVars.db_saves.query("select name, code from temp.clip order by row;")
+	var res := "".join(
+		StateVars.db_saves.query_result.map(
+			func(q: Dictionary): return q.name if q.code < 0 else char(q.code)
+		)
+	)
+	DisplayServer.clipboard_set(res)
+
+
+func paste() -> void:
+	if is_empty():
+		return
+	if (
+		StateVars
+		. db_saves
+		. select_rows("sqlite_temp_master", "name = 'clip' and type = 'table'", ["name"])
+		. is_empty()
+	):
+		return
+
+	StateVars.db_saves.query("begin transaction;")
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table temp.sub as
+				select
+					cast(null as integer) as row,
+					name, code
+				from font_%s
+				where 0
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1] - 1
+		if table.viewmode == Table.Mode.RANGE:
+			# FIXME
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						insert into temp.sub (row, name, code)
+						select
+							row_number() over (order by code, name) - 1 as row,
+							name, code
+						from font_%s
+						where code between ? and ?
+						;"""
+						% StateVars.font.id
+					),
+					[a, b]
+				)
+			)
+		else:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					"""
+					insert into temp.sub (row, name, code)
+					select
+						row_number() over (order by row) - 1 as row,
+						name, code
+					from temp.full as f
+					where f.row between ? and ?
+					;""",
+					[a, b]
+				)
+			)
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				with cyc as (
+					select b.name, b.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
+					from temp.sub as b
+					join temp.clip as a
+					on b.row %% (select count(*) from temp.clip) = a.row
+				)
+				insert or replace into font_%s (name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				from cyc
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
+	StateVars.db_saves.query("commit;")
+	print(StateVars.db_saves.select_rows("temp.sub", "", ["*"]))
+	StateVars.db_saves.query("drop table temp.sub;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()

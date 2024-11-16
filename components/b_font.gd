@@ -157,8 +157,8 @@ func to_bdf_properties() -> PackedStringArray:
 		if is_other_prop(k):
 			res.append("%s %s" % [k.to_upper(), JSON.stringify(props[k])])
 
-	res.push_front("START_PROPERTIES %d" % res.size())
-	res.push_back("END_PROPERTIES")
+	res.push_front("STARTPROPERTIES %d" % res.size())
+	res.push_back("ENDPROPERTIES")
 	return res
 
 

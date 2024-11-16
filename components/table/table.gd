@@ -56,6 +56,10 @@ func _process(_delta: float) -> void:
 func _input(e: InputEvent) -> void:
 	if e.is_action_pressed("ui_text_delete"):
 		sel.delete()
+	elif e.is_action_pressed("ui_copy"):
+		sel.copy()
+	elif e.is_action_pressed("ui_paste"):
+		sel.paste()
 
 
 func onresize() -> void:
