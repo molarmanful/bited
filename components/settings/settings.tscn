@@ -134,7 +134,6 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_type_variation = &"SettingsKey"
 text = "bdf save path"
 vertical_alignment = 1
 

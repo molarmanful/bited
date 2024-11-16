@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=89 format=3 uid="uid://dnb0cq4s4al8x"]
+[gd_resource type="Theme" load_steps=89 format=3 uid="uid://b6feeb3hp5b30"]
 
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_v2ekf"]
 [ext_resource type="Texture2D" uid="uid://b1wv858uxwfoi" path="res://assets/ui-dark/select_arrow.png" id="2_r62oc"]
@@ -274,11 +274,15 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0, 0, 0, 0)
 draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1vw27"]
@@ -323,7 +327,15 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldwsr"]
 draw_center = false
-border_color = Color(0.639216, 0.639216, 0.639216, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxnl0"]
 bg_color = Color(0.639216, 0.639216, 0.639216, 1)
