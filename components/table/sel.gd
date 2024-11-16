@@ -236,29 +236,16 @@ func paste() -> void:
 		)
 	)
 
+	var row := 0
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
 		if table.viewmode == Table.Mode.RANGE:
-			# FIXME
-			(
-				StateVars
-				. db_saves
-				. query_with_bindings(
-					(
-						"""
-						insert into temp.sub (row, name, code)
-						select
-							row_number() over (order by code, name) - 1 as row,
-							name, code
-						from font_%s
-						where code between ? and ?
-						;"""
-						% StateVars.font.id
-					),
-					[a, b]
+			for code in range(a, b + 1):
+				StateVars.db_saves.insert_row(
+					"temp.sub", {row = row, name = "%04X" % code, code = code}
 				)
-			)
+				row += 1
 		else:
 			(
 				StateVars
@@ -297,9 +284,8 @@ func paste() -> void:
 		)
 	)
 
-	StateVars.db_saves.query("commit;")
-	print(StateVars.db_saves.select_rows("temp.sub", "", ["*"]))
 	StateVars.db_saves.query("drop table temp.sub;")
+	StateVars.db_saves.query("commit;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
