@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://crgsu17llwdof" path="res://assets/ui-light/tree_arrow_collapsed_mirrored.png" id="10_5bey8"]
 [ext_resource type="Texture2D" uid="uid://qu8crpagnvsj" path="res://assets/ui-dark/close.png" id="11_6r33l"]
 [ext_resource type="Texture2D" uid="uid://budpiq4l1v3sf" path="res://assets/ui-dark/close_pressed.png" id="12_gfla8"]
-[ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="13_kkxe3"]
+[ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="13_kkxe3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phuxh"]
 bg_color = Color(0, 0, 0, 0)

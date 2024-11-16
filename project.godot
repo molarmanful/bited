@@ -44,7 +44,7 @@ enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 
 timers/tooltip_delay_sec=0.1
 theme/custom="res://dark.tres"
-theme/custom_font="res://assets/kirsch.woff2"
+theme/custom_font="res://assets/bited.woff2"
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0

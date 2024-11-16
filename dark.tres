@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=93 format=3 uid="uid://co6jxl87eleb2"]
 
-[ext_resource type="FontFile" uid="uid://dg63b2ydobodc" path="res://assets/kirsch.woff2" id="1_stftx"]
+[ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
 [ext_resource type="Texture2D" uid="uid://e7q6a5lrkrye" path="res://assets/ui-dark/radio_checked.png" id="2_cl6yn"]
 [ext_resource type="Texture2D" uid="uid://b1wv858uxwfoi" path="res://assets/ui-dark/select_arrow.png" id="2_j4r67"]
