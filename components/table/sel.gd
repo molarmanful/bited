@@ -161,7 +161,10 @@ func copy() -> void:
 						"""
 						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 						select
-							row_number() over (order by code, name) - 1 as row,
+							row_number() over (order by code, name) + (
+								select case when count(*) > 0 then max(row) else -1 end
+								from temp.clip
+							),
 							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
 						from font_%s
 						where code between ? and ?
@@ -180,14 +183,16 @@ func copy() -> void:
 						"""
 						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 						select
-							row_number() over (order by code, name) - 1 as row,
-							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
-						from font_%s
-						where name in (
-							select name
-							from temp.full
-							where row between ? and ?
-						);"""
+							row_number() over (order by b.row) + (
+								select case when count(*) > 0 then max(row) else -1 end
+								from temp.clip
+							),
+							a.name, a.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
+						from font_%s as a
+						join temp.full as b
+						on a.name = b.name
+						where b.row between ? and ?
+						;"""
 						% StateVars.font.id
 					),
 					[a, b]
@@ -254,7 +259,7 @@ func paste() -> void:
 					"""
 					insert into temp.sub (row, name, code)
 					select
-						row_number() over (order by row) - 1 as row,
+						row_number() over (order by row) - 1,
 						name, code
 					from temp.full as f
 					where f.row between ? and ?
