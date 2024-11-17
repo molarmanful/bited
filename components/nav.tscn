@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=14 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
@@ -15,6 +15,12 @@ action = &"bited_save"
 
 [sub_resource type="Shortcut" id="Shortcut_ysk7k"]
 events = [SubResource("InputEventAction_5pkif")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_r8rw3"]
+action = &"bited_load"
+
+[sub_resource type="Shortcut" id="Shortcut_heag0"]
+events = [SubResource("InputEventAction_r8rw3")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_yfpmr"]
 action = &"bited_preview"
@@ -88,6 +94,17 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ysk7k")
 text = "🖫"
+
+[node name="load" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "load from bdf"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_heag0")
+text = "🗁"
 
 [node name="preview" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2

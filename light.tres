@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=89 format=3 uid="uid://dnb0cq4s4al8x"]
+[gd_resource type="Theme" load_steps=89 format=3 uid="uid://b6feeb3hp5b30"]
 
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_v2ekf"]
 [ext_resource type="Texture2D" uid="uid://d2ar0nlwr6ewe" path="res://assets/ui-light/select_arrow.png" id="2_r62oc"]

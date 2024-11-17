@@ -142,6 +142,7 @@ script = ExtResource("5_uxapv")
 table = NodePath("../PanelContainer/ScrollContainer2/MarginContainer/Table")
 
 [node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
