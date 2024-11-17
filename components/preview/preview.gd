@@ -98,6 +98,7 @@ func _ready() -> void:
 		func():
 			node_split.vertical = !node_split.vertical
 			StateVars.cfg.set_value("display", "preview_split", node_split.vertical)
+			StateVars.cfg.save("user://settings.ini")
 	)
 	btn_hi.toggled.connect(
 		func(on: bool):
