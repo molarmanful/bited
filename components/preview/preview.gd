@@ -4,6 +4,8 @@ extends PanelContainer
 @export var window: Window
 @export var presets: OptionButton
 @export var input: TextEdit
+@export var node_split: SplitContainer
+@export var btn_split: Button
 @export var btn_hi: Button
 @export var out: PreviewOut
 @export var scroll_out: ScrollContainer
@@ -61,6 +63,7 @@ var preset_tree := {
 
 func _ready() -> void:
 	window.hide()
+	node_split.vertical = StateVars.cfg.get_value("display", "preview_split", false)
 
 	presets.add_separator("PRESETS")
 	for k in preset_tree.keys():
@@ -91,6 +94,11 @@ func _ready() -> void:
 	)
 	presets.item_selected.connect(preset)
 	input.text_changed.connect(preview.bind(false))
+	btn_split.pressed.connect(
+		func():
+			node_split.vertical = !node_split.vertical
+			StateVars.cfg.set_value("display", "preview_split", node_split.vertical)
+	)
 	btn_hi.toggled.connect(
 		func(on: bool):
 			out.hi = on

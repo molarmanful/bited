@@ -10,20 +10,22 @@ shader = ExtResource("3_makfi")
 shader_parameter/mod = Color(1, 1, 1, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_rj7dp"]
-viewport_path = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport")
+viewport_path = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport")
 
-[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "btn_hi", "out", "scroll_out")]
+[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "out", "scroll_out")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jy7h6")
-presets = NodePath("MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer/OptionButton")
-input = NodePath("MarginContainer/HSplitContainer/VBoxContainer/TextEdit")
-btn_hi = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer/hi")
-out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
-scroll_out = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
+presets = NodePath("MarginContainer/SplitContainer/VBoxContainer/HBoxContainer/OptionButton")
+input = NodePath("MarginContainer/SplitContainer/VBoxContainer/TextEdit")
+node_split = NodePath("MarginContainer/SplitContainer")
+btn_split = NodePath("MarginContainer/SplitContainer/VBoxContainer/HBoxContainer/split")
+btn_hi = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/hi")
+out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
+scroll_out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -32,33 +34,43 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+[node name="SplitContainer" type="SplitContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Muted"
 text = "input"
 
-[node name="spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="spacer" type="Control" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/HSplitContainer/VBoxContainer/HBoxContainer"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 allow_reselect = true
 
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/HSplitContainer/VBoxContainer"]
+[node name="split" type="Button" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "flip split"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🔃"
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/SplitContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -66,58 +78,59 @@ theme_override_fonts/font = ExtResource("2_8cdh3")
 placeholder_text = "text..."
 structured_text_bidi_override = 5
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/SplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SplitContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Muted"
 text = "output"
 
-[node name="spacer" type="Control" parent="MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+[node name="spacer" type="Control" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="hi" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer2/HBoxContainer"]
+[node name="hi" type="Button" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 button_pressed = true
 text = "highlight undefined?"
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/SplitContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"Border"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer"]
 material = SubResource("ShaderMaterial_lggnd")
 layout_mode = 2
 texture = SubResource("ViewportTexture_rj7dp")
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect"]
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect"]
 disable_3d = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
 
-[node name="PreviewOut" type="Node2D" parent="MarginContainer/HSplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport" node_paths=PackedStringArray("view", "node_tex")]
+[node name="PreviewOut" type="Node2D" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport" node_paths=PackedStringArray("view", "node_tex")]
 script = ExtResource("3_wdqwx")
 view = NodePath("..")
 node_tex = NodePath("../..")
