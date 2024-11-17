@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cetkdokbj2mdi"]
+[gd_scene load_steps=2 format=3 uid="uid://x0scle6appyy"]
 
 [ext_resource type="Script" path="res://components/settings/font_prop.gd" id="1_uqcut"]
 
@@ -24,6 +24,7 @@ theme_override_constants/margin_right = 4
 
 [node name="del" type="Button" parent="HBoxContainer/MarginContainer"]
 layout_mode = 2
+tooltip_text = "delete property"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "🗑"
