@@ -94,6 +94,8 @@ func lclick() -> void:
 	var shift := Input.is_physical_key_pressed(KEY_SHIFT)
 	var ctrl := Input.is_physical_key_pressed(KEY_CTRL)
 
+	table.node_focus.grab_focus()
+
 	if shift and ctrl:
 		sel.select_range_inv(self)
 		return

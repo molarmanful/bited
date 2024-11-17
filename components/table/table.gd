@@ -3,6 +3,7 @@ extends PanelContainer
 
 enum Mode { RANGE, GLYPHS, SBCS }
 
+@export var node_focus: PanelContainer
 @export var node_scroll: ScrollContainer
 @export var node_inner: Container
 @export var node_header: Label
@@ -48,10 +49,10 @@ func _ready() -> void:
 		)
 	)
 
-	resized.connect(onresize)
-	virt.refresh.connect(func(): to_update = true)
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
+	resized.connect(onresize)
+	virt.refresh.connect(func(): to_update = true)
 
 	btn_cut.pressed.connect(sel.cut)
 	btn_copy.pressed.connect(sel.copy)
