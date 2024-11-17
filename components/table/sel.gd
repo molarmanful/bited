@@ -350,6 +350,11 @@ func commit() -> void:
 	end = -1
 
 
+func cut() -> void:
+	copy()
+	delete()
+
+
 func is_alone() -> bool:
 	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
 

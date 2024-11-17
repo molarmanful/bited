@@ -1,10 +1,34 @@
-[gd_scene load_steps=6 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene load_steps=14 format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
 [ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xk7w0"]
+action = &"ui_cut"
+
+[sub_resource type="Shortcut" id="Shortcut_v1wdn"]
+events = [SubResource("InputEventAction_xk7w0")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3dgiq"]
+action = &"ui_copy"
+
+[sub_resource type="Shortcut" id="Shortcut_trjha"]
+events = [SubResource("InputEventAction_3dgiq")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_kbp5k"]
+action = &"ui_paste"
+
+[sub_resource type="Shortcut" id="Shortcut_xmakg"]
+events = [SubResource("InputEventAction_kbp5k")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_p7grg"]
+action = &"ui_text_delete"
+
+[sub_resource type="Shortcut" id="Shortcut_spwom"]
+events = [SubResource("InputEventAction_p7grg")]
 
 [node name="All" type="PanelContainer" node_paths=PackedStringArray("node_body", "table", "editor")]
 anchors_preset = 15
@@ -99,11 +123,16 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 96
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_scroll", "node_info", "node_info_text") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("node_scroll", "node_info", "node_info_text", "btn_cut", "btn_copy", "btn_paste", "btn_del") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
+size_flags_vertical = 8
 node_scroll = NodePath("../..")
 node_info = NodePath("../../../../../TableInfo")
-node_info_text = NodePath("../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
+node_info_text = NodePath("../../../../../TableInfo/HBoxContainer/PanelContainer/MarginContainer/InfoText")
+btn_cut = NodePath("../../../../../TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/cut")
+btn_copy = NodePath("../../../../../TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/copy")
+btn_paste = NodePath("../../../../../TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/paste")
+btn_del = NodePath("../../../../../TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/del")
 
 [node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" node_paths=PackedStringArray("table")]
 layout_mode = 2
@@ -113,19 +142,23 @@ script = ExtResource("5_uxapv")
 table = NodePath("../PanelContainer/ScrollContainer2/MarginContainer/Table")
 
 [node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
 theme_override_constants/margin_bottom = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo"]
 layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelContainer2" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
 mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 16
@@ -133,7 +166,63 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2/MarginContainer"]
+layout_mode = 2
+
+[node name="cut" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "cut selection"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_v1wdn")
+text = "✂"
+
+[node name="copy" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "copy selection"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_trjha")
+text = "⎘"
+
+[node name="paste" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "paste into selection"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_xmakg")
+text = "📋"
+
+[node name="del" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "delete selection"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_spwom")
+text = "🗑"
+
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"Border"
+
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/HBoxContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
 
 [node name="Nav" parent="Body" instance=ExtResource("2_rafec")]

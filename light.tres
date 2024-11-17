@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=89 format=3 uid="uid://b6feeb3hp5b30"]
+[gd_resource type="Theme" load_steps=89 format=3 uid="uid://dnb0cq4s4al8x"]
 
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_v2ekf"]
-[ext_resource type="Texture2D" uid="uid://b1wv858uxwfoi" path="res://assets/ui-dark/select_arrow.png" id="2_r62oc"]
+[ext_resource type="Texture2D" uid="uid://d2ar0nlwr6ewe" path="res://assets/ui-light/select_arrow.png" id="2_r62oc"]
 [ext_resource type="Texture2D" uid="uid://cs8agxbwrakjc" path="res://assets/ui-light/radio_checked.png" id="3_rhv4d"]
 [ext_resource type="Texture2D" uid="uid://cbk82nmterw1o" path="res://assets/ui-light/radio_checked_disabled.png" id="4_nlcsy"]
 [ext_resource type="Texture2D" uid="uid://byh472d83i0ym" path="res://assets/ui-light/radio_unchecked.png" id="5_6egtu"]
@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://bnce13dto1pxh" path="res://assets/ui-light/tree_arrow.png" id="8_xqfys"]
 [ext_resource type="Texture2D" uid="uid://tbippuhyktx5" path="res://assets/ui-light/tree_arrow_collapsed.png" id="9_be6u1"]
 [ext_resource type="Texture2D" uid="uid://crgsu17llwdof" path="res://assets/ui-light/tree_arrow_collapsed_mirrored.png" id="10_5bey8"]
-[ext_resource type="Texture2D" uid="uid://qu8crpagnvsj" path="res://assets/ui-dark/close.png" id="11_6r33l"]
-[ext_resource type="Texture2D" uid="uid://budpiq4l1v3sf" path="res://assets/ui-dark/close_pressed.png" id="12_gfla8"]
+[ext_resource type="Texture2D" uid="uid://cgfl1wcl67cc6" path="res://assets/ui-light/close.png" id="11_6r33l"]
+[ext_resource type="Texture2D" uid="uid://chm3pyfghplid" path="res://assets/ui-light/close_pressed.png" id="12_gfla8"]
 [ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="13_kkxe3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phuxh"]

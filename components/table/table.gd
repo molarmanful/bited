@@ -16,6 +16,12 @@ enum Mode { RANGE, GLYPHS, SBCS }
 @export var virt: Virt
 @export var sel: Sel
 
+@export_group("Buttons")
+@export var btn_cut: Button
+@export var btn_copy: Button
+@export var btn_paste: Button
+@export var btn_del: Button
+
 var names := {}
 var thumbs := {}
 var debounced := false
@@ -47,22 +53,15 @@ func _ready() -> void:
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
 
+	btn_cut.pressed.connect(sel.cut)
+	btn_copy.pressed.connect(sel.copy)
+	btn_paste.pressed.connect(sel.paste)
+	btn_del.pressed.connect(sel.delete)
+
 
 func _process(_delta: float) -> void:
 	onscroll()
 	update()
-
-
-func _input(e: InputEvent) -> void:
-	if e.is_action_pressed("ui_text_delete"):
-		sel.delete()
-	elif e.is_action_pressed("ui_copy"):
-		sel.copy()
-	elif e.is_action_pressed("ui_cut"):
-		sel.copy()
-		sel.delete()
-	elif e.is_action_pressed("ui_paste"):
-		sel.paste()
 
 
 func onresize() -> void:

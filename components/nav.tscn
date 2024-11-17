@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
 [ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
 
-[sub_resource type="InputEventAction" id="InputEventAction_jmw38"]
+[sub_resource type="InputEventAction" id="InputEventAction_5q25s"]
 action = &"bited_home"
 
-[sub_resource type="Shortcut" id="Shortcut_ryam3"]
-events = [SubResource("InputEventAction_jmw38")]
+[sub_resource type="Shortcut" id="Shortcut_fsksl"]
+events = [SubResource("InputEventAction_5q25s")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_5pkif"]
 action = &"bited_save"
@@ -76,7 +76,7 @@ size_flags_vertical = 4
 tooltip_text = "go to start menu"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_ryam3")
+shortcut = SubResource("Shortcut_fsksl")
 text = "⁝Ξ"
 
 [node name="save" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
