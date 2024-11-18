@@ -43,7 +43,6 @@ var gen_defs := {}
 ## Hex data built per glyph.
 var gen_bm := PackedStringArray()
 
-var r_ws := RegEx.create_from_string("\\s+")
 var gen_default := {
 	name = "",
 	code = -1,
