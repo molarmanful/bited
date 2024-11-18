@@ -16,6 +16,8 @@ run/main_scene="res://components/start/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bited"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://icon.svg"
 
 [autoload]
