@@ -78,11 +78,11 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "go to start menu"
+tooltip_text = "home"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_fsksl")
-text = "⁝Ξ"
+text = "🏡"
 
 [node name="save" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
