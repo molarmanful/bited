@@ -35,7 +35,7 @@ func select(g: Glyph) -> void:
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
 	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
-	table.node_info.show()
+	table.get_tree().call_group("selshow", "show")
 
 
 func select_range(g: Glyph) -> void:
@@ -69,8 +69,20 @@ func clear() -> void:
 	end = -1
 	mode = true
 	ranges.clear()
-	table.node_info.hide()
+	table.get_tree().call_group("selshow", "hide")
 	refresh()
+
+
+func all() -> void:
+	if table.viewmode == Table.Mode.RANGE:
+		anchor = table.start
+		end = table.end
+	else:
+		anchor = 0
+		end = table.virt.length
+	ranges.assign(norm())
+	refresh()
+	get_sel_text()
 
 
 func delete() -> void:
@@ -373,7 +385,7 @@ func is_empty() -> bool:
 
 func get_sel_text() -> void:
 	if is_empty():
-		table.node_info.hide()
+		table.get_tree().call_group("selshow", "hide")
 		return
-	table.node_info.show()
+	table.get_tree().call_group("selshow", "show")
 	table.node_info_text.text = "%d item%s selected" % [length, "s" if length != 1 else ""]

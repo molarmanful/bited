@@ -44,11 +44,11 @@ script = ExtResource("1_i15a6")
 preview = NodePath("WindowPreview/Preview")
 font_name = NodePath("MarginContainer/HBoxContainer/Label")
 settings = NodePath("WindowSettings")
-btn_home = NodePath("MarginContainer/HBoxContainer/HBoxContainer/home")
-btn_save = NodePath("MarginContainer/HBoxContainer/HBoxContainer/save")
-btn_preview = NodePath("MarginContainer/HBoxContainer/HBoxContainer/preview")
+btn_home = NodePath("MarginContainer/HBoxContainer2/home")
+btn_save = NodePath("MarginContainer/HBoxContainer2/save")
+btn_preview = NodePath("MarginContainer/HBoxContainer2/preview")
 dialog_file = NodePath("FileDialog")
-btn_settings = NodePath("MarginContainer/HBoxContainer/Settings")
+btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -57,6 +57,7 @@ theme_override_constants/margin_right = 32
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 theme_override_constants/separation = 16
 alignment = 1
@@ -68,14 +69,12 @@ text = "bited"
 vertical_alignment = 1
 justification_flags = 0
 
-[node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="home" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="home" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -85,7 +84,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_fsksl")
 text = "⁝Ξ"
 
-[node name="save" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="save" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -95,7 +94,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ysk7k")
 text = "🖫"
 
-[node name="load" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="load" type="Button" parent="MarginContainer/HBoxContainer2"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
@@ -106,7 +105,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_heag0")
 text = "🗁"
 
-[node name="preview" type="Button" parent="MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="preview" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -116,11 +115,14 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_wcks7")
 text = "👁"
 
-[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+alignment = 1
 
-[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="Settings" type="Button" parent="MarginContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

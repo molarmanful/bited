@@ -66,7 +66,7 @@ action = &"bited_mode_cell"
 events = [SubResource("InputEventAction_ow1e3")]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
-viewport_path = NodePath("CenterContainer/GridContainer/Grid/Lines/SubViewport")
+viewport_path = NodePath("CenterContainer/GridContainer/Grid/CenterContainer/Lines/SubViewport")
 
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
@@ -143,17 +143,11 @@ prefix = "w:"
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 
-[node name="4" type="VFlowContainer" parent="CenterContainer/GridContainer"]
+[node name="4" type="VBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/GridContainer/4"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="move" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+[node name="move" type="Button" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
 tooltip_text = "move"
 mouse_default_cursor_shape = 2
@@ -163,7 +157,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_kyc1p")
 text = "✥"
 
-[node name="pen" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+[node name="pen" type="Button" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
 tooltip_text = "pen"
 mouse_default_cursor_shape = 2
@@ -174,7 +168,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_lgybh")
 text = "✎"
 
-[node name="line" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+[node name="line" type="Button" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
 tooltip_text = "line"
 mouse_default_cursor_shape = 2
@@ -184,7 +178,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_el2rj")
 text = "╲"
 
-[node name="rect" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer"]
+[node name="rect" type="Button" parent="CenterContainer/GridContainer/4"]
 layout_mode = 2
 tooltip_text = "rectangle"
 mouse_default_cursor_shape = 2
@@ -198,11 +192,7 @@ text = "█"
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/GridContainer/4"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer2"]
+[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4"]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -217,7 +207,7 @@ icon = ExtResource("8_dxryl")
 icon_alignment = 1
 expand_icon = true
 
-[node name="T" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer2"]
+[node name="T" type="Button" parent="CenterContainer/GridContainer/4"]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -231,7 +221,7 @@ icon = ExtResource("6_mqen1")
 icon_alignment = 1
 expand_icon = true
 
-[node name="F" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer2"]
+[node name="F" type="Button" parent="CenterContainer/GridContainer/4"]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -245,7 +235,7 @@ icon = ExtResource("7_ukwbh")
 icon_alignment = 1
 expand_icon = true
 
-[node name="INV" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer2"]
+[node name="INV" type="Button" parent="CenterContainer/GridContainer/4"]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -259,7 +249,7 @@ icon = ExtResource("2_od75m")
 icon_alignment = 1
 expand_icon = true
 
-[node name="CELL" type="Button" parent="CenterContainer/GridContainer/4/VBoxContainer2"]
+[node name="CELL" type="Button" parent="CenterContainer/GridContainer/4"]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -280,9 +270,9 @@ theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
 editor = NodePath("../../..")
 node_wrapper = NodePath("..")
-node_cells = NodePath("Cells")
-node_view_lines = NodePath("Lines/SubViewport")
-node_lines = NodePath("Lines/SubViewport/Node2D")
+node_cells = NodePath("CenterContainer/Cells")
+node_view_lines = NodePath("CenterContainer/Lines/SubViewport")
+node_lines = NodePath("CenterContainer/Lines/SubViewport/Node2D")
 node_placeholder = NodePath("../../Placeholder")
 input_dwidth = NodePath("../2/dwidth")
 tools_group = ExtResource("1_88smh")
@@ -294,25 +284,28 @@ btn_flip_y = NodePath("../8/flip_y")
 btn_rot_ccw = NodePath("../8/rot_ccw")
 btn_rot_cw = NodePath("../8/rot_cw")
 
-[node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/Grid"]
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/GridContainer/Grid"]
+layout_mode = 2
+
+[node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/Grid/CenterContainer"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 mouse_default_cursor_shape = 3
 
-[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/Grid"]
+[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/Grid/CenterContainer"]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("ViewportTexture_iwxi2")
 
-[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/Grid/Lines"]
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/Grid/CenterContainer/Lines"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(256, 256)
 
-[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/Grid/Lines/SubViewport" node_paths=PackedStringArray("grid")]
+[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/Grid/CenterContainer/Lines/SubViewport" node_paths=PackedStringArray("grid")]
 script = ExtResource("2_jsp0s")
-grid = NodePath("../../..")
+grid = NodePath("../../../..")
 
 [node name="6" type="VBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
@@ -326,7 +319,6 @@ layout_mode = 2
 [node name="8" type="HBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 8
 
 [node name="undo" type="Button" parent="CenterContainer/GridContainer/8"]
 layout_mode = 2
