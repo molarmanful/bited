@@ -30,7 +30,7 @@ jobs:
           mkdir -v -p build/windows
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "Windows Desktop" \
+          godot --headless --verbose --export-release "windows" \
             "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -62,7 +62,7 @@ jobs:
           mkdir -v -p build/linux
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "Linux/X11" \
+          godot --headless --verbose --export-release "linux" \
             "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
@@ -89,7 +89,7 @@ jobs:
           mkdir -v -p build/mac
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "macOS" \
+          godot --headless --verbose --export-release "mac" \
             "$EXPORT_DIR/mac/$EXPORT_NAME.zip"
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
