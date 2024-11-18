@@ -18,7 +18,9 @@ config/custom_user_dir_name="bited"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/fullsize=false
 boot_splash/use_filter=false
-config/icon="res://icon.svg"
+config/icon="res://assets/icons/icon.svg"
+config/macos_native_icon="res://assets/icons/icon.icns"
+config/windows_native_icon="res://assets/icons/icon.ico"
 
 [autoload]
 
@@ -45,7 +47,7 @@ enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
 [gui]
 
 timers/tooltip_delay_sec=0.1
-theme/custom="res://dark.tres"
+theme/custom="res://components/dark.tres"
 theme/custom_font="res://assets/bited.woff2"
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0

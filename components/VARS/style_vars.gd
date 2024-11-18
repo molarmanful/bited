@@ -8,8 +8,8 @@ signal set_font
 ## Emits when thumbnail styling (e.g. size) changes.
 signal set_thumb
 
-const ThemeDark := preload("res://dark.tres")
-const ThemeLight := preload("res://light.tres")
+const ThemeDark := preload("res://components/dark.tres")
+const ThemeLight := preload("res://components/light.tres")
 
 var font_scale := 1:
 	set(n):
