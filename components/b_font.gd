@@ -184,6 +184,7 @@ func to_bdf_chars() -> PackedStringArray:
 	res.push_back("CHARS %d" % qs.size())
 
 	for q in qs:
+		var dw: int = dwidth if q.dwidth < 0 else q.dwidth
 		(
 			res
 			. append_array(
@@ -191,8 +192,8 @@ func to_bdf_chars() -> PackedStringArray:
 					"STARTCHAR %s%s" % ["U+" if q.code >= 0 else "", q.name],
 					"ENCODING %d" % q.code,
 					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
-					"SWIDTH %d 0" % swidth(q.dwidth),
-					"DWIDTH %d 0" % (dwidth if q.dwidth < 0 else q.dwidth),
+					"SWIDTH %d 0" % swidth(dw),
+					"DWIDTH %d 0" % dw,
 					"BITMAP",
 				]
 			)

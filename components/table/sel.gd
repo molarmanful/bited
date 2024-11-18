@@ -195,12 +195,20 @@ func copy() -> void:
 
 	StateVars.db_saves.query("commit;")
 
-	StateVars.db_saves.query("select name, code from temp.clip order by row;")
-	var res := "".join(
-		StateVars.db_saves.query_result.map(
-			func(q: Dictionary): return q.name if q.code < 0 else char(q.code)
-		)
-	)
+	var res := ""
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1] - 1
+		if table.viewmode == Table.Mode.RANGE:
+			for code in range(a, b + 1):
+				res += char(code)
+		else:
+			StateVars.db_saves.query_with_bindings(
+				"select name, code from temp.full where row between ? and ?;", [a, b]
+			)
+			for q in StateVars.db_saves.query_result:
+				res += q.name if q.code < 0 else char(q.code)
+
 	DisplayServer.clipboard_set(res)
 
 
