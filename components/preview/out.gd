@@ -7,6 +7,7 @@ extends Node2D
 var text := ""
 var cache := {}
 var hi := true
+var rscale := 1
 var color_fg := Color.WHITE
 var color_hi := Color.RED
 
@@ -44,7 +45,8 @@ func _draw() -> void:
 		mx.y = pos.y
 
 	node_tex.material.set_shader_parameter("mod", color_fg)
-	view.size = mx
+	view.size = mx * rscale
+	view.size_2d_override = mx
 
 
 func refresh(hard := false) -> void:

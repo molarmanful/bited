@@ -12,7 +12,7 @@ shader_parameter/mod = Color(1, 1, 1, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_rj7dp"]
 viewport_path = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport")
 
-[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "out", "scroll_out")]
+[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "input_scale", "out", "scroll_out")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,6 +24,7 @@ input = NodePath("MarginContainer/SplitContainer/VBoxContainer/TextEdit")
 node_split = NodePath("MarginContainer/SplitContainer")
 btn_split = NodePath("MarginContainer/SplitContainer/VBoxContainer/HBoxContainer/split")
 btn_hi = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/hi")
+input_scale = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/scale")
 out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
 scroll_out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
 
@@ -103,6 +104,15 @@ toggle_mode = true
 button_pressed = true
 text = "highlight undefined?"
 
+[node name="scale" type="SpinBox" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+rounded = true
+allow_greater = true
+prefix = "scale:"
+
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/SplitContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -129,6 +139,7 @@ texture = SubResource("ViewportTexture_rj7dp")
 disable_3d = true
 transparent_bg = true
 canvas_item_default_texture_filter = 0
+size_2d_override_stretch = true
 
 [node name="PreviewOut" type="Node2D" parent="MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport" node_paths=PackedStringArray("view", "node_tex")]
 script = ExtResource("3_wdqwx")

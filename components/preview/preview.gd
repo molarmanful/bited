@@ -7,6 +7,7 @@ extends PanelContainer
 @export var node_split: SplitContainer
 @export var btn_split: Button
 @export var btn_hi: Button
+@export var input_scale: SpinBox
 @export var out: PreviewOut
 @export var scroll_out: ScrollContainer
 
@@ -103,6 +104,11 @@ func _ready() -> void:
 	btn_hi.toggled.connect(
 		func(on: bool):
 			out.hi = on
+			preview()
+	)
+	input_scale.value_changed.connect(
+		func(new: int):
+			out.rscale = new
 			preview()
 	)
 
