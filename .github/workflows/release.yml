@@ -32,16 +32,10 @@ jobs:
           cd "$PROJECT_PATH"
           godot --headless --verbose --export-release "windows" \
             "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows
-          path: build/windows
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/windows/*.exe
-          file_glob: true
+          file: build/windows/bited.exe
   export-linux:
     name: Linux Export
     runs-on: ubuntu-latest
@@ -67,8 +61,7 @@ jobs:
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/linux/*.x86_64
-          file_glob: true
+          file: build/linux/bited.x86_64
   export-mac:
     name: Mac Export
     runs-on: ubuntu-latest
@@ -94,5 +87,4 @@ jobs:
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/mac/*.zip
-          file_glob: true
+          file: build/mac/bited.zip
