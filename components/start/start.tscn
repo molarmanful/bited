@@ -270,13 +270,17 @@ alignment = 2
 
 [node name="del" type="Button" parent="CenterContainer/DB/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "delete"
 mouse_default_cursor_shape = 2
-text = "delete"
+theme_type_variation = &"Op"
+text = "🗑️"
 
 [node name="rename" type="Button" parent="CenterContainer/DB/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "rename"
 mouse_default_cursor_shape = 2
-text = "rename"
+theme_type_variation = &"Op"
+text = "✎"
 
 [node name="Spacer" type="Control" parent="CenterContainer/DB/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
