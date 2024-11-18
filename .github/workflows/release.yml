@@ -36,6 +36,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/windows/bited.exe
+          asset_name: bited_$tag.exe
   export-linux:
     name: Linux Export
     runs-on: ubuntu-latest
@@ -62,6 +63,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/linux/bited.x86_64
+          asset_name: bited_$tag.x86_64
   export-mac:
     name: Mac Export
     runs-on: ubuntu-latest
@@ -88,3 +90,4 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/mac/bited.zip
+          asset_name: bited_$tag.zip
