@@ -175,7 +175,7 @@ tooltip_text = "select all"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_yrm8u")
-text = "⛆"
+text = "▒▒"
 
 [node name="VSeparator" type="VSeparator" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
 layout_mode = 2
