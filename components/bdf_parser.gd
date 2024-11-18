@@ -64,10 +64,14 @@ func from_file(path: String, poll := func(): pass) -> void:
 ## Executes [method parse] on a separate thread.
 ## Periodically calls [param poll] for data retrieval.
 func mparse(f: Callable, end: Callable, poll := func(): pass) -> void:
+	var a := Time.get_unix_time_from_system()
+
 	var id := WorkerThreadPool.add_task(func(): e = parse(f, end), true)
 	while not WorkerThreadPool.is_task_completed(id):
 		await poll.call()
 	WorkerThreadPool.wait_for_task_completion(id)
+
+	printt("parsed", Time.get_unix_time_from_system() - a)
 
 
 ## Parses lines from successive calls of [param f] until [param end] returns true.
