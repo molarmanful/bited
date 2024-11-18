@@ -5,7 +5,6 @@ on:
     tags: ['*']
 env:
   GODOT_VERSION: 4.3
-  EXPORT_NAME: bited
   PROJECT_PATH: .
 jobs:
   export-windows:
@@ -31,12 +30,14 @@ jobs:
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
           godot --headless --verbose --export-release "windows" \
-            "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
+            "$EXPORT_DIR"/windows/bited.exe
+      - name: Zip
+        run: zip bited.zip build/windows
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/windows/bited.exe
-          asset_name: bited_$tag.exe
+          file: bited.zip
+          asset_name: bited_windows_$tag.zip
   export-linux:
     name: Linux Export
     runs-on: ubuntu-latest
@@ -58,12 +59,14 @@ jobs:
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
           godot --headless --verbose --export-release "linux" \
-            "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
+            "$EXPORT_DIR/linux/bited.x86_64"
+      - name: Zip
+        run: zip bited.zip build/linux
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/linux/bited.x86_64
-          asset_name: bited_$tag.x86_64
+          file: bited.zip
+          asset_name: bited_linux_$tag.zip
   export-mac:
     name: Mac Export
     runs-on: ubuntu-latest
@@ -85,9 +88,9 @@ jobs:
           EXPORT_DIR="$(readlink -f build)"
           cd "$PROJECT_PATH"
           godot --headless --verbose --export-release "mac" \
-            "$EXPORT_DIR/mac/$EXPORT_NAME.zip"
+            "$EXPORT_DIR/mac/bited.zip"
       - name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/mac/bited.zip
-          asset_name: bited_$tag.zip
+          asset_name: bited_mac_$tag.zip
