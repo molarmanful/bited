@@ -29,6 +29,10 @@ StyleVars="*res://components/VARS/style_vars.gd"
 Util="*res://components/util.gd"
 Thumb="*res://components/table/thumb.tscn"
 
+[debug]
+
+file_logging/enable_file_logging=true
+
 [display]
 
 window/size/mode=2

@@ -78,7 +78,12 @@ func parse(f: Callable, end: Callable) -> String:
 		var l: String = f.call()
 		if l.is_empty():
 			continue
+
 		var line := kv(l)
+		if line.w:
+			warn(line.w)
+			if mode != Mode.BM:
+				continue
 
 		if line.k == "COMMENT":
 			continue
@@ -370,21 +375,82 @@ func clrchar() -> void:
 	gen_bm.clear()
 
 
-## Tokenizes a line into a key-value pair denoted by keys [code]k[/code] and
-## [code]v[/code].
+## Tokenizes/pre-parses a line into a key-value pair denoted by keys
+## [code]k[/code] and [code]v[/code].
 ## For single-token lines, [code]v[/code] is empty.
 func kv(l: String) -> Dictionary:
-	var res := r_ws.sub(l.strip_edges(), " ").split(" ", true, 1)
-	return {k = res[0].to_upper(), v = res[1] if res.size() > 1 else ""}
+	var k := ""
+	var v := ""
+	var w := ""
+	var sv := false
+	var kf := false
+	for c in l:
+		match c:
+			" ", "\t", "\r", "\n" when not sv:
+				sv = true
+			_ when sv:
+				v += c
+			_:
+				c = c.to_upper()
+				if mode == Mode.BM:
+					if (c < "A" or c > "Z") and (c < "0" or c > "9"):
+						w = "invalid char '%s' in BITMAP, replacing with '0'" % c
+						k += "0"
+					else:
+						k += c
+				elif (c < "A" or c > "Z") and not (kf and c >= "0" and c <= "9") and c != "_":
+					w = "invalid char '%s' in keyword, skipping line" % c
+					break
+				else:
+					k += c
+					kf = true
+
+	return {k = k, v = v.strip_edges(false, true), w = w}
 
 
-## Tokenizes a string into a series of up to [param n] valid integers.
+## Tokenizes/pre-parses a string into a series of up to [param n] valid
+## integers.
 func arr_int(n: int, v: String) -> PackedInt64Array:
-	var xs := r_ws.sub(v, " ").split(" ")
+	var a := 0
+	var sg := 1
+	var start := false
+	var ig := false
 	var res := PackedInt64Array()
-	for x in xs.slice(0, n):
-		if x.is_valid_int():
-			res.append(int(x))
+	for c in v:
+		if res.size() >= n:
+			start = false
+			break
+
+		match c:
+			" ", "\t", "\r", "\n":
+				if start:
+					res.append(sg * a)
+					a = 0
+					sg = 1
+					start = false
+					ig = false
+			_ when ig:
+				continue
+			_:
+				match c:
+					"-" when not start:
+						sg = -1
+					_ when "0" <= c and c <= "9":
+						a *= 10
+						a += int(c)
+						if a < 0:
+							warn("int overflow, setting int to 0")
+							a = 0
+							ig = true
+					_:
+						warn("invalid '%s' in int, setting int to 0" % c)
+						a = 0
+						ig = true
+						continue
+				start = true
+
+	if start:
+		res.append(sg * a)
 	return res
 
 
