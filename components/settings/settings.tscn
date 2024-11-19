@@ -478,12 +478,13 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="asc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" node_paths=PackedStringArray("desc") groups=["settings"]]
+[node name="asc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" node_paths=PackedStringArray("desc", "bb_y") groups=["settings"]]
 layout_mode = 2
 allow_greater = true
 allow_lesser = true
 script = ExtResource("15_18s1e")
 desc = NodePath("../desc")
+bb_y = NodePath("../bb/bb_y")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
 layout_mode = 2
