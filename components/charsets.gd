@@ -6,8 +6,8 @@ var glyphs: TreeItem
 var unicode: TreeItem
 
 var blocks := {}
-var sbcs_cats := {}
-var sbcs := {}
+var page_cats := {}
+var pages := {}
 
 
 func _init() -> void:
@@ -21,7 +21,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	load_blocks()
-	load_sbcs()
+	load_pages()
 
 	item_selected.connect(selected)
 	glyphs.select(0)
@@ -45,37 +45,57 @@ func load_blocks() -> void:
 		blocks[x] = [q.start, q.end]
 
 
-func load_sbcs() -> void:
-	StateVars.db_uc.query(
-		(
+func load_pages() -> void:
+	(
+		StateVars
+		. db_uc
+		. query(
 			"""
-			select name, category, %s
-			from sbcs
+			select id, name, category
+			from pages
 			order by category nulls last, id
 			;"""
-			% ",".join(range(256).map(func(n: int): return "c%d" % n))
 		)
 	)
 	for q in StateVars.db_uc.query_result:
 		var x: TreeItem
 		if q.category:
-			if q.category not in sbcs_cats:
+			if q.category not in page_cats:
 				var y := create_item()
 				y.set_text(0, q.category)
 				# y.set_selectable(0, false)
-				sbcs_cats[q.category] = y
-			x = sbcs_cats[q.category].create_child()
+				page_cats[q.category] = y
+			x = page_cats[q.category].create_child()
 		else:
 			x = create_item()
 		x.set_text(0, q.name)
+		pages[x] = q.id
 
-		var res := PackedInt32Array()
-		res.resize(256)
-		for i in 256:
-			var c = q["c%d" % i]
-			res[i] = c if c != null else -1
-
-		sbcs[x] = res
+		# (
+		# 	StateVars
+		# 	. db_uc
+		# 	. query(
+		# 		(
+		# 			"""
+		# 			select code
+		# 			from p_%s
+		# 			order by row
+		# 			;"""
+		# 			% q.id
+		# 		)
+		# 	)
+		# )
+		# var qs := StateVars.db_uc.query_result
+		#
+		# var res := PackedInt32Array()
+		# res.resize(qs.size())
+		# var i := 0
+		# for q in qs:
+		# 	var c = q.code
+		# 	res[i] = c if c != null else -1
+		# 	i += 1
+		#
+		# pages[x] = res
 
 
 func selected() -> void:
@@ -89,8 +109,8 @@ func selected() -> void:
 		table.set_range(blocks[sel][0], blocks[sel][1])
 		update_ui(sel, "U+%04X - U+%04X" % [blocks[sel][0], blocks[sel][1] - 1])
 
-	elif sel in sbcs:
-		table.set_sbcs(sbcs[sel])
+	elif sel in pages:
+		table.set_page(pages[sel])
 		update_ui(sel)
 
 

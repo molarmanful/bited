@@ -1,7 +1,7 @@
 class_name Table
 extends PanelContainer
 
-enum Mode { RANGE, GLYPHS, SBCS }
+enum Mode { RANGE, GLYPHS, PAGE }
 
 @export var node_focus: PanelContainer
 @export var node_scroll: ScrollContainer
@@ -32,7 +32,6 @@ var to_update := false
 var viewmode := Mode.GLYPHS
 var start := 0
 var end := 0
-var sbcs := PackedInt32Array()
 
 
 func _ready() -> void:
@@ -133,21 +132,44 @@ func set_glyphs(top := true) -> void:
 	after_set(top)
 
 
-func set_sbcs(ch: PackedInt32Array) -> void:
-	sbcs = ch
+func set_page(id: String) -> void:
+	(
+		StateVars
+		. db_uc
+		. query(
+			(
+				"""
+				select row, coalesce(code, -1) as code
+				from p_%s
+				order by row
+				;"""
+				% id
+			)
+		)
+	)
+	var qs := StateVars.db_uc.query_result
+
 	StateVars.db_saves.delete_rows("temp.full", "")
 	StateVars.db_saves.query("begin transaction;")
 
-	for i in 256:
-		StateVars.db_saves.insert_row(
-			"temp.full",
-			{row = i, name = "%04X" % ch[i] if ch[i] >= 0 else "UN-%02X" % i, code = ch[i]}
+	for q in qs:
+		(
+			StateVars
+			. db_saves
+			. insert_row(
+				"temp.full",
+				{
+					row = q.row,
+					name = "%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
+					code = q.code,
+				}
+			)
 		)
 
 	StateVars.db_saves.query("commit;")
 
-	viewmode = Mode.SBCS
-	virt.length = 256
+	viewmode = Mode.PAGE
+	virt.length = qs.size()
 	after_set()
 
 
@@ -206,7 +228,7 @@ func gen_glyphs() -> void:
 			c += start
 			g.data_code = c
 		else:
-			if viewmode == Mode.SBCS:
+			if viewmode == Mode.PAGE:
 				g.nop = qs[i].code < 0
 			g.data_name = qs[i].name
 			g.data_code = qs[i].code
