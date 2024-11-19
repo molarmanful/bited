@@ -244,8 +244,8 @@ func parse_props(line: Dictionary) -> String:
 		else:
 			match line.k:
 				"FONT_DESCENT":
-					if v is not int:
-						warn("FONT_DESCENT is not a valid int, defaulting to 0")
+					if v is not int or v < 0:
+						warn("FONT_DESCENT is not a valid int >= 0, defaulting to 0")
 					else:
 						font.desc = v
 

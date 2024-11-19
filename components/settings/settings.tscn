@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=22 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://components/settings/font/desc.gd" id="13_1akul"]
 [ext_resource type="Script" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
 [ext_resource type="Script" path="res://components/settings/font/charset.gd" id="13_xmogf"]
+[ext_resource type="Script" path="res://components/settings/font/asc.gd" id="15_18s1e"]
 [ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
 [ext_resource type="Script" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
@@ -462,6 +463,28 @@ rounded = true
 allow_greater = true
 prefix = "h:"
 
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "ascender"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="asc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" node_paths=PackedStringArray("desc") groups=["settings"]]
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+script = ExtResource("15_18s1e")
+desc = NodePath("../desc")
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -480,7 +503,6 @@ size_flags_horizontal = 3
 [node name="desc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
-allow_lesser = true
 script = ExtResource("13_1akul")
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
