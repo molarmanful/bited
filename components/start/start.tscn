@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bppfxecm1o8pn"]
+[gd_scene load_steps=26 format=3 uid="uid://bppfxecm1o8pn"]
 
 [ext_resource type="Script" path="res://components/start/pg_x.gd" id="1_n1aw4"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_j80b5"]
@@ -35,6 +35,30 @@ unicode = 51
 
 [sub_resource type="Shortcut" id="Shortcut_oub8j"]
 events = [SubResource("InputEventKey_nxatn")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
+action = &"bited_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_8yq8i"]
+events = [SubResource("InputEventAction_3ub0n")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xv605"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_i0ddc"]
+events = [SubResource("InputEventAction_xv605")]
+
+[sub_resource type="Shortcut" id="Shortcut_dgiu6"]
+events = [SubResource("InputEventAction_xv605")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_a6vou"]
+action = &"bited_ok"
+
+[sub_resource type="InputEventAction" id="InputEventAction_34ngi"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_12o42"]
+events = [SubResource("InputEventAction_a6vou"), SubResource("InputEventAction_34ngi")]
 
 [node name="Start" type="PanelContainer"]
 anchors_preset = 15
@@ -184,11 +208,13 @@ alignment = 2
 [node name="start" type="Button" parent="CenterContainer/New/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
 text = "start"
 
 [node name="cancel" type="Button" parent="CenterContainer/New/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_i0ddc")
 text = "cancel"
 
 [node name="DB" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "pg_rename", "tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
@@ -290,11 +316,13 @@ mouse_filter = 2
 [node name="start" type="Button" parent="CenterContainer/DB/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
 text = "load"
 
 [node name="cancel" type="Button" parent="CenterContainer/DB/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_dgiu6")
 text = "cancel"
 
 [node name="BDF" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_bdf_prog", "pg_bdf_err", "pg_bdf_warn", "over_warn", "dialog_file", "input_path", "input_id", "input_w", "btn_start", "btn_cancel")]
@@ -405,11 +433,13 @@ alignment = 2
 [node name="start" type="Button" parent="CenterContainer/BDF/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
 text = "import"
 
 [node name="cancel" type="Button" parent="CenterContainer/BDF/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_i0ddc")
 text = "cancel"
 
 [node name="OverWarn" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("btn_ok", "btn_back", "label")]
@@ -476,11 +506,13 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDanger"
+shortcut = SubResource("Shortcut_8yq8i")
 text = "overwrite"
 
 [node name="back" type="Button" parent="CenterContainer/OverWarn/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_dgiu6")
 text = "go back"
 
 [node name="DelWarn" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("label", "btn_ok", "btn_back")]
@@ -547,11 +579,13 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDanger"
+shortcut = SubResource("Shortcut_8yq8i")
 text = "delete"
 
 [node name="back" type="Button" parent="CenterContainer/DelWarn/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_dgiu6")
 text = "go back"
 
 [node name="Rename" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("pg_db", "pg_over_warn", "input_old_id", "input_new_id", "btn_start", "btn_cancel")]
@@ -645,11 +679,13 @@ alignment = 2
 [node name="start" type="Button" parent="CenterContainer/Rename/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
 text = "rename"
 
 [node name="cancel" type="Button" parent="CenterContainer/Rename/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_i0ddc")
 text = "cancel"
 
 [node name="BDFProg" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("label")]
@@ -765,6 +801,7 @@ alignment = 2
 [node name="ok" type="Button" parent="CenterContainer/BDFErr/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_12o42")
 text = " ok "
 
 [node name="BDFWarn" type="PanelContainer" parent="CenterContainer" node_paths=PackedStringArray("input", "btn_ok", "btn_cancel")]
@@ -849,11 +886,13 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonWarn"
+shortcut = SubResource("Shortcut_8yq8i")
 text = "continue"
 
 [node name="cancel" type="Button" parent="CenterContainer/BDFWarn/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_i0ddc")
 text = "cancel"
 
 [node name="FileDialog" type="FileDialog" parent="."]

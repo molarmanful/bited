@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=29 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -22,6 +22,24 @@
 [ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
 [ext_resource type="Script" path="res://components/settings/win_add_prop.gd" id="19_efg64"]
 [ext_resource type="Script" path="res://components/validators/prop_val.gd" id="20_2pfww"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_lttd8"]
+action = &"bited_save"
+
+[sub_resource type="Shortcut" id="Shortcut_wpsyo"]
+events = [SubResource("InputEventAction_lttd8")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
+action = &"bited_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_gm1e3"]
+events = [SubResource("InputEventAction_3ub0n")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xv605"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_grdfa"]
+events = [SubResource("InputEventAction_xv605")]
 
 [node name="Settings" type="PanelContainer" node_paths=PackedStringArray("win_add_prop", "node_tabs", "node_props", "btn_add_prop", "btn_save", "btn_save_close", "btn_cancel")]
 anchors_preset = 15
@@ -581,16 +599,19 @@ alignment = 2
 [node name="save" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_wpsyo")
 text = "save"
 
 [node name="save_close" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_gm1e3")
 text = "save & close"
 
 [node name="cancel" type="Button" parent="VBoxContainer/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_grdfa")
 text = "cancel"
 
 [node name="FileDialog" type="FileDialog" parent="."]
@@ -660,11 +681,13 @@ alignment = 2
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ButtonDanger"
+shortcut = SubResource("Shortcut_gm1e3")
 text = "overwrite"
 
 [node name="nvm" type="Button" parent="OverWarn/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_grdfa")
 text = "keep existing"
 
 [node name="AddProp" type="Window" parent="." node_paths=PackedStringArray("prop_val", "btn_ok", "btn_cancel")]
@@ -736,9 +759,11 @@ alignment = 2
 [node name="ok" type="Button" parent="AddProp/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_gm1e3")
 text = "add"
 
 [node name="cancel" type="Button" parent="AddProp/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_grdfa")
 text = "cancel"
