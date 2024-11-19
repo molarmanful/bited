@@ -659,10 +659,15 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aiec0"]
 content_margin_left = 8.0
-content_margin_top = 2.0
+content_margin_top = 4.0
 content_margin_right = 8.0
-content_margin_bottom = 2.0
-bg_color = Color(0, 0, 0, 0.69)
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45098, 0.45098, 0.45098, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sbn1k"]
 draw_center = false
@@ -955,6 +960,7 @@ Tool/colors/icon_hover_color = Color(1, 1, 1, 1)
 Tool/colors/icon_normal_color = Color(0.639216, 0.639216, 0.639216, 1)
 Tool/fonts/font = ExtResource("1_vc1qu")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
+TooltipLabel/colors/font_shadow_color = Color(0.14902, 0.14902, 0.14902, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_aiec0")
 Tree/colors/children_hl_line_color = Color(0.14902, 0.14902, 0.14902, 1)
 Tree/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)

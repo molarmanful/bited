@@ -146,6 +146,33 @@ layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Unique identifier that references this font in bited's database.
+
+Set this to an existing ID to overwrite the font at that ID."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+text = "font id"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="id" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3" node_paths=PackedStringArray("win_over_warn") groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "id..."
+script = ExtResource("2_8xqh3")
+win_over_warn = NodePath("../../../../../../../OverWarn")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -154,6 +181,11 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer3/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Path to a BDF file that this font can save to or load from.
+
+If left blank, you will be prompted with a file dialog during save/load."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "linked bdf"
 vertical_alignment = 1
 
@@ -186,28 +218,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-text = "font id"
-vertical_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="id" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer" node_paths=PackedStringArray("win_over_warn") groups=["settings"]]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "id..."
-script = ExtResource("2_8xqh3")
-win_over_warn = NodePath("../../../../../../../OverWarn")
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -216,6 +226,11 @@ theme_override_constants/separation = 8
 [node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Name of the type foundry or organization that made the font.
+
+New fonts created in bited have this field set to \"bited\"."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "foundry name"
 vertical_alignment = 1
 
@@ -237,6 +252,12 @@ theme_override_constants/separation = 8
 [node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Name of the typeface that this font belongs to.
+
+E.g. \"Helvetica Regular\" and \"Helvetica Bold\" both belong to the typeface
+\"Helvetica\"."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "family name"
 vertical_alignment = 1
 
@@ -258,6 +279,11 @@ theme_override_constants/separation = 8
 [node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Name of this font's variation.
+
+E.g. \"Regular\", \"Medium\", \"Light\", \"Bold\""
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "weight name"
 vertical_alignment = 1
 
@@ -279,6 +305,15 @@ theme_override_constants/separation = 8
 [node name="Label5" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Code indicating the posture of the font.
+
+- R  : upright (no slant)
+- I  : italic (different glyph shapes slanted)
+- O  : oblique (same upright glyph shapes slanted)
+- RI : reverse italic
+- RO : reverse oblique"
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "slant"
 vertical_alignment = 1
 
@@ -309,6 +344,11 @@ theme_override_constants/separation = 8
 [node name="Label6" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer6"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Name of this font's set width.
+
+E.g. \"Normal\", \"Condensed\", \"Narrow\", \"Double Wide\""
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "setwidth name"
 vertical_alignment = 1
 
@@ -330,6 +370,12 @@ theme_override_constants/separation = 8
 [node name="Label7" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer7"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Extra typographic style information to distinguish this font from others in the
+typeface. This field will typically be left blank.
+
+E.g. \"Serif\", \"Sans Serif\", \"Informal\", \"Decorated\""
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "add style name"
 vertical_alignment = 1
 
@@ -351,6 +397,15 @@ theme_override_constants/separation = 8
 [node name="Label10" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer8"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Horizontal and vertical resolution that the font was designed for, measured in
+dots per inch (dpi). These fields will be usually be left at the default 75×75.
+If this font is intended for HiDPI screens, you may use a multiple of 75×75
+(e.g. 150×150).
+
+bited only uses these fields to calculate certain fields like SIZE and SWIDTH
+in the resulting BDF."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "resolution"
 vertical_alignment = 1
 
