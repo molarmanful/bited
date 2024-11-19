@@ -190,7 +190,7 @@ func rot_ccw() -> void:
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): bitmap.cells.rotate_90.bind(CLOCKWISE))
+	op(func(_prev: Image): bitmap.cells.rotate_90(CLOCKWISE))
 
 
 func translate(dst: Vector2i) -> void:
