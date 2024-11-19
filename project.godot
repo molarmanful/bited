@@ -37,7 +37,6 @@ file_logging/enable_file_logging=true
 
 [display]
 
-window/size/mode=2
 window/size/borderless=true
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
