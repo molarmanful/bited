@@ -24,12 +24,16 @@ var db_saves := SQLite.new()
 ## Database for local data (i.e. machine-specific, not meant to be synced).
 var db_locals := SQLite.new()
 
-var root: Node
+var root: Window
 var scn_all: Resource
 var scn_start: Resource
 
 
 func _ready() -> void:
+	root = get_tree().root
+	root.borderless = false
+	root.mode = Window.MODE_MAXIMIZED
+
 	db_uc.path = "res://assets/uc.db"
 	db_uc.read_only = true
 	db_uc.open_db()
@@ -46,7 +50,6 @@ func _ready() -> void:
 
 	ResourceLoader.load_threaded_request("res://components/start/start.tscn")
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
-	root = get_tree().root
 
 
 ## Transitions from "start" to "all."
