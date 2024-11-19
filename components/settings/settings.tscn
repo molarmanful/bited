@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=23 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://components/settings/font/desc.gd" id="13_1akul"]
 [ext_resource type="Script" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
 [ext_resource type="Script" path="res://components/settings/font/charset.gd" id="13_xmogf"]
+[ext_resource type="Script" path="res://components/validators/xlfd_val.gd" id="14_pb3g0"]
 [ext_resource type="Script" path="res://components/settings/font/asc.gd" id="15_18s1e"]
 [ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
@@ -416,11 +417,13 @@ line_enc = NodePath("ch_enc")
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "registry..."
+script = ExtResource("14_pb3g0")
 
 [node name="ch_enc" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/charset"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "encoding..."
+script = ExtResource("14_pb3g0")
 
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer"]
 layout_mode = 2

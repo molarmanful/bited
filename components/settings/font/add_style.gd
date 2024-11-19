@@ -1,4 +1,4 @@
-extends LineEdit
+extends XLFDVal
 
 
 func save() -> void:

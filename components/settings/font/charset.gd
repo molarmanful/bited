@@ -1,7 +1,7 @@
 extends HBoxContainer
 
-@export var line_reg: LineEdit
-@export var line_enc: LineEdit
+@export var line_reg: XLFDVal
+@export var line_enc: XLFDVal
 
 
 func save() -> void:
