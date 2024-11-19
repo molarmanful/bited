@@ -92,6 +92,7 @@ func start() -> void:
 	StateVars.font.id = input_id.text
 	StateVars.font.bb.x = input_w.value
 	StateVars.font.init_font()
+	StateVars.db_locals.query_with_bindings("delete from paths where id = ?", [StateVars.font.id])
 	var gens: Array[Dictionary]
 	gens.assign(bdfp.glyphs.values())
 	StateVars.font.save_glyphs(gens)

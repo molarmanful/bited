@@ -22,6 +22,10 @@ extends PanelContainer
 @export var btn_flip_y: Button
 @export var btn_rot_ccw: Button
 @export var btn_rot_cw: Button
+@export var btn_left: Button
+@export var btn_down: Button
+@export var btn_up: Button
+@export var btn_right: Button
 
 var dim_grid := 32:
 	set(n):
@@ -73,6 +77,10 @@ func _ready() -> void:
 	btn_flip_y.pressed.connect(flip_y)
 	btn_rot_ccw.pressed.connect(rot_ccw)
 	btn_rot_cw.pressed.connect(rot_cw)
+	btn_left.pressed.connect(translate.bind(Vector2i.LEFT))
+	btn_down.pressed.connect(translate.bind(Vector2i.DOWN))
+	btn_up.pressed.connect(translate.bind(Vector2i.UP))
+	btn_right.pressed.connect(translate.bind(Vector2i.RIGHT))
 
 
 func _process(_delta: float) -> void:
@@ -163,26 +171,35 @@ func act_cells(prev: Image) -> void:
 
 func op(f: Callable) -> void:
 	var prev := Util.img_copy(cells)
-	f.call()
+	f.call(prev)
 	to_update_cells = true
 	act_cells(prev)
 	bitmap.save()
 
 
 func flip_x() -> void:
-	op(bitmap.cells.flip_x)
+	op(func(_prev: Image): bitmap.cells.flip_x())
 
 
 func flip_y() -> void:
-	op(bitmap.cells.flip_y)
+	op(func(_prev: Image): bitmap.cells.flip_y())
 
 
 func rot_ccw() -> void:
-	op(bitmap.cells.rotate_90.bind(COUNTERCLOCKWISE))
+	op(func(_prev: Image): bitmap.cells.rotate_90(COUNTERCLOCKWISE))
 
 
 func rot_cw() -> void:
-	op(bitmap.cells.rotate_90.bind(CLOCKWISE))
+	op(func(_prev: Image): bitmap.cells.rotate_90.bind(CLOCKWISE))
+
+
+func translate(dst: Vector2i) -> void:
+	op(
+		func(prev: Image):
+			var rect := cells.get_used_rect()
+			bitmap.clear_cells()
+			cells.blit_rect(prev, rect, rect.position + dst)
+	)
 
 
 func dwidth() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=50 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -66,7 +66,7 @@ action = &"bited_mode_cell"
 events = [SubResource("InputEventAction_ow1e3")]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
-viewport_path = NodePath("CenterContainer/GridContainer/Grid/CenterContainer/Lines/SubViewport")
+viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
 
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
@@ -104,6 +104,30 @@ action = &"bited_rot_cw"
 [sub_resource type="Shortcut" id="Shortcut_ren1t"]
 events = [SubResource("InputEventAction_poeox")]
 
+[sub_resource type="InputEventAction" id="InputEventAction_mktlr"]
+action = &"bited_left"
+
+[sub_resource type="Shortcut" id="Shortcut_5vium"]
+events = [SubResource("InputEventAction_mktlr")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_uhbyo"]
+action = &"bited_down"
+
+[sub_resource type="Shortcut" id="Shortcut_vbvjq"]
+events = [SubResource("InputEventAction_uhbyo")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_qeac4"]
+action = &"bited_up"
+
+[sub_resource type="Shortcut" id="Shortcut_8vv5b"]
+events = [SubResource("InputEventAction_qeac4")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_u2sts"]
+action = &"bited_right"
+
+[sub_resource type="Shortcut" id="Shortcut_1lpad"]
+events = [SubResource("InputEventAction_u2sts")]
+
 [node name="Editor" type="PanelContainer" node_paths=PackedStringArray("grid")]
 anchors_preset = 15
 anchor_right = 1.0
@@ -111,7 +135,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wb1k2")
-grid = NodePath("CenterContainer/GridContainer/Grid")
+grid = NodePath("CenterContainer/GridContainer/5/Grid")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -263,49 +287,53 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw")]
+[node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
-editor = NodePath("../../..")
-node_wrapper = NodePath("..")
-node_cells = NodePath("CenterContainer/Cells")
-node_view_lines = NodePath("CenterContainer/Lines/SubViewport")
-node_lines = NodePath("CenterContainer/Lines/SubViewport/Node2D")
-node_placeholder = NodePath("../../Placeholder")
-input_dwidth = NodePath("../2/dwidth")
+editor = NodePath("../../../..")
+node_wrapper = NodePath("../..")
+node_cells = NodePath("Cells")
+node_view_lines = NodePath("Lines/SubViewport")
+node_lines = NodePath("Lines/SubViewport/Node2D")
+node_placeholder = NodePath("../../../Placeholder")
+input_dwidth = NodePath("../../2/dwidth")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
-btn_undo = NodePath("../8/undo")
-btn_redo = NodePath("../8/redo")
-btn_flip_x = NodePath("../8/flip_x")
-btn_flip_y = NodePath("../8/flip_y")
-btn_rot_ccw = NodePath("../8/rot_ccw")
-btn_rot_cw = NodePath("../8/rot_cw")
+btn_undo = NodePath("../../8/undo")
+btn_redo = NodePath("../../8/redo")
+btn_flip_x = NodePath("../../8/flip_x")
+btn_flip_y = NodePath("../../8/flip_y")
+btn_rot_ccw = NodePath("../../8/rot_ccw")
+btn_rot_cw = NodePath("../../8/rot_cw")
+btn_left = NodePath("../../8/left")
+btn_down = NodePath("../../8/down")
+btn_up = NodePath("../../8/up")
+btn_right = NodePath("../../8/right")
 
-[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/GridContainer/Grid"]
-layout_mode = 2
-
-[node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/Grid/CenterContainer"]
+[node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 mouse_default_cursor_shape = 3
 
-[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/Grid/CenterContainer"]
+[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("ViewportTexture_iwxi2")
 
-[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/Grid/CenterContainer/Lines"]
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/5/Grid/Lines"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(256, 256)
 
-[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/Grid/CenterContainer/Lines/SubViewport" node_paths=PackedStringArray("grid")]
+[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/5/Grid/Lines/SubViewport" node_paths=PackedStringArray("grid")]
 script = ExtResource("2_jsp0s")
-grid = NodePath("../../../..")
+grid = NodePath("../../..")
 
 [node name="6" type="VBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
@@ -371,6 +399,42 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ren1t")
 text = "⟳"
+
+[node name="VSeparator2" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="left" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "left 1px"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_5vium")
+text = "🡐"
+
+[node name="down" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "down 1px"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_vbvjq")
+text = "🡓"
+
+[node name="up" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "up 1px"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_8vv5b")
+text = "🡑"
+
+[node name="right" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "right 1px"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_1lpad")
+text = "🡒"
 
 [node name="Placeholder" type="Label" parent="CenterContainer"]
 visible = false
