@@ -1,0 +1,128 @@
+[gd_scene load_steps=7 format=3 uid="uid://bj5s4w5ajseil"]
+
+[ext_resource type="Script" path="res://components/start/pg_bdf.gd" id="1_wohe3"]
+[ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_cmxgo"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
+action = &"bited_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_8yq8i"]
+events = [SubResource("InputEventAction_3ub0n")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xv605"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_i0ddc"]
+events = [SubResource("InputEventAction_xv605")]
+
+[node name="BDF" type="PanelContainer" node_paths=PackedStringArray("pg_x", "over_warn", "dialog_file", "input_path", "input_id", "input_w", "btn_start", "btn_cancel")]
+custom_minimum_size = Vector2(300, 0)
+theme_type_variation = &"Border"
+script = ExtResource("1_wohe3")
+pg_x = NodePath("")
+over_warn = NodePath("")
+dialog_file = NodePath("")
+input_path = NodePath("VBoxContainer/Body/GridContainer/path")
+input_id = NodePath("VBoxContainer/Body/GridContainer/id")
+input_w = NodePath("VBoxContainer/Body/GridContainer/w")
+btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Inner"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "import font from bdf"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Body" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "bdf path"
+vertical_alignment = 1
+
+[node name="path" type="LineEdit" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+placeholder_text = "path..."
+editable = false
+structured_text_bidi_override = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "font id"
+vertical_alignment = 1
+
+[node name="id" type="LineEdit" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "id..."
+script = ExtResource("2_cmxgo")
+
+[node name="Label4" type="Label" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "default width"
+vertical_alignment = 1
+
+[node name="w" type="SpinBox" parent="VBoxContainer/Body/GridContainer"]
+layout_mode = 2
+rounded = true
+allow_greater = true
+
+[node name="Footer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="start" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
+text = "import"
+
+[node name="cancel" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_i0ddc")
+text = "cancel"

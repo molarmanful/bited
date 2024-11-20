@@ -51,6 +51,7 @@ func file_sel(path: String) -> void:
 			await get_tree().process_frame
 	)
 	pg_bdf_prog.hide()
+
 	if bdfp.e:
 		pg_bdf_err.err.call_deferred(bdfp.e)
 		return

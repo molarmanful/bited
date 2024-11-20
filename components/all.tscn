@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
-[ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav.tscn" id="2_rafec"]
+[ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav/nav.tscn" id="2_rafec"]
 [ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_lsect"]
@@ -229,6 +229,7 @@ script = ExtResource("5_uxapv")
 table = NodePath("../PanelContainer/ScrollContainer2/MarginContainer/Table")
 
 [node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer" groups=["selshow"]]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8

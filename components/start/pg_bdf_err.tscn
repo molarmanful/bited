@@ -1,0 +1,87 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkktjy6loe6ek"]
+
+[ext_resource type="Script" path="res://components/start/pg_bdf_err.gd" id="1_ixatt"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_a6vou"]
+action = &"bited_ok"
+
+[sub_resource type="InputEventAction" id="InputEventAction_34ngi"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_12o42"]
+events = [SubResource("InputEventAction_a6vou"), SubResource("InputEventAction_34ngi")]
+
+[node name="BDFErr" type="PanelContainer" node_paths=PackedStringArray("input", "btn_ok")]
+custom_minimum_size = Vector2(300, 0)
+theme_type_variation = &"Border"
+script = ExtResource("1_ixatt")
+input = NodePath("VBoxContainer/Body/VBoxContainer/Err")
+btn_ok = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Inner"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "bdf parse error"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Body" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VBoxContainer/Body/VBoxContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+text = "Error encountered during parsing:"
+autowrap_mode = 3
+
+[node name="Err" type="TextEdit" parent="VBoxContainer/Body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "error..."
+editable = false
+wrap_mode = 1
+
+[node name="Footer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_12o42")
+text = " ok "

@@ -1,0 +1,120 @@
+[gd_scene load_steps=6 format=3 uid="uid://0iifg4w8rgni"]
+
+[ext_resource type="Script" path="res://components/start/pg_db.gd" id="1_pvccy"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
+action = &"bited_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_8yq8i"]
+events = [SubResource("InputEventAction_3ub0n")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xv605"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_dgiu6"]
+events = [SubResource("InputEventAction_xv605")]
+
+[node name="DB" type="PanelContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
+custom_minimum_size = Vector2(300, 0)
+theme_type_variation = &"Border"
+script = ExtResource("1_pvccy")
+pg_x = NodePath("")
+pg_del_warn = NodePath("")
+tree = NodePath("VBoxContainer/Body/Tree")
+placeholder = NodePath("VBoxContainer/Body/Placeholder")
+btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
+btn_cancel = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
+btn_del = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/del")
+btn_rename = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/rename")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Inner"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"Title"
+text = "load font from db"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="Body" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Tree" type="Tree" parent="VBoxContainer/Body"]
+layout_mode = 2
+columns = 2
+hide_root = true
+select_mode = 1
+
+[node name="Placeholder" type="Label" parent="VBoxContainer/Body"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"Muted"
+theme_override_font_sizes/font_size = 32
+text = "no fonts... yet."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Footer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="del" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "delete"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🗑️"
+
+[node name="rename" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "rename"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "✎"
+
+[node name="Spacer" type="Control" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="start" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_8yq8i")
+text = "load"
+
+[node name="cancel" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_dgiu6")
+text = "cancel"
