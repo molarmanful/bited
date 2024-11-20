@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=27 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -12,8 +12,6 @@
 [ext_resource type="Script" path="res://components/settings/font/spacing.gd" id="11_x5ybt"]
 [ext_resource type="Script" path="res://components/settings/font/desc.gd" id="13_1akul"]
 [ext_resource type="Script" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
-[ext_resource type="Script" path="res://components/settings/font/charset.gd" id="13_xmogf"]
-[ext_resource type="Script" path="res://components/validators/xlfd_val.gd" id="14_pb3g0"]
 [ext_resource type="Script" path="res://components/settings/font/asc.gd" id="15_18s1e"]
 [ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
 [ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
@@ -344,7 +342,7 @@ theme_override_constants/separation = 8
 [node name="Label6" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer6"]
 layout_mode = 2
 size_flags_vertical = 1
-tooltip_text = "Name of this font's set width.
+tooltip_text = "Name of this font's typographic proportional width.
 
 E.g. \"Normal\", \"Condensed\", \"Narrow\", \"Double Wide\""
 mouse_filter = 1
@@ -447,6 +445,19 @@ theme_override_constants/separation = 8
 [node name="Label11" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer9"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Code indicating width relationship between glyphs.
+
+- P : Proportional. Glyph widths may differ.
+- M : Monospace. All glyph widths are the same.
+- C : CharCell. All glyph widths are the same, and all glyphs fit within the
+      character cell. The character cell is the box defined by the ascent,
+      descent, y-origin, and glyph width.
+
+bited does NOT enforce spacing as defined by this field; e.g. a monospace font
+within bited may still have variable glyph widths.
+"
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "spacing"
 vertical_alignment = 1
 
@@ -465,39 +476,6 @@ popup/item_2/text = "C (Character Cell)"
 popup/item_2/id = 2
 script = ExtResource("11_x5ybt")
 
-[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="Label13" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer10"]
-layout_mode = 2
-size_flags_vertical = 1
-text = "charset"
-vertical_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer10"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="charset" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer" node_paths=PackedStringArray("line_reg", "line_enc") groups=["settings"]]
-layout_mode = 2
-script = ExtResource("13_xmogf")
-line_reg = NodePath("ch_reg")
-line_enc = NodePath("ch_enc")
-
-[node name="ch_reg" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/charset"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "registry..."
-script = ExtResource("14_pb3g0")
-
-[node name="ch_enc" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/charset"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "encoding..."
-script = ExtResource("14_pb3g0")
-
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -511,6 +489,19 @@ theme_override_constants/separation = 8
 [node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "The font's default character cell width and height.
+
+- Width can be referenced at the individual glyph level by setting the glyph's
+  width to -1. This will sync that glyph's width to the default width defined
+  in this field.
+- Height determines font size.
+
+When choosing these dimensions, make sure you account for spacing (between
+characters and lines), diacritics, etc. If you have a glyph that is 5px wide,
+then you'll probably want to add at least 1px of kerning so the glyph doesn't
+smush into other glyphs. Therefore, you would use a width >=6px."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "default dimensions"
 vertical_alignment = 1
 
@@ -547,6 +538,11 @@ theme_override_constants/separation = 8
 [node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer5"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Font-wide offset above the baseline.
+
+ascender = font_size - descender"
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "ascender"
 vertical_alignment = 1
 
@@ -570,6 +566,11 @@ theme_override_constants/separation = 8
 [node name="Label4" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Font-wide offset below the baseline.
+
+descender = font_size - ascender"
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "descender"
 vertical_alignment = 1
 
@@ -590,6 +591,9 @@ theme_override_constants/separation = 8
 [node name="Label12" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer3"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Normal height above the baseline of capital letters in the font."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "cap height"
 vertical_alignment = 1
 
@@ -610,6 +614,9 @@ theme_override_constants/separation = 8
 [node name="Label13" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 1
+tooltip_text = "Normal height above the baseline of lowercase letters in the font."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
 text = "x-height"
 vertical_alignment = 1
 
