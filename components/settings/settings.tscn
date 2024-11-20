@@ -678,8 +678,9 @@ text = "cancel"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 auto_translate_mode = 1
+title = "Choose a File"
 size = Vector2i(200, 147)
-ok_button_text = "Save"
+ok_button_text = "Choose"
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true
