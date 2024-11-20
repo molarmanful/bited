@@ -19,6 +19,7 @@ enum Mode { RANGE, GLYPHS, PAGE }
 
 @export_group("Buttons")
 @export var btn_all: Button
+@export var btn_clr: Button
 @export var btn_cut: Button
 @export var btn_copy: Button
 @export var btn_paste: Button
@@ -55,6 +56,7 @@ func _ready() -> void:
 	virt.refresh.connect(func(): to_update = true)
 
 	btn_all.pressed.connect(sel.all)
+	btn_clr.pressed.connect(sel.clear)
 	btn_cut.pressed.connect(sel.cut)
 	btn_copy.pressed.connect(sel.copy)
 	btn_paste.pressed.connect(sel.paste)
