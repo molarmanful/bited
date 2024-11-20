@@ -61,7 +61,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -76,6 +76,7 @@ dialog_load = NodePath("load")
 win_bdf_prog = NodePath("BDFProg")
 txt_bdf_prog = NodePath("BDFProg/PanelContainer/Body/Label")
 win_bdf_err = NodePath("BDFErr")
+win_bdf_warn = NodePath("BDFWarn")
 btn_home = NodePath("MarginContainer/HBoxContainer2/home")
 btn_save = NodePath("MarginContainer/HBoxContainer2/save")
 btn_load = NodePath("MarginContainer/HBoxContainer2/load")
