@@ -43,6 +43,10 @@ var gen_defs := {}
 ## Hex data built per glyph.
 var gen_bm := PackedStringArray()
 
+var thumb_px_size := -1
+var grid_size := -1
+var grid_px_size := -1
+
 var gen_default := {
 	name = "",
 	code = -1,
@@ -245,27 +249,45 @@ func parse_props(line: Dictionary) -> String:
 			match line.k:
 				"FONT_DESCENT":
 					if v is not int or v < 0:
-						warn("FONT_DESCENT is not a valid int >= 0, defaulting to 0")
+						warn("FONT_DESCENT is not a valid int >= 0, ignoring")
 					else:
 						font.desc = v
 
 				"CAP_HEIGHT":
 					if v is not int or v < 0:
-						warn("CAP_HEIGHT is not a valid int >=0, defaulting to 0")
+						warn("CAP_HEIGHT is not a valid int >=0, ignoring")
 					else:
 						font.cap_h = v
 
 				"X_HEIGHT":
 					if v is not int or v < 0:
-						warn("X_HEIGHT is not a valid int >=0, defaulting to 0")
+						warn("X_HEIGHT is not a valid int >=0, ignoring")
 					else:
 						font.x_h = v
 
 				"BITED_DWIDTH":
 					if v is not int or v < 0:
-						warn("BITED_DWIDTH is not a valid int >=0, defaulting to 0")
+						warn("BITED_DWIDTH is not a valid int >=0, ignoring")
 					else:
 						font.bb.x = v
+
+				"BITED_TABLE_CELL_SCALE":
+					if v is not int or v < 0:
+						warn("BITED_TABLE_CELL_SCALE is not a valid int >=0, ignoring")
+					else:
+						thumb_px_size = v
+
+				"BITED_EDITOR_GRID_SIZE":
+					if v is not int or v < 0:
+						warn("BITED_EDITOR_GRID_SIZE is not a valid int >=0, ignoring")
+					else:
+						grid_size = v
+
+				"BITED_EDITOR_CELL_SIZE":
+					if v is not int or v < 0:
+						warn("BITED_EDITOR_CELL_SIZE is not a valid int >=0, ignoring")
+					else:
+						grid_px_size = v
 
 			if BFont.is_other_prop(line.k):
 				font.props[line.k] = v

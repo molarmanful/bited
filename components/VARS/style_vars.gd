@@ -3,28 +3,18 @@ extends Node
 
 ## Emits when theme changes.
 signal theme_changed
-## Emits when font styling (e.g. size) changes.
-signal set_font
 ## Emits when thumbnail styling (e.g. size) changes.
 signal set_thumb
+## Emits when grid styling (e.g. size) changes.
+signal set_grid
 
 const ThemeDark := preload("res://components/dark.tres")
 const ThemeLight := preload("res://components/light.tres")
 
-var font_scale := 1:
-	set(n):
-		font_scale = n
-		set_font.emit()
-var font_scale_cor: int:
-	get:
-		return maxi(1, font_scale)
-var font_size: int:
-	get:
-		return 16 * font_scale_cor
 var thumb_px_size := 2:
 	set(n):
 		thumb_px_size = n
-		set_thumb.emit()
+		StyleVars.set_thumb.emit()
 var thumb_px_size_cor: int:
 	get:
 		return maxi(1, thumb_px_size)
@@ -38,10 +28,27 @@ var thumb_size_cor: int:
 	get:
 		return maxi(32, thumb_size)
 
+var grid_size := 32:
+	set(n):
+		grid_size = n
+		set_grid.emit()
+var grid_px_size := 12:
+	set(n):
+		grid_px_size = n
+		set_grid.emit()
+var grid_size_min: int:
+	get:
+		var fb := StateVars.font.fbbx()
+		return maxi(maxi(fb.bb_x, fb.bb_y), maxi(StateVars.font.bb.x, StateVars.font.bb.y)) + 4
+var grid_size_cor: int:
+	get:
+		return maxi(grid_size_min, grid_size)
+var grid_px_size_cor: int:
+	get:
+		return maxi(4, grid_px_size)
+
 
 func _ready() -> void:
-	thumb_px_size = StateVars.cfg.get_value("display", "table_cell_scale", 2)
-
 	refresh_theme()
 
 	StateVars.settings.connect(refresh_theme)

@@ -27,14 +27,12 @@ extends PanelContainer
 @export var btn_up: Button
 @export var btn_right: Button
 
-var dim_grid := 32:
-	set(n):
-		dim_grid = n
-		update_grid()
-var w_cell := 12:
-	set(n):
-		w_cell = n
-		update_grid()
+var dim_grid: int:
+	get:
+		return StyleVars.grid_size_cor
+var w_cell: int:
+	get:
+		return StyleVars.grid_px_size_cor
 var w_grid: int:
 	get:
 		return dim_grid * w_cell
@@ -60,11 +58,13 @@ var undoman := UndoRedo.new()
 func _ready() -> void:
 	refresh()
 
-	theme_changed.connect(update_grid)
-	gui_input.connect(oninput)
 	StateVars.settings.connect(refresh)
 	StateVars.edit.connect(start_edit)
 	StateVars.edit_refresh.connect(refresh)
+	StyleVars.set_grid.connect(refresh.bind(true))
+
+	theme_changed.connect(update_cells)
+	gui_input.connect(oninput)
 
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
@@ -110,7 +110,12 @@ func start_edit(g: Glyph) -> void:
 	refresh()
 
 
-func refresh() -> void:
+func refresh(hard := false) -> void:
+	if hard:
+		bitmap.dim = dim_grid
+		cells.copy_from(Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8))
+		tex_cells.set_image(cells)
+
 	bitmap.load()
 
 	if not bitmap.data_name:

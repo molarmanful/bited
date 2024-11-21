@@ -1,11 +1,13 @@
-[gd_scene load_steps=28 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=30 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
 [ext_resource type="Script" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
 [ext_resource type="Script" path="res://components/settings/font/family.gd" id="4_3lktb"]
 [ext_resource type="Script" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
+[ext_resource type="Script" path="res://components/settings/display/editor_grid_size.gd" id="4_nreqd"]
 [ext_resource type="Script" path="res://components/settings/font/weight.gd" id="5_ey81o"]
+[ext_resource type="Script" path="res://components/settings/display/editor_cell_size.gd" id="5_gqxa1"]
 [ext_resource type="Script" path="res://components/settings/font/slant.gd" id="6_2x7pt"]
 [ext_resource type="Script" path="res://components/settings/font/setwidth.gd" id="7_phs2n"]
 [ext_resource type="Script" path="res://components/settings/font/add_style.gd" id="8_iwt5s"]
@@ -145,14 +147,63 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="table_px_size" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["settings"]]
+[node name="table_cell_scale" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["settings"]]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
 value = 1.0
 rounded = true
 allow_greater = true
+suffix = "px"
 script = ExtResource("4_fdym7")
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer7"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "editor grid size"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="editor_grid_size" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["post_reload", "settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+allow_greater = true
+suffix = "cells"
+script = ExtResource("4_nreqd")
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer6"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "editor cell size"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="editor_cell_size" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 4.0
+value = 4.0
+rounded = true
+allow_greater = true
+suffix = "px"
+script = ExtResource("5_gqxa1")
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
 visible = false

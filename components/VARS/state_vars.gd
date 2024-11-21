@@ -168,6 +168,17 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_locals.query("commit;")
 
 
+func load_parsed(bdfp: BDFParser) -> void:
+	font = bdfp.font
+	StyleVars.thumb_px_size = bdfp.thumb_px_size
+	StyleVars.grid_size = bdfp.grid_size
+	StyleVars.grid_px_size = bdfp.grid_px_size
+	font.init_font()
+	var gens: Array[Dictionary]
+	gens.assign(bdfp.glyphs.values())
+	font.save_glyphs(gens)
+
+
 ## Returns the save path of the current font.
 func path() -> String:
 	StateVars.db_locals.query_with_bindings(

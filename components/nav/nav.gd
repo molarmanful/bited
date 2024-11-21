@@ -79,10 +79,5 @@ func load() -> void:
 			return
 
 	bdfp.font.id = StateVars.font.id
-	StateVars.font = bdfp.font
-	StateVars.font.init_font()
-	var gens: Array[Dictionary]
-	gens.assign(bdfp.glyphs.values())
-	StateVars.font.save_glyphs(gens)
-
+	StateVars.load_parsed(bdfp)
 	StateVars.start_all()

@@ -151,6 +151,9 @@ func to_bdf_properties() -> PackedStringArray:
 		"CAP_HEIGHT %d" % cap_h,
 		"X_HEIGHT %d" % x_h,
 		"BITED_DWIDTH %d" % dwidth,
+		"BITED_TABLE_CELL_SCALE %d" % StyleVars.thumb_px_size,
+		"BITED_EDITOR_GRID_SIZE %d" % StyleVars.grid_size,
+		"BITED_EDITOR_CELL_SIZE %d" % StyleVars.grid_px_size,
 	]
 
 	for k in props:
@@ -251,6 +254,9 @@ func to_dict() -> Dictionary:
 		cap_h = cap_h,
 		x_h = x_h,
 		props = props,
+		thumb_px_size = StyleVars.thumb_px_size_cor,
+		grid_size = StyleVars.grid_size_cor,
+		grid_px_size = StyleVars.grid_px_size_cor,
 	}
 
 
@@ -270,6 +276,9 @@ func from_dict(d: Dictionary) -> void:
 	cap_h = d.cap_h
 	x_h = d.x_h
 	props = d.props
+	StyleVars.thumb_px_size = d.thumb_px_size
+	StyleVars.grid_size = d.grid_size
+	StyleVars.grid_px_size = d.grid_px_size
 
 
 func xlfd() -> String:
@@ -313,10 +322,13 @@ func fbbx() -> Dictionary:
 	var qs := StateVars.db_saves.select_rows(
 		"font_" + id,
 		"",
-		["max(bb_x) as bb_x", "max(bb_y) as bb_y", "min(off_x) as off_x", "min(off_y) as off_y"]
+		[
+			"coalesce(max(bb_x), 0) as bb_x",
+			"coalesce(max(bb_y), 0) as bb_y",
+			"coalesce(min(off_x), 0) as off_x",
+			"coalesce(min(off_y), 0) as off_y"
+		]
 	)
-	if qs.is_empty():
-		return {}
 	return qs[0]
 
 
@@ -341,7 +353,10 @@ static func is_other_prop(k: String) -> bool:
 			"FONT_DESCENT",
 			"CAP_HEIGHT",
 			"X_HEIGHT",
-			"BITED_DWIDTH"
+			"BITED_DWIDTH",
+			"BITED_TABLE_CELL_SCALE",
+			"BITED_EDITOR_GRID_SIZE",
+			"BITED_EDITOR_CELL_SIZE",
 		]
 		. has(k.to_upper())
 	)

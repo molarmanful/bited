@@ -51,6 +51,10 @@ func save() -> void:
 	for prop in node_props.get_children():
 		prop.save()
 
+	for child in get_tree().get_nodes_in_group("post_reload"):
+		child.save()
+		child.load()
+
 	StateVars.font.props.clear()
 	StateVars.font.props.merge(props)
 	StateVars.font.save_font()

@@ -103,7 +103,7 @@ func clear_cells() -> void:
 	cells.fill(Color.TRANSPARENT)
 
 
-func update_cells(gen: Dictionary) -> void:
+func update_cells(gen := to_gen()) -> void:
 	clear_cells()
 	from_gen(gen)
 	if not gen.img:

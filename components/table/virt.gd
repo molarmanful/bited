@@ -25,7 +25,7 @@ var w_item: int:
 		return StyleVars.thumb_size_cor
 var h_item: int:
 	get:
-		return 9 + StyleVars.font_size + w_item
+		return 25 + w_item
 var size_item: Vector2i:
 	get:
 		return Vector2i(w_item, h_item)
