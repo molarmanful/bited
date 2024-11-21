@@ -20,7 +20,7 @@ func _draw() -> void:
 			var uc := c.unicode_at(0)
 			if uc not in cache:
 				if hi:
-					var w: int = max(1, StateVars.font.dwidth)
+					var w: int = maxi(1, StateVars.font.dwidth)
 					draw_rect(
 						Rect2i(
 							pos - Vector2i(0, StateVars.font.asc), Vector2i(w, StateVars.font.bb.y)
@@ -39,7 +39,7 @@ func _draw() -> void:
 				)
 			pos.x += dwidth
 
-		mx.x = max(mx.x, pos.x + StateVars.font.bb.x)
+		mx.x = maxi(mx.x, pos.x + StateVars.font.bb.x)
 		pos.x = 0
 		pos.y += StateVars.font.bb.y
 		mx.y = pos.y

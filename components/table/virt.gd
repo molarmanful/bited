@@ -5,7 +5,7 @@ signal refresh
 
 var length := 0:
 	set(n):
-		length = max(0, n)
+		length = maxi(0, n)
 		refresh.emit()
 var w_sizer := 0:
 	set(n):
@@ -17,12 +17,12 @@ var h_view := 0:
 		refresh.emit()
 var v_scroll := 0:
 	set(n):
-		v_scroll = min(n, rows * size_item_gap.y - h_view)
+		v_scroll = mini(n, rows * size_item_gap.y - h_view)
 		refresh.emit()
 
 var w_item: int:
 	get:
-		return StyleVars.thumb_size
+		return StyleVars.thumb_size_cor
 var h_item: int:
 	get:
 		return 9 + StyleVars.font_size + w_item
@@ -35,7 +35,7 @@ var size_item_gap: Vector2i:
 
 var cols: int:
 	get:
-		return max(1, w_sizer / size_item_gap.x - 1)
+		return maxi(1, w_sizer / size_item_gap.x - 1)
 var rows: int:
 	get:
 		return ceil(length / float(cols))
@@ -61,10 +61,10 @@ var row_bottom: int:
 		return row_top + rows_view
 var row0: int:
 	get:
-		return max(0, row_top - rows_off)
+		return maxi(0, row_top - rows_off)
 var row1: int:
 	get:
-		return min(rows, row_bottom + rows_off)
+		return mini(rows, row_bottom + rows_off)
 
 var len_ideal: int:
 	get:
@@ -74,7 +74,7 @@ var i0: int:
 		return row0 * cols
 var i1: int:
 	get:
-		return min(length, row1 * cols)
+		return mini(length, row1 * cols)
 
 var pad_top: int:
 	get:

@@ -3,8 +3,8 @@ extends Node
 
 ## Check if [param x] is between [param n0] and [param n1] (inclusive).
 func between(x: int, n0: int, n1: int) -> bool:
-	var a := min(n0, n1) as int
-	var b := max(n0, n1) as int
+	var a := mini(n0, n1)
+	var b := maxi(n0, n1)
 	return a <= x and x <= b
 
 

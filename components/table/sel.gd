@@ -313,7 +313,7 @@ func paste() -> void:
 
 
 func norm() -> Array[int]:
-	return [min(anchor, end) as int, (max(anchor, end) as int) + 1]
+	return [mini(anchor, end), maxi(anchor, end) + 1]
 
 
 func commit() -> void:
@@ -343,8 +343,8 @@ func commit() -> void:
 				res.push_back(a)
 				res.push_back(b)
 			else:
-				x = min(a, x)
-				y = max(b, y)
+				x = mini(a, x)
+				y = maxi(b, y)
 
 		else:
 			if b <= x or a >= y:

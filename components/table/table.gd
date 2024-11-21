@@ -52,6 +52,7 @@ func _ready() -> void:
 
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
+	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
 

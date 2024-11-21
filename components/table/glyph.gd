@@ -6,7 +6,6 @@ const ScnGlyph := preload("glyph.tscn")
 @export var virt: Virt
 @export var sel: Sel
 @export var node_code: Label
-@export var node_tex_cont: Container
 @export var node_tex: TextureRect
 @export var btn_l: Button
 @export var btn_r: Button
@@ -78,9 +77,7 @@ func refresh_tex(gen: Dictionary) -> void:
 
 func set_thumb() -> void:
 	var s := StyleVars.thumb_size
-	var sz := Vector2(s, s)
-	node_tex_cont.custom_minimum_size = sz
-
+	node_tex.custom_minimum_size = Vector2i(s, s)
 	node_tex.self_modulate = get_theme_color("fg")
 	if data_name in table.thumbs:
 		node_tex.texture = table.thumbs[data_name]

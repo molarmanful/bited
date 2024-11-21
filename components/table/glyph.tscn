@@ -5,14 +5,13 @@
 [ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="2_se6b1"]
 [ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_wp5fo"]
 
-[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex_cont", "node_tex")]
+[node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex")]
 mouse_default_cursor_shape = 2
 script = ExtResource("1_mjxq3")
 virt = ExtResource("2_se6b1")
 sel = ExtResource("3_wp5fo")
 node_code = NodePath("VBoxContainer/ScrollContainer/MarginContainer/Label")
-node_tex_cont = NodePath("VBoxContainer/AspectRatioContainer")
-node_tex = NodePath("VBoxContainer/AspectRatioContainer/TextureRect")
+node_tex = NodePath("VBoxContainer/CenterContainer/TextureRect")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 clip_contents = true
@@ -34,6 +33,7 @@ theme_override_constants/margin_top = 4
 [node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"Muted"
 theme_override_fonts/font = ExtResource("2_2cf3a")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -45,12 +45,11 @@ self_modulate = Color(1, 1, 1, 0.69)
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="VBoxContainer"]
-clip_contents = true
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/AspectRatioContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/CenterContainer"]
 texture_filter = 1
 layout_mode = 2
 stretch_mode = 5

@@ -1,9 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=28 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
 [ext_resource type="Script" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
 [ext_resource type="Script" path="res://components/settings/font/family.gd" id="4_3lktb"]
+[ext_resource type="Script" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
 [ext_resource type="Script" path="res://components/settings/font/weight.gd" id="5_ey81o"]
 [ext_resource type="Script" path="res://components/settings/font/slant.gd" id="6_2x7pt"]
 [ext_resource type="Script" path="res://components/settings/font/setwidth.gd" id="7_phs2n"]
@@ -66,12 +67,11 @@ theme_override_constants/margin_right = 8
 
 [node name="TabBar" type="TabBar" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
-current_tab = 2
-tab_count = 4
-tab_0/title = "GENERAL"
-tab_1/title = "DISPLAY"
-tab_2/title = "FONT"
-tab_3/title = "PROPERTIES"
+current_tab = 1
+tab_count = 3
+tab_0/title = "DISPLAY"
+tab_1/title = "FONT"
+tab_2/title = "PROPERTIES"
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
 layout_mode = 2
@@ -89,13 +89,7 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="general" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 32
-
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
@@ -131,7 +125,37 @@ popup/item_2/text = "dark"
 popup/item_2/id = 2
 script = ExtResource("17_j3ewv")
 
+[node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "table cell scale"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="table_px_size" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+rounded = true
+allow_greater = true
+script = ExtResource("4_fdym7")
+
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
