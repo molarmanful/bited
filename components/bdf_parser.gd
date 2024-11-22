@@ -43,9 +43,9 @@ var gen_defs := {}
 ## Hex data built per glyph.
 var gen_bm := PackedStringArray()
 
-var thumb_px_size := -1
-var grid_size := -1
-var grid_px_size := -1
+var thumb_px_size := 2
+var grid_size := 32
+var grid_px_size := 12
 
 var gen_default := {
 	name = "",
