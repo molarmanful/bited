@@ -12,7 +12,7 @@ shader_parameter/mod = Color(1, 1, 1, 1)
 [sub_resource type="ViewportTexture" id="ViewportTexture_rj7dp"]
 viewport_path = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport")
 
-[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "input_scale", "out", "scroll_out")]
+[node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "btn_dl", "input_scale", "out", "scroll_out", "file_dl")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,9 +24,11 @@ input = NodePath("MarginContainer/SplitContainer/VBoxContainer/TextEdit")
 node_split = NodePath("MarginContainer/SplitContainer")
 btn_split = NodePath("MarginContainer/SplitContainer/VBoxContainer/HBoxContainer/split")
 btn_hi = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/hi")
+btn_dl = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/download")
 input_scale = NodePath("MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer/scale")
 out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer/MarginContainer/TextureRect/SubViewport/PreviewOut")
 scroll_out = NodePath("MarginContainer/SplitContainer/VBoxContainer2/PanelContainer/ScrollContainer")
+file_dl = NodePath("download")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -113,6 +115,15 @@ rounded = true
 allow_greater = true
 prefix = "scale:"
 
+[node name="download" type="Button" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "download output as png"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "📥"
+
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/SplitContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -145,3 +156,8 @@ size_2d_override_stretch = true
 script = ExtResource("3_wdqwx")
 view = NodePath("..")
 node_tex = NodePath("../..")
+
+[node name="download" type="FileDialog" parent="."]
+access = 2
+filters = PackedStringArray("*.png;PNG Image")
+use_native_dialog = true

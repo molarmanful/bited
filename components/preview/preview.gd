@@ -7,9 +7,11 @@ extends PanelContainer
 @export var node_split: SplitContainer
 @export var btn_split: Button
 @export var btn_hi: Button
+@export var btn_dl: Button
 @export var input_scale: SpinBox
 @export var out: PreviewOut
 @export var scroll_out: ScrollContainer
+@export var file_dl: FileDialog
 
 var preset_tree := {
 	"BASIC":
@@ -106,6 +108,7 @@ func _ready() -> void:
 			out.hi = on
 			preview()
 	)
+	btn_dl.pressed.connect(dl_img)
 	input_scale.value_changed.connect(
 		func(new: int):
 			out.rscale = new
@@ -130,3 +133,11 @@ func preview(hard := false) -> void:
 	out.refresh(hard)
 	window.popup()
 	input.grab_focus()
+
+
+func dl_img() -> void:
+	file_dl.popup()
+	if not file_dl.current_file:
+		return
+
+	out.node_tex.texture.get_image().save_png(file_dl.current_file)
