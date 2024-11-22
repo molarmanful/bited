@@ -65,7 +65,6 @@ func load() -> void:
 	if qs.is_empty():
 		data_code = -1
 		data_name = ""
-		dwidth = -1
 		return
 
 	var gen := qs[0]

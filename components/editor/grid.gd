@@ -105,6 +105,7 @@ func start_edit(g: Glyph) -> void:
 	undoman.clear_history()
 	bitmap.data_code = g.data_code
 	bitmap.data_name = g.data_name
+	bitmap.dwidth = -1
 	bitmap.clear_cells()
 	bitmap.save(false)
 	refresh()
