@@ -342,10 +342,9 @@ func parse_char(line: Dictionary) -> String:
 				var xs := arr_int(1, line.v)
 				if xs.is_empty() or xs[0] < 0:
 					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
-				elif font.spacing == "C" or (font.spacing == "M" and xs[0] == font.dwidth):
-					gen.dwidth = -1
 				else:
-					gen.dwidth = xs[0]
+					# TODO: add bdf char field for width sync?
+					gen.dwidth = -1 if xs[0] == font.dwidth else xs[0]
 
 		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
