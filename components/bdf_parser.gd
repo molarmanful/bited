@@ -338,13 +338,20 @@ func parse_char(line: Dictionary) -> String:
 				gen.off_y = xs[3]
 
 		"DWIDTH":
-			if notdef_gen("DWIDTH"):
+			if notdef_gen("DWIDTH") and "BITED_W" not in gen_defs:
 				var xs := arr_int(1, line.v)
 				if xs.is_empty() or xs[0] < 0:
 					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
 				else:
-					# TODO: add bdf char field for width sync?
-					gen.dwidth = -1 if xs[0] == font.dwidth else xs[0]
+					gen.dwidth = xs[0]
+
+		"BITED_W":
+			if notdef_gen("BITED_W"):
+				var xs := arr_int(1, line.v)
+				if xs.is_empty():
+					warn("BITED_W is not a valid int, skipping")
+				else:
+					gen.dwidth = xs[0]
 
 		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass

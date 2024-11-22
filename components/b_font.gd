@@ -197,6 +197,7 @@ func to_bdf_chars() -> PackedStringArray:
 					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
 					"SWIDTH %d 0" % swidth(dw),
 					"DWIDTH %d 0" % dw,
+					"BITED_W %d" % q.dwidth,
 					"BITMAP",
 				]
 			)
