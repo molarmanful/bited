@@ -168,14 +168,35 @@ func to_bdf_properties() -> PackedStringArray:
 
 
 func width64() -> String:
-	var res := PackedByteArray()
-	var qs := StateVars.db_saves.select_rows("font_" + id, "", ["dwidth != -1 as w"])
-	res.resize((qs.size() + 7) >> 3)
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select dwidth != -1 as w
+				from font_%s
+				order by code, name
+				;"""
+				% id
+			)
+		)
+	)
+	var qs := StateVars.db_saves.query_result
+
+	var res := BitMap.new()
+	res.create(Vector2i(qs.size(), 1))
 	var i := 0
 	for q in qs:
-		res[i >> 3] |= q.w << (i & 7)
+		res.set_bit(i, 0, q.w)
 		i += 1
-	return Marshalls.raw_to_base64(res.compress(FileAccess.COMPRESSION_GZIP))
+	return (
+		"%d %s"
+		% [
+			res.get_size().x,
+			Marshalls.raw_to_base64(res.data.data.compress(FileAccess.COMPRESSION_GZIP))
+		]
+	)
 
 
 func to_bdf_chars(fb: Dictionary) -> PackedStringArray:

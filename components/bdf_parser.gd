@@ -36,7 +36,7 @@ var mode := Mode.PRE
 ## Already-defined keywords for detecting conflicting definitions.
 var defs := {}
 ## Bit array for determining whether each glyph should default its width.
-var dws := PackedByteArray()
+var dws := BitMap.new()
 ## In-memory storage of parsed glyphs.
 var glyphs := {}
 
@@ -225,7 +225,10 @@ func parse_x(line: Dictionary) -> String:
 			mode = Mode.PROPS
 
 		"CHARS":
-			pass
+			if notdef("CHARS"):
+				var xs := arr_int(1, line.v)
+				if "prop BITED_WIDTHS" in defs and xs[0] > dws.get_size().x:
+					warn("CHARS > BITED_WIDTHS size, please manually verify BDF integrity")
 
 		"STARTCHAR":
 			var x: String = line.v
@@ -284,11 +287,18 @@ func parse_props(line: Dictionary) -> String:
 					if v is not String:
 						warn("BITED_WIDTHS is not a valid string, ignoring")
 					else:
-						dws = Marshalls.base64_to_raw(v).decompress_dynamic(
-							-1, FileAccess.COMPRESSION_GZIP
-						)
-						if dws.is_empty() and v:
-							warn("BITED_WIDTHS is not a valid base64 string, ignoring")
+						var data: PackedStringArray = v.split(" ")
+						if data.size() < 2 or not data[0].is_valid_int():
+							warn("BITED_WIDTHS does not follow a valid format, ignoring")
+						else:
+							var l := int(data[0])
+							var bits := Marshalls.base64_to_raw(data[1]).decompress_dynamic(
+								-1, FileAccess.COMPRESSION_GZIP
+							)
+							if bits.is_empty() and v:
+								warn("BITED_WIDTHS does not contain valid base64 string, ignoring")
+							else:
+								dws.data = {size = Vector2i(l, 1), data = bits}
 
 				"BITED_TABLE_CELL_SCALE":
 					if v is not int or v < 0:
@@ -353,8 +363,8 @@ func parse_char(line: Dictionary) -> String:
 		"DWIDTH":
 			if notdef_gen("DWIDTH"):
 				var d := true
-				if (i_glyph + 7) >> 3 < dws.size():
-					d = dws[i_glyph >> 3] >> (i_glyph & 7)
+				if i_glyph < dws.get_size().x:
+					d = dws.get_bit(i_glyph, 0)
 
 				if d:
 					var xs := arr_int(1, line.v)
@@ -407,6 +417,7 @@ func endchar() -> void:
 	mode = Mode.X
 	gen.img = Util.hexes_to_bits(gen_bm, gen.bb_x, gen.bb_y)
 	glyphs[gen.name] = gen
+	i_glyph += 1
 	clrchar()
 
 
@@ -415,7 +426,6 @@ func clrchar() -> void:
 	gen = {}
 	gen_defs.clear()
 	gen_bm.clear()
-	i_glyph += 1
 
 
 ## Tokenizes/pre-parses a line into a key-value pair denoted by keys
