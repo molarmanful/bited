@@ -41,6 +41,10 @@ var preset_tree := {
 		"diacritics extras",
 		"news headlines",
 	],
+	"GREEK":
+	[
+		"greek pangrams",
+	],
 	"CYRILLIC":
 	[
 		"cyrillic",
