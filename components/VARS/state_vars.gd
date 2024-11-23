@@ -168,6 +168,7 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_locals.query("commit;")
 
 
+## Saves [param bdfp] to the fonts database.
 func load_parsed(bdfp: BDFParser) -> void:
 	font = bdfp.font
 	StyleVars.thumb_px_size = bdfp.thumb_px_size
