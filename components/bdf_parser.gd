@@ -119,6 +119,11 @@ func parse(f: Callable, end: Callable) -> String:
 		if mode == Mode.POST:
 			return ""
 
+	match mode:
+		Mode.CHAR, Mode.BM:
+			warn("reached file end while parsing glyph")
+			endchar()
+
 	warn("reached file end without finding ENDFONT")
 	return ""
 
