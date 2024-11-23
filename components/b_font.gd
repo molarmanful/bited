@@ -64,7 +64,6 @@ static func unifontex() -> BFont:
 
 
 func init_font(ignore := false) -> void:
-	save_font(ignore)
 	if not ignore:
 		StateVars.db_saves.query("drop table if exists font_%s;" % id)
 	(
@@ -84,6 +83,7 @@ func init_font(ignore := false) -> void:
 			}
 		)
 	)
+	save_font(ignore)
 	load_font()
 
 
