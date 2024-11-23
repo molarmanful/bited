@@ -113,11 +113,7 @@ func _ready() -> void:
 			preview()
 	)
 	btn_dl.pressed.connect(dl_img)
-	input_scale.value_changed.connect(
-		func(new: int):
-			out.rscale = new
-			preview()
-	)
+	input_scale.value_changed.connect(out.scale)
 
 
 func preset(i: int) -> void:
@@ -133,7 +129,7 @@ func preset(i: int) -> void:
 func preview(hard := false) -> void:
 	out.color_fg = get_theme_color("fg")
 	out.color_hi = get_theme_color("danger")
-	out.text = input.text
+	out.lines = input.text.split("\n")
 	out.refresh(hard)
 	window.popup()
 	input.grab_focus()
@@ -144,4 +140,4 @@ func dl_img() -> void:
 	if not file_dl.current_file:
 		return
 
-	out.node_tex.texture.get_image().save_png(file_dl.current_file)
+	out.texture.get_image().save_png(file_dl.current_file)
