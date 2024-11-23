@@ -28,11 +28,15 @@ var warns := PackedStringArray()
 
 ## Line number for debugging purposes.
 var n_line := 0
+## Glyph index for index-dependent data (e.g. [member dws]).
+var i_glyph := 0
 ## Current mode for the parser state machine.
 var mode := Mode.PRE
 
 ## Already-defined keywords for detecting conflicting definitions.
 var defs := {}
+## Bit array for determining whether each glyph should default its width.
+var dws := PackedByteArray()
 ## In-memory storage of parsed glyphs.
 var glyphs := {}
 
@@ -271,6 +275,16 @@ func parse_props(line: Dictionary) -> String:
 					else:
 						font.bb.x = v
 
+				"BITED_WIDTHS":
+					if v is not String:
+						warn("BITED_WIDTHS is not a valid string, ignoring")
+					else:
+						dws = Marshalls.base64_to_raw(v).decompress_dynamic(
+							-1, FileAccess.COMPRESSION_GZIP
+						)
+						if dws.is_empty() and v:
+							warn("BITED_WIDTHS is not a valid base64 string, ignoring")
+
 				"BITED_TABLE_CELL_SCALE":
 					if v is not int or v < 0:
 						warn("BITED_TABLE_CELL_SCALE is not a valid int >=0, ignoring")
@@ -282,12 +296,6 @@ func parse_props(line: Dictionary) -> String:
 						warn("BITED_EDITOR_GRID_SIZE is not a valid int >=0, ignoring")
 					else:
 						grid_size = v
-
-				"BITED_EDITOR_CELL_SIZE":
-					if v is not int or v < 0:
-						warn("BITED_EDITOR_CELL_SIZE is not a valid int >=0, ignoring")
-					else:
-						grid_px_size = v
 
 			if BFont.is_other_prop(line.k):
 				font.props[line.k] = v
@@ -338,20 +346,17 @@ func parse_char(line: Dictionary) -> String:
 				gen.off_y = xs[3]
 
 		"DWIDTH":
-			if notdef_gen("DWIDTH") and "BITED_W" not in gen_defs:
-				var xs := arr_int(1, line.v)
-				if xs.is_empty() or xs[0] < 0:
-					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
-				else:
-					gen.dwidth = xs[0]
+			if notdef_gen("DWIDTH"):
+				var d := true
+				if (i_glyph + 7) >> 3 < dws.size():
+					d = dws[i_glyph >> 3] >> (i_glyph & 7)
 
-		"BITED_W":
-			if notdef_gen("BITED_W"):
-				var xs := arr_int(1, line.v)
-				if xs.is_empty():
-					warn("BITED_W is not a valid int, skipping")
-				else:
-					gen.dwidth = xs[0]
+				if d:
+					var xs := arr_int(1, line.v)
+					if xs.is_empty() or xs[0] < 0:
+						warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
+					else:
+						gen.dwidth = xs[0]
 
 		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass
@@ -374,6 +379,7 @@ func parse_char_ignore(line: Dictionary) -> String:
 	match line.k:
 		"ENDCHAR":
 			mode = Mode.X
+			clrchar()
 	return ""
 
 
@@ -404,6 +410,7 @@ func clrchar() -> void:
 	gen = {}
 	gen_defs.clear()
 	gen_bm.clear()
+	i_glyph += 1
 
 
 ## Tokenizes/pre-parses a line into a key-value pair denoted by keys

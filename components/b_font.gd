@@ -114,17 +114,18 @@ func load_font() -> void:
 
 
 func to_bdf() -> String:
+	var fb := fbbx()
 	var res := PackedStringArray(
 		[
 			"STARTFONT 2.1",
 			"FONT %s" % xlfd(),
 			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-			"FONTBOUNDINGBOX %d %d %d %d" % fbbx().values(),
+			"FONTBOUNDINGBOX %d %d %d %d" % fb.values(),
 		]
 	)
 
 	res.append_array(to_bdf_properties())
-	res.append_array(to_bdf_chars())
+	res.append_array(to_bdf_chars(fb))
 
 	res.push_back("ENDFONT")
 	return "\n".join(res)
@@ -151,6 +152,7 @@ func to_bdf_properties() -> PackedStringArray:
 		"CAP_HEIGHT %d" % cap_h,
 		"X_HEIGHT %d" % x_h,
 		"BITED_DWIDTH %d" % dwidth,
+		"BITED_WIDTHS %s" % JSON.stringify(width64()),
 		"BITED_TABLE_CELL_SCALE %d" % StyleVars.thumb_px_size,
 		"BITED_EDITOR_GRID_SIZE %d" % StyleVars.grid_size,
 		"BITED_EDITOR_CELL_SIZE %d" % StyleVars.grid_px_size,
@@ -165,7 +167,18 @@ func to_bdf_properties() -> PackedStringArray:
 	return res
 
 
-func to_bdf_chars() -> PackedStringArray:
+func width64() -> String:
+	var res := PackedByteArray()
+	var qs := StateVars.db_saves.select_rows("font_" + id, "", ["dwidth != -1 as w"])
+	res.resize((qs.size() + 7) >> 3)
+	var i := 0
+	for q in qs:
+		res[i >> 3] |= q.w << (i & 7)
+		i += 1
+	return Marshalls.raw_to_base64(res.compress(FileAccess.COMPRESSION_GZIP))
+
+
+func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 	var res := PackedStringArray()
 
 	(
@@ -194,10 +207,9 @@ func to_bdf_chars() -> PackedStringArray:
 				[
 					"STARTCHAR %s%s" % ["U+" if q.code >= 0 else "", q.name],
 					"ENCODING %d" % q.code,
-					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
-					"SWIDTH %d 0" % swidth(dw),
+					"SWIDTH %d 0" % swidth(fb.bb_x, dw),
 					"DWIDTH %d 0" % dw,
-					"BITED_W %d" % q.dwidth,
+					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
 					"BITMAP",
 				]
 			)
@@ -315,8 +327,8 @@ func avg_w() -> int:
 	return qs[0].avg if qs[0].avg else 0
 
 
-func swidth(dw: int) -> int:
-	return dw * 72000 / (pt_size / 10 * resolution.x)
+func swidth(max_w: int, dw: int) -> int:
+	return dw * 72000 / (resolution.x * max_w)
 
 
 func fbbx() -> Dictionary:
@@ -355,6 +367,7 @@ static func is_other_prop(k: String) -> bool:
 			"CAP_HEIGHT",
 			"X_HEIGHT",
 			"BITED_DWIDTH",
+			"BITED_WIDTHS",
 			"BITED_TABLE_CELL_SCALE",
 			"BITED_EDITOR_GRID_SIZE",
 			"BITED_EDITOR_CELL_SIZE",
