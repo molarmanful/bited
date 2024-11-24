@@ -221,19 +221,45 @@ func off_uc(off: int) -> void:
 		start_edit("%04X" % code1, code1)
 
 	else:
-		(
-			StateVars
-			. db_saves
-			. query_with_bindings(
-				"""
-				select o.name, o.code
-				from temp.full as o
-				join temp.full as i on o.row = i.row + ?
-				where i.name = ?
-				;""",
-				[off, bitmap.data_name]
-			)
-		)
+		match table.viewmode:
+			Table.Mode.GLYPHS:
+				(
+					StateVars
+					. db_saves
+					. query_with_bindings(
+						"""
+						select o.name, o.code
+						from temp.full as o
+						join temp.full as i on o.row = i.row + ?
+						where i.name = ?
+						;""",
+						[off, bitmap.data_name]
+					)
+				)
+
+			Table.Mode.PAGE:
+				(
+					StateVars
+					. db_saves
+					. query_with_bindings(
+						(
+							"""
+							select name, code
+							from temp.full
+							where code >= 0 and row %s (
+								select row + ?
+								from temp.full
+								where name = ?
+							)
+							order by row %s
+							limit 1
+							;"""
+							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+						),
+						[off, bitmap.data_name]
+					)
+				)
+
 		var qs := StateVars.db_saves.query_result
 		if qs.is_empty():
 			return
