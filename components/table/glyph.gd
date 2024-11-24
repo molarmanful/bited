@@ -39,6 +39,13 @@ var nop := false:
 			return
 		nop = x
 		set_variation()
+var edit := false:
+	set(x):
+		if edit == x:
+			return
+		printt(edit, x, data_name)
+		edit = x
+		set_variation()
 
 
 static func create(t: Table) -> Glyph:
@@ -119,8 +126,12 @@ func rclick() -> void:
 func set_variation() -> void:
 	if nop and selected:
 		theme_type_variation = "GlyphNopSel"
+	if edit and selected:
+		theme_type_variation = "GlyphEditSel"
 	elif selected:
 		theme_type_variation = "GlyphSel"
+	elif edit:
+		theme_type_variation = "GlyphEdit"
 	elif nop:
 		theme_type_variation = "GlyphNop"
 	else:

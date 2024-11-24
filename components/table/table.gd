@@ -3,6 +3,7 @@ extends PanelContainer
 
 enum Mode { RANGE, GLYPHS, PAGE }
 
+@export var editor: Editor
 @export var node_focus: PanelContainer
 @export var node_scroll: ScrollContainer
 @export var node_inner: Container
@@ -25,6 +26,7 @@ enum Mode { RANGE, GLYPHS, PAGE }
 @export var btn_paste: Button
 @export var btn_del: Button
 
+var grid: Grid
 var names := {}
 var thumbs := {}
 var debounced := false
@@ -36,6 +38,7 @@ var end := 0
 
 
 func _ready() -> void:
+	grid = editor.grid
 	sel.table = self
 	(
 		StateVars
@@ -227,6 +230,7 @@ func gen_glyphs() -> void:
 	for c in range(i0, i1):
 		var g := node_glyphs.get_child(i)
 		g.nop = false
+		g.edit = grid.bitmap.data_name and g.data_name == grid.bitmap.data_name
 		if viewmode == Mode.RANGE:
 			c += start
 			g.data_code = c

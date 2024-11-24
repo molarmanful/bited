@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=93 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=95 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="1_stftx"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
@@ -317,6 +317,12 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.639216, 0.639216, 0.639216, 1)
 expand_margin_left = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxnoq"]
+bg_color = Color(0.439216, 0.101961, 0.458824, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnmwt"]
+bg_color = Color(0.356863, 0.129412, 0.713726, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxnl0"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
@@ -845,6 +851,10 @@ Charsets/base_type = &"Tree"
 Charsets/styles/focus = SubResource("StyleBoxFlat_ldwsr")
 Double/base_type = &"Label"
 Double/font_sizes/font_size = 32
+GlyphEdit/base_type = &"PanelContainer"
+GlyphEdit/styles/panel = SubResource("StyleBoxFlat_xxnoq")
+GlyphEditSel/base_type = &"PanelContainer"
+GlyphEditSel/styles/panel = SubResource("StyleBoxFlat_gnmwt")
 GlyphNop/base_type = &"PanelContainer"
 GlyphNop/styles/panel = SubResource("StyleBoxFlat_oxnl0")
 GlyphNopSel/base_type = &"PanelContainer"

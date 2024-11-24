@@ -118,6 +118,7 @@ func start_edit(data_name: String, data_code: int) -> void:
 	bitmap.dwidth = -1
 	bitmap.clear_cells()
 	bitmap.save(false)
+	table.to_update = true
 	refresh()
 
 
