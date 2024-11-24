@@ -5,7 +5,7 @@ extends RefCounted
 var id := "new_font"
 var foundry := "bited"
 var family := "new font"
-var weight := "Medium"
+var weight := "Regular"
 var slant := "R"
 var setwidth := "Normal"
 var add_style := ""
