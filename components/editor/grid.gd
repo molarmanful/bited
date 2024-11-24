@@ -190,7 +190,6 @@ func off_glyph(off: int) -> void:
 			)
 		)
 		var qs := StateVars.db_saves.query_result
-		print(qs)
 		if qs.is_empty():
 			return
 		start_edit(qs[0].name, qs[0].code)
