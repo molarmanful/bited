@@ -195,8 +195,7 @@ func copy() -> void:
 							row_number() over (order by b.row) + (select count(*) from temp.clip) - 1,
 							a.name, a.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 						from font_%s as a
-						join temp.full as b
-						on a.name = b.name
+						join temp.full as b on a.name = b.name
 						where b.row between ? and ?
 						;"""
 						% StateVars.font.id
@@ -291,8 +290,7 @@ func paste() -> void:
 				with cyc as (
 					select b.name, b.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 					from temp.sub as b
-					join temp.clip as a
-					on b.row %% (select count(*) from temp.clip) = a.row
+					join temp.clip as a on b.row %% (select count(*) from temp.clip) = a.row
 				)
 				insert or replace into font_%s (name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
 				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img

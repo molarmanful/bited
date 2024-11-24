@@ -163,9 +163,25 @@ func update_cells() -> void:
 
 func off_glyph(off: int) -> void:
 	if table.viewmode == Table.Mode.RANGE:
-		# TODO
-		pass
-
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				(
+					"""
+					select name, code
+					from font_{0}
+					where (code between ? and ?) and (code {1} ?)
+					order by code {2}, name {2}
+					limit 1
+					;"""
+					. format(
+						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					)
+				),
+				[table.start, table.end, bitmap.data_code + off]
+			)
+		)
 	else:
 		(
 			StateVars
@@ -189,10 +205,11 @@ func off_glyph(off: int) -> void:
 				[off, bitmap.data_name]
 			)
 		)
-		var qs := StateVars.db_saves.query_result
-		if qs.is_empty():
-			return
-		start_edit(qs[0].name, qs[0].code)
+
+	var qs := StateVars.db_saves.query_result
+	if qs.is_empty():
+		return
+	start_edit(qs[0].name, qs[0].code)
 
 
 func off_uc(off: int) -> void:
