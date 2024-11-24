@@ -75,10 +75,11 @@ theme_type_variation = &"BordR"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" node_paths=PackedStringArray("node_info", "node_info_text") instance=ExtResource("2_q0u5u")]
+[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" node_paths=PackedStringArray("table", "node_info", "node_info_text") instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+table = NodePath("../../../MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
 node_info = NodePath("../../EditorInfo")
 node_info_text = NodePath("../../EditorInfo/PanelContainer/MarginContainer/InfoText")
 metadata/_edit_lock_ = true

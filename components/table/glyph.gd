@@ -106,7 +106,7 @@ func lclick() -> void:
 		return
 
 	if not nop and selected and sel.is_alone():
-		StateVars.edit.emit(self)
+		StateVars.edit.emit(self.data_name, self.data_code)
 		return
 
 	sel.select(self)

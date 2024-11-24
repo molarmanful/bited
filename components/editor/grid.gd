@@ -16,6 +16,10 @@ extends PanelContainer
 @export var cmode_group: ButtonGroup
 
 @export_group("Buttons")
+@export var btn_prev_glyph: Button
+@export var btn_next_glyph: Button
+@export var btn_prev_uc: Button
+@export var btn_next_uc: Button
 @export var btn_undo: Button
 @export var btn_redo: Button
 @export var btn_flip_x: Button
@@ -46,6 +50,7 @@ var pressed := false
 var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
 
+var table: Table
 var toolman := Tool.new(self)
 var tool_sel := "pen":
 	set(t):
@@ -56,6 +61,7 @@ var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
+	table = editor.table
 	refresh()
 
 	StateVars.settings.connect(refresh)
@@ -71,6 +77,10 @@ func _ready() -> void:
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
+	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
+	btn_next_glyph.pressed.connect(off_glyph.bind(1))
+	btn_prev_uc.pressed.connect(off_uc.bind(-1))
+	btn_next_uc.pressed.connect(off_uc.bind(1))
 	btn_undo.pressed.connect(undoman.undo)
 	btn_redo.pressed.connect(undoman.redo)
 	btn_flip_x.pressed.connect(flip_x)
@@ -101,10 +111,10 @@ func oninput(e: InputEvent) -> void:
 	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
 
 
-func start_edit(g: Glyph) -> void:
+func start_edit(data_name: String, data_code: int) -> void:
 	undoman.clear_history()
-	bitmap.data_code = g.data_code
-	bitmap.data_name = g.data_name
+	bitmap.data_name = data_name
+	bitmap.data_code = data_code
 	bitmap.dwidth = -1
 	bitmap.clear_cells()
 	bitmap.save(false)
@@ -149,6 +159,68 @@ func update_cells() -> void:
 	to_update_cells = false
 
 	tex_cells.update(cells)
+
+
+func off_glyph(off: int) -> void:
+	if table.viewmode == Table.Mode.RANGE:
+		# TODO
+		pass
+
+	else:
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				(
+					"""
+					select o.name, o.code
+					from temp.full as o
+					join font_%s as i on o.name = i.name
+					where o.row %s (
+						select row + ?
+						from temp.full
+						where name = ?
+					)
+					order by row %s
+					limit 1
+					;"""
+					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+				),
+				[off, bitmap.data_name]
+			)
+		)
+		var qs := StateVars.db_saves.query_result
+		print(qs)
+		if qs.is_empty():
+			return
+		start_edit(qs[0].name, qs[0].code)
+
+
+func off_uc(off: int) -> void:
+	if table.viewmode == Table.Mode.RANGE:
+		var code1 := bitmap.data_code + off
+		if code1 < table.start or code1 > table.end:
+			return
+		start_edit("%04X" % code1, code1)
+
+	else:
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				"""
+				select o.name, o.code
+				from temp.full as o
+				join temp.full as i on o.row = i.row + ?
+				where i.name = ?
+				;""",
+				[off, bitmap.data_name]
+			)
+		)
+		var qs := StateVars.db_saves.query_result
+		if qs.is_empty():
+			return
+		start_edit(qs[0].name, qs[0].code)
 
 
 func act_cells(prev: Image) -> void:

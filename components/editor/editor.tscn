@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=58 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -10,6 +10,30 @@
 [ext_resource type="Texture2D" uid="uid://qef2nehtarn1" path="res://assets/cmode/f.svg" id="7_ukwbh"]
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
 [ext_resource type="Script" path="res://components/editor/grid.gd" id="9_8b0ie"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_2r100"]
+action = &"bited_prev_uc"
+
+[sub_resource type="Shortcut" id="Shortcut_vypbe"]
+events = [SubResource("InputEventAction_2r100")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_bu2ic"]
+action = &"bited_prev_glyph"
+
+[sub_resource type="Shortcut" id="Shortcut_ct5mg"]
+events = [SubResource("InputEventAction_bu2ic")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_weubm"]
+action = &"bited_next_glyph"
+
+[sub_resource type="Shortcut" id="Shortcut_7okrq"]
+events = [SubResource("InputEventAction_weubm")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_k0xwd"]
+action = &"bited_next_uc"
+
+[sub_resource type="Shortcut" id="Shortcut_r1kjj"]
+events = [SubResource("InputEventAction_k0xwd")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_osuyi"]
 action = &"bited_move"
@@ -152,16 +176,72 @@ layout_mode = 2
 
 [node name="2" type="HBoxContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="prev_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "prev in table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_vypbe")
+text = "<T"
+
+[node name="prev_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "prev defined glyph in table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ct5mg")
+text = "<G"
+
+[node name="Spacer" type="Control" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
-[node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2"]
+[node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2/HBoxContainer"]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 min_value = -1.0
 rounded = true
 allow_greater = true
 prefix = "w:"
+
+[node name="Spacer2" type="Control" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="next_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "next defined glyph in table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_7okrq")
+text = "G>"
+
+[node name="next_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "next in table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_r1kjj")
+text = "T>"
 
 [node name="3" type="Control" parent="CenterContainer/GridContainer"]
 custom_minimum_size = Vector2(24, 0)
@@ -290,7 +370,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
 layout_mode = 2
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
@@ -300,9 +380,13 @@ node_cells = NodePath("Cells")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 node_placeholder = NodePath("../../../Placeholder")
-input_dwidth = NodePath("../../2/dwidth")
+input_dwidth = NodePath("../../2/HBoxContainer/dwidth")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
+btn_prev_glyph = NodePath("../../2/HBoxContainer2/prev_glyph")
+btn_next_glyph = NodePath("../../2/HBoxContainer3/next_glyph")
+btn_prev_uc = NodePath("../../2/HBoxContainer2/prev_uc")
+btn_next_uc = NodePath("../../2/HBoxContainer3/next_uc")
 btn_undo = NodePath("../../8/undo")
 btn_redo = NodePath("../../8/redo")
 btn_flip_x = NodePath("../../8/flip_x")

@@ -4,7 +4,7 @@ extends Node
 ## Emits when settings are saved.
 signal settings
 ## Emits when a glyph is sent to the editor.
-signal edit(glyph: Glyph)
+signal edit(data_name: String, data_code: int)
 ## Emits when an action requires the editor to refresh (e.g. glyph deletion hiding grid).
 signal edit_refresh
 ## Emits when an action requires the table to refresh (e.g. file loading).
