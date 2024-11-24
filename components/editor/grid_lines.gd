@@ -1,6 +1,34 @@
+class_name GridLines
 extends Node2D
 
 @export var grid: Grid
+
+var lines_h := {
+	origin = 0,
+	asc = 0,
+	cap = 0,
+	x = 0,
+	desc = 0,
+}
+
+var lines_v := {
+	origin = 0,
+	w = 0,
+}
+
+var names := {
+	origin = "origin",
+	asc = "ascender",
+	cap = "cap height",
+	x = "x-height",
+	desc = "descender",
+	w = "dwidth",
+}
+
+
+func _input(e: InputEvent) -> void:
+	if e is InputEventMouseMotion:
+		print(get_local_mouse_position())
 
 
 func _draw() -> void:
@@ -18,7 +46,7 @@ func _draw() -> void:
 
 	draw_multiline(res, grid.get_theme_color("bord"))
 
-	var lines_h := {
+	lines_h = {
 		origin = 0,
 		asc = StateVars.font.asc,
 		cap = StateVars.font.cap_h,
@@ -30,7 +58,7 @@ func _draw() -> void:
 		var y: int = (origin.y - lines_h[k]) * w_cell
 		draw_line(Vector2i(0, y), Vector2i(w_grid, y), grid.get_theme_color(k))
 
-	var lines_v := {
+	lines_v = {
 		origin = 0,
 		w = grid.bitmap.dwidth_calc,
 	}

@@ -2,7 +2,7 @@
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
-[ext_resource type="Script" path="res://components/editor/gridlines.gd" id="2_jsp0s"]
+[ext_resource type="Script" path="res://components/editor/grid_lines.gd" id="2_jsp0s"]
 [ext_resource type="Texture2D" uid="uid://bkq4iy7vqadw3" path="res://assets/cmode/inv.svg" id="2_od75m"]
 [ext_resource type="ButtonGroup" uid="uid://c6kxtnnl4kyma" path="res://components/editor/cmode_group.tres" id="2_qbssp"]
 [ext_resource type="Texture2D" uid="uid://3q48hfg0mxcv" path="res://assets/cmode/cell.svg" id="3_gnkst"]
@@ -210,12 +210,12 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 8
 
 [node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2/HBoxContainer"]
-custom_minimum_size = Vector2(64, 0)
+custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 min_value = -1.0
 rounded = true
 allow_greater = true
-prefix = "w:"
+prefix = "dwidth:"
 
 [node name="Spacer2" type="Control" parent="CenterContainer/GridContainer/2"]
 layout_mode = 2

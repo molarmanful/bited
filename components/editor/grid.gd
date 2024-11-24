@@ -5,7 +5,7 @@ extends PanelContainer
 @export var node_wrapper: Container
 @export var node_cells: TextureRect
 @export var node_view_lines: SubViewport
-@export var node_lines: Node2D
+@export var node_lines: GridLines
 @export var node_placeholder: Label
 
 @export_group("Inputs")
@@ -70,7 +70,6 @@ func _ready() -> void:
 	StyleVars.set_grid.connect(refresh.bind(true))
 
 	theme_changed.connect(update_cells)
-	gui_input.connect(oninput)
 
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
@@ -98,7 +97,10 @@ func _process(_delta: float) -> void:
 	update_cells()
 
 
-func oninput(e: InputEvent) -> void:
+func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseMotion:
+		tt_line()
+		return
 	if e is not InputEventMouseButton:
 		return
 	if (
@@ -148,6 +150,7 @@ func refresh(hard := false) -> void:
 
 
 func update_grid() -> void:
+	tooltip_text = ""
 	node_cells.custom_minimum_size = size_grid
 	node_cells.self_modulate = get_theme_color("fg")
 	node_view_lines.size = size_grid
@@ -160,6 +163,43 @@ func update_cells() -> void:
 	to_update_cells = false
 
 	tex_cells.update(cells)
+
+
+func tt_line() -> void:
+	tooltip_text = ""
+	var pos := get_local_mouse_position()
+	var origin := bitmap.origin
+	var e := w_cell / 2
+
+	for k in node_lines.lines_h:
+		var v: int = node_lines.lines_h[k]
+		var n := origin.y - v
+		var nw := n * w_cell
+		var p := pos.y
+		if nw - e <= p and p <= nw + e:
+			tooltip_text += (
+				"%s%s: %d\n"
+				% [
+					node_lines.names[k],
+					" x" if k == "origin" else "",
+					v,
+				]
+			)
+
+	for k in node_lines.lines_v:
+		var v: int = node_lines.lines_v[k]
+		var n := origin.x + v
+		var nw := n * w_cell
+		var p := pos.x
+		if nw - e <= p and p <= nw + e:
+			tooltip_text += (
+				"%s%s: %d\n"
+				% [
+					node_lines.names[k],
+					" y" if k == "origin" else "",
+					v,
+				]
+			)
 
 
 func off_glyph(off: int) -> void:
