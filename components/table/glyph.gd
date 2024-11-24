@@ -43,7 +43,6 @@ var edit := false:
 	set(x):
 		if edit == x:
 			return
-		printt(edit, x, data_name)
 		edit = x
 		set_variation()
 
