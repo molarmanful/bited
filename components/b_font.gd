@@ -153,6 +153,7 @@ func to_bdf_properties() -> PackedStringArray:
 		"X_HEIGHT %d" % x_h,
 		"BITED_DWIDTH %d" % dwidth,
 		"BITED_WIDTHS %s" % JSON.stringify(width64()),
+		"BITED_TABLE_WIDTH %d" % StyleVars.table_width,
 		"BITED_TABLE_CELL_SCALE %d" % StyleVars.thumb_px_size,
 		"BITED_EDITOR_GRID_SIZE %d" % StyleVars.grid_size,
 		"BITED_EDITOR_CELL_SIZE %d" % StyleVars.grid_px_size,
@@ -288,6 +289,7 @@ func to_dict() -> Dictionary:
 		cap_h = cap_h,
 		x_h = x_h,
 		props = props,
+		table_width = StyleVars.table_width,
 		thumb_px_size = StyleVars.thumb_px_size_cor,
 		grid_size = StyleVars.grid_size_cor,
 		grid_px_size = StyleVars.grid_px_size_cor,
@@ -310,6 +312,7 @@ func from_dict(d: Dictionary) -> void:
 	cap_h = d.cap_h
 	x_h = d.x_h
 	props = d.props
+	StyleVars.table_width = d.table_width
 	StyleVars.thumb_px_size = d.thumb_px_size
 	StyleVars.grid_size = d.grid_size
 	StyleVars.grid_px_size = d.grid_px_size

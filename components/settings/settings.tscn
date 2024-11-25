@@ -1,8 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=31 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
 [ext_resource type="Script" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
+[ext_resource type="Script" path="res://components/settings/display/table_width.gd" id="3_orxr2"]
 [ext_resource type="Script" path="res://components/settings/font/family.gd" id="4_3lktb"]
 [ext_resource type="Script" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
 [ext_resource type="Script" path="res://components/settings/display/editor_grid_size.gd" id="4_nreqd"]
@@ -131,6 +132,40 @@ script = ExtResource("17_j3ewv")
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer8"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Number of columns to fit into a table row.
+
+- If this field = 0, then the table will fit columns to its container.
+- If this field > 0, then the table will keep the column count without fitting.
+- If this field < 0, then the table will fit columns up to the absolute value
+  of this field.
+
+This field is saved on a per-font basis."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+text = "table columns"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2/HBoxContainer8"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="table_cell_scale2" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2" groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+allow_greater = true
+allow_lesser = true
+suffix = "cols"
+script = ExtResource("3_orxr2")
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer2"]
 layout_mode = 2

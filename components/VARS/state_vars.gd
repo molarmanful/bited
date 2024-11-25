@@ -176,6 +176,7 @@ func rename_font(old: String, new: String) -> void:
 ## Saves [param bdfp] to the fonts database.
 func load_parsed(bdfp: BDFParser) -> void:
 	font = bdfp.font
+	StyleVars.table_width = bdfp.table_width
 	StyleVars.thumb_px_size = bdfp.thumb_px_size
 	StyleVars.grid_size = bdfp.grid_size
 	StyleVars.grid_px_size = bdfp.grid_px_size

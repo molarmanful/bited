@@ -35,7 +35,13 @@ var size_item_gap: Vector2i:
 
 var cols: int:
 	get:
-		return maxi(1, w_sizer / size_item_gap.x - 1)
+		var tw := StyleVars.table_width
+		if tw > 0:
+			return tw
+		var w := maxi(1, w_sizer / size_item_gap.x - 1)
+		if tw < 0:
+			return mini(absi(tw), w)
+		return w
 var rows: int:
 	get:
 		return ceil(length / float(cols))

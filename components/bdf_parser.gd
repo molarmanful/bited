@@ -47,6 +47,7 @@ var gen_defs := {}
 ## Hex data built per glyph.
 var gen_bm := PackedStringArray()
 
+var table_width := -16
 var thumb_px_size := 2
 var grid_size := 32
 var grid_px_size := 12
@@ -299,6 +300,12 @@ func parse_props(line: Dictionary) -> String:
 								warn("BITED_WIDTHS does not contain valid base64 string, ignoring")
 							else:
 								dws.data = {size = Vector2i(l, 1), data = bits}
+
+				"BITED_TABLE_WIDTH":
+					if v is not int:
+						warn("BITED_TABLE_WIDTH is not a valid int, ignoring")
+					else:
+						table_width = v
 
 				"BITED_TABLE_CELL_SCALE":
 					if v is not int or v < 0:

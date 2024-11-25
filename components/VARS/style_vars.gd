@@ -11,6 +11,10 @@ signal set_grid
 const ThemeDark := preload("res://components/dark.tres")
 const ThemeLight := preload("res://components/light.tres")
 
+var table_width := -16:
+	set(n):
+		table_width = n
+		StyleVars.set_thumb.emit()
 var thumb_px_size := 2:
 	set(n):
 		thumb_px_size = n
