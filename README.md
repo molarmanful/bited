@@ -1,7 +1,6 @@
 <div align="center">
-<img src="assets/icons/icon.svg" />
 
-# bited
+# ![bited](assets/icons/icon.svg)
 
 A **bit**map font **ed**itor.
 
