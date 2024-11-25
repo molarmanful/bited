@@ -30,6 +30,7 @@ var scn_start: Resource
 
 
 func _ready() -> void:
+	DisplayServer.window_set_title("bited")
 	root = get_tree().root
 	root.borderless = false
 	root.mode = Window.MODE_MAXIMIZED
@@ -52,7 +53,7 @@ func _ready() -> void:
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
 
 
-## Transitions from "start" to "all."
+## Transitions from "start" to "all".
 func start_all() -> void:
 	if not scn_all:
 		scn_all = ResourceLoader.load_threaded_get("res://components/all.tscn")
@@ -62,13 +63,17 @@ func start_all() -> void:
 func start_all_defer() -> void:
 	root.get_child(root.get_child_count() - 1).free()
 	root.add_child(scn_all.instantiate())
+	DisplayServer.window_set_title(
+		"bited - %s %s %d\u00d7%d" % [font.id, font.weight, font.bb.x, font.bb.y]
+	)
 
 
-## Transitions from "all" to "start."
+## Transitions from "all" to "start".
 func all_start() -> void:
 	if not scn_start:
 		scn_start = ResourceLoader.load_threaded_get("res://components/start/start.tscn")
 	all_start_defer.call_deferred()
+	DisplayServer.window_set_title("bited")
 
 
 func all_start_defer() -> void:
