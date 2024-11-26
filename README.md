@@ -25,7 +25,7 @@ enjoyable for the type designer. Some of these features include:
 
 bited is proudly built with:
 
-- [Godot](https://godotengine.org/)
+- [Godot](https://godotengine.org/) + [godot-ci](https://github.com/aBARICHELLO/godot-ci)
 - [SQLite](https://www.sqlite.org/) + [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
 
