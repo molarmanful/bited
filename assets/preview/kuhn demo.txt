@@ -1,22 +1,26 @@
 UTF-8 encoded sample plain-text file
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
-Markus Kuhn [ˈmaʳkʊs kuːn] <mkuhn@acm.org> — 1999-08-20
+Markus Kuhn [ˈmaʳkʊs kuːn] <http://www.cl.cam.ac.uk/~mgk25/> — 2002-07-25 CC BY
 
 
-The ASCII compatible UTF-8 encoding of ISO 10646 and Unicode
-plain-text files is defined in RFC 2279 and in ISO 10646-1 Annex R.
+The ASCII compatible UTF-8 encoding used in this plain-text file
+is defined in Unicode, ISO 10646-1, and RFC 2279.
 
 
 Using Unicode/UTF-8, you can write in emails and source code things such as
 
-Mathematics and Sciences:
+Mathematics and sciences:
 
-  ∮ E⋅da = Q,  n → ∞, ∑ f(i) = ∏ g(i), ∀x∈ℝ: ⌈x⌉ = −⌊−x⌋, α ∧ ¬β = ¬(¬α ∨ β),
-
-  ℕ ⊆ ℕ₀ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ, ⊥ < a ≠ b ≡ c ≤ d ≪ ⊤ ⇒ (A ⇔ B),
-
-  2H₂ + O₂ ⇌ 2H₂O, R = 4.7 kΩ, ⌀ 200 mm
+  ∮ E⋅da = Q,  n → ∞, ∑ f(i) = ∏ g(i),      ⎧⎡⎛┌─────┐⎞⎤⎫
+                                            ⎪⎢⎜│a²+b³ ⎟⎥⎪
+  ∀x∈ℝ: ⌈x⌉ = −⌊−x⌋, α ∧ ¬β = ¬(¬α ∨ β),    ⎪⎢⎜│───── ⎟⎥⎪
+                                            ⎪⎢⎜⎷ c₈   ⎟⎥⎪
+  ℕ ⊆ ℕ₀ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ,                   ⎨⎢⎜       ⎟⎥⎬
+                                            ⎪⎢⎜ ∞     ⎟⎥⎪
+  ⊥ < a ≠ b ≡ c ≤ d ≪ ⊤ ⇒ (⟦A⟧ ⇔ ⟪B⟫),      ⎪⎢⎜ ⎲     ⎟⎥⎪
+                                            ⎪⎢⎜ ⎳aⁱ-bⁱ⎟⎥⎪
+  2H₂ + O₂ ⇌ 2H₂O, R = 4.7 kΩ, ⌀ 200 mm     ⎩⎣⎝i=1    ⎠⎦⎭
 
 Linguistics and dictionaries:
 
@@ -46,6 +50,10 @@ Nicer typography in plain text files:
   ║   • the euro symbol: │ 14.95 € │         ║
   ║                      ╰─────────╯         ║
   ╚══════════════════════════════════════════╝
+
+Combining characters:
+
+  STARGΛ̊TE SG-1, a = v̇ = r̈, a⃑ ⊥ b⃑
 
 Greek (in Polytonic):
 
@@ -199,4 +207,5 @@ Box drawing alignment tests:                                          █
   ╠╡ ╳ ╞╣  ├╢   ╟┤  ├┼─┼─┼┤  ├╫─╂─╫┤  ┣┿╾┼╼┿┫  ┕┛┖┚     ┌┄┄┐ ╎ ┏┅┅┓ ┋ ▍ ╲╱╲╱╳╳╳
   ║│╱ ╲│║  │║   ║│  ││ │ ││  │║ ┃ ║│  ┃│ ╽ │┃  ░░▒▒▓▓██ ┊  ┆ ╎ ╏  ┇ ┋ ▎
   ║└─╥─┘║  │╚═╤═╝│  │╘═╪═╛│  │╙─╀─╜│  ┃└─╂─┘┃  ░░▒▒▓▓██ ┊  ┆ ╎ ╏  ┇ ┋ ▏
-  ╚══╩══╝  └──┴──┘  ╰──┴──╯  ╰──┴──╯  ┗━━┻━━┛           └╌╌┘ ╎ ┗╍╍┛ ┋  ▁▂▃▄▅▆▇█
+  ╚══╩══╝  └──┴──┘  ╰──┴──╯  ╰──┴──╯  ┗━━┻━━┛  ▗▄▖▛▀▜   └╌╌┘ ╎ ┗╍╍┛ ┋  ▁▂▃▄▅▆▇█
+                                               ▝▀▘▙▄▟
