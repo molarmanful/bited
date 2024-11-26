@@ -5,7 +5,6 @@
 A **bit**map font **ed**itor.
 
 ![bited dark mode](./assets/screenshots/ui-dark.png)
-![bited light mode](./assets/screenshots/ui-light.png)
 
 </div>
 
