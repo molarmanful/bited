@@ -10,7 +10,7 @@ A **bit**map font **ed**itor.
 
 ## Overview
 
-**bited** is a designer and editor for bitmap/pixel fonts, specifically for
+**bited** is a designer and editor for bitmap/pixel fonts -- specifically
 monochrome Unicode BDF fonts. It features a coterie of small yet impactful
 quality-of-life goodies that aim to make the creative process smooth and
 enjoyable for the type designer. Some of these features include:
