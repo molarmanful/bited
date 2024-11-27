@@ -8,6 +8,7 @@ plugins: [search, awesome-pages]
 extra:
   version:
     provider: mike
+    alias: true
 theme:
   name: material
   logo: assets/icon.svg
