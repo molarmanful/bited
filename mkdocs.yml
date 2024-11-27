@@ -19,6 +19,7 @@ theme:
     - navigation.instant
     - navigation.tracking
     - navigation.expand
+    - navigation.indexes
   palette:
     - media: (prefers-color-scheme)
       toggle:
