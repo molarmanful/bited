@@ -3,8 +3,6 @@ extends PanelContainer
 
 const ScnGlyph := preload("glyph.tscn")
 
-@export var virt: Virt
-@export var sel: Sel
 @export var node_code: Label
 @export var node_tex: TextureRect
 @export var btn_l: Button
@@ -100,22 +98,22 @@ func lclick() -> void:
 	table.node_focus.grab_focus()
 
 	if shift and ctrl:
-		sel.select_range_inv(self)
+		table.sel.select_range_inv(self)
 		return
 
 	if shift:
-		sel.select_range(self)
+		table.sel.select_range(self)
 		return
 
 	if ctrl:
-		sel.select_inv(self)
+		table.sel.select_inv(self)
 		return
 
-	if not nop and selected and sel.is_alone():
+	if not nop and selected and table.sel.is_alone():
 		StateVars.edit.emit(self.data_name, self.data_code)
 		return
 
-	sel.select(self)
+	table.sel.select(self)
 
 
 func rclick() -> void:

@@ -1,5 +1,5 @@
 class_name Virt
-extends Resource
+extends RefCounted
 
 signal refresh
 

@@ -1,7 +1,7 @@
 class_name Sel
-extends Resource
+extends Node
 
-var table: Table
+@export var table: Table
 
 var ranges: Array[int] = []
 var anchor := -1
@@ -81,6 +81,99 @@ func all() -> void:
 		anchor = 0
 		end = table.virt.length
 	ranges.assign(norm())
+	refresh()
+	get_sel_text()
+
+
+func filter_dwidth(dw: int) -> void:
+	StateVars.db_saves.query("begin transaction;")
+
+	StateVars.db_saves.query("drop table if exists temp.filter;")
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table temp.filter as
+				select
+					cast(null as integer) as row,
+					name
+				from font_%s
+				where 0
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
+	for i in range(0, ranges.size(), 2):
+		var a := ranges[i]
+		var b := ranges[i + 1] - 1
+		if table.viewmode == Table.Mode.RANGE:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						insert into temp.filter (row, name)
+						select code, name
+						from font_%s
+						where (code between ? and ?) and dwidth = ?
+						;"""
+						% StateVars.font.id
+					),
+					[a, b, dw]
+				)
+			)
+		else:
+			(
+				StateVars
+				. db_saves
+				. query_with_bindings(
+					(
+						"""
+						insert into temp.filter (row, name)
+						select b.row, a.name
+						from font_%s as a
+						join temp.full as b on a.name = b.name
+						where (b.row between ? and ?) and a.dwidth = ?
+						;"""
+						% StateVars.font.id
+					),
+					[a, b, dw]
+				)
+			)
+
+	StateVars.db_saves.query("commit;")
+	apply_filter()
+
+
+func apply_filter() -> void:
+	clear()
+	(
+		StateVars
+		. db_saves
+		. query(
+			"""
+			with rows as (
+				select row, row - (row_number() over (order by row)) as g
+				from temp.filter
+			)
+			select min(row) as a, max(row) + 1 as b
+			from rows
+			group by g
+			;"""
+		)
+	)
+	var qs := StateVars.db_saves.query_result
+	for q in qs:
+		ranges.push_back(q.a)
+		ranges.push_back(q.b)
+	if not ranges.is_empty():
+		anchor = ranges[0]
+	StateVars.db_saves.query("drop table if exists temp.filter;")
 	refresh()
 	get_sel_text()
 

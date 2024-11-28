@@ -1,10 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnhlhp8evbrv3"]
+[gd_scene load_steps=8 format=3 uid="uid://bnhlhp8evbrv3"]
 
 [ext_resource type="Script" path="res://components/table/table.gd" id="1_21spc"]
-[ext_resource type="Resource" uid="uid://d1o2fm0sstyq1" path="res://components/table/sel.tres" id="3_qums1"]
-[ext_resource type="Resource" uid="uid://7200vdkbo1kj" path="res://components/table/virt.tres" id="3_vj2v8"]
+[ext_resource type="Script" path="res://components/table/sel.gd" id="3_ex1o2"]
+[ext_resource type="Script" path="res://components/table/win_filter_dwidth.gd" id="4_x03ce"]
 
-[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_header", "node_subheader", "node_glyphs", "node_pad", "node_placeholder", "node_grid_panel")]
+[sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
+action = &"bited_ok"
+
+[sub_resource type="Shortcut" id="Shortcut_oml2e"]
+events = [SubResource("InputEventAction_3ub0n")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xv605"]
+action = &"bited_nvm"
+
+[sub_resource type="Shortcut" id="Shortcut_e3ld2"]
+events = [SubResource("InputEventAction_xv605")]
+
+[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_header", "node_subheader", "node_glyphs", "node_pad", "node_placeholder", "node_grid_panel", "sel", "win_fltr_dw")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,9 +30,13 @@ node_glyphs = NodePath("Inner/GridPanel/VBoxContainer/Glyphs")
 node_pad = NodePath("Inner/GridPanel/VBoxContainer/Pad")
 node_placeholder = NodePath("Inner/Placeholder")
 node_grid_panel = NodePath("Inner/GridPanel")
-virt = ExtResource("3_vj2v8")
-sel = ExtResource("3_qums1")
+sel = NodePath("Sel")
+win_fltr_dw = NodePath("FilterDWidth")
 metadata/_edit_lock_ = true
+
+[node name="Sel" type="Node" parent="." node_paths=PackedStringArray("table")]
+script = ExtResource("3_ex1o2")
+table = NodePath("..")
 
 [node name="Inner" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -82,3 +98,80 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
+
+[node name="FilterDWidth" type="Window" parent="." node_paths=PackedStringArray("table", "input", "btn_ok", "btn_cancel")]
+auto_translate_mode = 1
+title = "filter selection by dwidth"
+initial_position = 2
+size = Vector2i(300, 113)
+visible = false
+transient = true
+script = ExtResource("4_x03ce")
+table = NodePath("..")
+input = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/SpinBox")
+btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
+
+[node name="PanelContainer" type="PanelContainer" parent="FilterDWidth"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="FilterDWidth/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Body" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Body"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "dwidth"
+
+[node name="SpinBox" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = -1.0
+value = -1.0
+rounded = true
+allow_greater = true
+
+[node name="Footer" type="PanelContainer" parent="FilterDWidth/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_oml2e")
+text = "filter"
+
+[node name="cancel" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_e3ld2")
+text = "cancel"

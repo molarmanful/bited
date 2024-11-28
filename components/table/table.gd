@@ -15,17 +15,19 @@ enum Mode { RANGE, GLYPHS, PAGE }
 @export var node_info_text: Label
 @export var node_placeholder: Container
 @export var node_grid_panel: Container
-@export var virt: Virt
 @export var sel: Sel
+@export var win_fltr_dw: WinFilterDWidth
 
 @export_group("Buttons")
 @export var btn_all: Button
 @export var btn_clr: Button
+@export var btn_fltr_dw: Button
 @export var btn_cut: Button
 @export var btn_copy: Button
 @export var btn_paste: Button
 @export var btn_del: Button
 
+var virt := Virt.new()
 var grid: Grid
 var names := {}
 var thumbs := {}
@@ -61,6 +63,7 @@ func _ready() -> void:
 
 	btn_all.pressed.connect(sel.all)
 	btn_clr.pressed.connect(sel.clear)
+	btn_fltr_dw.pressed.connect(win_fltr_dw.open)
 	btn_cut.pressed.connect(sel.cut)
 	btn_copy.pressed.connect(sel.copy)
 	btn_paste.pressed.connect(sel.paste)
