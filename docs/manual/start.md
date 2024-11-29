@@ -18,20 +18,20 @@ keybind ++1++) will bring up the following dialog:
 
 ![bited dialog for creating a new font](assets/new.png){ loading=lazy }
 
-`font id`
+???+ question "font id"
 
-:   A unique "file name" for your font. May only contain `a-z`, `0-9`, and `_`.
+    A unique "file name" for your font. May only contain `a-z`, `0-9`, and `_`.
     In the simplest cases, this may just be the name of your font. If you're
-    making multiple variations on one font, the ID may also contain other
-    pieces of info to distinguish it (e.g. `helvetica_bold` vs.
+    making multiple variations on one font family, the ID may also contain
+    other pieces of info to distinguish it (e.g. `helvetica_bold` vs.
     `helvetica_regular`).
 
     For now, let's set this to `unicorn`. If you don't like this name (highly
     unlikely), you can always change it later.
 
-`preset`
+???+ question "preset"
 
-:   Some optional starting templates for your font's metrics: height/width,
+    Some optional starting templates for your font's metrics: height/width,
     ascender/descender, cap-height, x-height.
 
     Feel free to pick one or leave blank.
