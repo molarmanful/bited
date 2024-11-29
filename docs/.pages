@@ -1,4 +1,7 @@
 nav:
-  - index.md
-  - install.md
+  - Home:
+    - index.md
+    - why.md
+    - credits.md
+  - download
   - User Manual: manual

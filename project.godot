@@ -37,6 +37,8 @@ file_logging/enable_file_logging=true
 
 [display]
 
+window/size/viewport_width=1200
+window/size/viewport_height=675
 window/size/borderless=true
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
@@ -213,7 +215,7 @@ bited_prev_uc={
 }
 bited_filter_dwidth={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":true,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":true,"pressed":false,"keycode":51,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

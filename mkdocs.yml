@@ -1,25 +1,42 @@
 ---
-site_name: bited docs
+site_name: bited
 site_url: https://benpa.ng/bited
 repo_url: https://github.com/molarmanful/bited
 repo_name: molarmanful/bited
-edit_uri: edit/master/docs/
-plugins: [search, awesome-pages]
+copyright: Copyright &copy; 2024 Benjamin Pang
+plugins:
+  - search
+  - awesome-pages
+  - glightbox
 extra:
   version:
     provider: mike
     alias: true
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.keys
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - md_in_html
 theme:
   name: material
   logo: assets/icon.svg
   favicon: assets/favicon.ico
   features:
-    - content.action.view
-    - content.action.edit
+    - content.code.copy
     - navigation.instant
     - navigation.tracking
+    - navigation.tabs
     - navigation.expand
+    - navigation.sections
     - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
   palette:
     - media: (prefers-color-scheme)
       toggle:

@@ -117,7 +117,7 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - name: Install Deps
-        run: pip install mkdocs-material mkdocs-awesome-pages-plugin mike
+        run: pip install mkdocs-material mkdocs-awesome-pages-plugin mkdocs-glightbox mike
       - name: Bump Version
         run: |
           mike deploy --push --update-aliases "$GITHUB_REF_NAME" latest

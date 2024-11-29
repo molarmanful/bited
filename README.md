@@ -4,24 +4,27 @@
 
 A **bit**map font **ed**itor.
 
-![bited dark mode](./assets/screenshots/ui-dark.png)
+[![Made with Godot](https://img.shields.io/badge/Made%20with-Godot-478CBF?style=for-the-badge&logo=godot%20engine&logoColor=white)](https://godotengine.org)
+
+![bited UI](docs/assets/ui.png)
 
 </div>
 
 ## Overview
 
-**bited** is an open-source designer and editor for bitmap/pixel fonts --
-specifically monochrome Unicode BDF fonts. It features a coterie of small yet
-impactful quality-of-life goodies that aim to make the creative process smooth
-and enjoyable for the type designer. Some of these features include:
+**bited** (pronounced "bit" + "ed") is an open-source designer and editor for
+bitmap/pixel fonts -- specifically monochrome Unicode BDF fonts. It features a
+coterie of small yet impactful quality-of-life goodies that aim to make the
+creative process smooth and enjoyable for the type designer. Some of these
+features include:
 
 - Simple, composable tools for drawing and manipulating glyphs.
 - Font preview with text presets for testing fonts.
 - Custom UI font made with bited.
 - Light and dark mode.
 
-bited is still undergoing heavy development; any bugs should be reported to
-[Issues](https://github.com/molarmanful/bited/issues).
+> ⚠ bited is still under heavy development; any bugs should be reported to
+> [Issues](https://github.com/molarmanful/bited/issues).
 
 ## Credits
 
@@ -30,7 +33,7 @@ bited is proudly built with:
 - [Godot](https://godotengine.org/) + [godot-ci](https://github.com/aBARICHELLO/godot-ci)
 - [SQLite](https://www.sqlite.org/) + [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
-- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) + [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
+- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) + [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin) + [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
 
 Development of bited would not have been possible without the following
 inspirations and resources:

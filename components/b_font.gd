@@ -128,6 +128,7 @@ func to_bdf() -> String:
 	res.append_array(to_bdf_chars(fb))
 
 	res.push_back("ENDFONT")
+	res.push_back("")
 	return "\n".join(res)
 
 
