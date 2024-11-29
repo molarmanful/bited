@@ -2,7 +2,7 @@
 name: release
 on:
   push:
-    tags: ["*"]
+    tags: ['*']
 env:
   GODOT_VERSION: 4.3
   PROJECT_PATH: .
@@ -117,10 +117,8 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - name: Install Deps
-        run: pip install mkdocs-material mkdocs-awesome-pages-plugin mkdocs-glightbox mike
-      - name: Bump Version
-        run: |
+        run: pip install -r requirements.txt
+      - name: Deploy
+        run: |-
           mike deploy --push --update-aliases "$GITHUB_REF_NAME" latest
           mike set-default --push latest
-      - name: Deploy
-        run: mkdocs gh-deploy --force
