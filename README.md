@@ -30,10 +30,14 @@ features include:
 
 bited is proudly built with:
 
-- [Godot](https://godotengine.org/) + [godot-ci](https://github.com/aBARICHELLO/godot-ci)
-- [SQLite](https://www.sqlite.org/) + [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
+- [Godot](https://godotengine.org/)
+- [SQLite](https://www.sqlite.org/)
+- [godot-ci](https://github.com/aBARICHELLO/godot-ci)
+- [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
-- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) + [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin) + [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
+- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
+- [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
+- [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
 
 Development of bited would not have been possible without the following
 inspirations and resources:

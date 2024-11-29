@@ -5,4 +5,5 @@ you will hopefully be well on your way to making your very own fonts!
 
 !!! warning "Before You Start"
 
-    Make sure you've [:material-download:downloaded bited](../download/index.md).
+    Make sure you've [:material-download:downloaded
+    bited](../download/index.md).

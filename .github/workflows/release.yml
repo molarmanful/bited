@@ -120,5 +120,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Deploy
         run: |-
-          mike deploy --push --update-aliases "$GITHUB_REF_NAME" latest
-          mike set-default --push latest
+          alias=$(case $GITHUB_REF_NAME in
+            *-*) "prerelease";;
+            *) "latest";;
+          esac)
+          mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
