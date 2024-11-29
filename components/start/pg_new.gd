@@ -58,6 +58,8 @@ func start() -> void:
 			StateVars.font = BFont.cozette()
 		3:
 			StateVars.font = BFont.unifontex()
+		_:
+			StateVars.font = BFont.new()
 
 	StateVars.font.id = input_id.text
 	StateVars.font.init_font()
