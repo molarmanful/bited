@@ -23,7 +23,8 @@ features include:
 - Custom UI font made with bited.
 - Light and dark mode.
 
-> ⚠ bited is still under heavy development; any bugs should be reported to
+> [!warning]
+> bited is still under heavy development; any bugs should be reported to
 > [Issues](https://github.com/molarmanful/bited/issues).
 
 ## Credits
