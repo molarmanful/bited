@@ -13,8 +13,8 @@ Let's see what each of these buttons do.
 
 ## New
 
-This is what you press when you want to create a new font from scratch.
-Pressing "new" (or its keybind ++1++) will bring up the following dialog:
+Whenever you want to create a new font from scratch, pressing "new" (or its
+keybind ++1++) will bring up the following dialog:
 
 ![bited dialog for creating a new font](assets/new.png){ loading=lazy }
 
@@ -46,9 +46,9 @@ it and see what happens.
 
 ![bited editor after creating a new font](assets/new-ed.png){ loading=lazy }
 
-We'll revisit this editor screen later. For now, take a look at the bottom of
-the screen. There should be a centered row of buttons. Click the button with a
-house (or press ++ctrl+h++) to go back to the start menu.
+We'll revisit this editor screen later. For now, have a look at the navbar at
+bottom of the screen. There should be a centered row of buttons. Click the
+button with a house (or press ++ctrl+h++) to go back to the start menu.
 
 ## Load
 
