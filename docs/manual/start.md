@@ -52,7 +52,14 @@ button with a house (or press ++ctrl+h++) to go back to the start menu.
 
 ## Load
 
+Let's see how to load existing fonts from the font database. Pressing "load"
+(++2++) will bring up the following dialog:
+
 ![bited dialog for loading fonts](assets/load.png){ loading=lazy }
+
+Fonts you add over time will appear here. You can also delete or rename fonts
+from this dialog. Feel free to explore around; just return to the start menu
+when you're done.
 
 ## Import
 
