@@ -13,8 +13,8 @@ Let's see what each of these buttons do.
 
 ## New
 
-Whenever you want to create a new font from scratch, pressing "new" (or its
-keybind ++1++) will bring up the following dialog:
+Let's see how to create a new font from scratch. Pressing "new" (or its keybind
+++1++) will bring up the following dialog:
 
 ![bited dialog for creating a new font](assets/new.png){ loading=lazy }
 
@@ -34,7 +34,7 @@ keybind ++1++) will bring up the following dialog:
     Some optional starting templates for your font's metrics: height/width,
     ascender/descender, cap-height, x-height.
 
-    Feel free to pick one or leave blank.
+    Feel free to pick one or leave empty.
 
 Once you've entered in a `font id`, a "start" button should appear. Let's press
 it and see what happens.
@@ -57,10 +57,48 @@ Let's see how to load existing fonts from the font database. Pressing "load"
 
 ![bited dialog for loading fonts](assets/load.png){ loading=lazy }
 
-Fonts you add over time will appear here. You can also delete or rename fonts
-from this dialog. Feel free to explore around; just return to the start menu
-when you're done.
+Fonts you create or add will appear here, and can be loaded with the dialog's
+"load" button or by double-clicking the entry. You can also delete or rename
+fonts from this dialog.
+
+Feel free to explore around; just return to the start menu when you're done.
 
 ## Import
 
+!!! warning "Before You Continue"
+
+    [:material-download:Download](https://github.com/molarmanful/bited/blob/master/assets/bited.bdf)
+    the BDF for bited's UI font.
+
+Let's see how to import BDFs into bited. Pressing "import" (++3++) will bring
+up a file dialog. Locate the previously downloaded BDF and open it. After bited
+finishes parsing the BDF, you should see the following dialog:
+
 ![bited dialog for importing a font from BDF](assets/import.png){ loading=lazy }
+
+???+ question "font id"
+
+    Let's set this to `bited`.
+
+???+ question "default width"
+
+    As the name suggests, a font-wide default glyph width. bited will attempt
+    to automatically derive this when parsing the BDF; otherwise, this field
+    will default to 0. This can be changed later.
+
+    For now, let's leave this at 6.
+
+When you're ready, press "import" and you'll see the editor once more:
+
+![bited editor after importing a BDF](assets/import-ed.png){ loading=lazy }
+
+We're now ready to learn how to use the editor.
+
+!!! tip
+
+    Downloading, importing, and inspecting BDFs in bited is a great way to
+    learn not only about how bited works, but also about the many conventions
+    and choices that bitmap font designers have made.
+
+    [Here](https://github.com/Tecate/bitmap-fonts) is a great repo for sourcing
+    these fonts.
