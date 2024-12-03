@@ -30,3 +30,8 @@ The Main Screen consists of several panels (from left to right, top to bottom):
     A nested list of character sets ("charsets") and encodings. You can switch
     between entries here to find or focus on groups of glyphs that you wish to
     edit.
+
+???+ question "Navbar"
+
+    A bar at the bottom of the Main Screen. Holds buttons for font-wide
+    operations (e.g. saving and loading) and settings.
