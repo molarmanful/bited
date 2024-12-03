@@ -1,6 +1,6 @@
 # Start Menu
 
-When you first open bited, you'll see this screen:
+When you first open bited, you'll see this Start Menu:
 
 ![bited start menu](assets/start.png){ loading=lazy }
 
@@ -44,11 +44,11 @@ it and see what happens.
     For all dialogs, you can trigger "OK"-type buttons with ++ctrl+enter++, and
     "cancel"-type buttons with ++esc++.
 
-![bited editor after creating a new font](assets/new-ed.png){ loading=lazy }
+![bited main screen after creating a new font](assets/new-ed.png){ loading=lazy }
 
-We'll revisit this editor screen later. For now, have a look at the navbar at
-bottom of the screen. There should be a centered row of buttons. Click the
-button with a house (or press ++ctrl+h++) to go back to the start menu.
+We'll revisit this Main Screen later. For now, have a look at the navbar at
+bottom of the window. There should be a centered row of buttons. Click the
+button with a house (or press ++ctrl+h++) to go back to the Start Menu.
 
 ## Load
 
@@ -61,7 +61,7 @@ Fonts you create or add will appear here, and can be loaded with the dialog's
 "load" button or by double-clicking the entry. You can also delete or rename
 fonts from this dialog.
 
-Feel free to explore around; just return to the start menu when you're done.
+Feel free to explore around; just return to the Start Menu when you're done.
 
 ## Import
 
@@ -88,11 +88,11 @@ finishes parsing the BDF, you should see the following dialog:
 
     For now, let's leave this at 6.
 
-When you're ready, press "import" and you'll see the editor once more:
+When you're ready, press "import" and you'll see the Main Screen once more:
 
-![bited editor after importing a BDF](assets/import-ed.png){ loading=lazy }
+![bited main screen after importing a BDF](assets/import-ed.png){ loading=lazy }
 
-We're now ready to learn how to use the editor.
+We're now ready to move onto the next section.
 
 !!! tip
 
@@ -100,5 +100,6 @@ We're now ready to learn how to use the editor.
     learn not only about how bited works, but also about the many conventions
     and choices that bitmap font designers have made.
 
-    [Here](https://github.com/Tecate/bitmap-fonts) is a great repo for sourcing
-    these fonts.
+    There exist many wonderful sources of BDFs just waiting to be found.
+    [Here](https://github.com/Tecate/bitmap-fonts) is one such repo for these
+    fonts.
