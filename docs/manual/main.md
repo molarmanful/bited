@@ -4,7 +4,7 @@ From the Start Menu, let's load the `bited` font we imported previously.
 
 ??? tip "Hint"
 
-    To load existing fonts from the start screen, press the "load" button
+    To load existing fonts from the Start Menu, press the "load" button
     (++2++).
 
 ![bited main screen with bited font loaded](assets/import-ed.png){ loading=lazy }
