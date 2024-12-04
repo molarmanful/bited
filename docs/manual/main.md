@@ -33,5 +33,5 @@ The Main Screen consists of several panels (from left to right, top to bottom):
 
 ???+ question "Navbar"
 
-    A bar at the bottom of the Main Screen. Holds buttons for font-wide
+    A bar at the bottom of the Main Screen. Contains buttons for font-wide
     operations (e.g. saving and loading) and settings.
