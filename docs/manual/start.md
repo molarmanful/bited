@@ -3,6 +3,8 @@
 When you first open bited, you'll see this Start Menu:
 
 ![bited start menu](assets/start.png){ loading=lazy }
+/// caption
+///
 
 !!! note
 
@@ -17,6 +19,8 @@ Let's see how to create a new font from scratch. Pressing "new" (or its keybind
 ++1++) will bring up the following dialog:
 
 ![bited dialog for creating a new font](assets/new.png){ loading=lazy }
+/// caption
+///
 
 ???+ question "font id"
 
@@ -32,7 +36,7 @@ Let's see how to create a new font from scratch. Pressing "new" (or its keybind
 ???+ question "preset"
 
     Some optional starting templates for your font's metrics: height/width,
-    ascender/descender, cap-height, x-height.
+    ascent/descent, cap-height, x-height.
 
     Feel free to pick one or leave empty.
 
@@ -45,6 +49,8 @@ it and see what happens.
     "cancel"-type buttons with ++esc++.
 
 ![bited main screen after creating a new font](assets/new-ed.png){ loading=lazy }
+/// caption
+///
 
 We'll revisit this Main Screen later. For now, have a look at the navbar at
 bottom of the window. There should be a centered row of buttons. Click the
@@ -56,6 +62,8 @@ Let's see how to load existing fonts from the font database. Pressing "load"
 (++2++) will bring up the following dialog:
 
 ![bited dialog for loading fonts](assets/load.png){ loading=lazy }
+/// caption
+///
 
 Fonts you create or add will appear here, and can be loaded with the dialog's
 "load" button or by double-clicking the entry. You can also delete or rename
@@ -75,6 +83,8 @@ up a file dialog. Locate the previously downloaded BDF and open it. After bited
 finishes parsing the BDF, you should see the following dialog:
 
 ![bited dialog for importing a font from BDF](assets/import.png){ loading=lazy }
+/// caption
+///
 
 ???+ question "font id"
 
@@ -91,6 +101,8 @@ finishes parsing the BDF, you should see the following dialog:
 When you're ready, press "import" and you'll see the Main Screen once more:
 
 ![bited main screen after importing a BDF](assets/import-ed.png){ loading=lazy }
+/// caption
+///
 
 We're now ready to move onto the next section.
 

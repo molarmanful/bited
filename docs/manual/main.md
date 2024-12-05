@@ -8,10 +8,14 @@ From the Start Menu, let's load the `bited` font we imported previously.
     (++2++).
 
 ![bited main screen with bited font loaded](assets/import-ed.png){ loading=lazy }
+/// caption
+///
 
 In the table with a bunch of glyphs, find the "b" glyph and double-click it.
 
 ![bited main screen with "b" selected](assets/main-ui.png){ loading=lazy }
+/// caption
+///
 
 The Main Screen consists of several panels (from left to right, top to bottom):
 

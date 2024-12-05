@@ -11,6 +11,8 @@ A **bit**map font **ed**itor.
 ---
 
 ![bited UI](assets/ui.png){ loading=lazy }
+/// caption
+///
 
 ---
 

@@ -4,10 +4,7 @@ site_url: https://benpa.ng/bited
 repo_url: https://github.com/molarmanful/bited
 repo_name: molarmanful/bited
 copyright: Copyright &copy; 2024 Benjamin Pang
-plugins:
-  - search
-  - awesome-pages
-  - glightbox
+plugins: [search, awesome-pages, glightbox]
 extra:
   version:
     provider: mike
@@ -17,6 +14,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.keys
+  - pymdownx.blocks.caption
   - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
