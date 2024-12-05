@@ -93,6 +93,7 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
@@ -256,7 +257,6 @@ suffix = "px"
 script = ExtResource("5_gqxa1")
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
@@ -665,10 +665,10 @@ layout_mode = 2
 size_flags_vertical = 1
 tooltip_text = "Font-wide offset above the baseline.
 
-ascender = font_size - descender"
+ascent = font_size - descent"
 mouse_filter = 1
 mouse_default_cursor_shape = 16
-text = "ascender"
+text = "ascent"
 vertical_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer5"]
@@ -693,10 +693,10 @@ layout_mode = 2
 size_flags_vertical = 1
 tooltip_text = "Font-wide offset below the baseline.
 
-descender = font_size - ascender"
+descent = font_size - ascent"
 mouse_filter = 1
 mouse_default_cursor_shape = 16
-text = "descender"
+text = "descent"
 vertical_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer2"]

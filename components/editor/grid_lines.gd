@@ -18,10 +18,10 @@ var lines_v := {
 
 var names := {
 	origin = "origin",
-	asc = "ascender",
+	asc = "ascent",
 	cap = "cap height",
 	x = "x-height",
-	desc = "descender",
+	desc = "descent",
 	w = "dwidth",
 }
 
