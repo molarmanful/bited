@@ -110,7 +110,7 @@ baseline.
 
 ![glyph "♥" annotated with metrics](assets/glyph-heart.png){ loading=lazy }
 /// caption
-This "♥" extends a bit beyond its width.
+This "♥" extends a bit beyond its dwidth.
 ///
 
 </div>
