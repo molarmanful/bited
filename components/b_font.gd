@@ -393,6 +393,7 @@ static func is_other_prop(k: String) -> bool:
 			"X_HEIGHT",
 			"BITED_DWIDTH",
 			"BITED_WIDTHS",
+			"BITED_TABLE_WIDTH",
 			"BITED_TABLE_CELL_SCALE",
 			"BITED_EDITOR_GRID_SIZE",
 			"BITED_EDITOR_CELL_SIZE",
