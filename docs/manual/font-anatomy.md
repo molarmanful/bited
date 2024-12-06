@@ -16,7 +16,7 @@ Unicode symbols and are constructed from pixels.
 
 The glyph view inside the Editor exposes several metrics as colored grid lines:
 
-![glyph annotated with metrics](assets/glyph.png){ loading=lazy }
+![glyph "b" annotated with metrics](assets/glyph-b.png){ loading=lazy }
 /// caption
 ///
 
@@ -35,7 +35,7 @@ The glyph view inside the Editor exposes several metrics as colored grid lines:
 
     ???+ question "Ascent"
 
-        The topmost edge of the font. Any pixels above the ascent will bleed
+        The topmost edge of the font. Pixels above the ascent will bleed
         upwards into the previous line.
 
     ???+ question "Cap Height"
@@ -59,16 +59,16 @@ The glyph view inside the Editor exposes several metrics as colored grid lines:
 
     ???+ question "Descent"
 
-        The bottommost edge of the font. Any pixels below the descent will
-        bleed downwards into the next line.
+        The bottommost edge of the font. Pixels below the descent will bleed
+        downwards into the next line.
 
 Typesetting glyphs relies on boxes formed from each glyph's ascent, descent,
 horizontal baseline, and dwidth. In other words:
 
 - Given two consecutive glyphs, the next glyph's horizontal baseline and the
-  previous glyph's dwidth will be touching.
+  previous glyph's dwidth will be equal.
 - Given two consecutive lines of glyphs, the next line's ascent and the
-  previous line's descent will be touching.
+  previous line's descent will be equal.
 
 When choosing your bitmap font's metrics, you should make sure to reserve
 enough space so that glyphs don't crowd each other out.
@@ -81,3 +81,36 @@ enough space so that glyphs don't crowd each other out.
     - Diacritics will typically go between the ascent and cap height or between
       the descent and vertical baseline. If you're planning on adding glyphs
       with diacritics, make sure to also reserve space for these.
+    - A glyph may extend beyond its box. This is especially common in small
+      monospace fonts, where the designer might opt to trade spacing for visual
+      clarity. Such a tradeoff is more acceptable for symbols that are more
+      likely to appear on their own.
+
+## Sample Glyphs
+
+<div class='grid cards' markdown>
+
+![glyph "y" annotated with metrics](assets/glyph-y.png){ loading=lazy }
+/// caption
+The tail in this "y" extends below the baseline, while the body remains above
+the baseline.
+///
+
+![glyph "Ä" annotated with metrics](assets/glyph-a-diar.png){ loading=lazy }
+/// caption
+The diaresis in this "Ä" sit above the letter, between the ascent and cap
+height.
+///
+
+![glyph "ţ" annotated with metrics](assets/glyph-t-ced.png){ loading=lazy }
+/// caption
+The cedilla in this "ţ" sits below the letter, between the descent and
+baseline.
+///
+
+![glyph "♥" annotated with metrics](assets/glyph-heart.png){ loading=lazy }
+/// caption
+This "♥" extends a bit beyond its width.
+///
+
+</div>
