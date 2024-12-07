@@ -81,18 +81,18 @@ horizontal baseline, and dwidth. In other words:
 When choosing your bitmap font's metrics, you should make sure to reserve
 enough space so that glyphs don't crowd each other out.
 
-!!! tip
+---
 
-    Here are some other useful things to know about these metrics:
+Here are some other useful things to know about these metrics:
 
-    - Font size can be determined by adding the ascent and descent.
-    - Diacritics will typically go between the ascent and cap height or between
-      the descent and vertical baseline. If you're planning on adding glyphs
-      with diacritics, make sure to also reserve space for these.
-    - A glyph may extend beyond its box. This is especially common in small
-      monospace fonts, where the designer might opt to trade spacing for visual
-      clarity. Such a tradeoff is more acceptable for symbols that are more
-      likely to appear on their own.
+- Font size can be determined by adding the ascent and descent.
+- Diacritics will typically go between the ascent and cap height or between the
+  descent and vertical baseline. If you're planning on adding glyphs with
+  diacritics, make sure to also reserve space for these.
+- A glyph may extend beyond its box. This is especially common in small
+  monospace fonts, where the designer might opt to trade spacing for visual
+  clarity. Such a tradeoff is more acceptable for symbols that are more likely
+  to appear on their own.
 
 ## Sample Glyphs
 
