@@ -1,5 +1,13 @@
 # Anatomy of a Font
 
+!!! tip
+
+    This section might be a bit dense, especially for newcomers. Feel free to
+    just skim through on your first read, and then -- as you progress through
+    subsequent sections -- periodically refer back here. The information here
+    is important, but can also be intuitively learned through the hands-on
+    process of making a font.
+
 In bited, a **font** is a collection of glyphs which generally share some sort
 of style. Creating a font is essentially just creating a bunch of glyphs!
 

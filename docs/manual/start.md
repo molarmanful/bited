@@ -115,3 +115,6 @@ We're now ready to move onto the next section.
     There exist many wonderful sources of BDFs just waiting to be found.
     [Here](https://github.com/Tecate/bitmap-fonts) is one such repo for these
     fonts.
+
+    Now that you've imported the bited font, you can also use it as a reference
+    font as you go through this manual!
