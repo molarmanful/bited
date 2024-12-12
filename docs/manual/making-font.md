@@ -44,7 +44,7 @@ FONTS tab.
 Once you've finished changing the settings, press "save & close"
 (++ctrl+enter++) to go back to the Main Screen.
 
-## The First Glyph
+## The First Glyphs
 
 Using the Tree, navigate to `Windows Glyph List 4` and double-click on the
 first cell (should be the space character) in the Table.
@@ -56,10 +56,25 @@ first cell (should be the space character) in the Table.
 Congratulations! Your font now has a glyph. We'll leave this one blank since it
 represents spaces.
 
-## The Second Glyph
+### ADHESION
 
-Double-click the cell for "a".
+When making fonts from scratch, it's pretty useful to have a starter word for
+feeling out the letterforms and defining a style. We'll use "adhesion" as our
+starter word.
+
+Double-click the cell for "a". The tool should be set to pen with default color
+mode (++b+q++). Draw the following glyph:
 
 ![unicorn glyph for "a"](assets/make-unicorn-a.png)
 /// caption
 ///
+
+!!! tip
+
+    The pen tool's default color mode is the same as first-cell mode (++t++).
+    In this mode, the first pixel's color is inverted; as long as the pen is
+    held down, that color persists when dragged. This allows you to both draw
+    and erase without having to switch modes.
+
+    If you wish to *only* draw or erase, you can press ++w++ or ++e++
+    respectively to change the mode.
