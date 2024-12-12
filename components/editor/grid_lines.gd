@@ -17,7 +17,7 @@ var lines_v := {
 }
 
 var names := {
-	origin = "origin",
+	origin = "baseline",
 	asc = "ascent",
 	cap = "cap height",
 	x = "x-height",

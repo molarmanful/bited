@@ -15,7 +15,8 @@ FONTS tab.
 
 !!! tip
 
-    Hover over each field's label to get more information about that field!
+    Hover over each settings field's label to get more information about that
+    field!
 
 ???+ question "foundry name"
 
@@ -43,4 +44,22 @@ FONTS tab.
 Once you've finished changing the settings, press "save & close"
 (++ctrl+enter++) to go back to the Main Screen.
 
-## Making a Glyph
+## The First Glyph
+
+Using the Tree, navigate to `Windows Glyph List 4` and double-click on the
+first cell (should be the space character) in the Table.
+
+![main editor at wgl4 with first cell selected](assets/make-glyph-first.png)
+/// caption
+///
+
+Congratulations! Your font now has a glyph. We'll leave this one blank since it
+represents spaces.
+
+## The Second Glyph
+
+Double-click the cell for "a".
+
+![unicorn glyph for "a"](assets/make-unicorn-a.png)
+/// caption
+///
