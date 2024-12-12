@@ -8,8 +8,8 @@ When you first open bited, you'll see this Start Menu:
 
 !!! note
 
-    By default, bited uses your system's dark/light mode to determine
-    its own theme. You can change this later if you wish.
+    By default, bited uses your system's dark/light mode to determine its own
+    theme. You can change this via `DISPLAY > theme` in the Settings Menu.
 
 Let's see what each of these buttons do.
 
