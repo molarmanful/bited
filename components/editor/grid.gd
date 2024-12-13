@@ -339,19 +339,19 @@ func op(f: Callable) -> void:
 
 
 func flip_x() -> void:
-	op(func(_prev: Image): bitmap.cells.flip_x())
+	op(func(_prev: Image): cells.flip_x())
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): bitmap.cells.flip_y())
+	op(func(_prev: Image): cells.flip_y())
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): bitmap.cells.rotate_90(COUNTERCLOCKWISE))
+	op(func(_prev: Image): cells.rotate_90(COUNTERCLOCKWISE))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): bitmap.cells.rotate_90(CLOCKWISE))
+	op(func(_prev: Image): cells.rotate_90(CLOCKWISE))
 
 
 func translate(dst: Vector2i) -> void:

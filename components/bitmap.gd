@@ -69,7 +69,6 @@ func load() -> void:
 
 	var gen := qs[0]
 	StateVars.refresh.emit(gen)
-	from_gen(gen)
 	update_cells(gen)
 
 
