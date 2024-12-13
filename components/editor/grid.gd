@@ -121,7 +121,7 @@ func start_edit(data_name: String, data_code: int) -> void:
 	bitmap.clear_cells()
 	bitmap.save(false)
 	table.to_update = true
-	refresh()
+	refresh(true)
 
 
 func refresh(hard := false) -> void:
@@ -338,28 +338,35 @@ func op(f: Callable) -> void:
 	bitmap.save()
 
 
+func dim_norm(f: Callable) -> void:
+	var dx := bitmap.dim - posmod(bitmap.dim - bitmap.dwidth_calc, 2)
+	var dy := bitmap.dim - posmod(bitmap.dim - StateVars.font.bb.y, 2)
+	cells.crop(dx, dy)
+	f.call()
+	cells.crop(bitmap.dim, bitmap.dim)
+
+
 func flip_x() -> void:
-	op(func(_prev: Image): cells.flip_x())
+	op(func(_prev: Image): dim_norm(cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): cells.flip_y())
+	op(func(_prev: Image): dim_norm(cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): cells.rotate_90(COUNTERCLOCKWISE))
+	op(func(_prev: Image): dim_norm(cells.rotate_90.bind(COUNTERCLOCKWISE)))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): cells.rotate_90(CLOCKWISE))
+	op(func(_prev: Image): dim_norm(cells.rotate_90.bind(CLOCKWISE)))
 
 
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
-			var rect := cells.get_used_rect()
 			bitmap.clear_cells()
-			cells.blit_rect(prev, rect, rect.position + dst)
+			cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
 	)
 
 
@@ -371,12 +378,12 @@ func dwidth() -> void:
 		func():
 			bitmap.dwidth = old
 			bitmap.save_dwidth()
-			refresh()
+			refresh(true)
 	)
 	undoman.add_do_method(
 		func():
 			bitmap.dwidth = new
 			bitmap.save_dwidth()
-			refresh()
+			refresh(true)
 	)
 	undoman.commit_action()

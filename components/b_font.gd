@@ -364,7 +364,8 @@ func fbbx() -> Dictionary:
 			"coalesce(max(bb_x), 0) as bb_x",
 			"coalesce(max(bb_y), 0) as bb_y",
 			"coalesce(min(off_x), 0) as off_x",
-			"coalesce(min(off_y), 0) as off_y"
+			"coalesce(min(off_y), 0) as off_y",
+			"coalesce(max(dwidth), 0) as dwidth"
 		]
 	)
 	return qs[0]

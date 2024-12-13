@@ -10,14 +10,9 @@ var dwidth := -1
 var dwidth_calc: int:
 	get:
 		return StateVars.font.dwidth if dwidth < 0 else dwidth
-
-var center: Vector2i:
-	get:
-		return Vector2i(dwidth_calc, -StateVars.font.bb.y) / 2
 var corner_bl: Vector2i:
 	get:
-		var center_img := Vector2i(dim, dim) / 2
-		return center_img - center
+		return (Vector2i(dim, dim) - Vector2i(dwidth_calc, -StateVars.font.bb.y)) / 2
 var origin: Vector2i:
 	get:
 		return corner_bl - Vector2i(0, StateVars.font.desc)

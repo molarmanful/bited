@@ -43,7 +43,7 @@ var grid_px_size := 12:
 var grid_size_min: int:
 	get:
 		var fb := StateVars.font.fbbx()
-		return maxi(maxi(fb.bb_x, fb.bb_y), maxi(StateVars.font.bb.x, StateVars.font.bb.y)) + 4
+		return 4 + maxi(StateVars.font.bb.max_axis_index(), maxi(fb.dwidth, maxi(fb.bb_x, fb.bb_y)))
 var grid_size_cor: int:
 	get:
 		return maxi(grid_size_min, grid_size)

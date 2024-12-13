@@ -50,7 +50,7 @@ func interp(p: Vector2i, f: Callable) -> void:
 
 
 func check_pos(p: Vector2i) -> bool:
-	return 0 <= p.x and p.x < grid.dim_grid and 0 <= p.y and p.y < grid.dim_grid
+	return 0 <= p.x and p.x < grid.bitmap.dim and 0 <= p.y and p.y < grid.bitmap.dim
 
 
 class _Tool:
@@ -92,8 +92,7 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		var pv := Util.img_copy(c_tool.prev)
-		c_grid.act_cells(pv)
+		c_grid.act_cells(Util.img_copy(c_tool.prev))
 		c_grid.bitmap.save()
 
 	func get_c(v: Vector2i) -> Color:
