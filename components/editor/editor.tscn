@@ -372,6 +372,7 @@ layout_mode = 2
 
 [node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
 layout_mode = 2
+focus_mode = 1
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")

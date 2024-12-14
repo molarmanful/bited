@@ -87,6 +87,7 @@ class _Tool:
 		if c_tool.cmode == CMode.CELL:
 			a = not c_grid.cells.get_pixelv(p).a
 		c_tool.prev = Util.img_copy(c_grid.cells)
+		c_grid.grab_focus()
 
 	func update() -> void:
 		pass
