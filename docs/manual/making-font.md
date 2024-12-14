@@ -41,8 +41,8 @@ FONTS tab.
     - Cap height to `9`.
     - X-height to `5`.
 
-Once you've finished changing the settings, press "save & close"
-(++ctrl+enter++) to go back to the Main Screen.
+Once you've finished changing the settings, save & close (++ctrl+enter++) to go
+back to the Main Screen.
 
 ## The First Glyphs
 
@@ -56,14 +56,14 @@ first cell (should be the space character) in the Table.
 Congratulations! Your font now has a glyph. We'll leave this one blank since it
 represents spaces.
 
-### ADHESION
-
 When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
 starter word.
 
-Double-click the cell for "a". The tool should be set to pen with default color
-mode (++b+q++). Draw the following glyph:
+### Pen
+
+Double-click the cell for "a" to define it. The tool should be set to pen with
+default color mode (++b+q++). Draw the following glyph:
 
 ![unicorn glyph for "a"](assets/make-unicorn-a.png)
 /// caption
@@ -78,3 +78,22 @@ mode (++b+q++). Draw the following glyph:
 
     If you wish to *only* draw or erase, you can press ++w++ or ++e++
     respectively to change the mode.
+
+### Copy/Paste
+
+This "a" we've drawn could easily become a "d" with a bit of tweaking. With the
+"a" cell still selected in the table, copy it (++ctrl+c++). Then single-click
+the "d" cell and paste (++ctrl+v++).
+
+![main screen result of copying "a" to "d"](assets/make-copy-paste.png)
+/// caption
+///
+
+Clicking the "d" cell again will send it to the Editor. This will highlight the
+"d" cell in purple to indicate it is being edited.
+
+Here's the "d" glyph we'll draw:
+
+![unicorn glyph for "d"](assets/make-unicorn-d.png)
+/// caption
+///
