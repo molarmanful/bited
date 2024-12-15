@@ -106,3 +106,10 @@ then flip horizontally (++shift+h++) and draw the following:
 ![unicorn glyph for "h"](assets/make-unicorn-h.png)
 /// caption
 ///
+
+!!! note
+
+    The glyphs of our `unicorn` font so far have spacing on both sides, where
+    flips are symmetrical. However, if you're working with glyphs with spacing
+    on only one side, then you may need to translate the glyph left or right
+    (++shift+left++ / ++shift+right++) after flipping.
