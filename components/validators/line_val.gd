@@ -1,10 +1,11 @@
 class_name LineVal
-extends LineEdit
+extends LineFoc
 
 var f := func(_ok: bool): pass
 
 
 func _ready() -> void:
+	super()
 	text_changed.connect(validate)
 
 

@@ -1,4 +1,4 @@
-extends SpinBox
+extends SpinFoc
 
 @export var desc: SpinBox
 @export var bb_y: SpinBox

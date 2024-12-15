@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://21d12hvls8ux"]
+[gd_scene load_steps=7 format=3 uid="uid://c27gbuwb57t7i"]
 
 [ext_resource type="Script" path="res://components/start/pg_rename.gd" id="1_7v8mo"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_ja2fq"]
@@ -70,6 +70,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
 editable = false
+select_all_on_focus = true
 
 [node name="Label3" type="Label" parent="VBoxContainer/Body/GridContainer"]
 layout_mode = 2
@@ -82,6 +83,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
+select_all_on_focus = true
 script = ExtResource("2_ja2fq")
 
 [node name="Footer" type="PanelContainer" parent="VBoxContainer"]

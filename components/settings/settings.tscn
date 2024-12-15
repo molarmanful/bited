@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=32 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
 [ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
 [ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
+[ext_resource type="Script" path="res://components/spin_foc.gd" id="18_1hwvf"]
 [ext_resource type="Script" path="res://components/settings/win_add_prop.gd" id="19_efg64"]
 [ext_resource type="Script" path="res://components/validators/prop_val.gd" id="20_2pfww"]
 
@@ -293,6 +294,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
+select_all_on_focus = true
 script = ExtResource("2_8xqh3")
 win_over_warn = NodePath("../../../../../../../OverWarn")
 
@@ -324,6 +326,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "path..."
+select_all_on_focus = true
 structured_text_bidi_override = 2
 script = ExtResource("16_qrqxx")
 btn = NodePath("../btn_path")
@@ -365,6 +368,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "foundry..."
+select_all_on_focus = true
 script = ExtResource("3_iv5cu")
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
@@ -392,6 +396,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "family..."
+select_all_on_focus = true
 script = ExtResource("4_3lktb")
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
@@ -418,6 +423,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "weight..."
+select_all_on_focus = true
 script = ExtResource("5_ey81o")
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
@@ -483,6 +489,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "setwidth..."
+select_all_on_focus = true
 script = ExtResource("7_phs2n")
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
@@ -510,6 +517,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "add style..."
+select_all_on_focus = true
 script = ExtResource("8_iwt5s")
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
@@ -549,8 +557,11 @@ min_value = 1.0
 value = 75.0
 rounded = true
 allow_greater = true
+update_on_text_changed = true
 prefix = "x:"
 suffix = "dpi"
+select_all_on_focus = true
+script = ExtResource("18_1hwvf")
 
 [node name="resolution_y" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/resolution"]
 layout_mode = 2
@@ -559,8 +570,11 @@ min_value = 1.0
 value = 75.0
 rounded = true
 allow_greater = true
+update_on_text_changed = true
 prefix = "y:"
 suffix = "dpi"
+select_all_on_focus = true
+script = ExtResource("18_1hwvf")
 
 [node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -646,14 +660,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
+update_on_text_changed = true
 prefix = "w:"
+select_all_on_focus = true
+script = ExtResource("18_1hwvf")
 
 [node name="bb_y" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/bb"]
 layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
+update_on_text_changed = true
 prefix = "h:"
+select_all_on_focus = true
+script = ExtResource("18_1hwvf")
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
 layout_mode = 2
@@ -679,6 +699,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 allow_greater = true
 allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
 script = ExtResource("15_18s1e")
 desc = NodePath("../desc")
 bb_y = NodePath("../bb/bb_y")
@@ -706,6 +728,8 @@ size_flags_horizontal = 3
 [node name="desc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
+update_on_text_changed = true
+select_all_on_focus = true
 script = ExtResource("13_1akul")
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
@@ -729,6 +753,8 @@ size_flags_horizontal = 3
 [node name="cap_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
+update_on_text_changed = true
+select_all_on_focus = true
 script = ExtResource("15_oq3fj")
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2"]
@@ -752,6 +778,8 @@ size_flags_horizontal = 3
 [node name="x_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
+update_on_text_changed = true
+select_all_on_focus = true
 script = ExtResource("16_26mdr")
 
 [node name="props" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
@@ -927,6 +955,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "name..."
+select_all_on_focus = true
 script = ExtResource("20_2pfww")
 
 [node name="Footer" type="PanelContainer" parent="AddProp/PanelContainer/VBoxContainer"]

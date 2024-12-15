@@ -17,8 +17,8 @@ var preset_tree := {
 	"BASIC":
 	[
 		"hamburgefontsiv",
-		"grumpy wizards",
 		"boxing wizards",
+		"grumpy wizards",
 		"weird a-z",
 		"kerning",
 		"grids",
@@ -100,7 +100,11 @@ func _ready() -> void:
 			out.cache.clear()
 	)
 	presets.item_selected.connect(preset)
-	input.text_changed.connect(preview.bind(false))
+	input.text_changed.connect(
+		func():
+			presets.selected = 0
+			preview(false)
+	)
 	btn_split.pressed.connect(
 		func():
 			node_split.vertical = !node_split.vertical

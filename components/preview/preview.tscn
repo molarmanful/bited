@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://igqtugaw0g61"]
+[gd_scene load_steps=7 format=3 uid="uid://igqtugaw0g61"]
 
 [ext_resource type="Script" path="res://components/preview/preview.gd" id="1_jy7h6"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_8cdh3"]
 [ext_resource type="Shader" path="res://components/preview/mod.gdshader" id="3_makfi"]
+[ext_resource type="Script" path="res://components/spin_foc.gd" id="3_v5562"]
 [ext_resource type="Script" path="res://components/preview/out.gd" id="3_wdqwx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lggnd"]
@@ -59,7 +60,6 @@ size_flags_horizontal = 3
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-allow_reselect = true
 
 [node name="split" type="Button" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -110,7 +110,10 @@ min_value = 1.0
 value = 1.0
 rounded = true
 allow_greater = true
+update_on_text_changed = true
 prefix = "scale:"
+select_all_on_focus = true
+script = ExtResource("3_v5562")
 
 [node name="download" type="Button" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2

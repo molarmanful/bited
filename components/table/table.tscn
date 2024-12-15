@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnhlhp8evbrv3"]
+[gd_scene load_steps=9 format=3 uid="uid://bnhlhp8evbrv3"]
 
 [ext_resource type="Script" path="res://components/table/table.gd" id="1_21spc"]
 [ext_resource type="Script" path="res://components/table/sel.gd" id="3_ex1o2"]
+[ext_resource type="Script" path="res://components/spin_foc.gd" id="4_762e1"]
 [ext_resource type="Script" path="res://components/table/win_filter_dwidth.gd" id="4_x03ce"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
@@ -108,7 +109,7 @@ visible = false
 transient = true
 script = ExtResource("4_x03ce")
 table = NodePath("..")
-input = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/SpinBox")
+input = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/SpinFoc")
 btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
 btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
 
@@ -140,7 +141,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "dwidth"
 
-[node name="SpinBox" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+[node name="SpinFoc" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -148,6 +149,8 @@ min_value = -1.0
 value = -1.0
 rounded = true
 allow_greater = true
+select_all_on_focus = true
+script = ExtResource("4_762e1")
 
 [node name="Footer" type="PanelContainer" parent="FilterDWidth/PanelContainer/VBoxContainer"]
 layout_mode = 2

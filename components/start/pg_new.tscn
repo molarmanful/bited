@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvi04o0mfjyms"]
+[gd_scene load_steps=7 format=3 uid="uid://csy0fr30bo24j"]
 
 [ext_resource type="Script" path="res://components/start/pg_new.gd" id="1_tr7ok"]
 [ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_70x5b"]
@@ -15,12 +15,10 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_i0ddc"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="New" type="PanelContainer" node_paths=PackedStringArray("pg_x", "pg_over_warn", "input_id", "input_preset", "btn_start", "btn_cancel")]
+[node name="New" type="PanelContainer" node_paths=PackedStringArray("input_id", "input_preset", "btn_start", "btn_cancel")]
 custom_minimum_size = Vector2(300, 0)
 theme_type_variation = &"Border"
 script = ExtResource("1_tr7ok")
-pg_x = NodePath("")
-pg_over_warn = NodePath("")
 input_id = NodePath("VBoxContainer/Body/GridContainer/id")
 input_preset = NodePath("VBoxContainer/Body/GridContainer/preset")
 btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")
@@ -71,6 +69,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "id..."
+select_all_on_focus = true
 script = ExtResource("2_70x5b")
 
 [node name="Label4" type="Label" parent="VBoxContainer/Body/GridContainer"]
