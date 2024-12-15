@@ -60,7 +60,7 @@ When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
 starter word.
 
-### Pen
+### Tools
 
 Double-click the cell for "a" to define it. The tool should be set to pen with
 default color mode (++b+q++). Draw the following glyph:
@@ -95,5 +95,14 @@ Clicking the "d" cell again will send it to the Editor. This will highlight the
 Here's the "d" glyph we'll draw:
 
 ![unicorn glyph for "d"](assets/make-unicorn-d.png)
+/// caption
+///
+
+### Transforms
+
+For "h", we can start by copying "d" and paste it into the "h" cell. We can
+then flip horizontally (++shift+h++) and draw the following:
+
+![unicorn glyph for "h"](assets/make-unicorn-h.png)
 /// caption
 ///
