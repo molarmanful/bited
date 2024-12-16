@@ -113,3 +113,19 @@ then flip horizontally (++shift+h++) and draw the following:
     flips are symmetrical. However, if you're working with glyphs with spacing
     on only one side, then you may need to translate the glyph left or right
     (++shift+left++ / ++shift+right++) after flipping.
+
+---
+
+The glyphs for "e" and "s" should be pretty straightforward to draw:
+
+<div class='grid cards' markdown>
+
+![unicorn glyph for "e"](assets/make-unicorn-e.png)
+/// caption
+///
+
+![unicorn glyph for "s"](assets/make-unicorn-s.png)
+/// caption
+///
+
+</div>
