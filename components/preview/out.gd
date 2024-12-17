@@ -35,7 +35,7 @@ func refresh(hard := false) -> void:
 		. query_with_bindings(
 			(
 				"""
-				select code, dwidth, bb_x, bb_y, off_x, off_y, img
+				select code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				where code in (%s)
 				"""
@@ -46,8 +46,7 @@ func refresh(hard := false) -> void:
 	)
 
 	for q in StateVars.db_saves.query_result:
-		if q.dwidth < 0:
-			q.dwidth = StateVars.font.dwidth
+		q.dw = StateVars.font.dwidth * int(not q.is_abs) + q.dwidth
 		q.tex = null
 		if q.img:
 			q.tex = Util.bits_to_alpha(q.img, q.bb_x, q.bb_y)
@@ -78,7 +77,7 @@ func render() -> void:
 					pos.x += sz_blank.x
 				continue
 
-			pos.x += cache[uc].dwidth
+			pos.x += cache[uc].dw
 
 		mx.x = maxi(mx.x, pos.x + StateVars.font.bb.x)
 		pos.x = 0
@@ -102,7 +101,7 @@ func render() -> void:
 			var q: Dictionary = cache[uc]
 			if q.tex:
 				img.blend_rect(q.tex, q.rect, pos + Vector2i(q.off_x, -q.bb_y - q.off_y))
-			pos.x += q.dwidth
+			pos.x += q.dw
 
 		pos.x = 0
 		pos.y += StateVars.font.bb.y
