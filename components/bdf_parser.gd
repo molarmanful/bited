@@ -55,7 +55,8 @@ var grid_px_size := 12
 var gen_default := {
 	name = "",
 	code = -1,
-	dwidth = -1,
+	dwidth = 0,
+	is_abs = false,
 	bb_x = 0,
 	bb_y = 0,
 	off_x = 0,
@@ -369,16 +370,15 @@ func parse_char(line: Dictionary) -> String:
 
 		"DWIDTH":
 			if notdef_gen("DWIDTH"):
-				var d := true
+				gen.is_abs = true
 				if i_glyph < dws.get_size().x:
-					d = dws.get_bit(i_glyph, 0)
+					gen.is_abs = dws.get_bit(i_glyph, 0)
 
-				if d:
-					var xs := arr_int(1, line.v)
-					if xs.is_empty() or xs[0] < 0:
-						warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
-					else:
-						gen.dwidth = xs[0]
+				var xs := arr_int(1, line.v)
+				if xs.is_empty() or xs[0] < 0:
+					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
+				else:
+					gen.dwidth = xs[0] - font.dwidth * int(not gen.is_abs)
 
 		"SWIDTH", "SWIDTH1", "DWIDTH1", "VVECTOR":
 			pass

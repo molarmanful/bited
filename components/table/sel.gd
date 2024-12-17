@@ -85,7 +85,7 @@ func all() -> void:
 	get_sel_text()
 
 
-func filter_dwidth(dw: int) -> void:
+func filter_dwidth(dw: int, ia := false) -> void:
 	StateVars.db_saves.query("begin transaction;")
 
 	StateVars.db_saves.query("drop table if exists temp.filter;")
@@ -120,11 +120,11 @@ func filter_dwidth(dw: int) -> void:
 						insert into temp.filter (row, name)
 						select code, name
 						from font_%s
-						where (code between ? and ?) and dwidth = ?
+						where (code between ? and ?) and is_abs = ? and dwidth = ?
 						;"""
 						% StateVars.font.id
 					),
-					[a, b, dw]
+					[a, b, int(ia), dw]
 				)
 			)
 		else:
@@ -138,11 +138,11 @@ func filter_dwidth(dw: int) -> void:
 						select b.row, a.name
 						from font_%s as a
 						join temp.full as b on a.name = b.name
-						where (b.row between ? and ?) and a.dwidth = ?
+						where (b.row between ? and ?) and a.is_abs = ? and a.dwidth = ?
 						;"""
 						% StateVars.font.id
 					),
-					[a, b, dw]
+					[a, b, int(ia), dw]
 				)
 			)
 
@@ -245,7 +245,7 @@ func copy() -> void:
 				create table temp.clip as
 				select
 					cast(null as integer) as row,
-					name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+					name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				where 0
 				;"""
@@ -264,10 +264,10 @@ func copy() -> void:
 				. query_with_bindings(
 					(
 						"""
-						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+						insert into temp.clip (row, name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 						select
 							row_number() over (order by code, name) + (select count(*) from temp.clip) - 1,
-							name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+							name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 						from font_%s
 						where code between ? and ?
 						;"""
@@ -283,10 +283,10 @@ func copy() -> void:
 				. query_with_bindings(
 					(
 						"""
-						insert into temp.clip (row, name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+						insert into temp.clip (row, name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 						select
 							row_number() over (order by b.row) + (select count(*) from temp.clip) - 1,
-							a.name, a.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
+							a.name, a.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 						from font_%s as a
 						join temp.full as b on a.name = b.name
 						where b.row between ? and ?
@@ -381,12 +381,12 @@ func paste() -> void:
 			(
 				"""
 				with cyc as (
-					select b.name, b.code, a.dwidth, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
+					select b.name, b.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 					from temp.sub as b
 					join temp.clip as a on b.row %% (select count(*) from temp.clip) = a.row
 				)
-				insert or replace into font_%s (name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
-				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				insert or replace into font_%s (name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from cyc
 				;"""
 				% StateVars.font.id

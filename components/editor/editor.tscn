@@ -208,12 +208,22 @@ size_flags_horizontal = 3
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 8
+
+[node name="is_abs" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+tooltip_text = "dwidth mode: relative"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Tool"
+toggle_mode = true
+text = "W?"
+icon_alignment = 1
+expand_icon = true
 
 [node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2/HBoxContainer"]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
-min_value = -1.0
 rounded = true
 allow_greater = true
 prefix = "w:"
@@ -373,7 +383,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -387,6 +397,7 @@ node_placeholder = NodePath("../../../Placeholder")
 input_dwidth = NodePath("../../2/HBoxContainer/dwidth")
 tools_group = ExtResource("1_88smh")
 cmode_group = ExtResource("2_qbssp")
+btn_is_abs = NodePath("../../2/HBoxContainer/is_abs")
 btn_prev_glyph = NodePath("../../2/HBoxContainer2/prev_glyph")
 btn_next_glyph = NodePath("../../2/HBoxContainer3/next_glyph")
 btn_prev_uc = NodePath("../../2/HBoxContainer2/prev_uc")

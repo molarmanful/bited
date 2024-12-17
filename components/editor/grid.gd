@@ -16,6 +16,7 @@ extends PanelContainer
 @export var cmode_group: ButtonGroup
 
 @export_group("Buttons")
+@export var btn_is_abs: Button
 @export var btn_prev_glyph: Button
 @export var btn_next_glyph: Button
 @export var btn_prev_uc: Button
@@ -76,6 +77,7 @@ func _ready() -> void:
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
 	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
+	btn_is_abs.toggled.connect(is_abs)
 	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
 	btn_next_glyph.pressed.connect(off_glyph.bind(1))
 	btn_prev_uc.pressed.connect(off_uc.bind(-1))
@@ -117,7 +119,8 @@ func start_edit(data_name: String, data_code: int) -> void:
 	undoman.clear_history()
 	bitmap.data_name = data_name
 	bitmap.data_code = data_code
-	bitmap.dwidth = -1
+	bitmap.dwidth = 0
+	bitmap.is_abs = false
 	bitmap.clear_cells()
 	bitmap.save(false)
 	table.to_update = true
@@ -141,7 +144,14 @@ func refresh(hard := false) -> void:
 	node_placeholder.hide()
 	node_wrapper.show()
 
-	input_dwidth.value = bitmap.dwidth
+	btn_is_abs.set_pressed_no_signal(bitmap.is_abs)
+	btn_is_abs.tooltip_text = "dwidth mode: %s" % ("dwidth" if bitmap.is_abs else "offset")
+
+	input_dwidth.allow_lesser = true
+	input_dwidth.prefix = "w:" if bitmap.is_abs else "o:"
+	input_dwidth.min_value = -StateVars.font.dwidth * int(not bitmap.is_abs)
+	input_dwidth.set_value_no_signal(bitmap.dwidth)
+	input_dwidth.allow_lesser = false
 
 	editor.node_info_text.text = StateVars.get_info(bitmap.data_name, bitmap.data_code)
 	node_cells.texture = tex_cells
@@ -371,7 +381,7 @@ func translate(dst: Vector2i) -> void:
 
 
 func dwidth() -> void:
-	var old: int = bitmap.dwidth
+	var old := bitmap.dwidth
 	var new: int = input_dwidth.value
 	undoman.create_action("dwidth")
 	undoman.add_undo_method(
@@ -385,5 +395,22 @@ func dwidth() -> void:
 			bitmap.dwidth = new
 			bitmap.save_dwidth()
 			refresh(true)
+	)
+	undoman.commit_action()
+
+
+func is_abs(on: bool) -> void:
+	undoman.create_action("is_abs")
+	undoman.add_undo_method(
+		func():
+			bitmap.set_is_abs(not on)
+			bitmap.save_dwidth()
+			refresh()
+	)
+	undoman.add_do_method(
+		func():
+			bitmap.set_is_abs(on)
+			bitmap.save_dwidth()
+			refresh()
 	)
 	undoman.commit_action()

@@ -74,11 +74,12 @@ func init_font(ignore := false) -> void:
 			{
 				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
 				code = {data_type = "int", not_null = true},
-				dwidth = {data_type = "int", not_null = true},
-				bb_x = {data_type = "int", not_null = true},
-				bb_y = {data_type = "int", not_null = true},
-				off_x = {data_type = "int", not_null = true},
-				off_y = {data_type = "int", not_null = true},
+				dwidth = {data_type = "int", not_null = true, default = 0},
+				is_abs = {data_type = "int", not_null = true, default = 1},
+				bb_x = {data_type = "int", not_null = true, default = 0},
+				bb_y = {data_type = "int", not_null = true, default = 0},
+				off_x = {data_type = "int", not_null = true, default = 0},
+				off_y = {data_type = "int", not_null = true, default = 0},
 				img = {data_type = "blob"},
 			}
 		)
@@ -120,7 +121,7 @@ func to_bdf() -> String:
 			"STARTFONT 2.1",
 			"FONT %s" % xlfd(),
 			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-			"FONTBOUNDINGBOX %d %d %d %d" % fb.values(),
+			"FONTBOUNDINGBOX %d %d %d %d" % [fb.bb_x, fb.bb_y, fb.off_x, fb.off_y],
 		]
 	)
 
@@ -176,7 +177,7 @@ func width64() -> String:
 		. query(
 			(
 				"""
-				select dwidth != -1 as w
+				select is_abs
 				from font_%s
 				order by code, name
 				;"""
@@ -190,7 +191,7 @@ func width64() -> String:
 	res.create(Vector2i(qs.size(), 1))
 	var i := 0
 	for q in qs:
-		res.set_bit(i, 0, q.w)
+		res.set_bit(i, 0, bool(q.is_abs))
 		i += 1
 	return (
 		"%d %s"
@@ -210,7 +211,7 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 		. query(
 			(
 				"""
-				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				order by code, name
 				;"""
@@ -223,7 +224,7 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 	res.push_back("CHARS %d" % qs.size())
 
 	for q in qs:
-		var dw: int = dwidth if q.dwidth < 0 else q.dwidth
+		var dw: int = dwidth * int(not q.is_abs) + q.dwidth
 		(
 			res
 			. append_array(
@@ -262,13 +263,23 @@ func save_glyph(gen: Dictionary, over := true) -> void:
 				"""
 				insert or %s
 				into font_%s
-				(name, code, dwidth, bb_x, bb_y, off_x, off_y, img)
+				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				values
-				(?, ?, ?, ?, ?, ?, ?, ?)
+				(?, ?, ?, ?, ?, ?, ?, ?, ?)
 				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
 			),
-			gen.values()
+			[
+				gen.name,
+				gen.code,
+				gen.dwidth,
+				int(gen.is_abs),
+				gen.bb_x,
+				gen.bb_y,
+				gen.off_x,
+				gen.off_y,
+				gen.img
+			]
 		)
 	)
 
@@ -343,9 +354,7 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id,
-		"",
-		["cast(avg(case when dwidth < 0 then %d else dwidth end) * 10 as int) as avg" % dwidth]
+		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
 	)
 	if qs.is_empty():
 		return 0
@@ -365,7 +374,7 @@ func fbbx() -> Dictionary:
 			"coalesce(max(bb_y), 0) as bb_y",
 			"coalesce(min(off_x), 0) as off_x",
 			"coalesce(min(off_y), 0) as off_y",
-			"coalesce(max(dwidth), 0) as dwidth"
+			"coalesce(max(%d * (is_abs = 0) + dwidth), 0) as dwidth" % dwidth
 		]
 	)
 	return qs[0]

@@ -6,10 +6,11 @@ var cells: Image
 var data_code := -1
 var data_name := ""
 
-var dwidth := -1
+var dwidth := 0
+var is_abs := false
 var dwidth_calc: int:
 	get:
-		return StateVars.font.dwidth if dwidth < 0 else dwidth
+		return StateVars.font.dwidth * int(not is_abs) + dwidth
 var corner_bl: Vector2i:
 	get:
 		return (Vector2i(dim, dim) - Vector2i(dwidth_calc, -StateVars.font.bb.y)) / 2
@@ -34,8 +35,20 @@ func save(over := true) -> void:
 
 
 func save_dwidth() -> void:
-	StateVars.db_saves.query_with_bindings(
-		"update font_%s set dwidth = ? where name = ?;" % StateVars.font.id, [dwidth, data_name]
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				update font_%s
+				set dwidth = ?, is_abs = ?
+				where name = ?
+				;"""
+				% StateVars.font.id
+			),
+			[dwidth, int(is_abs), data_name]
+		)
 	)
 	StateVars.refresh.emit(to_gen())
 
@@ -47,7 +60,7 @@ func load() -> void:
 		. query_with_bindings(
 			(
 				"""
-				select name, code, dwidth, bb_x, bb_y, off_x, off_y, img
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
 				where name = ?
 				;"""
@@ -79,6 +92,7 @@ func to_gen() -> Dictionary:
 		name = data_name,
 		code = data_code,
 		dwidth = dwidth,
+		is_abs = is_abs,
 		bb_x = bounds.size.x,
 		bb_y = bounds.size.y,
 		off_x = off.x,
@@ -90,6 +104,7 @@ func to_gen() -> Dictionary:
 func from_gen(gen: Dictionary) -> void:
 	data_name = gen.name
 	data_code = gen.code
+	is_abs = gen.is_abs
 	dwidth = gen.dwidth
 
 
@@ -106,3 +121,9 @@ func update_cells(gen := to_gen()) -> void:
 	var img := Util.bits_to_alpha(gen.img, gen.bb_x, gen.bb_y)
 	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, gen.bb_y)
 	cells.blit_rect(img, Rect2i(Vector2i.ZERO, Vector2i(gen.bb_x, gen.bb_y)), off)
+
+
+func set_is_abs(ia: bool) -> void:
+	var d := dwidth_calc
+	is_abs = ia
+	dwidth = d - StateVars.font.dwidth * int(not is_abs)
