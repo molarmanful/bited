@@ -628,12 +628,8 @@ theme_override_constants/separation = 8
 [node name="Label3" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
-tooltip_text = "The font's default character cell width and height.
-
-- Width can be referenced at the individual glyph level by setting the glyph's
-  width to -1. This will sync that glyph's width to the default width defined
-  in this field.
-- Height determines font size.
+tooltip_text = "The font's default character cell width and height. Height determines font
+size.
 
 When choosing these dimensions, make sure you account for spacing (between
 characters and lines), diacritics, etc. If you have a glyph that is 5px wide,

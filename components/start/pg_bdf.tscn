@@ -91,7 +91,7 @@ script = ExtResource("2_cmxgo")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "default width"
+text = "default dwidth"
 vertical_alignment = 1
 
 [node name="w" type="SpinBox" parent="VBoxContainer/Body/GridContainer"]
