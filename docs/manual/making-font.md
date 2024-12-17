@@ -60,7 +60,7 @@ When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
 starter word.
 
-### Tools
+### Pen Tool
 
 Double-click the cell for "a" to define it. The tool should be set to pen with
 default color mode (++b+q++). Draw the following glyph:
@@ -129,3 +129,82 @@ The glyphs for "e" and "s" should be pretty straightforward to draw:
 ///
 
 </div>
+
+### DWidth
+
+So far, all of our glyphs have had the same default dwidth, which means that --
+up until now -- the font has been monospace. Monospace fonts are useful
+primarily in data/programming contexts like terminals, which typically expect
+consistent glyph widths. Most bitmap fonts tend to cater to these niches, and
+are typically monospace as a result.
+
+However, bited also supports proportional fonts with variable dwidths. These
+can be more flexible design-wise than monospace fonts. Let's make `unicorn`
+variable!
+
+While editing, you may have noticed these controls above the grid:
+
+![dwidth mode controls](assets/make-dwidth-mode.png)
+/// caption
+///
+
+bited features two dwidth modes that can be toggled by pressing the `W?`
+button:
+
+???+ question "offset (indicated by `o:`)"
+
+    The given input is treated as an offset of the default (font-wide) dwidth.
+    Glyphs in offset mode will recalculate their dwidths when the default
+    dwidth changes.
+
+    ```
+    glyph_dwidth = font_dwidth + offset
+    ```
+
+    By default, new glyphs are set to offset by 0.
+
+???+ question "dwidth (indicated by `w:`)"
+
+    The given input is treated as the glyph's dwidth. Unlike in offset mode,
+    glyphs in dwidth mode will **not** change their dwidths when the default
+    dwidth changes.
+
+Since "i" is a thinner letterform, we'll use an offset of -2:
+
+![unicorn glyph for "i"](assets/make-unicorn-i.png)
+/// caption
+///
+
+---
+
+The glyphs for "o" and "n" will also be pretty straightforward:
+
+<div class='grid cards' markdown>
+
+![unicorn glyph for "o"](assets/make-unicorn-o.png)
+/// caption
+///
+
+![unicorn glyph for "n"](assets/make-unicorn-n.png)
+/// caption
+///
+
+</div>
+
+## Preview
+
+We now have a whole word's worth of glyphs drawn out, but how do we see these
+glyphs in action?
+
+In the Navbar, press the "preview font" button (++ctrl+p++).
+
+![preview window](assets/make-preview.png)
+/// caption
+///
+
+Type "adhesion" into the input, and you should see the fruits of your labor
+thus far!
+
+!["adhesion" in unicorn font](assets/make-unicorn-adhesion.png)
+/// caption
+///
