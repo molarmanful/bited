@@ -84,7 +84,7 @@ func render() -> void:
 		pos.y += StateVars.font.bb.y
 		mx.y = pos.y
 
-	if mx.x == 0 or mx.y == 0:
+	if not mx:
 		return
 	img.resize(mx.x, mx.y, Image.INTERPOLATE_NEAREST)
 
