@@ -100,7 +100,7 @@ size_flags_vertical = 3
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 
-[node name="FilterDWidth" type="Window" parent="." node_paths=PackedStringArray("table", "input", "btn_ok", "btn_cancel")]
+[node name="FilterDWidth" type="Window" parent="." node_paths=PackedStringArray("table", "input", "btn_is_abs", "btn_ok", "btn_cancel")]
 auto_translate_mode = 1
 title = "filter selection by dwidth"
 initial_position = 2
@@ -110,6 +110,7 @@ transient = true
 script = ExtResource("4_x03ce")
 table = NodePath("..")
 input = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/SpinFoc")
+btn_is_abs = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/is_abs")
 btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
 btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
 
@@ -136,19 +137,25 @@ theme_override_constants/margin_bottom = 16
 [node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Body"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+[node name="is_abs" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-size_flags_horizontal = 3
-text = "dwidth"
+tooltip_text = "dwidth mode: relative"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Tool"
+toggle_mode = true
+text = "W?"
+icon_alignment = 1
+expand_icon = true
 
 [node name="SpinFoc" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-min_value = -1.0
-value = -1.0
 rounded = true
 allow_greater = true
+prefix = "o:"
 select_all_on_focus = true
 script = ExtResource("4_762e1")
 

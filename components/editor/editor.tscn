@@ -226,7 +226,7 @@ custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 rounded = true
 allow_greater = true
-prefix = "w:"
+prefix = "o:"
 select_all_on_focus = true
 script = ExtResource("2_ieki6")
 
