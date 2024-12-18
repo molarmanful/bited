@@ -31,7 +31,7 @@ theme:
     - navigation.tracking
     - navigation.tabs
     - navigation.expand
-    - navigation.sections
+    # - navigation.sections
     - navigation.indexes
     - navigation.top
     - navigation.footer
