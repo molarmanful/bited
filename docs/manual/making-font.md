@@ -265,3 +265,59 @@ preset.
 ![unicorn hamburgefontsiv preview](assets/make-unicorn-hamburgefontsiv.png)
 /// caption
 ///
+
+## Finishing Lowercase
+
+Here's the rest of the lowercase letters:
+
+<div class='grid cards' markdown>
+
+![unicorn glyph for "c"](assets/make-unicorn-c.png)
+/// caption
+///
+
+![unicorn glyph for "j"](assets/make-unicorn-j.png)
+/// caption
+///
+
+![unicorn glyph for "k"](assets/make-unicorn-k.png)
+/// caption
+///
+
+![unicorn glyph for "l"](assets/make-unicorn-l.png)
+/// caption
+///
+
+![unicorn glyph for "p"](assets/make-unicorn-p.png)
+/// caption
+///
+
+![unicorn glyph for "q"](assets/make-unicorn-q.png)
+/// caption
+///
+
+![unicorn glyph for "r"](assets/make-unicorn-r.png)
+/// caption
+///
+
+![unicorn glyph for "v"](assets/make-unicorn-v.png)
+/// caption
+///
+
+![unicorn glyph for "w"](assets/make-unicorn-w.png)
+/// caption
+///
+
+![unicorn glyph for "x"](assets/make-unicorn-x.png)
+/// caption
+///
+
+![unicorn glyph for "y"](assets/make-unicorn-y.png)
+/// caption
+///
+
+![unicorn glyph for "z"](assets/make-unicorn-z.png)
+/// caption
+///
+
+</div>
