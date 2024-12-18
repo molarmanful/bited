@@ -26,7 +26,11 @@ func _ready() -> void:
 	btn_home.pressed.connect(StateVars.all_start)
 	btn_save.pressed.connect(save)
 	btn_load.pressed.connect(load)
-	btn_preview.pressed.connect(preview.preview)
+	btn_preview.pressed.connect(
+		func():
+			preview.window.hide()
+			preview.preview()
+	)
 	btn_settings.pressed.connect(settings.popup)
 	StateVars.settings.connect(refresh)
 
