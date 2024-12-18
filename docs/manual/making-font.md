@@ -56,6 +56,8 @@ first cell (should be the space character) in the Table.
 Congratulations! Your font now has a glyph. We'll leave this one blank since it
 represents spaces.
 
+---
+
 When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
 starter word.
@@ -208,3 +210,8 @@ thus far!
 !["adhesion" in unicorn font](assets/make-unicorn-adhesion.png)
 /// caption
 ///
+
+!!! tip
+
+    Preview comes with several text presets that may come in handy as you
+    continue designing your font.
