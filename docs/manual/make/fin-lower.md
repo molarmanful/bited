@@ -1,6 +1,6 @@
 # Finishing Lowercase
 
-Here's the rest of the lowercase letters:
+Here are the rest of the lowercase letters:
 
 <div class='grid cards' markdown>
 
