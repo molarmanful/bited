@@ -44,7 +44,7 @@ FONTS tab.
 Once you've finished changing the settings, save & close (++ctrl+enter++) to go
 back to the Main Screen.
 
-## The First Glyphs
+## The First Glyph
 
 Using the Tree, navigate to `Windows Glyph List 4` and double-click on the
 first cell (should be the space character) in the Table.
@@ -56,7 +56,7 @@ first cell (should be the space character) in the Table.
 Congratulations! Your font now has a glyph. We'll leave this one blank since it
 represents spaces.
 
----
+## ADHESION
 
 When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
@@ -214,4 +214,54 @@ thus far!
 !!! tip
 
     Preview comes with several text presets that may come in handy as you
-    continue designing your font.
+    continue designing your font and adding more glyphs.
+
+## HAMBURGEFONTSIV
+
+At this point, you have all the tools you need to finish the rest of the
+letterforms. The next word we'll target is "hamburgefontsiv" (weird, I know).
+We'll take cues from our existing glyphs to make sure the styles stay
+consistent.
+
+<div class='grid cards' markdown>
+
+![unicorn glyph for "m"](assets/make-unicorn-m.png)
+/// caption
+///
+
+![unicorn glyph for "b"](assets/make-unicorn-b.png)
+/// caption
+///
+
+![unicorn glyph for "u"](assets/make-unicorn-u.png)
+/// caption
+///
+
+![unicorn glyph for "r"](assets/make-unicorn-r.png)
+/// caption
+///
+
+![unicorn glyph for "g"](assets/make-unicorn-g.png)
+/// caption
+///
+
+![unicorn glyph for "f"](assets/make-unicorn-f.png)
+/// caption
+///
+
+![unicorn glyph for "t"](assets/make-unicorn-t.png)
+/// caption
+///
+
+![unicorn glyph for "v"](assets/make-unicorn-v.png)
+/// caption
+///
+
+</div>
+
+You can preview the letters you've drawn so far using the "hamburgefontsiv"
+preset.
+
+![unicorn hamburgefontsiv preview](assets/make-unicorn-hamburgefontsiv.png)
+/// caption
+///
