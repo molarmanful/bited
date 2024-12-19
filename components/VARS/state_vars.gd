@@ -64,7 +64,7 @@ func start_all_defer() -> void:
 	root.get_child(root.get_child_count() - 1).free()
 	root.add_child(scn_all.instantiate())
 	DisplayServer.window_set_title(
-		"bited - %s %s %d\u00d7%d" % [font.id, font.weight, font.bb.x, font.bb.y]
+		"bited - %s %s %d\u00d7%d" % [font.family, font.weight, font.bb.x, font.bb.y]
 	)
 
 

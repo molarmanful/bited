@@ -2,7 +2,7 @@
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
-[ext_resource type="Script" path="res://components/editor/dwidth.gd" id="2_ieki6"]
+[ext_resource type="Script" path="res://components/spin_foc.gd" id="2_ikoqp"]
 [ext_resource type="Script" path="res://components/editor/grid_lines.gd" id="2_jsp0s"]
 [ext_resource type="Texture2D" uid="uid://bkq4iy7vqadw3" path="res://assets/cmode/inv.svg" id="2_od75m"]
 [ext_resource type="ButtonGroup" uid="uid://c6kxtnnl4kyma" path="res://components/editor/cmode_group.tres" id="2_qbssp"]
@@ -228,7 +228,7 @@ rounded = true
 allow_greater = true
 prefix = "o:"
 select_all_on_focus = true
-script = ExtResource("2_ieki6")
+script = ExtResource("2_ikoqp")
 
 [node name="Spacer2" type="Control" parent="CenterContainer/GridContainer/2"]
 layout_mode = 2

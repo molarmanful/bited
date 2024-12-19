@@ -1,4 +1,4 @@
-extends SpinBox
+extends SpinFoc
 
 
 func save() -> void:

@@ -55,6 +55,11 @@ func _ready() -> void:
 		)
 	)
 
+	StateVars.settings.connect(
+		func():
+			thumbs.clear()
+			to_update = true
+	)
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(refresh_tex)
 	StyleVars.set_thumb.connect(func(): to_update = true)
@@ -93,10 +98,6 @@ func onscroll() -> void:
 
 
 func update() -> void:
-	if not to_update:
-		return
-	to_update = false
-
 	node_inner.custom_minimum_size = virt.size_table
 	node_pad.custom_minimum_size.y = virt.pad_top
 	gen_glyphs()

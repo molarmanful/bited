@@ -557,7 +557,6 @@ min_value = 1.0
 value = 75.0
 rounded = true
 allow_greater = true
-update_on_text_changed = true
 prefix = "x:"
 suffix = "dpi"
 select_all_on_focus = true
@@ -570,7 +569,6 @@ min_value = 1.0
 value = 75.0
 rounded = true
 allow_greater = true
-update_on_text_changed = true
 prefix = "y:"
 suffix = "dpi"
 select_all_on_focus = true
@@ -656,7 +654,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
-update_on_text_changed = true
 prefix = "w:"
 select_all_on_focus = true
 script = ExtResource("18_1hwvf")
@@ -666,7 +663,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 rounded = true
 allow_greater = true
-update_on_text_changed = true
 prefix = "h:"
 select_all_on_focus = true
 script = ExtResource("18_1hwvf")
@@ -695,7 +691,6 @@ size_flags_horizontal = 3
 layout_mode = 2
 allow_greater = true
 allow_lesser = true
-update_on_text_changed = true
 select_all_on_focus = true
 script = ExtResource("15_18s1e")
 desc = NodePath("../desc")
@@ -724,7 +719,6 @@ size_flags_horizontal = 3
 [node name="desc" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
-update_on_text_changed = true
 select_all_on_focus = true
 script = ExtResource("13_1akul")
 
@@ -749,7 +743,6 @@ size_flags_horizontal = 3
 [node name="cap_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
-update_on_text_changed = true
 select_all_on_focus = true
 script = ExtResource("15_oq3fj")
 
@@ -774,7 +767,6 @@ size_flags_horizontal = 3
 [node name="x_h" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer2" groups=["settings"]]
 layout_mode = 2
 allow_greater = true
-update_on_text_changed = true
 select_all_on_focus = true
 script = ExtResource("16_26mdr")
 

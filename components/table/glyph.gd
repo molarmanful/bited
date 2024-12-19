@@ -71,6 +71,8 @@ func refresh() -> void:
 
 
 func refresh_tex(gen: Dictionary) -> void:
+	if bitmap.dim != StyleVars.thumb_size_pre:
+		bitmap = Bitmap.new(StyleVars.thumb_size_pre)
 	bitmap.update_cells(gen)
 	if data_name in table.thumbs:
 		table.thumbs[data_name].update(bitmap.cells)
