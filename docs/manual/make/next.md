@@ -2,7 +2,7 @@
 
 It is at this point that the design of `unicorn` is entirely in your hands; you
 are free to add or modify glyphs to your heart's content. Here is a recommended
-"roadmap" for expanding the font from here:
+"roadmap" for expanding the font:
 
 - Uppercase letters
 - ASCII (in Windows Glyph List 4, this encompasses glyphs up to `~`)
