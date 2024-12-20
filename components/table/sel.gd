@@ -409,6 +409,7 @@ func select(g: Glyph) -> void:
 
 
 func select_range(g: Glyph) -> void:
+	anchor = maxi(0, anchor)
 	end = g.ind
 	ranges.assign(norm())
 	refresh()
@@ -439,10 +440,11 @@ func clear() -> void:
 	refresh()
 
 
-func refresh() -> void:
+func refresh(txt := true) -> void:
 	for g in table.names.values():
 		g.selected = is_selected(g.ind)
-	get_sel_text()
+	if txt:
+		get_sel_text()
 
 
 func get_sel_text() -> void:

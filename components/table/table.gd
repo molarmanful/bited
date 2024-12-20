@@ -251,7 +251,7 @@ func gen_glyphs() -> void:
 	var gs: Array[Glyph]
 	gs.assign(names.values())
 	update_glyphs(gs)
-	sel.refresh()
+	sel.refresh(false)
 
 
 func update_glyphs(gs: Array[Glyph]) -> void:
