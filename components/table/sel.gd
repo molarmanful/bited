@@ -18,61 +18,6 @@ var length: int:
 		return sum
 
 
-func refresh() -> void:
-	for g in table.names.values():
-		g.selected = is_selected(g.ind)
-
-
-func is_selected(i: int) -> bool:
-	var a := mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
-	var b := func(): return ranges.bsearch(i, false) % 2
-	return a or b.call()
-
-
-func select(g: Glyph) -> void:
-	clear()
-	anchor = g.ind
-	ranges.assign([anchor, anchor + 1])
-	g.selected = true
-	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
-	table.get_tree().call_group("selshow", "show")
-
-
-func select_range(g: Glyph) -> void:
-	end = g.ind
-	ranges.assign(norm())
-	refresh()
-	get_sel_text()
-
-
-func select_inv(g: Glyph) -> void:
-	mode = not is_selected(g.ind)
-	anchor = g.ind
-	end = g.ind
-	commit()
-	g.selected = mode
-	get_sel_text()
-
-
-func select_range_inv(g: Glyph) -> void:
-	if anchor < 0:
-		return
-
-	end = g.ind
-	commit()
-	refresh()
-	get_sel_text()
-
-
-func clear() -> void:
-	anchor = -1
-	end = -1
-	mode = true
-	ranges.clear()
-	table.get_tree().call_group("selshow", "hide")
-	refresh()
-
-
 func all() -> void:
 	if table.viewmode == Table.Mode.RANGE:
 		anchor = table.start
@@ -82,7 +27,6 @@ func all() -> void:
 		end = table.virt.length
 	ranges.assign(norm())
 	refresh()
-	get_sel_text()
 
 
 func filter_dwidth(dw: int, ia := false) -> void:
@@ -147,10 +91,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 			)
 
 	StateVars.db_saves.query("commit;")
-	apply_filter()
 
-
-func apply_filter() -> void:
 	clear()
 	(
 		StateVars
@@ -175,7 +116,6 @@ func apply_filter() -> void:
 		anchor = ranges[0]
 	StateVars.db_saves.query("drop table if exists temp.filter;")
 	refresh()
-	get_sel_text()
 
 
 func delete() -> void:
@@ -400,10 +340,6 @@ func paste() -> void:
 	table.to_update = true
 
 
-func norm() -> Array[int]:
-	return [mini(anchor, end), maxi(anchor, end) + 1]
-
-
 func commit() -> void:
 	if anchor < 0 or end < 0:
 		return
@@ -463,8 +399,50 @@ func cut() -> void:
 	delete()
 
 
-func is_alone() -> bool:
-	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
+func select(g: Glyph) -> void:
+	clear()
+	anchor = g.ind
+	ranges.assign([anchor, anchor + 1])
+	g.selected = true
+	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
+	table.get_tree().call_group("selshow", "show")
+
+
+func select_range(g: Glyph) -> void:
+	end = g.ind
+	ranges.assign(norm())
+	refresh()
+
+
+func select_inv(g: Glyph) -> void:
+	mode = not is_selected(g.ind)
+	anchor = g.ind
+	end = g.ind
+	commit()
+	g.selected = mode
+	get_sel_text()
+
+
+func select_range_inv(g: Glyph) -> void:
+	if anchor < 0:
+		return
+	end = g.ind
+	commit()
+	refresh()
+
+
+func clear() -> void:
+	anchor = -1
+	end = -1
+	mode = true
+	ranges.clear()
+	refresh()
+
+
+func refresh() -> void:
+	for g in table.names.values():
+		g.selected = is_selected(g.ind)
+	get_sel_text()
 
 
 func get_sel_text() -> void:
@@ -473,3 +451,17 @@ func get_sel_text() -> void:
 		return
 	table.get_tree().call_group("selshow", "show")
 	table.node_info_text.text = "%d item%s selected" % [length, "s" if length != 1 else ""]
+
+
+func is_selected(i: int) -> bool:
+	var a := mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
+	var b := func(): return ranges.bsearch(i, false) % 2
+	return a or b.call()
+
+
+func is_alone() -> bool:
+	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
+
+
+func norm() -> Array[int]:
+	return [mini(anchor, end), maxi(anchor, end) + 1]
