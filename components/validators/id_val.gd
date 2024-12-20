@@ -8,6 +8,6 @@ func sub(new: String) -> String:
 
 
 func check() -> String:
-	if text.is_empty():
+	if not text:
 		return "id cannot be empty"
 	return ""

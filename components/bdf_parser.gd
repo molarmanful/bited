@@ -89,7 +89,7 @@ func parse(f: Callable, end: Callable) -> String:
 	while not end.call():
 		n_line += 1
 		var l: String = f.call()
-		if l.is_empty():
+		if not l:
 			continue
 
 		var line := kv(l)
@@ -215,7 +215,7 @@ func parse_x(line: Dictionary) -> String:
 		"DWIDTH":
 			if notdef("DWIDTH"):
 				var xs := arr_int(1, line.v)
-				if xs.is_empty() or xs[0] < 0:
+				if not xs or xs[0] < 0:
 					warn("DWIDTH x is not a valid int >=0, defaulting to 0")
 				else:
 					font.bb.x = xs[0]
@@ -297,7 +297,7 @@ func parse_props(line: Dictionary) -> String:
 							var bits := Marshalls.base64_to_raw(data[1]).decompress_dynamic(
 								-1, FileAccess.COMPRESSION_GZIP
 							)
-							if bits.is_empty() and v:
+							if not bits and v:
 								warn("BITED_WIDTHS does not contain valid base64 string, ignoring")
 							else:
 								dws.data = {size = Vector2i(l, 1), data = bits}
@@ -331,7 +331,7 @@ func parse_type(v: String) -> Variant:
 	if v and v[0] == '"':
 		return JSON.parse_string(v)
 	var res := arr_int(1, v)
-	if res.is_empty():
+	if not res:
 		return null
 	return res[0]
 
@@ -342,7 +342,7 @@ func parse_char(line: Dictionary) -> String:
 		"ENCODING":
 			if notdef_gen("ENCODING"):
 				var xs := arr_int(1, line.v)
-				if xs.is_empty():
+				if not xs:
 					warn("ENCODING is not a valid int, defaulting to -1")
 				else:
 					gen.code = xs[0]
@@ -375,7 +375,7 @@ func parse_char(line: Dictionary) -> String:
 					gen.is_abs = dws.get_bit(i_glyph, 0)
 
 				var xs := arr_int(1, line.v)
-				if xs.is_empty() or xs[0] < 0:
+				if not xs or xs[0] < 0:
 					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
 				else:
 					gen.dwidth = xs[0] - font.dwidth * int(not gen.is_abs)

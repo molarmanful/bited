@@ -171,7 +171,7 @@ func apply_filter() -> void:
 	for q in qs:
 		ranges.push_back(q.a)
 		ranges.push_back(q.b)
-	if not ranges.is_empty():
+	if ranges:
 		anchor = ranges[0]
 	StateVars.db_saves.query("drop table if exists temp.filter;")
 	refresh()
@@ -179,7 +179,7 @@ func apply_filter() -> void:
 
 
 func delete() -> void:
-	if is_empty():
+	if not ranges:
 		return
 
 	StateVars.db_saves.query("begin transaction;")
@@ -230,7 +230,7 @@ func delete() -> void:
 
 
 func copy() -> void:
-	if is_empty():
+	if not ranges:
 		return
 
 	StateVars.db_saves.query("begin transaction;")
@@ -317,13 +317,10 @@ func copy() -> void:
 
 
 func paste() -> void:
-	if is_empty():
+	if not ranges:
 		return
-	if (
-		StateVars
-		. db_saves
-		. select_rows("sqlite_temp_master", "name = 'clip' and type = 'table'", ["name"])
-		. is_empty()
+	if not StateVars.db_saves.select_rows(
+		"sqlite_temp_master", "name = 'clip' and type = 'table'", ["name"]
 	):
 		return
 
@@ -470,12 +467,8 @@ func is_alone() -> bool:
 	return ranges.size() == 2 and ranges[1] - ranges[0] == 1
 
 
-func is_empty() -> bool:
-	return ranges.is_empty()
-
-
 func get_sel_text() -> void:
-	if is_empty():
+	if not ranges:
 		table.get_tree().call_group("selshow", "hide")
 		return
 	table.get_tree().call_group("selshow", "show")

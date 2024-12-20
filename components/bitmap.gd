@@ -70,7 +70,7 @@ func load() -> void:
 		)
 	)
 	var qs := StateVars.db_saves.query_result
-	if qs.is_empty():
+	if not qs:
 		data_code = -1
 		data_name = ""
 		return

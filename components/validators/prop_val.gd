@@ -10,7 +10,7 @@ func sub(new: String) -> String:
 
 
 func check() -> String:
-	if text.is_empty():
+	if not text:
 		return "name cannot be empty"
 	if text in props:
 		return "name is reserved"

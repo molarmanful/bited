@@ -140,8 +140,8 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 		% [
 			data_name,
 			data_code,
-			"" if qs.is_empty() else "  " + qs[0].category,
-			"(undefined)" if qs.is_empty() else qs[0].name,
+			"  " + qs[0].category if qs else "",
+			qs[0].name if qs else "(undefined)",
 		]
 	)
 
@@ -149,7 +149,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
 	StateVars.db_saves.query_with_bindings("select 1 from fonts where id = ?", [id])
-	return not StateVars.db_saves.query_result.is_empty()
+	return not not StateVars.db_saves.query_result
 
 
 ## Deletes font [param id].
@@ -192,7 +192,7 @@ func path() -> String:
 		"select path from paths where id = ?", [StateVars.font.id]
 	)
 	var qs := StateVars.db_locals.query_result
-	return "" if qs.is_empty() else qs[0].path
+	return qs[0].path if qs else ""
 
 
 ## Sets the save path of the current font to [param p].

@@ -258,7 +258,7 @@ func off_glyph(off: int) -> void:
 		)
 
 	var qs := StateVars.db_saves.query_result
-	if qs.is_empty():
+	if not qs:
 		return
 	start_edit(qs[0].name, qs[0].code)
 
@@ -311,7 +311,7 @@ func off_uc(off: int) -> void:
 				)
 
 		var qs := StateVars.db_saves.query_result
-		if qs.is_empty():
+		if not qs:
 			return
 		start_edit(qs[0].name, qs[0].code)
 

@@ -76,7 +76,7 @@ func load() -> void:
 		win_bdf_err.err.call_deferred(bdfp.e)
 		return
 
-	if not bdfp.warns.is_empty():
+	if bdfp.warns:
 		win_bdf_warn.warn.call_deferred("\n".join(bdfp.warns))
 		var ok: bool = await win_bdf_warn.out
 		if not ok:

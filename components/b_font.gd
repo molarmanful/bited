@@ -109,7 +109,7 @@ func load_font() -> void:
 		)
 	)
 	var qs := StateVars.db_saves.query_result
-	if qs.is_empty():
+	if not qs:
 		return
 	from_dict(bytes_to_var(qs[0].data))
 
@@ -356,7 +356,7 @@ func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
 		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
 	)
-	if qs.is_empty():
+	if not qs:
 		return 0
 	return qs[0].avg if qs[0].avg else 0
 
