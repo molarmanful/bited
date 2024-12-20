@@ -14,3 +14,7 @@ For reference, here's [:material-download: my version of
 unicorn](../assets/unicorn.bdf){download="unicorn.bdf"}. It covers all of
 ISO-8859-1 and includes some extra symbols from Windows Glyph List 4 to cover
 common punctuation and symbols.
+
+![unicorn kern king](assets/unicorn-kernking.png)
+/// caption
+///
