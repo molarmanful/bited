@@ -158,6 +158,7 @@ btn_paste = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxConta
 btn_del = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/del")
 
 [node name="Toolbox" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer"]
+z_index = 10
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
