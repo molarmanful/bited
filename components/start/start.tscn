@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://components/start/pg_x.gd" id="1_n1aw4"]
 [ext_resource type="PackedScene" uid="uid://csy0fr30bo24j" path="res://components/start/pg_new.tscn" id="2_kx22o"]
-[ext_resource type="PackedScene" uid="uid://0iifg4w8rgni" path="res://components/start/pg_db.tscn" id="4_pvvli"]
+[ext_resource type="PackedScene" path="res://components/start/pg_db.tscn" id="4_pvvli"]
 [ext_resource type="PackedScene" uid="uid://cm3bemisu8ca8" path="res://components/start/pg_bdf.tscn" id="5_e7gwo"]
-[ext_resource type="PackedScene" uid="uid://di6py440rmdhh" path="res://components/start/pg_over_warn.tscn" id="6_xl0xq"]
-[ext_resource type="PackedScene" uid="uid://cbjhy87263eg7" path="res://components/start/pg_del_warn.tscn" id="7_mkny3"]
+[ext_resource type="PackedScene" path="res://components/start/pg_over_warn.tscn" id="6_xl0xq"]
+[ext_resource type="PackedScene" path="res://components/start/pg_del_warn.tscn" id="7_mkny3"]
 [ext_resource type="PackedScene" uid="uid://c27gbuwb57t7i" path="res://components/start/pg_rename.tscn" id="8_rmd7e"]
-[ext_resource type="PackedScene" uid="uid://cx31pl6h4w4s4" path="res://components/start/pg_bdf_prog.tscn" id="9_y34u8"]
-[ext_resource type="PackedScene" uid="uid://dkktjy6loe6ek" path="res://components/start/pg_bdf_err.tscn" id="10_6ua4s"]
-[ext_resource type="PackedScene" uid="uid://cfy32yngw7vyk" path="res://components/start/pg_bdf_warn.tscn" id="11_ydt5e"]
+[ext_resource type="PackedScene" path="res://components/start/pg_bdf_prog.tscn" id="9_y34u8"]
+[ext_resource type="PackedScene" path="res://components/start/pg_bdf_err.tscn" id="10_6ua4s"]
+[ext_resource type="PackedScene" path="res://components/start/pg_bdf_warn.tscn" id="11_ydt5e"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_hnt50"]
 device = -1
