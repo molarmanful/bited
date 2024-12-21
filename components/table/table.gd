@@ -13,6 +13,7 @@ enum Mode { RANGE, GLYPHS, PAGE }
 @export var node_pad: Container
 @export var node_info: Container
 @export var node_info_text: Label
+@export var node_toolbox: Container
 @export var node_placeholder: Container
 @export var node_grid_panel: Container
 @export var sel: Sel
@@ -31,8 +32,8 @@ var virt := Virt.new()
 var grid: Grid
 var names := {}
 var thumbs := {}
-var debounced := false
 var to_update := false
+var hide_tb := false
 
 var viewmode := Mode.GLYPHS
 var start := 0
@@ -65,6 +66,11 @@ func _ready() -> void:
 	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
+	node_toolbox.resized.connect(
+		func():
+			await get_tree().process_frame
+			update_tb()
+	)
 
 	btn_all.pressed.connect(sel.all)
 	btn_clr.pressed.connect(sel.clear)
@@ -80,21 +86,21 @@ func _process(_delta: float) -> void:
 	update()
 
 
+func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and not e.pressed:
+		hide_tb = not hide_tb
+		update_tb()
+
+
 func onresize() -> void:
 	virt.w_sizer = int(size.x)
 	virt.h_view = get_viewport().size.y
 
 
 func onscroll() -> void:
-	# if debounced:
-	# 	return
-
 	var cur = -int(get_global_transform_with_canvas().get_origin().y)
 	if virt.v_scroll != cur:
 		virt.v_scroll = cur
-
-	# debounced = true
-	# get_tree().create_timer(.1).timeout.connect(func(): debounced = false)
 
 
 func update() -> void:
@@ -279,3 +285,7 @@ func refresh_tex(gen: Dictionary) -> void:
 	if gen.name not in names:
 		return
 	names[gen.name].refresh_tex(gen)
+
+
+func update_tb() -> void:
+	node_toolbox.scale = Vector2.ONE * int(not hide_tb)
