@@ -458,6 +458,7 @@ theme_override_constants/separation = 12
 [node name="glyph" type="LineEdit" parent="NewGlyph/PanelContainer/VBoxContainer/Body/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "name..."
+max_length = 31
 select_all_on_focus = true
 script = ExtResource("7_3rto3")
 
