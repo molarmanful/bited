@@ -104,6 +104,10 @@ func onscroll() -> void:
 
 
 func update() -> void:
+	if not to_update:
+		return
+	to_update = false
+
 	node_inner.custom_minimum_size = virt.size_table
 	node_pad.custom_minimum_size.y = virt.pad_top
 	gen_glyphs()
