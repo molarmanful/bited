@@ -244,7 +244,6 @@ func gen_glyphs() -> void:
 	for c in range(i0, i1):
 		var g := node_glyphs.get_child(i)
 		g.nop = false
-		g.edit = grid.bitmap.data_name and g.data_name == grid.bitmap.data_name
 		if viewmode == Mode.RANGE:
 			c += start
 			g.data_code = c
@@ -254,6 +253,8 @@ func gen_glyphs() -> void:
 			g.data_name = qs[i].name
 			g.data_code = qs[i].code
 		g.ind = c
+		g.selected = sel.is_selected(g.ind)
+		g.edit = grid.bitmap.data_name and g.data_name == grid.bitmap.data_name
 		g.show()
 		names[g.data_name] = g
 		i += 1
@@ -261,7 +262,6 @@ func gen_glyphs() -> void:
 	var gs: Array[Glyph]
 	gs.assign(names.values())
 	update_glyphs(gs)
-	sel.refresh(false)
 
 
 func update_glyphs(gs: Array[Glyph]) -> void:
