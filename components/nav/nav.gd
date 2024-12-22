@@ -98,5 +98,6 @@ func new_glyph() -> void:
 
 	var gname := win_new_glyph.input.text
 	StateVars.db_saves.insert_row("font_" + StateVars.font.id, {name = gname})
-	table.set_glyphs()
+	table.reset_full()
+	table.to_update = true
 	StateVars.edit.emit(gname, -1)
