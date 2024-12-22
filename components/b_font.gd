@@ -73,9 +73,9 @@ func init_font(ignore := false) -> void:
 			"font_" + id,
 			{
 				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
-				code = {data_type = "int", not_null = true},
+				code = {data_type = "int", not_null = true, default = -1},
 				dwidth = {data_type = "int", not_null = true, default = 0},
-				is_abs = {data_type = "int", not_null = true, default = 1},
+				is_abs = {data_type = "int", not_null = true, default = 0},
 				bb_x = {data_type = "int", not_null = true, default = 0},
 				bb_y = {data_type = "int", not_null = true, default = 0},
 				off_x = {data_type = "int", not_null = true, default = 0},

@@ -1,5 +1,6 @@
 extends PanelContainer
 
+@export var table: Table
 @export var preview: Preview
 @export var font_name: Label
 @export var settings: Window
@@ -10,12 +11,14 @@ extends PanelContainer
 @export var txt_bdf_prog: Label
 @export var win_bdf_err: WinBDFErr
 @export var win_bdf_warn: WinBDFWarn
+@export var win_new_glyph: WinNewGlyph
 
 @export var btn_home: Button
 @export var btn_save: Button
 @export var btn_load: Button
 @export var btn_preview: Button
 @export var btn_settings: Button
+@export var btn_new_glyph: Button
 
 var bdfp: BDFParser
 
@@ -32,6 +35,7 @@ func _ready() -> void:
 			preview.preview()
 	)
 	btn_settings.pressed.connect(settings.popup)
+	btn_new_glyph.pressed.connect(new_glyph)
 	StateVars.settings.connect(refresh)
 
 
@@ -85,3 +89,14 @@ func load() -> void:
 	bdfp.font.id = StateVars.font.id
 	StateVars.load_parsed(bdfp)
 	StateVars.start_all()
+
+
+func new_glyph() -> void:
+	var ok := await win_new_glyph.new_glyph()
+	if not ok:
+		return
+
+	var gname := win_new_glyph.input.text
+	StateVars.db_saves.insert_row("font_" + StateVars.font.id, {name = gname})
+	table.set_glyphs()
+	StateVars.edit.emit(gname, -1)

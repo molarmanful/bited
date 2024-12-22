@@ -63,39 +63,12 @@ func load_pages() -> void:
 			if q.category not in page_cats:
 				var y := create_item()
 				y.set_text(0, q.category)
-				# y.set_selectable(0, false)
 				page_cats[q.category] = y
 			x = page_cats[q.category].create_child()
 		else:
 			x = create_item()
 		x.set_text(0, q.name)
 		pages[x] = q.id
-
-		# (
-		# 	StateVars
-		# 	. db_uc
-		# 	. query(
-		# 		(
-		# 			"""
-		# 			select code
-		# 			from p_%s
-		# 			order by row
-		# 			;"""
-		# 			% q.id
-		# 		)
-		# 	)
-		# )
-		# var qs := StateVars.db_uc.query_result
-		#
-		# var res := PackedInt32Array()
-		# res.resize(qs.size())
-		# var i := 0
-		# for q in qs:
-		# 	var c = q.code
-		# 	res[i] = c if c != null else -1
-		# 	i += 1
-		#
-		# pages[x] = res
 
 
 func selected() -> void:
