@@ -1,5 +1,6 @@
-[gd_resource type="Theme" load_steps=91 format=3 uid="uid://b6feeb3hp5b30"]
+[gd_resource type="Theme" load_steps=92 format=3 uid="uid://b6feeb3hp5b30"]
 
+[ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_h7wu0"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_v2ekf"]
 [ext_resource type="Texture2D" uid="uid://d2ar0nlwr6ewe" path="res://assets/ui-light/select_arrow.png" id="2_r62oc"]
 [ext_resource type="Texture2D" uid="uid://cs8agxbwrakjc" path="res://assets/ui-light/radio_checked.png" id="3_rhv4d"]
@@ -880,6 +881,13 @@ GlyphNopSel/base_type = &"PanelContainer"
 GlyphNopSel/styles/panel = SubResource("StyleBoxFlat_vgmeg")
 GlyphSel/base_type = &"PanelContainer"
 GlyphSel/styles/panel = SubResource("StyleBoxFlat_vm62i")
+GlyphTxt/base_type = &"Label"
+GlyphTxt/colors/font_color = Color(0.45098, 0.45098, 0.45098, 1)
+GlyphTxt/font_sizes/font_size = 12
+GlyphTxt/fonts/font = ExtResource("1_h7wu0")
+GlyphUC/base_type = &"Label"
+GlyphUC/colors/font_color = Color(0.45098, 0.45098, 0.45098, 1)
+GlyphUC/fonts/font = ExtResource("1_v2ekf")
 Grid/base_type = &"PanelContainer"
 Grid/colors/asc = Color(0.92549, 0.282353, 0.6, 1)
 Grid/colors/bord = Color(0.831373, 0.831373, 0.831373, 1)

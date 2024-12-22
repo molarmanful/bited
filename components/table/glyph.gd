@@ -17,11 +17,6 @@ var data_code := -1:
 		if c >= 0:
 			data_name = "%04X" % data_code
 		refresh()
-var label: String:
-	get:
-		if data_code < 0 or is_noprint(data_code):
-			return data_name
-		return char(data_code)
 
 var bitmap := Bitmap.new(StyleVars.thumb_size_pre)
 
@@ -66,7 +61,7 @@ func _gui_input(e: InputEvent) -> void:
 
 
 func refresh() -> void:
-	node_code.text = label
+	set_label()
 	set_thumb()
 
 
@@ -135,6 +130,15 @@ func set_variation() -> void:
 		theme_type_variation = "GlyphNop"
 	else:
 		theme_type_variation = ""
+
+
+func set_label() -> void:
+	if data_code < 0 or is_noprint(data_code):
+		node_code.text = data_name
+		node_code.theme_type_variation = "GlyphTxt"
+		return
+	node_code.text = char(data_code)
+	node_code.theme_type_variation = "GlyphUC"
 
 
 static func is_noprint(n: int) -> bool:
