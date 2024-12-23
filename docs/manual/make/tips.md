@@ -42,3 +42,5 @@ The choice between proportional and monospaced is not entirely black-and-white,
 however. A proportional font may have monospaced digits for cleaner numerical
 formatting. Conversely, a monospaced font may have proportional widths in its
 less-used glyphs for the sake of legibility.
+
+### Metrics
