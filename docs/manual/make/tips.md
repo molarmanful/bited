@@ -38,8 +38,6 @@ and "i" the same width. A significant part of your design process will involve
 balancing aesthetics and legibility through compromises in compactness and
 spacing.
 
----
-
 The choice between proportional and monospaced is not entirely black-and-white,
 however. A proportional font may have monospaced digits for cleaner numerical
 formatting. Conversely, a monospaced font may have proportional widths in its
