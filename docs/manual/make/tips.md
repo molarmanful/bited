@@ -29,10 +29,18 @@ Source: [htop.dev](https://htop.dev)
 ///
 
 Monospaced fonts tend to be more niche than proportional fonts, and are
-primarily used in data-heavy contexts where the fixed glyph width is important.
-Terminal emulators, for example, rely on the fixed width to properly display
-tabular data and render more complex UI elements. The design choices you can
-make with a monospaced font are inherently limited by its width constraint; you'll
-have to make "m", "x", and "i" the same width. A significant part of your
-design process will involve balancing aesthetics and legibility/readability
-through compromises in compactness and spacing.
+primarily used in data-heavy contexts where having a fixed glyph width is
+important. Terminal emulators, for example, rely on the fixed width to properly
+display tabular data and render more complex UI elements. The design choices
+you can make with a monospaced font are inherently limited by its width
+constraint; going back to the previous example, you'd have to make "m", "x",
+and "i" the same width. A significant part of your design process will involve
+balancing aesthetics and legibility through compromises in compactness and
+spacing.
+
+---
+
+The choice between proportional and monospaced is not entirely black-and-white,
+however. A proportional font may have monospaced digits for cleaner numerical
+formatting. Conversely, a monospaced font may have proportional widths in its
+less-used glyphs for the sake of legibility.
