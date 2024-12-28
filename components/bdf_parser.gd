@@ -279,6 +279,9 @@ func parse_props(line: Dictionary) -> String:
 					else:
 						font.x_h = v
 
+				"COPYRIGHT":
+					font.copyright = v
+
 				"BITED_DWIDTH":
 					if v is not int or v < 0:
 						warn("BITED_DWIDTH is not a valid int >=0, ignoring")
@@ -329,7 +332,7 @@ func parse_props(line: Dictionary) -> String:
 # Parses a value into a string or number.
 func parse_type(v: String) -> Variant:
 	if v and v[0] == '"':
-		return JSON.parse_string(v)
+		return v.trim_prefix('"').trim_suffix('"').replace('""', '"')
 	var res := arr_int(1, v)
 	if not res:
 		return null

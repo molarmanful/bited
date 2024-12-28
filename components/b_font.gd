@@ -29,6 +29,7 @@ var asc: int:
 var desc := 0
 var cap_h := 0
 var x_h := 0
+var copyright := ""
 var props := {}
 
 var center: Vector2i:
@@ -135,26 +136,27 @@ func to_bdf() -> String:
 
 func to_bdf_properties() -> PackedStringArray:
 	var res: Array[String] = [
-		"FOUNDRY %s" % JSON.stringify(foundry),
-		"FAMILY_NAME %s" % JSON.stringify(family),
-		"WEIGHT_NAME %s" % JSON.stringify(weight),
-		"SLANT %s" % JSON.stringify(slant),
-		"SETWIDTH_NAME %s" % JSON.stringify(setwidth),
-		"ADD_STYLE_NAME %s" % JSON.stringify(add_style),
+		"FOUNDRY %s" % stringify(foundry),
+		"FAMILY_NAME %s" % stringify(family),
+		"WEIGHT_NAME %s" % stringify(weight),
+		"SLANT %s" % stringify(slant),
+		"SETWIDTH_NAME %s" % stringify(setwidth),
+		"ADD_STYLE_NAME %s" % stringify(add_style),
 		"PIXEL_SIZE %d" % px_size,
 		"POINT_SIZE %d" % pt_size,
 		"RESOLUTION_X %d" % resolution.x,
 		"RESOLUTION_Y %d" % resolution.y,
-		"SPACING %s" % JSON.stringify(spacing),
+		"SPACING %s" % stringify(spacing),
 		"AVERAGE_WIDTH %d" % avg_w(),
-		"CHARSET_REGISTRY %s" % JSON.stringify(ch_reg),
-		"CHARSET_ENCODING %s" % JSON.stringify(ch_enc),
+		"CHARSET_REGISTRY %s" % stringify(ch_reg),
+		"CHARSET_ENCODING %s" % stringify(ch_enc),
 		"FONT_ASCENT %d" % asc,
 		"FONT_DESCENT %d" % desc,
 		"CAP_HEIGHT %d" % cap_h,
 		"X_HEIGHT %d" % x_h,
+		"COPYRIGHT %s" % stringify(copyright),
 		"BITED_DWIDTH %d" % dwidth,
-		"BITED_WIDTHS %s" % JSON.stringify(width64()),
+		"BITED_WIDTHS %s" % stringify(width64()),
 		"BITED_TABLE_WIDTH %d" % StyleVars.table_width,
 		"BITED_TABLE_CELL_SCALE %d" % StyleVars.thumb_px_size,
 		"BITED_EDITOR_GRID_SIZE %d" % StyleVars.grid_size,
@@ -300,6 +302,7 @@ func to_dict() -> Dictionary:
 		desc = desc,
 		cap_h = cap_h,
 		x_h = x_h,
+		copyright = copyright,
 		props = props,
 		table_width = StyleVars.table_width,
 		thumb_px_size = StyleVars.thumb_px_size_cor,
@@ -323,6 +326,7 @@ func from_dict(d: Dictionary) -> void:
 	desc = d.desc
 	cap_h = d.cap_h
 	x_h = d.x_h
+	copyright = d.copyright
 	props = d.props
 	StyleVars.table_width = d.table_width
 	StyleVars.thumb_px_size = d.thumb_px_size
@@ -380,6 +384,10 @@ func fbbx() -> Dictionary:
 	return qs[0]
 
 
+func stringify(s: String) -> String:
+	return '"%s"' % s.replace('"', '""')
+
+
 static func is_other_prop(k: String) -> bool:
 	return not (
 		[
@@ -401,6 +409,7 @@ static func is_other_prop(k: String) -> bool:
 			"FONT_DESCENT",
 			"CAP_HEIGHT",
 			"X_HEIGHT",
+			"COPYRIGHT",
 			"BITED_DWIDTH",
 			"BITED_WIDTHS",
 			"BITED_TABLE_WIDTH",

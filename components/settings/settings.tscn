@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=33 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
 [ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
 [ext_resource type="Script" path="res://components/spin_foc.gd" id="18_1hwvf"]
+[ext_resource type="Script" path="res://components/settings/font/copyright.gd" id="18_bv3pj"]
 [ext_resource type="Script" path="res://components/settings/win_add_prop.gd" id="19_efg64"]
 [ext_resource type="Script" path="res://components/validators/prop_val.gd" id="20_2pfww"]
 
@@ -612,6 +613,31 @@ popup/item_1/id = 1
 popup/item_2/text = "C (Character Cell)"
 popup/item_2/id = 2
 script = ExtResource("11_x5ybt")
+
+[node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label11" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer10"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Font copyright information."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+text = "copyright"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer/HBoxContainer10"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="copyright" type="LineEdit" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer/GridContainer" groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "info..."
+select_all_on_focus = true
+script = ExtResource("18_bv3pj")
 
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/font/VBoxContainer"]
 layout_mode = 2
