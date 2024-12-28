@@ -25,7 +25,7 @@ shoes-down      ∪⍦
 shoes-left      ⊂⊆⍧⟃
 shoes-right     ⊃⊇⟄
 shoes-up        ∩⋔
-slashes	        /⌿⍁%
+slashes         /⌿⍁%
 slashes-back    \⍀⍉⍂
 stiles          |⌽⍒⍋∥⍭⍦⍧$
 tacks-down      ⌶⊤⍕⍑⍡
