@@ -31,7 +31,12 @@ func _ready() -> void:
 	)
 	btn_cancel.pressed.connect(hide)
 
+	btn_is_abs.button_pressed = true
+	btn_is_abs.button_pressed = false
+
 
 func open() -> void:
 	popup()
+	btn_is_abs.button_pressed = true
+	btn_is_abs.button_pressed = false
 	input.get_line_edit().grab_focus()
