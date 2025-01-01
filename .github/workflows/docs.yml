@@ -31,7 +31,7 @@ jobs:
         run: |-
           case $GITHUB_REF_NAME in
             doc-*)
-              GITHUB_REF_NAME=$(echo "$GITHUB_REF_NAME" | sed 's/^doc-//')
+              GITHUB_REF_NAME=$(sed 's/^doc-//' <<< "$GITHUB_REF_NAME")
               ;;
           esac
           alias=$(case $GITHUB_REF_NAME in
