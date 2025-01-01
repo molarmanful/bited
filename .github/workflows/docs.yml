@@ -35,7 +35,7 @@ jobs:
               ;;
           esac
           alias=$(case $GITHUB_REF_NAME in
-            *-*) "prerelease" ;;
-            *) "latest" ;;
+            *-*) echo -n "prerelease" ;;
+            *) echo -n "latest" ;;
           esac)
           mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
