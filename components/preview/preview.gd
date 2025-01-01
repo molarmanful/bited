@@ -44,6 +44,7 @@ var preset_tree := {
 	"GREEK":
 	[
 		"greek pangrams",
+		"greek smg",
 	],
 	"CYRILLIC":
 	[

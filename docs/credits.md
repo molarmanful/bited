@@ -26,6 +26,7 @@ inspirations and resources:
 
     - [Cyreal Font Testing Pages](https://www.cyreal.org/Font-Testing-Page/)
     - [Greek Pangrams](https://backpacker.gr/pangrams/)
+    - [SMG Test Text](https://leonidas.net/greek-type-design/texture-and-fitting/)
     - [Markus Kuhn UTF-8 Demo](https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-demo.txt)
 
 ???+ info "Specs"
