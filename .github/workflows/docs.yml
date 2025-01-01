@@ -2,12 +2,11 @@
 name: docs
 on:
   push:
-    tags: ['*']
+    tags: ["*"]
 jobs:
   pub-docs:
     name: Publish MkDocs
     runs-on: ubuntu-latest
-    needs: [export-windows, export-linux, export-mac]
     steps:
       - uses: actions/checkout@v4
         with:
