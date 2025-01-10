@@ -4,3 +4,6 @@
 
 # Python
 venv
+
+.direnv
+result
