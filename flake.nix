@@ -20,13 +20,17 @@
       {
         devShell = pkgs.mkShell {
           packages = with pkgs; [
+            sqlite
             gdtoolkit_4
             godot_4
             scons
             marksman
             markdownlint-cli
-            # TODO: mkdocs + deps
           ];
+
+          shellHook = ''
+            export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib;
+          '';
         };
       }
     );
