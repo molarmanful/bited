@@ -22,8 +22,10 @@
           packages = with pkgs; [
             gdtoolkit_4
             godot_4
+            scons
             marksman
             markdownlint-cli
+            # TODO: mkdocs + deps
           ];
         };
       }
