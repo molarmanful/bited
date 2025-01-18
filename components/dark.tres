@@ -1,19 +1,4 @@
-[gd_resource type="Theme" load_steps=96 format=3 uid="uid://co6jxl87eleb2"]
-
-[ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_2a66r"]
-[ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="1_stftx"]
-[ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_vc1qu"]
-[ext_resource type="Texture2D" uid="uid://e7q6a5lrkrye" path="res://assets/ui-dark/radio_checked.png" id="2_cl6yn"]
-[ext_resource type="Texture2D" uid="uid://b1wv858uxwfoi" path="res://assets/ui-dark/select_arrow.png" id="2_j4r67"]
-[ext_resource type="Texture2D" uid="uid://0ayhxut4yp0f" path="res://assets/ui-dark/radio_checked_disabled.png" id="3_hhofj"]
-[ext_resource type="Texture2D" uid="uid://dvrbqmi7vkbqc" path="res://assets/ui-dark/radio_unchecked.png" id="4_tfjua"]
-[ext_resource type="Texture2D" uid="uid://cd84qahek141n" path="res://assets/ui-dark/radio_unchecked_disabled.png" id="5_k5bx0"]
-[ext_resource type="Texture2D" uid="uid://cuinrvxmdut1x" path="res://assets/ui-dark/updown.png" id="7_h4bw5"]
-[ext_resource type="Texture2D" uid="uid://baloy40n8qjsx" path="res://assets/ui-dark/tree_arrow_collapsed.png" id="8_4rta4"]
-[ext_resource type="Texture2D" uid="uid://cnb4uew8jei22" path="res://assets/ui-dark/tree_arrow.png" id="8_xrcs3"]
-[ext_resource type="Texture2D" uid="uid://dicr8qgre1y51" path="res://assets/ui-dark/tree_arrow_collapsed_mirrored.png" id="9_imbqb"]
-[ext_resource type="Texture2D" uid="uid://qu8crpagnvsj" path="res://assets/ui-dark/close.png" id="11_m4yao"]
-[ext_resource type="Texture2D" uid="uid://budpiq4l1v3sf" path="res://assets/ui-dark/close_pressed.png" id="12_uvwh3"]
+[gd_resource type="Theme" load_steps=82 format=3 uid="uid://co6jxl87eleb2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phuxh"]
 bg_color = Color(0, 0, 0, 0)
@@ -794,7 +779,6 @@ expand_margin_right = 1.0
 expand_margin_bottom = 1.0
 
 [resource]
-default_font = ExtResource("1_stftx")
 default_font_size = 16
 BordB/base_type = &"PanelContainer"
 BordB/styles/panel = SubResource("StyleBoxFlat_phuxh")
@@ -865,10 +849,10 @@ GlyphSel/styles/panel = SubResource("StyleBoxFlat_vwtu7")
 GlyphTxt/base_type = &"Label"
 GlyphTxt/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
 GlyphTxt/font_sizes/font_size = 12
-GlyphTxt/fonts/font = ExtResource("1_2a66r")
+GlyphTxt/fonts/font = null
 GlyphUC/base_type = &"Label"
 GlyphUC/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
-GlyphUC/fonts/font = ExtResource("1_vc1qu")
+GlyphUC/fonts/font = null
 Grid/base_type = &"PanelContainer"
 Grid/colors/asc = Color(0.513726, 0.0941176, 0.262745, 1)
 Grid/colors/bord = Color(0.0901961, 0.0901961, 0.0901961, 1)
@@ -924,15 +908,15 @@ Node/colors/dis = Color(0.0901961, 0.0901961, 0.0901961, 1)
 Node/colors/fg = Color(1, 1, 1, 1)
 Node/colors/sel = Color(0.117647, 0.25098, 0.686275, 1)
 Op/base_type = &"Button"
-Op/fonts/font = ExtResource("1_vc1qu")
-OptionButton/icons/arrow = ExtResource("2_j4r67")
+Op/fonts/font = null
+OptionButton/icons/arrow = null
 Panel/styles/panel = SubResource("StyleBoxFlat_x0txl")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_yq3sf")
 PopupMenu/colors/font_separator_color = Color(0.639216, 0.639216, 0.639216, 1)
-PopupMenu/icons/radio_checked = ExtResource("2_cl6yn")
-PopupMenu/icons/radio_checked_disabled = ExtResource("3_hhofj")
-PopupMenu/icons/radio_unchecked = ExtResource("4_tfjua")
-PopupMenu/icons/radio_unchecked_disabled = ExtResource("5_k5bx0")
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_checked_disabled = null
+PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/radio_unchecked_disabled = null
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_1jb8g")
 PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_iuvlp")
 PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_ui7gb")
@@ -943,7 +927,7 @@ SettingsKey/styles/focus = SubResource("StyleBoxFlat_pioxh")
 SettingsKey/styles/hover = SubResource("StyleBoxFlat_7yxe8")
 SettingsKey/styles/normal = SubResource("StyleBoxFlat_pt34d")
 SettingsKey/styles/pressed = SubResource("StyleBoxFlat_vylx8")
-SpinBox/icons/updown = ExtResource("7_h4bw5")
+SpinBox/icons/updown = null
 TabBar/colors/font_disabled_color = Color(1, 1, 1, 0.5)
 TabBar/colors/font_hovered_color = Color(0.639216, 0.639216, 0.639216, 1)
 TabBar/colors/font_selected_color = Color(1, 1, 1, 1)
@@ -976,7 +960,7 @@ Tool/colors/font_color = Color(0.639216, 0.639216, 0.639216, 1)
 Tool/colors/font_hover_color = Color(1, 1, 1, 1)
 Tool/colors/icon_hover_color = Color(1, 1, 1, 1)
 Tool/colors/icon_normal_color = Color(0.639216, 0.639216, 0.639216, 1)
-Tool/fonts/font = ExtResource("1_vc1qu")
+Tool/fonts/font = null
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
 TooltipLabel/colors/font_shadow_color = Color(0.14902, 0.14902, 0.14902, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_aiec0")
@@ -988,9 +972,9 @@ Tree/colors/relationship_line_color = Color(0.14902, 0.14902, 0.14902, 1)
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 1
 Tree/constants/inner_item_margin_left = 4
-Tree/icons/arrow = ExtResource("8_xrcs3")
-Tree/icons/arrow_collapsed = ExtResource("8_4rta4")
-Tree/icons/arrow_collapsed_mirrored = ExtResource("9_imbqb")
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
+Tree/icons/arrow_collapsed_mirrored = null
 Tree/styles/focus = SubResource("StyleBoxFlat_sbn1k")
 Tree/styles/panel = SubResource("StyleBoxFlat_id3oo")
 Tree/styles/selected = SubResource("StyleBoxFlat_ugd8m")
@@ -1005,7 +989,7 @@ Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/close_h_offset = 24
 Window/constants/close_v_offset = 24
 Window/constants/title_height = 32
-Window/icons/close = ExtResource("11_m4yao")
-Window/icons/close_pressed = ExtResource("12_uvwh3")
+Window/icons/close = null
+Window/icons/close_pressed = null
 Window/styles/embedded_border = SubResource("StyleBoxFlat_0y250")
 Window/styles/embedded_unfocused_border = SubResource("StyleBoxFlat_qihpe")
