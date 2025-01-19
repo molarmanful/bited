@@ -16,13 +16,24 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        gdtk = pkgs.gdtoolkit_4.overrideAttrs (
+          finalAttrs: prevAttrs: {
+            version = "4.3.3";
+            src = pkgs.fetchFromGitHub {
+              owner = "Scony";
+              repo = "godot-gdscript-toolkit";
+              rev = finalAttrs.version;
+              sha256 = "sha256-GS1bCDOKtdJkzgP3+CSWEUeHQ9lUcAHDT09QmPOOeVc=";
+            };
+          }
+        );
       in
       {
         devShell = pkgs.mkShell {
           packages = with pkgs; [
             sqlite
-            gdtoolkit_4
-            godot_4
+            gdtk
+            # godot_4
             scons
             marksman
             markdownlint-cli

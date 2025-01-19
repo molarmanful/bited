@@ -19,6 +19,7 @@ extends PanelContainer
 @export var btn_preview: Button
 @export var btn_settings: Button
 @export var btn_new_glyph: Button
+@export var btn_braille: Button
 
 var bdfp: BDFParser
 
@@ -26,6 +27,7 @@ var bdfp: BDFParser
 func _ready() -> void:
 	refresh()
 
+	StateVars.settings.connect(refresh)
 	btn_home.pressed.connect(StateVars.all_start)
 	btn_save.pressed.connect(save)
 	btn_load.pressed.connect(load)
@@ -36,7 +38,7 @@ func _ready() -> void:
 	)
 	btn_settings.pressed.connect(settings.popup)
 	btn_new_glyph.pressed.connect(new_glyph)
-	StateVars.settings.connect(refresh)
+	btn_braille.pressed.connect(braillegen)
 
 
 func refresh() -> void:
@@ -101,3 +103,50 @@ func new_glyph() -> void:
 	table.reset_full()
 	table.to_update = true
 	StateVars.edit.emit(gname, -1)
+
+
+func braillegen() -> void:
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+				from font_%s
+				where code in (10240, 10241, 10242, 10244, 10248, 10256, 10272, 10304, 10368, 10495)
+				order by code
+				;"""
+				% StateVars.font.id
+			)
+		)
+	)
+
+	var bms := {}
+	var qs := StateVars.db_saves.query_result
+	if qs.size() < 10:
+		# TODO: warn abt missing
+		return
+	for q in StateVars.db_saves.query_result:
+		var bm := Bitmap.new(StyleVars.grid_size_cor)
+		bm.update_cells(q)
+		bms[q.code - 10240] = bm
+
+	for c in 256:
+		var bm := Bitmap.new(
+			StyleVars.grid_size_cor,
+			Util.img_copy(bms[0].cells),
+			10240 + c,
+			"%04X" % (10240 + c)
+		)
+		var i := 1
+		while c > 0:
+			if c & 1:
+				bm.cells.blend_rect(
+					bms[i].cells,
+					Rect2i(Vector2i.ZERO, bm.cells.get_size()),
+					Vector2i.ZERO
+				)
+			c = c >> 1
+			i = i << 1
+		bm.save()

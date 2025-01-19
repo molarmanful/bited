@@ -13,14 +13,20 @@ var dwidth_calc: int:
 		return StateVars.font.dwidth * int(not is_abs) + dwidth
 var corner_bl: Vector2i:
 	get:
-		return (Vector2i(dim, dim) - Vector2i(dwidth_calc, -StateVars.font.bb.y)) / 2
+		return (
+			(Vector2i(dim, dim) - Vector2i(dwidth_calc, -StateVars.font.bb.y))
+			/ 2
+		)
 var origin: Vector2i:
 	get:
 		return corner_bl - Vector2i(0, StateVars.font.desc)
 
 
 func _init(
-	d: int, cs := Image.create_empty(d, d, false, Image.FORMAT_LA8), dc := -1, dn := &""
+	d: int,
+	cs := Image.create_empty(d, d, false, Image.FORMAT_LA8),
+	dc := -1,
+	dn := &""
 ) -> void:
 	dim = d
 	cells = cs
@@ -120,7 +126,9 @@ func update_cells(gen := to_gen()) -> void:
 
 	var img := Util.bits_to_alpha(gen.img, gen.bb_x, gen.bb_y)
 	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, gen.bb_y)
-	cells.blit_rect(img, Rect2i(Vector2i.ZERO, Vector2i(gen.bb_x, gen.bb_y)), off)
+	cells.blit_rect(
+		img, Rect2i(Vector2i.ZERO, Vector2i(gen.bb_x, gen.bb_y)), off
+	)
 
 
 func set_is_abs(ia: bool) -> void:
