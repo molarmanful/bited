@@ -3,16 +3,16 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    utils.url = "github:numtide/flake-utils";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      utils,
+      flake-utils,
     }:
-    utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -33,14 +33,18 @@
           packages = with pkgs; [
             sqlite
             gdtk
-            # godot_4
+            godot_4
             scons
             marksman
-            markdownlint-cli
+            mkdocs
+            python313Packages.pip
           ];
 
           shellHook = ''
             export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib;
+            python -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
           '';
         };
       }
