@@ -61,7 +61,10 @@ func render() -> void:
 	img.fill(Color.TRANSPARENT)
 
 	var blank := Image.create_empty(
-		maxi(1, StateVars.font.dwidth), StateVars.font.bb.y, false, Image.FORMAT_RGBA8
+		maxi(1, StateVars.font.dwidth),
+		StateVars.font.bb.y,
+		false,
+		Image.FORMAT_RGBA8
 	)
 	blank.fill(color_hi)
 	var sz_blank := blank.get_size()
@@ -94,13 +97,17 @@ func render() -> void:
 			var uc := c.unicode_at(0)
 			if uc not in cache:
 				if hi:
-					img.blit_rect(blank, rect_blank, pos - Vector2i(0, StateVars.font.asc))
+					img.blit_rect(
+						blank, rect_blank, pos - Vector2i(0, StateVars.font.asc)
+					)
 					pos.x += sz_blank.x
 				continue
 
 			var q: Dictionary = cache[uc]
 			if q.tex:
-				img.blend_rect(q.tex, q.rect, pos + Vector2i(q.off_x, -q.bb_y - q.off_y))
+				img.blend_rect(
+					q.tex, q.rect, pos + Vector2i(q.off_x, -q.bb_y - q.off_y)
+				)
 			pos.x += q.dw
 
 		pos.x = 0

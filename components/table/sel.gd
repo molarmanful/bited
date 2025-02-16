@@ -248,7 +248,8 @@ func copy() -> void:
 				res += char(code)
 		else:
 			StateVars.db_saves.query_with_bindings(
-				"select name, code from temp.full where row between ? and ?;", [a, b]
+				"select name, code from temp.full where row between ? and ?;",
+				[a, b]
 			)
 			for q in StateVars.db_saves.query_result:
 				res += q.name if q.code < 0 else char(q.code)
@@ -404,7 +405,9 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
-	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
+	table.node_info_text.text = StateVars.get_info(
+		g.data_name, g.data_code, g.nop
+	)
 	table.get_tree().call_group("selshow", "show")
 
 
@@ -452,11 +455,15 @@ func get_sel_text() -> void:
 		table.get_tree().call_group("selshow", "hide")
 		return
 	table.get_tree().call_group("selshow", "show")
-	table.node_info_text.text = "%d item%s selected" % [length, "s" if length != 1 else ""]
+	table.node_info_text.text = (
+		"%d item%s selected" % [length, "s" if length != 1 else ""]
+	)
 
 
 func is_selected(i: int) -> bool:
-	var a := mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
+	var a := (
+		mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
+	)
 	var b := func(): return ranges.bsearch(i, false) % 2
 	return a or b.call()
 

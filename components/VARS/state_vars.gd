@@ -64,14 +64,19 @@ func start_all_defer() -> void:
 	root.get_child(root.get_child_count() - 1).free()
 	root.add_child(scn_all.instantiate())
 	DisplayServer.window_set_title(
-		"bited - %s %s %d\u00d7%d" % [font.family, font.weight, font.bb.x, font.bb.y]
+		(
+			"bited - %s %s %d\u00d7%d"
+			% [font.family, font.weight, font.bb.x, font.bb.y]
+		)
 	)
 
 
 ## Transitions from "all" to "start".
 func all_start() -> void:
 	if not scn_start:
-		scn_start = ResourceLoader.load_threaded_get("res://components/start/start.tscn")
+		scn_start = ResourceLoader.load_threaded_get(
+			"res://components/start/start.tscn"
+		)
 	all_start_defer.call_deferred()
 	DisplayServer.window_set_title("bited")
 
@@ -88,7 +93,13 @@ func init_font_metas() -> void:
 		. create_table(
 			"fonts",
 			{
-				id = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				id =
+				{
+					data_type = "text",
+					not_null = true,
+					primary_key = true,
+					unique = true
+				},
 				data = {data_type = "blob", not_null = true},
 			}
 		)
@@ -102,7 +113,13 @@ func init_locals_paths() -> void:
 		. create_table(
 			"paths",
 			{
-				id = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				id =
+				{
+					data_type = "text",
+					not_null = true,
+					primary_key = true,
+					unique = true
+				},
 				path = {data_type = "string", not_null = true},
 			}
 		)
@@ -126,14 +143,30 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 		. db_uc
 		. query_with_bindings(
 			"""
-			select name, category
-			from data
+			select name
+			from nerd
 			where id = ?
 			;""",
 			[data_code]
 		)
 	)
 	var qs := StateVars.db_uc.query_result
+	if qs:
+		qs[0].category = "NF"
+	else:
+		(
+			StateVars
+			. db_uc
+			. query_with_bindings(
+				"""
+				select name, category
+				from data
+				where id = ?
+				;""",
+				[data_code]
+			)
+		)
+		qs = StateVars.db_uc.query_result
 
 	return (
 		"U+%s  #%d%s\n%s"
@@ -148,13 +181,17 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
-	StateVars.db_saves.query_with_bindings("select 1 from fonts where id = ?", [id])
+	StateVars.db_saves.query_with_bindings(
+		"select 1 from fonts where id = ?", [id]
+	)
 	return not not StateVars.db_saves.query_result
 
 
 ## Deletes font [param id].
 func delete_font(id: String) -> void:
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
+	StateVars.db_saves.query_with_bindings(
+		"delete from fonts where id = ?;", [id]
+	)
 	StateVars.db_saves.drop_table("font_" + id)
 
 
@@ -162,14 +199,24 @@ func delete_font(id: String) -> void:
 func rename_font(old: String, new: String) -> void:
 	StateVars.db_saves.query("begin transaction;")
 	StateVars.db_saves.query("drop table if exists font_%s;" % new)
-	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [new])
-	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])
+	StateVars.db_saves.query(
+		"alter table font_%s rename to font_%s;" % [old, new]
+	)
+	StateVars.db_saves.query_with_bindings(
+		"delete from fonts where id = ?;", [new]
+	)
+	StateVars.db_saves.query_with_bindings(
+		"update fonts set id = ? where id = ?;", [new, old]
+	)
 	StateVars.db_saves.query("commit;")
 
 	StateVars.db_locals.query("begin transaction;")
-	StateVars.db_locals.query_with_bindings("delete from paths where id = ?;", [new])
-	StateVars.db_locals.query_with_bindings("update paths set id = ? where id = ?;", [new, old])
+	StateVars.db_locals.query_with_bindings(
+		"delete from paths where id = ?;", [new]
+	)
+	StateVars.db_locals.query_with_bindings(
+		"update paths set id = ? where id = ?;", [new, old]
+	)
 	StateVars.db_locals.query("commit;")
 
 

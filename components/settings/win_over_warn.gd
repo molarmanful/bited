@@ -21,7 +21,9 @@ func warn(id: String) -> bool:
 	if not StateVars.has_font(id):
 		return true
 
-	label.text = "Font with ID '%s' already exists in the database. Overwrite?" % id
+	label.text = (
+		"Font with ID '%s' already exists in the database. Overwrite?" % id
+	)
 	show()
 	btn_nvm.grab_focus()
 	return await out

@@ -17,7 +17,9 @@ func _ready() -> void:
 
 	btn_is_abs.toggled.connect(
 		func(on: bool):
-			btn_is_abs.tooltip_text = "dwidth mode: %s" % ("dwidth" if on else "offset")
+			btn_is_abs.tooltip_text = (
+				"dwidth mode: %s" % ("dwidth" if on else "offset")
+			)
 
 			var d := input.value
 			input.prefix = "w:" if on else "o:"

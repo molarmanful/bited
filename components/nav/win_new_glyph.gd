@@ -13,11 +13,12 @@ func _ready() -> void:
 	hide()
 	btn_ok.hide()
 
-	input.text_changed.connect(func(_new: String):
-		if input.check():
-			btn_ok.hide()
-			return
-		btn_ok.show()
+	input.text_changed.connect(
+		func(_new: String):
+			if input.check():
+				btn_ok.hide()
+			else:
+				btn_ok.show()
 	)
 	out.connect(func(_ok: bool): hide())
 	btn_ok.pressed.connect(out.emit.bind(true))

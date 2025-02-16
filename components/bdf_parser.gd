@@ -68,7 +68,11 @@ var gen_default := {
 ## Parses BDF file.
 func from_file(path: String, poll := func(): pass) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
-	await mparse(file.get_line, func(): return file.get_position() >= file.get_length(), poll)
+	await mparse(
+		file.get_line,
+		func(): return file.get_position() >= file.get_length(),
+		poll
+	)
 
 
 ## Executes [method parse] on a separate thread.
@@ -145,30 +149,53 @@ func parse_x(line: Dictionary) -> String:
 					return "XLFD must have 14 entries"
 
 				if not xs[1]:
-					warn("XLFD foundry name is empty, defaulting to '%s'" % font.foundry)
+					warn(
+						(
+							"XLFD foundry name is empty, defaulting to '%s'"
+							% font.foundry
+						)
+					)
 				else:
 					font.foundry = xs[1]
 
 				if not xs[2]:
-					warn("XLFD family name is empty, defaulting to '%s'" % font.family)
+					warn(
+						(
+							"XLFD family name is empty, defaulting to '%s'"
+							% font.family
+						)
+					)
 				else:
 					font.family = xs[2]
 
 				if not xs[3]:
-					warn("XLFD weight name is empty, defaulting to '%s'" % font.weight)
+					warn(
+						(
+							"XLFD weight name is empty, defaulting to '%s'"
+							% font.weight
+						)
+					)
 				else:
 					font.weight = xs[3]
 
 				xs[4] = xs[4].to_upper()
 				if not ["R", "I", "O", "RI", "RO"].has(xs[4]):
 					warn(
-						"XLFD slant is not one of (R, I, O, RI, RO), defaulting to %s" % font.slant
+						(
+							"XLFD slant is not one of (R, I, O, RI, RO), defaulting to %s"
+							% font.slant
+						)
 					)
 				else:
 					font.slant = xs[4]
 
 				if not xs[5]:
-					warn("XLFD setwidth name is empty, defaulting to '%s'" % font.setwidth)
+					warn(
+						(
+							"XLFD setwidth name is empty, defaulting to '%s'"
+							% font.setwidth
+						)
+					)
 				else:
 					font.setwidth = xs[5]
 
@@ -176,7 +203,9 @@ func parse_x(line: Dictionary) -> String:
 					font.addstyle = xs[6]
 
 				if not xs[7].is_valid_int() or int(xs[9]) < 0:
-					warn("XLFD pixel size is not a valid int >=0, defaulting to 0")
+					warn(
+						"XLFD pixel size is not a valid int >=0, defaulting to 0"
+					)
 				else:
 					font.bb.y = int(xs[7])
 
@@ -202,7 +231,12 @@ func parse_x(line: Dictionary) -> String:
 
 				xs[11] = xs[11].to_upper()
 				if not ["P", "M", "C"].has(xs[11]):
-					warn("XLFD spacing is not one of (P, M, C), defaulting to %s" % font.spacing)
+					warn(
+						(
+							"XLFD spacing is not one of (P, M, C), defaulting to %s"
+							% font.spacing
+						)
+					)
 				else:
 					font.spacing = xs[11]
 
@@ -230,7 +264,9 @@ func parse_x(line: Dictionary) -> String:
 			if notdef("CHARS"):
 				var xs := arr_int(1, line.v)
 				if "prop BITED_WIDTHS" in defs and xs[0] > dws.get_size().x:
-					warn("CHARS > BITED_WIDTHS size, please manually verify BDF integrity")
+					warn(
+						"CHARS > BITED_WIDTHS size, please manually verify BDF integrity"
+					)
 
 		"STARTCHAR":
 			var x: String = line.v
@@ -294,14 +330,22 @@ func parse_props(line: Dictionary) -> String:
 					else:
 						var data: PackedStringArray = v.split(" ")
 						if data.size() < 2 or not data[0].is_valid_int():
-							warn("BITED_WIDTHS does not follow a valid format, ignoring")
+							warn(
+								"BITED_WIDTHS does not follow a valid format, ignoring"
+							)
 						else:
 							var l := int(data[0])
-							var bits := Marshalls.base64_to_raw(data[1]).decompress_dynamic(
-								-1, FileAccess.COMPRESSION_GZIP
+							var bits := (
+								Marshalls
+								. base64_to_raw(data[1])
+								. decompress_dynamic(
+									-1, FileAccess.COMPRESSION_GZIP
+								)
 							)
 							if not bits and v:
-								warn("BITED_WIDTHS does not contain valid base64 string, ignoring")
+								warn(
+									"BITED_WIDTHS does not contain valid base64 string, ignoring"
+								)
 							else:
 								dws.data = {size = Vector2i(l, 1), data = bits}
 
@@ -313,13 +357,17 @@ func parse_props(line: Dictionary) -> String:
 
 				"BITED_TABLE_CELL_SCALE":
 					if v is not int or v < 0:
-						warn("BITED_TABLE_CELL_SCALE is not a valid int >=0, ignoring")
+						warn(
+							"BITED_TABLE_CELL_SCALE is not a valid int >=0, ignoring"
+						)
 					else:
 						thumb_px_size = v
 
 				"BITED_EDITOR_GRID_SIZE":
 					if v is not int or v < 0:
-						warn("BITED_EDITOR_GRID_SIZE is not a valid int >=0, ignoring")
+						warn(
+							"BITED_EDITOR_GRID_SIZE is not a valid int >=0, ignoring"
+						)
 					else:
 						grid_size = v
 
@@ -379,7 +427,9 @@ func parse_char(line: Dictionary) -> String:
 
 				var xs := arr_int(1, line.v)
 				if not xs or xs[0] < 0:
-					warn("DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH")
+					warn(
+						"DWIDTH x is not a valid int >=0, defaulting to font-wide DWIDTH"
+					)
 				else:
 					gen.dwidth = xs[0] - font.dwidth * int(not gen.is_abs)
 
@@ -394,7 +444,12 @@ func parse_char(line: Dictionary) -> String:
 			endchar()
 
 		_:
-			warn("unknown keyword %s in glyph '%s', skipping" % [line.k, gen.name])
+			warn(
+				(
+					"unknown keyword %s in glyph '%s', skipping"
+					% [line.k, gen.name]
+				)
+			)
 
 	return ""
 
@@ -417,7 +472,9 @@ func parse_bm(line: Dictionary) -> String:
 			if line.k.is_valid_hex_number():
 				gen_bm.append(line.k)
 			else:
-				warn("'%s' is not valid hex, replacing with empty line" % line.k)
+				warn(
+					"'%s' is not valid hex, replacing with empty line" % line.k
+				)
 				gen_bm.append("")
 	return ""
 
@@ -457,11 +514,18 @@ func kv(l: String) -> Dictionary:
 				c = c.to_upper()
 				if mode == Mode.BM:
 					if (c < "A" or c > "Z") and (c < "0" or c > "9"):
-						w = "invalid char '%s' in BITMAP, replacing with '0'" % c
+						w = (
+							"invalid char '%s' in BITMAP, replacing with '0'"
+							% c
+						)
 						k += "0"
 					else:
 						k += c
-				elif (c < "A" or c > "Z") and not (kf and c >= "0" and c <= "9") and c != "_":
+				elif (
+					(c < "A" or c > "Z")
+					and not (kf and c >= "0" and c <= "9")
+					and c != "_"
+				):
 					w = "invalid char '%s' in keyword, skipping line" % c
 					break
 				else:

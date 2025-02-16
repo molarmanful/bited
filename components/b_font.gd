@@ -73,7 +73,13 @@ func init_font(ignore := false) -> void:
 		. create_table(
 			"font_" + id,
 			{
-				name = {data_type = "text", not_null = true, primary_key = true, unique = true},
+				name =
+				{
+					data_type = "text",
+					not_null = true,
+					primary_key = true,
+					unique = true
+				},
 				code = {data_type = "int", not_null = true, default = -1},
 				dwidth = {data_type = "int", not_null = true, default = 0},
 				is_abs = {data_type = "int", not_null = true, default = 0},
@@ -91,7 +97,10 @@ func init_font(ignore := false) -> void:
 
 func save_font(ignore = false) -> void:
 	StateVars.db_saves.query_with_bindings(
-		"insert or %s into fonts (id, data) values (?, ?);" % ("ignore" if ignore else "replace"),
+		(
+			"insert or %s into fonts (id, data) values (?, ?);"
+			% ("ignore" if ignore else "replace")
+		),
 		[id, var_to_bytes(to_dict())]
 	)
 
@@ -122,7 +131,10 @@ func to_bdf() -> String:
 			"STARTFONT 2.1",
 			"FONT %s" % xlfd(),
 			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-			"FONTBOUNDINGBOX %d %d %d %d" % [fb.bb_x, fb.bb_y, fb.off_x, fb.off_y],
+			(
+				"FONTBOUNDINGBOX %d %d %d %d"
+				% [fb.bb_x, fb.bb_y, fb.off_x, fb.off_y]
+			),
 		]
 	)
 
@@ -199,7 +211,9 @@ func width64() -> String:
 		"%d %s"
 		% [
 			res.get_size().x,
-			Marshalls.raw_to_base64(res.data.data.compress(FileAccess.COMPRESSION_GZIP))
+			Marshalls.raw_to_base64(
+				res.data.data.compress(FileAccess.COMPRESSION_GZIP)
+			)
 		]
 	)
 
@@ -358,7 +372,9 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
+		"font_" + id,
+		"",
+		["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
 	)
 	if not qs:
 		return 0

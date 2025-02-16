@@ -50,7 +50,12 @@ func interp(p: Vector2i, f: Callable) -> void:
 
 
 func check_pos(p: Vector2i) -> bool:
-	return 0 <= p.x and p.x < grid.bitmap.dim and 0 <= p.y and p.y < grid.bitmap.dim
+	return (
+		0 <= p.x
+		and p.x < grid.bitmap.dim
+		and 0 <= p.y
+		and p.y < grid.bitmap.dim
+	)
 
 
 class _Tool:
@@ -160,7 +165,11 @@ class ToolRect:
 	func update() -> void:
 		super()
 		c_grid.cells.copy_from(c_tool.prev)
-		var rect := Rect2i(c_tool.pivot, p - c_tool.pivot).abs().grow_individual(0, 0, 1, 1)
+		var rect := (
+			Rect2i(c_tool.pivot, p - c_tool.pivot)
+			. abs()
+			. grow_individual(0, 0, 1, 1)
+		)
 
 		if c_tool.cmode == CMode.INV:
 			for x in rect.size.x:
@@ -189,5 +198,7 @@ class ToolMove:
 		super()
 		c_grid.cells.fill(Color.TRANSPARENT)
 		c_grid.cells.blit_rect(
-			c_tool.prev, Rect2i(Vector2i.ZERO, c_tool.prev.get_size()), p - c_tool.pivot
+			c_tool.prev,
+			Rect2i(Vector2i.ZERO, c_tool.prev.get_size()),
+			p - c_tool.pivot
 		)

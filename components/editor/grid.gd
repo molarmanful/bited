@@ -75,7 +75,9 @@ func _ready() -> void:
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
-	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
+	cmode_group.pressed.connect(
+		func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name]
+	)
 
 	btn_is_abs.toggled.connect(is_abs)
 	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
@@ -112,7 +114,9 @@ func _gui_input(e: InputEvent) -> void:
 		return
 
 	pressed = e.pressed
-	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
+	toolman.tools[tool_sel].handle(
+		Tool.State.START if pressed else Tool.State.END
+	)
 
 
 func start_edit(data_name: String, data_code: int) -> void:
@@ -130,7 +134,9 @@ func start_edit(data_name: String, data_code: int) -> void:
 func refresh(hard := false) -> void:
 	if hard:
 		bitmap.dim = dim_grid
-		cells.copy_from(Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8))
+		cells.copy_from(
+			Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
+		)
 		tex_cells.set_image(cells)
 
 	bitmap.load()
@@ -145,7 +151,9 @@ func refresh(hard := false) -> void:
 	node_wrapper.show()
 
 	btn_is_abs.set_pressed_no_signal(bitmap.is_abs)
-	btn_is_abs.tooltip_text = "dwidth mode: %s" % ("dwidth" if bitmap.is_abs else "offset")
+	btn_is_abs.tooltip_text = (
+		"dwidth mode: %s" % ("dwidth" if bitmap.is_abs else "offset")
+	)
 
 	input_dwidth.allow_lesser = true
 	input_dwidth.prefix = "w:" if bitmap.is_abs else "o:"
@@ -153,7 +161,9 @@ func refresh(hard := false) -> void:
 	input_dwidth.set_value_no_signal(bitmap.dwidth)
 	input_dwidth.allow_lesser = false
 
-	editor.node_info_text.text = StateVars.get_info(bitmap.data_name, bitmap.data_code)
+	editor.node_info_text.text = StateVars.get_info(
+		bitmap.data_name, bitmap.data_code
+	)
 	node_cells.texture = tex_cells
 	to_update_cells = true
 	update_grid()
@@ -227,7 +237,11 @@ func off_glyph(off: int) -> void:
 					limit 1
 					;"""
 					. format(
-						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+						[
+							StateVars.font.id,
+							"<=" if off < 0 else ">=",
+							"desc" if off < 0 else ""
+						]
 					)
 				),
 				[table.start, table.end, bitmap.data_code + off]
@@ -251,7 +265,11 @@ func off_glyph(off: int) -> void:
 					order by row %s
 					limit 1
 					;"""
-					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					% [
+						StateVars.font.id,
+						"<=" if off < 0 else ">=",
+						"desc" if off < 0 else ""
+					]
 				),
 				[off, bitmap.data_name]
 			)
@@ -304,7 +322,10 @@ func off_uc(off: int) -> void:
 							order by row %s
 							limit 1
 							;"""
-							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+							% [
+								"<=" if off < 0 else ">=",
+								"desc" if off < 0 else ""
+							]
 						),
 						[off, bitmap.data_name]
 					)

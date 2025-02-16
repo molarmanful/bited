@@ -49,7 +49,13 @@ func _ready() -> void:
 		. create_table(
 			"temp.full",
 			{
-				row = {data_type = "int", not_null = true, primary_key = true, unique = true},
+				row =
+				{
+					data_type = "int",
+					not_null = true,
+					primary_key = true,
+					unique = true
+				},
 				name = {data_type = "text", not_null = true, unique = true},
 				code = {data_type = "int", not_null = true},
 			}
@@ -87,7 +93,11 @@ func _process(_delta: float) -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and not e.pressed:
+	if (
+		e is InputEventMouseButton
+		and e.button_index == MOUSE_BUTTON_RIGHT
+		and not e.pressed
+	):
 		hide_tb = not hide_tb
 		update_tb()
 
@@ -147,7 +157,10 @@ func set_glyphs(top := true) -> void:
 	)
 	viewmode = Mode.GLYPHS
 	virt.length = (
-		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
+		StateVars
+		. db_saves
+		. select_rows("temp.full", "", ["count(row) as count"])[0]
+		. count
 	)
 	after_set(top)
 
@@ -180,7 +193,8 @@ func set_page(id: String) -> void:
 				"temp.full",
 				{
 					row = q.row,
-					name = "%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
+					name =
+					"%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
 					code = q.code,
 				}
 			)
