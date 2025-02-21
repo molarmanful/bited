@@ -12,6 +12,7 @@ extends PanelContainer
 @export var win_bdf_err: WinBDFErr
 @export var win_bdf_warn: WinBDFWarn
 @export var win_new_glyph: WinNewGlyph
+@export var win_finder: WinFinder
 
 @export var btn_home: Button
 @export var btn_save: Button
@@ -19,6 +20,7 @@ extends PanelContainer
 @export var btn_preview: Button
 @export var btn_settings: Button
 @export var btn_new_glyph: Button
+@export var btn_finder: Button
 @export var btn_braille: Button
 
 var bdfp: BDFParser
@@ -28,6 +30,7 @@ func _ready() -> void:
 	refresh()
 
 	StateVars.settings.connect(refresh)
+	win_finder.query.connect(finder)
 	btn_home.pressed.connect(StateVars.all_start)
 	btn_save.pressed.connect(save)
 	btn_load.pressed.connect(load)
@@ -36,8 +39,9 @@ func _ready() -> void:
 			preview.window.hide()
 			preview.preview()
 	)
-	btn_settings.pressed.connect(settings.popup)
+	btn_settings.pressed.connect(settings.show)
 	btn_new_glyph.pressed.connect(new_glyph)
+	btn_finder.pressed.connect(win_finder.find)
 	btn_braille.pressed.connect(braillegen)
 
 
@@ -103,6 +107,12 @@ func new_glyph() -> void:
 	table.reset_full()
 	table.to_update = true
 	StateVars.edit.emit(gname, -1)
+
+
+func finder(q: String) -> void:
+	table.node_header.text = "FINDER"
+	table.node_subheader.text = q
+	table.set_finder(q)
 
 
 func braillegen() -> void:

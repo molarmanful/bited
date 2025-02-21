@@ -9,6 +9,7 @@ extends Window
 func _ready() -> void:
 	hide()
 
+	close_requested.connect(hide)
 	btn_ok.pressed.connect(hide)
 
 

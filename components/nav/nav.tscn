@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=32 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" path="res://components/nav/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://components/nav/win_bdf_warn.gd" id="5_iswbp"]
 [ext_resource type="Script" path="res://components/nav/win_new_glyph.gd" id="6_6sojv"]
 [ext_resource type="Script" path="res://components/validators/glyph_val.gd" id="7_3rto3"]
+[ext_resource type="Script" path="res://components/nav/win_finder.gd" id="8_ayivh"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_5q25s"]
 action = &"bited_home"
@@ -37,6 +38,12 @@ action = &"bited_new_glyph"
 
 [sub_resource type="Shortcut" id="Shortcut_bd6f1"]
 events = [SubResource("InputEventAction_l6hp0")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_amrxl"]
+action = &"bited_find"
+
+[sub_resource type="Shortcut" id="Shortcut_36wsi"]
+events = [SubResource("InputEventAction_amrxl")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_yaix3"]
 action = &"bited_settings"
@@ -69,7 +76,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_braille")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_braille")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -86,12 +93,14 @@ txt_bdf_prog = NodePath("BDFProg/PanelContainer/Body/Label")
 win_bdf_err = NodePath("BDFErr")
 win_bdf_warn = NodePath("BDFWarn")
 win_new_glyph = NodePath("NewGlyph")
+win_finder = NodePath("Finder")
 btn_home = NodePath("MarginContainer/HBoxContainer2/home")
 btn_save = NodePath("MarginContainer/HBoxContainer2/save")
 btn_load = NodePath("MarginContainer/HBoxContainer2/load")
 btn_preview = NodePath("MarginContainer/HBoxContainer2/preview")
 btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 btn_new_glyph = NodePath("MarginContainer/HBoxContainer2/new_glyph")
+btn_finder = NodePath("MarginContainer/HBoxContainer2/finder")
 btn_braille = NodePath("MarginContainer/HBoxContainer2/braillegen")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -171,6 +180,16 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_bd6f1")
 text = "🆕"
+
+[node name="finder" type="Button" parent="MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "finder"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_36wsi")
+text = "🔍"
 
 [node name="braillegen" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
@@ -498,3 +517,65 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_uuwx2")
 text = "cancel"
+
+[node name="Finder" type="Window" parent="." node_paths=PackedStringArray("input", "btn_ok")]
+auto_translate_mode = 1
+title = "finder"
+initial_position = 2
+size = Vector2i(300, 113)
+visible = false
+transient = true
+exclusive = true
+script = ExtResource("8_ayivh")
+input = NodePath("PanelContainer/VBoxContainer/Body/VBoxContainer/query")
+btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
+
+[node name="PanelContainer" type="PanelContainer" parent="Finder"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Finder/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Body" type="MarginContainer" parent="Finder/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Finder/PanelContainer/VBoxContainer/Body"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="query" type="LineEdit" parent="Finder/PanelContainer/VBoxContainer/Body/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "query..."
+select_all_on_focus = true
+
+[node name="Footer" type="PanelContainer" parent="Finder/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Nav"
+
+[node name="MarginContainer" type="MarginContainer" parent="Finder/PanelContainer/VBoxContainer/Footer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Finder/PanelContainer/VBoxContainer/Footer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="Finder/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_6q7r4")
+text = "done"

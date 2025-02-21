@@ -1,7 +1,7 @@
 extends Node
 
 
-## Check if [param x] is between [param n0] and [param n1] (inclusive).
+## Checks if [param x] is between [param n0] and [param n1] (inclusive).
 func between(x: int, n0: int, n1: int) -> bool:
 	var a := mini(n0, n1)
 	var b := maxi(n0, n1)

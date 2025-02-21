@@ -207,6 +207,39 @@ func set_page(id: String) -> void:
 	after_set()
 
 
+func set_finder(query: String) -> void:
+	var fp := FinderParser.from(query)
+	var fpq := fp.query()
+	StateVars.db_uc.query_with_bindings(
+		"select id from data where %s order by id;" % fpq, fp.binds
+	)
+	var qs := StateVars.db_uc.query_result
+
+	StateVars.db_saves.delete_rows("temp.full", "")
+	StateVars.db_saves.query("begin transaction;")
+
+	for i in qs.size():
+		var q := qs[i]
+		(
+			StateVars
+			. db_saves
+			. insert_row(
+				"temp.full",
+				{
+					row = i,
+					name = "%04X" % q.id,
+					code = q.id,
+				}
+			)
+		)
+
+	StateVars.db_saves.query("commit;")
+
+	viewmode = Mode.PAGE
+	virt.length = qs.size()
+	after_set()
+
+
 func after_set(top := true) -> void:
 	if virt.length:
 		node_placeholder.hide()

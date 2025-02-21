@@ -21,6 +21,7 @@ func _ready() -> void:
 				btn_ok.show()
 	)
 	out.connect(func(_ok: bool): hide())
+	close_requested.connect(out.emit.bind(false))
 	btn_ok.pressed.connect(out.emit.bind(true))
 	btn_cancel.pressed.connect(out.emit.bind(false))
 

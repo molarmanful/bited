@@ -143,30 +143,14 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 		. db_uc
 		. query_with_bindings(
 			"""
-			select name
-			from nerd
+			select name, category
+			from data
 			where id = ?
 			;""",
 			[data_code]
 		)
 	)
 	var qs := StateVars.db_uc.query_result
-	if qs:
-		qs[0].category = "NF"
-	else:
-		(
-			StateVars
-			. db_uc
-			. query_with_bindings(
-				"""
-				select name, category
-				from data
-				where id = ?
-				;""",
-				[data_code]
-			)
-		)
-		qs = StateVars.db_uc.query_result
 
 	return (
 		"U+%s  #%d%s\n%s"

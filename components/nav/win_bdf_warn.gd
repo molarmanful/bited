@@ -13,6 +13,7 @@ func _ready() -> void:
 	hide()
 
 	out.connect(func(_ok: bool): hide())
+	close_requested.connect(out.emit.bind(false))
 	btn_ok.pressed.connect(out.emit.bind(true))
 	btn_cancel.pressed.connect(out.emit.bind(false))
 
