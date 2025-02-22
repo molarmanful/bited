@@ -22,7 +22,7 @@ jobs:
         run: |-
           case $GITHUB_REF_NAME in
             doc*-*)
-              GITHUB_REF_NAME=$(sed -E 's/^doc.*-/\1/' <<< "$GITHUB_REF_NAME")
+              GITHUB_REF_NAME=$(sed -E 's/^doc.*-//' <<< "$GITHUB_REF_NAME")
               ;;
           esac
           alias=$(case $GITHUB_REF_NAME in
