@@ -3,4 +3,5 @@
 /android/
 
 .direnv
+.devenv
 result

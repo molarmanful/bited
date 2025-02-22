@@ -18,7 +18,6 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
-      - run: nix develop -c uv sync --frozen
       - name: Deploy
         run: |-
           case $GITHUB_REF_NAME in
@@ -30,4 +29,4 @@ jobs:
             *-*) echo -n "prerelease" ;;
             *) echo -n "latest" ;;
           esac)
-          nix develop -c mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
+          nix develop --no-pure-eval -c mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
