@@ -4,6 +4,7 @@ extends PanelContainer
 enum Mode { RANGE, GLYPHS, PAGE }
 
 @export var editor: Editor
+@export var charsets: Charsets
 @export var node_focus: PanelContainer
 @export var node_scroll: ScrollContainer
 @export var node_inner: Container

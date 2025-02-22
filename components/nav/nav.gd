@@ -112,6 +112,7 @@ func new_glyph() -> void:
 func finder(q: String) -> void:
 	table.node_header.text = "FINDER"
 	table.node_subheader.text = q
+	table.charsets.deselect_all()
 	table.set_finder(q)
 
 

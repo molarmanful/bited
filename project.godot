@@ -43,7 +43,6 @@ window/size/borderless=true
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
-display_server/driver.linuxbsd="wayland"
 
 [dotnet]
 

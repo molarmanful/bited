@@ -1,3 +1,4 @@
+class_name Charsets
 extends Tree
 
 @export var table: Table

@@ -142,9 +142,10 @@ theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 96
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("editor", "node_focus", "node_scroll", "node_info", "node_info_text", "node_toolbox", "btn_all", "btn_clr", "btn_fltr_dw", "btn_cut", "btn_copy", "btn_paste", "btn_del") instance=ExtResource("1_tnd3j")]
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("editor", "charsets", "node_focus", "node_scroll", "node_info", "node_info_text", "node_toolbox", "btn_all", "btn_clr", "btn_fltr_dw", "btn_cut", "btn_copy", "btn_paste", "btn_del") instance=ExtResource("1_tnd3j")]
 layout_mode = 2
 editor = NodePath("../../../../../../PanelContainer/ScrollContainer/Editor")
+charsets = NodePath("../../../../Charsets")
 node_focus = NodePath("../../..")
 node_scroll = NodePath("../..")
 node_info = NodePath("../../../../../TableInfo")
