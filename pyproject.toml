@@ -1,0 +1,13 @@
+[project]
+name = "bited-docs"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "mike>=2.1.3",
+    "mkdocs-awesome-pages-plugin>=2.10.1",
+    "mkdocs-glightbox>=0.4.0",
+    "mkdocs-material>=9.6.5",
+]
+
+[tool.setuptools]
+py-modules = []

@@ -2,8 +2,5 @@
 .godot/
 /android/
 
-# Python
-venv
-
 .direnv
 result

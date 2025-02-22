@@ -15,18 +15,9 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - run: echo "cache_id=$(date --utc '+%V')" >> "$GITHUB_ENV"
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
-      - name: Install Deps
-        run: pip install -r requirements.txt
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - uses: nix develop -c uv sync --frozen
       - name: Deploy
         run: |-
           case $GITHUB_REF_NAME in
@@ -38,4 +29,4 @@ jobs:
             *-*) echo -n "prerelease" ;;
             *) echo -n "latest" ;;
           esac)
-          mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
+          nix develop -c mike deploy --push --update-aliases "$GITHUB_REF_NAME" "$alias"
