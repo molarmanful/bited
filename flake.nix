@@ -30,7 +30,6 @@
         {
           devenv.shells.default = {
             packages = with pkgs; [
-              sqlite
               gdtk
               godot_4
               scons
@@ -45,6 +44,10 @@
                 sync.enable = true;
               };
             };
+
+            enterShell = ''
+              export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc ]}:$LD_LIBRARY_PATH"
+            '';
           };
         };
     };
