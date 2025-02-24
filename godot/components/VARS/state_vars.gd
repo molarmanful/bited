@@ -204,16 +204,16 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_locals.query("commit;")
 
 
-## Saves [param bdfp] to the fonts database.
-func load_parsed(bdfp: BDFParser) -> void:
-	font = bdfp.font
-	StyleVars.table_width = bdfp.table_width
-	StyleVars.thumb_px_size = bdfp.thumb_px_size
-	StyleVars.grid_size = bdfp.grid_size
-	StyleVars.grid_px_size = bdfp.grid_px_size
+## Saves [param font] to the fonts database.
+func load_parsed(bf: BFont) -> void:
+	font = bf
+	StyleVars.table_width = font.table_width
+	StyleVars.thumb_px_size = font.thumb_px_size
+	StyleVars.grid_size = font.grid_size
+	StyleVars.grid_px_size = font.grid_px_size
 	font.init_font()
 	var gens: Array[Dictionary]
-	gens.assign(bdfp.glyphs.values())
+	gens.assign(font.glyphs.values())
 	font.save_glyphs(gens)
 
 

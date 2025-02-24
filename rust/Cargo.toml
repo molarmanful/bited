@@ -1,10 +1,13 @@
 [package]
 name = "bited-rust"
 version = "0.0.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
+base64 = "0.22.1"
+bitvec = "1.0.1"
+flate2 = "1.1.0"
 godot = "0.2.3"

@@ -1,37 +1,20 @@
 class_name BFont
-extends RefCounted
+extends BFontR
 ## BDF font abstraction for holding (meta)data.
 
 var id := "new_font"
-var foundry := "bited"
-var family := "new font"
-var weight := "Regular"
-var slant := "R"
-var setwidth := "Normal"
-var add_style := ""
 var px_size: int:
 	get:
 		return bb.y
 var pt_size: int:
 	get:
 		return px_size * 72 / resolution.y * 10
-var resolution := Vector2i(75, 75)
-var spacing := "P"
-var ch_reg := "ISO10646"
-var ch_enc := "1"
-var bb := Vector2i(0, 0)
 var dwidth: int:
 	get:
 		return bb.x
 var asc: int:
 	get:
 		return px_size - desc
-var desc := 0
-var cap_h := 0
-var x_h := 0
-var copyright := ""
-var props := {}
-
 var center: Vector2i:
 	get:
 		return bb * Vector2i(1, -1) / 2
@@ -122,6 +105,17 @@ func load_font() -> void:
 	if not qs:
 		return
 	from_dict(bytes_to_var(qs[0].data))
+
+
+func from_file(path: String) -> String:
+	var file := FileAccess.open(path, FileAccess.READ)
+	var a := Time.get_unix_time_from_system()
+	var err := parse(
+		file.get_line,
+		func(): return file.get_position() >= file.get_length(),
+	)
+	printt("parsed", Time.get_unix_time_from_system() - a)
+	return err
 
 
 func to_bdf() -> String:

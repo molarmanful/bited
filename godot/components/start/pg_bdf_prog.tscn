@@ -37,3 +37,4 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="Label" parent="VBoxContainer/Body"]
 layout_mode = 2
+text = "Loading..."

@@ -23,7 +23,7 @@ extends PanelContainer
 @export var btn_finder: Button
 @export var btn_braille: Button
 
-var bdfp: BDFParser
+var font: BFont
 
 
 func _ready() -> void:
@@ -39,7 +39,7 @@ func _ready() -> void:
 			preview.window.hide()
 			preview.preview()
 	)
-	btn_settings.pressed.connect(settings.show)
+	btn_settings.pressed.connect(settings.popup)
 	btn_new_glyph.pressed.connect(new_glyph)
 	btn_finder.pressed.connect(win_finder.find)
 	btn_braille.pressed.connect(braillegen)
@@ -71,29 +71,25 @@ func load() -> void:
 			return
 		StateVars.set_path(path)
 
-	bdfp = BDFParser.new()
-	txt_bdf_prog.text = ""
-	win_bdf_prog.popup.call_deferred()
-	await bdfp.from_file(
-		path,
-		func():
-			txt_bdf_prog.text = "Loaded %d chars" % bdfp.glyphs.size()
-			await get_tree().process_frame
-	)
+	font = BFont.new()
+	await get_tree().process_frame
+	win_bdf_prog.popup()
+	await get_tree().process_frame
+	var err := font.from_file(path)
 	win_bdf_prog.hide()
 
-	if bdfp.e:
-		win_bdf_err.err.call_deferred(bdfp.e)
+	if err:
+		win_bdf_err.err.call_deferred(font.e)
 		return
 
-	if bdfp.warns:
-		win_bdf_warn.warn.call_deferred("\n".join(bdfp.warns))
+	if font.warns:
+		win_bdf_warn.warn.call_deferred("\n".join(font.warns))
 		var ok: bool = await win_bdf_warn.out
 		if not ok:
 			return
 
-	bdfp.font.id = StateVars.font.id
-	StateVars.load_parsed(bdfp)
+	font.id = StateVars.font.id
+	StateVars.load_parsed(font)
 	StateVars.start_all()
 
 

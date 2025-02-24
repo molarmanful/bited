@@ -6,6 +6,10 @@
     systems.url = "systems";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -27,14 +31,29 @@
               gdtk
               godot_4
               marksman
+              just
             ];
 
-            languages.python = {
-              enable = true;
-              venv.enable = true;
-              uv = {
+            languages = {
+              rust = {
                 enable = true;
-                sync.enable = true;
+                channel = "nightly";
+                components = [
+                  "rustc"
+                  "cargo"
+                  "clippy"
+                  "rustfmt"
+                  "rust-analyzer"
+                  "rust-src"
+                ];
+              };
+              python = {
+                enable = true;
+                venv.enable = true;
+                uv = {
+                  enable = true;
+                  sync.enable = true;
+                };
               };
             };
 

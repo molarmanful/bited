@@ -15,7 +15,7 @@ extends PanelContainer
 @export var btn_start: Button
 @export var btn_cancel: Button
 
-var bdfp: BDFParser
+var font: BFont
 
 
 func _ready() -> void:
@@ -41,24 +41,21 @@ func begin() -> void:
 
 
 func file_sel(path: String) -> void:
-	bdfp = BDFParser.new()
-	hide.call_deferred()
-	pg_bdf_prog.show.call_deferred()
-	await bdfp.from_file(
-		path,
-		func():
-			pg_bdf_prog.label.text = "Loaded %d chars" % bdfp.glyphs.size()
-			await get_tree().process_frame
-	)
+	font = BFont.new()
+	await get_tree().process_frame
+	hide()
+	pg_bdf_prog.show()
+	await get_tree().process_frame
+	var err := font.from_file(path)
 	pg_bdf_prog.hide()
 
-	if bdfp.e:
-		pg_bdf_err.err.call_deferred(bdfp.e)
+	if err:
+		pg_bdf_err.err.call_deferred(err)
 		return
 
-	if bdfp.warns:
+	if font.warns:
 		hide.call_deferred()
-		pg_bdf_warn.warn.call_deferred("\n".join(bdfp.warns))
+		pg_bdf_warn.warn.call_deferred("\n".join(font.warns))
 		var ok: bool = await pg_bdf_warn.out
 		if not ok:
 			pg_x.show()
@@ -69,7 +66,7 @@ func file_sel(path: String) -> void:
 	input_id.grab_focus()
 	input_path.text = path
 	input_path.caret_column = input_path.text.length()
-	input_w.value = bdfp.font.dwidth
+	input_w.value = font.dwidth
 
 
 func act_valid(_new := input_id.text) -> void:
@@ -89,10 +86,11 @@ func start() -> void:
 		show()
 		return
 
-	bdfp.font.id = input_id.text
-	bdfp.font.bb.x = input_w.value
+	font.id = input_id.text
+	font.bb.x = input_w.value
+	printt("FONT", font.id)
 	StateVars.db_locals.query_with_bindings(
-		"delete from paths where id = ?", [bdfp.font.id]
+		"delete from paths where id = ?", [font.id]
 	)
-	StateVars.load_parsed(bdfp)
+	StateVars.load_parsed(font)
 	StateVars.start_all()

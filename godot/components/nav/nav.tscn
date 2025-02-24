@@ -290,6 +290,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="Label" parent="BDFProg/PanelContainer/Body"]
 layout_mode = 2
+text = "Loading..."
 
 [node name="BDFErr" type="Window" parent="." node_paths=PackedStringArray("input", "btn_ok")]
 auto_translate_mode = 1
