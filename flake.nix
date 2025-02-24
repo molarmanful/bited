@@ -9,16 +9,9 @@
   };
 
   outputs =
-    inputs@{
-      systems,
-      flake-parts,
-      ...
-    }:
-
+    inputs@{ flake-parts, systems, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        inputs.devenv.flakeModule
-      ];
+      imports = [ inputs.devenv.flakeModule ];
       systems = import systems;
       perSystem =
         { pkgs, ... }:
@@ -29,6 +22,7 @@
 
         {
           devenv.shells.default = {
+
             packages = with pkgs; [
               gdtk
               godot_4
