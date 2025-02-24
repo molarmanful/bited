@@ -26,7 +26,6 @@
             packages = with pkgs; [
               gdtk
               godot_4
-              scons
               marksman
             ];
 
