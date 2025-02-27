@@ -1,7 +1,13 @@
+use std::{
+    io::BufRead,
+    time::Instant,
+};
+
 use godot::{
     classes::{
         IRefCounted,
         RefCounted,
+        file_access::ModeFlags,
     },
     prelude::*,
 };
@@ -92,31 +98,31 @@ impl IRefCounted for BFontR {
 #[godot_api]
 impl BFontR {
     #[func]
-    pub fn parse(&mut self, next: Callable, end: Callable) -> GString {
+    pub fn from_file(&mut self, path: GString) -> GString {
+        let start = Instant::now();
+        let err = match GFile::open(&path, ModeFlags::READ) {
+            Ok(file) => self.parse(file.lines().map(|l| l.unwrap_or("".to_string()))),
+            Err(e) => e.to_string(),
+        }
+        .into();
+        godot_print!("parsed {:.2?}", start.elapsed());
+        err
+    }
+
+    fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>) -> String {
         let mut parser = Parser::new(self);
-        while !end.call(&[]).to::<bool>() {
-            let e = parser.parse_line(&next.call(&[]).to_string());
+        for line in lines {
+            let e = parser.parse_line(line.as_ref());
             if let Some(msg) = e {
                 let l = parser.n_line;
-                return self.err(l, &msg).into();
+                return self.err(l, &msg);
             }
             if parser.is_done() {
-                return "".into();
+                return "".to_string();
             }
         }
         parser.recover();
-        "".into()
-    }
-
-    pub fn warn(&mut self, n_line: usize, msg: &str) {
-        godot_print!("WARN @ line {}: {}", n_line, msg);
-        self.warns.push(msg);
-    }
-
-    pub fn err(&self, n_line: usize, msg: &str) -> String {
-        let e = format!("ERR @ line {}: {}", n_line, msg);
-        godot_print!("{}", e);
-        e
+        "".to_string()
     }
 
     pub fn set_prop(&mut self, k: &str, v: Variant) {
@@ -125,5 +131,16 @@ impl BFontR {
 
     pub fn set_glyph_pre(&mut self, k: &str, v: Dictionary) {
         self.glyphs.set(k, v)
+    }
+
+    pub fn warn(&mut self, n_line: usize, msg: &str) {
+        godot_print!("WARN @ line {}: {}", n_line, msg);
+        self.warns.push(msg);
+    }
+
+    fn err(&self, n_line: usize, msg: &str) -> String {
+        let e = format!("ERR @ line {}: {}", n_line, msg);
+        godot_print!("{}", e);
+        e
     }
 }

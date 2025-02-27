@@ -107,17 +107,6 @@ func load_font() -> void:
 	from_dict(bytes_to_var(qs[0].data))
 
 
-func from_file(path: String) -> String:
-	var file := FileAccess.open(path, FileAccess.READ)
-	var a := Time.get_unix_time_from_system()
-	var err := parse(
-		file.get_line,
-		func(): return file.get_position() >= file.get_length(),
-	)
-	printt("parsed", Time.get_unix_time_from_system() - a)
-	return err
-
-
 func to_bdf() -> String:
 	var fb := fbbx()
 	var res := PackedStringArray(
