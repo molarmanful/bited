@@ -5,7 +5,7 @@ on:
     tags: [v*]
 env:
   GODOT_VERSION: 4.3
-  PROJECT_PATH: .
+  PROJECT_PATH: godot
 jobs:
   export-windows:
     name: Windows Export

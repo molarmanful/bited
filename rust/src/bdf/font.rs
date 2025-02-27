@@ -99,14 +99,21 @@ impl IRefCounted for BFontR {
 impl BFontR {
     #[func]
     pub fn from_file(&mut self, path: GString) -> GString {
-        let start = Instant::now();
-        let err = match GFile::open(&path, ModeFlags::READ) {
-            Ok(file) => self.parse(file.lines().map(|l| l.unwrap_or("".to_string()))),
+        match GFile::open(&path, ModeFlags::READ) {
+            Ok(file) => {
+                let start = Instant::now();
+                let e = self.parse(file.lines().map(|l| l.unwrap_or("".to_string())));
+                godot_print!("parsed {:.2?}", start.elapsed());
+                e
+            }
             Err(e) => e.to_string(),
         }
-        .into();
-        godot_print!("parsed {:.2?}", start.elapsed());
-        err
+        .into()
+    }
+
+    #[func]
+    pub fn is_other_prop(k: GString) -> bool {
+        Parser::is_other_prop(k.to_string().as_str())
     }
 
     fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>) -> String {

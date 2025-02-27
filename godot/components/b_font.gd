@@ -385,36 +385,3 @@ func fbbx() -> Dictionary:
 
 func stringify(s: String) -> String:
 	return '"%s"' % s.replace('"', '""')
-
-
-static func is_other_prop(k: String) -> bool:
-	return not (
-		[
-			"FOUNDRY",
-			"FAMILY_NAME",
-			"WEIGHT_NAME",
-			"SLANT",
-			"SETWIDTH_NAME",
-			"ADD_STYLE_NAME",
-			"PIXEL_SIZE",
-			"POINT_SIZE",
-			"RESOLUTION_X",
-			"RESOLUTION_Y",
-			"SPACING",
-			"AVERAGE_WIDTH",
-			"CHARSET_REGISTRY",
-			"CHARSET_ENCODING",
-			"FONT_ASCENT",
-			"FONT_DESCENT",
-			"CAP_HEIGHT",
-			"X_HEIGHT",
-			"COPYRIGHT",
-			"BITED_DWIDTH",
-			"BITED_WIDTHS",
-			"BITED_TABLE_WIDTH",
-			"BITED_TABLE_CELL_SCALE",
-			"BITED_EDITOR_GRID_SIZE",
-			"BITED_EDITOR_CELL_SIZE",
-		]
-		. has(k.to_upper())
-	)
