@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: rust
+on:
+  push:
+    paths: [rust/**, .github/workflows/rust.yml]
+  workflow_dispatch:
+jobs:
+  linux:
+    name: Build Rust Lib (Linux)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: rui314/setup-mold@v1
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
+      - run: |-
+          cd rust
+          cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bited_rust.dll
+          path: rust/target/release/libbited_rust.so
+  windows:
+    name: Build Rust Lib (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
+      - run: |-
+          cd rust
+          cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bited_rust.dll
+          path: rust/target/release/bited_rust.dll

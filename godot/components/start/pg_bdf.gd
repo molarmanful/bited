@@ -46,7 +46,7 @@ func file_sel(path: String) -> void:
 	hide()
 	pg_bdf_prog.show()
 	await get_tree().process_frame
-	var err := font.from_file(path)
+	var err := font.read_file(path)
 	pg_bdf_prog.hide()
 
 	if err:

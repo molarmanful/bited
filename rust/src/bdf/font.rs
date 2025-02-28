@@ -98,7 +98,7 @@ impl IRefCounted for BFontR {
 #[godot_api]
 impl BFontR {
     #[func]
-    pub fn from_file(&mut self, path: GString) -> GString {
+    pub fn read_file(&mut self, path: GString) -> GString {
         match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();

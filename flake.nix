@@ -10,6 +10,7 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    crane.url = "github:ipetkov/crane";
   };
 
   outputs =
@@ -18,48 +19,67 @@
       imports = [ inputs.devenv.flakeModule ];
       systems = import systems;
       perSystem =
-        { pkgs, ... }:
+        { pkgs, system, ... }:
 
         let
           gdtk = pkgs.callPackage ./gdtoolkit.nix { };
         in
-
         {
-          devenv.shells.default = {
 
-            packages = with pkgs; [
-              gdtk
-              godot_4
-              marksman
-              just
-            ];
-
-            languages = {
-              rust = {
-                enable = true;
-                channel = "nightly";
-                components = [
-                  "rustc"
-                  "cargo"
-                  "clippy"
-                  "rustfmt"
-                  "rust-analyzer"
-                  "rust-src"
-                ];
+          packages = {
+            bited-rust =
+              let
+                toolchain = inputs.fenix.packages.${system}.minimal;
+                craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+              in
+              craneLib.buildPackage {
+                src = ./rust;
+                doCheck = false;
+                depsBuildBuild = with pkgs; [ mold ];
+                CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
+                RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
               };
-              python = {
-                enable = true;
-                venv.enable = true;
-                uv = {
+          };
+
+          devenv.shells = {
+            default = {
+
+              packages = with pkgs; [
+                gdtk
+                godot_4
+                marksman
+                just
+                yaml-language-server
+                yamlfix
+              ];
+
+              languages = {
+                rust = {
                   enable = true;
-                  sync.enable = true;
+                  channel = "nightly";
+                  components = [
+                    "rustc"
+                    "cargo"
+                    "clippy"
+                    "rustfmt"
+                    "rust-analyzer"
+                    "rust-src"
+                  ];
+                };
+                python = {
+                  enable = true;
+                  venv.enable = true;
+                  uv = {
+                    enable = true;
+                    sync.enable = true;
+                  };
                 };
               };
-            };
 
-            enterShell = ''
-              export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc ]}:$LD_LIBRARY_PATH"
-            '';
+              enterShell = ''
+                export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc ]}:$LD_LIBRARY_PATH"
+              '';
+            };
           };
         };
     };

@@ -75,7 +75,7 @@ func load() -> void:
 	await get_tree().process_frame
 	win_bdf_prog.popup()
 	await get_tree().process_frame
-	var err := font.from_file(path)
+	var err := font.read_file(path)
 	win_bdf_prog.hide()
 
 	if err:

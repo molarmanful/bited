@@ -326,9 +326,8 @@ impl<'a> Parser<'a> {
     }
 
     fn parse_char_ignore(&mut self, k: &str) -> Option<String> {
-        match k {
-            "ENDCHAR" => self.mode = Mode::X,
-            _ => {}
+        if k == "ENDCHAR" {
+            self.mode = Mode::X;
         }
         None
     }

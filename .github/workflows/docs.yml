@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: docs
 on:
   push:
-    tags: ["*"]
+    tags: ['*']
 jobs:
   pub-docs:
     name: Publish MkDocs
