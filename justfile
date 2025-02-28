@@ -1,8 +1,7 @@
 [working-directory: 'godot']
-run:
-  just build-rust
+run: build-rs
   godot4
 
 [working-directory: 'rust']
-build-rust:
+build-rs *FLAGS:
   cargo build
