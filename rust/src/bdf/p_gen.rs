@@ -44,6 +44,13 @@ impl PGen {
         (warn, !def)
     }
 
+    pub fn check_missing(&mut self) -> Vec<&str> {
+        ["BBX", "DWIDTH", "BITMAP"]
+            .into_iter()
+            .filter(|&k| !self.defs.contains(k))
+            .collect()
+    }
+
     pub fn to_glyph(&self) -> Dictionary {
         dict! {
             "name": self.name.to_owned(),

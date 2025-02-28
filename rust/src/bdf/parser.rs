@@ -32,6 +32,7 @@ enum Mode {
     Pre,
     X,
     Props,
+    Chars,
     Char,
     CharIgnore,
     BM,
@@ -66,6 +67,7 @@ impl<'a> Parser<'a> {
             Mode::Pre => self.parse_pre(&k),
             Mode::X => self.parse_x(&k, v),
             Mode::Props => self.parse_props(&k, v),
+            Mode::Chars => self.parse_chars(&k, v),
             Mode::Char => self.parse_char(&k, v),
             Mode::CharIgnore => self.parse_char_ignore(&k),
             Mode::BM => self.parse_bm(&k),
@@ -77,7 +79,7 @@ impl<'a> Parser<'a> {
         match self.mode {
             Mode::Char | Mode::BM => {
                 self.warn("reached file end while parsing glyph");
-                self.endchar()
+                self.end_char()
             }
             _ => {}
         }
@@ -140,24 +142,25 @@ impl<'a> Parser<'a> {
             }
 
             "STARTPROPERTIES" => {
+                if !self.defs.contains("FONT") {
+                    return Some("missing FONT before STARTPROPERTIES".to_string());
+                }
                 self.notdef(k);
                 self.mode = Mode::Props;
             }
 
-            "STARTCHAR" => {
-                if self.notdef(&format!("char {}", v)) {
-                    self.mode = Mode::Char;
-                    self.p_gen = PGen::new();
-                    self.p_gen.name = v.to_string();
-                } else {
-                    self.mode = Mode::CharIgnore;
-                }
+            "CHARS" => {
+                self.notdef(k);
+                self.mode = Mode::Chars;
             }
 
-            "ENDFONT" => self.mode = Mode::Post,
+            "ENDFONT" => {
+                self.warn("reached ENDFONT without finding any glyphs");
+                self.mode = Mode::Post;
+            }
 
             "SIZE" | "FONTBOUNDINGBOX" | "CONTENTVERSION" | "METRICSSET" | "SWIDTH" | "SWIDTH1"
-            | "DWIDTH1" | "VVECTOR" | "CHARS" => {
+            | "DWIDTH1" | "VVECTOR" => {
                 self.notdef(k);
             }
 
@@ -227,6 +230,26 @@ impl<'a> Parser<'a> {
         None
     }
 
+    fn parse_chars(&mut self, k: &str, v: &str) -> Option<String> {
+        match k {
+            "STARTCHAR" => {
+                if self.notdef(&format!("char {}", v)) {
+                    self.mode = Mode::Char;
+                    self.p_gen = PGen::new();
+                    self.p_gen.name = v.to_string();
+                } else {
+                    self.mode = Mode::CharIgnore;
+                }
+            }
+
+            "ENDFONT" => self.mode = Mode::Post,
+
+            _ => self.warn(&format!("unknown keyword {} in chars section, skipping", k)),
+        }
+
+        None
+    }
+
     fn parse_char(&mut self, k: &str, v: &str) -> Option<String> {
         match k {
             "ENCODING" => {
@@ -244,28 +267,30 @@ impl<'a> Parser<'a> {
             }
 
             "BBX" => {
-                let mut bb = arr_int::<i64>(v, 4);
-                let bb_x = bb.next()?.map(|n| {
-                    n.try_into().unwrap_or_else(|_| {
-                        self.warn("bounding box x < 0, defaulting to 0");
-                        0
-                    })
-                });
-                let bb_y = bb.next()?.map(|n| {
-                    n.try_into().unwrap_or_else(|_| {
-                        self.warn("bounding box x < 0, defaulting to 0");
-                        0
-                    })
-                });
-                let off_x = bb.next()?;
-                let off_y = bb.next()?;
-                if bb_x.and(bb_y).and(off_x).and(off_y).is_none() {
-                    self.warn("BBX has invalid entries, filling with 0");
+                if self.p_gen_notdef(k) {
+                    let mut bb = arr_int::<i64>(v, 4);
+                    let bb_x = bb.next()?.map(|n| {
+                        n.try_into().unwrap_or_else(|_| {
+                            self.warn("bounding box x < 0, defaulting to 0");
+                            0
+                        })
+                    });
+                    let bb_y = bb.next()?.map(|n| {
+                        n.try_into().unwrap_or_else(|_| {
+                            self.warn("bounding box x < 0, defaulting to 0");
+                            0
+                        })
+                    });
+                    let off_x = bb.next()?;
+                    let off_y = bb.next()?;
+                    if bb_x.and(bb_y).and(off_x).and(off_y).is_none() {
+                        self.warn("BBX has invalid entries, filling with 0");
+                    }
+                    self.p_gen.bb_x = bb_x.unwrap_or(0);
+                    self.p_gen.bb_y = bb_y.unwrap_or(0);
+                    self.p_gen.off_x = off_x.unwrap_or(0);
+                    self.p_gen.off_y = off_y.unwrap_or(0);
                 }
-                self.p_gen.bb_x = bb_x.unwrap_or(0);
-                self.p_gen.bb_y = bb_y.unwrap_or(0);
-                self.p_gen.off_x = off_x.unwrap_or(0);
-                self.p_gen.off_y = off_y.unwrap_or(0);
             }
 
             "DWIDTH" => {
@@ -282,15 +307,12 @@ impl<'a> Parser<'a> {
                 }
             }
 
-            "BITMAP" => self.mode = Mode::BM,
-
-            "ENDCHAR" => {
-                self.warn(&format!(
-                    "glyph {} is missing a BITMAP entry",
-                    self.p_gen.name,
-                ));
-                self.endchar();
+            "BITMAP" => {
+                self.p_gen_notdef(k);
+                self.mode = Mode::BM;
             }
+
+            "ENDCHAR" => self.end_char(),
 
             "SWIDTH" | "SWIDTH1" | "DWIDTH1" | "VVECTOR" => {}
 
@@ -313,7 +335,7 @@ impl<'a> Parser<'a> {
 
     fn parse_bm(&mut self, k: &str) -> Option<String> {
         match k {
-            "ENDCHAR" => self.endchar(),
+            "ENDCHAR" => self.end_char(),
             _ => match usize::from_str_radix(k, 16) {
                 Ok(_) => self.p_gen.bm.push(k.to_string()),
                 Err(_) => {
@@ -328,8 +350,15 @@ impl<'a> Parser<'a> {
         None
     }
 
-    fn endchar(&mut self) {
-        self.mode = Mode::X;
+    fn end_char(&mut self) {
+        match &self.p_gen.check_missing()[..] {
+            [] => {}
+            xs => {
+                let s = xs.join(", ");
+                self.warn(&format!("glyph {} is missing {}", self.p_gen.name, s))
+            }
+        }
+        self.mode = Mode::Chars;
         self.i_glyph += 1;
         self.font
             .set_glyph_pre(&self.p_gen.name, self.p_gen.to_glyph())
