@@ -141,13 +141,17 @@ impl BFontR {
     }
 
     pub fn warn(&mut self, n_line: usize, msg: &str) {
-        godot_print!("WARN @ line {}: {}", n_line, msg);
-        self.warns.push(msg);
+        self.warns
+            .push(&Self::rs_print(format!("WARN @ line {}: {}", n_line, msg)));
     }
 
     fn err(&self, n_line: usize, msg: &str) -> String {
-        let e = format!("ERR @ line {}: {}", n_line, msg);
-        godot_print!("{}", e);
-        e
+        Self::rs_print(format!("ERR @ line {}: {}", n_line, msg))
+    }
+
+    #[func]
+    fn rs_print(str: String) -> String {
+        godot_print!("{}", str);
+        str
     }
 }
