@@ -5,10 +5,41 @@ on:
   push:
     paths: [rust/**, .github/workflows/rust.yml]
   workflow_dispatch:
+env:
+  WINDOWS_KEY: ${{ github.sha }}-windows
+  LINUX_KEY: ${{ github.sha }}-linux
 jobs:
+  windows:
+    name: Build Rust Lib (Windows)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
+      - name: Build
+        run: |-
+          cd rust
+          cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+      - uses: actions/cache/save@v4
+        id: cache
+        with:
+          path: target/release/*.dll
+          key: ${{ env.WINDOWS_KEY }}
   linux:
     name: Build Rust Lib (Linux)
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rust
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,27 +48,27 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: nightly
-      - run: |-
+      - name: Build
+        run: |-
           cd rust
           cargo build --release
-      - uses: actions/upload-artifact@v4
+      - uses: actions/cache/save@v4
+        id: cache
         with:
-          name: bited_rust.dll
-          path: rust/target/release/libbited_rust.so
-  windows:
-    name: Build Rust Lib (Windows)
-    runs-on: windows-latest
+          path: target/release/*.so
+          key: ${{ env.LINUX_KEY }}
+  releases:
+    name: Build Releases
+    runs-on: ubuntu-latest
+    needs: [windows, linux]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
         with:
-          lfs: true
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+          path: rust/target/release
+          key: ${{ env.WINDOWS_KEY }}
+      - uses: actions/cache/restore@v4
         with:
-          toolchain: nightly
-      - run: |-
-          cd rust
-          cargo build --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: bited_rust.dll
-          path: rust/target/release/bited_rust.dll
+          path: rust/target/release
+          key: ${{ env.LINUX_KEY }}
+          fail-on-cache-miss: true
+      - run: ls rust/target/release
