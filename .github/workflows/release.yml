@@ -4,93 +4,80 @@ name: release
 on:
   push:
     tags: [v*]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
-  GODOT_VERSION: 4.3
-  PROJECT_PATH: godot
+  WINDOWS_KEY: ${{ github.ref }}-windows
+  LINUX_KEY: ${{ github.ref }}-linux
+  IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
 jobs:
-  export-windows:
-    name: Windows Export
-    runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.3
+  rust:
+    strategy:
+      matrix:
+        platform:
+          - name: Windows
+            os: windows-latest
+            key: ${{ env.WINDOWS_KEY }}
+          - name: Linux
+            os: ubuntu-latest
+            key: ${{ env.LINUX_KEY }}
+    name: Rust Lib (${{ matrix.platform.name }})
+    runs-on: ${{ matrix.platform.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: rust
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mkdir -v -p ~/.config/
-          mv /root/.config/godot ~/.config/godot
-          mv /root/.local/share/godot/export_templates/"$GODOT_VERSION".stable \
-            ~/.local/share/godot/export_templates/"$GODOT_VERSION".stable
-      - name: Windows Build
-        run: |
-          mkdir -v -p build/windows
-          EXPORT_DIR="$(readlink -f build)"
-          cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "windows" \
-            "$EXPORT_DIR"/windows/bited.exe
-          cd "$EXPORT_DIR"/windows
-          zip bited.zip ./*
-      - name: Upload to Release
-        uses: svenstaro/upload-release-action@v2
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
-          file: build/windows/bited.zip
-          asset_name: bited_windows_$tag.zip
-  export-linux:
-    name: Linux Export
+          toolchain: nightly
+      - run: cargo build --release
+      - uses: actions/cache/save@v4
+        id: cache
+        with:
+          path: rust/target/release/*
+          key: ${{ matrix.platform.key }}
+          enableCrossOsArchive: true
+  releases:
+    strategy:
+      matrix:
+        platform:
+          - name: Windows
+            pkg: release-windows
+            key: ${{ env.WINDOWS_KEY }}
+          - name: Linux
+            pkg: release-linux
+            key: ${{ env.LINUX_KEY }}
+    name: Release (${{ matrix.platform.name }})
     runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.3
+    needs: rust
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/"$GODOT_VERSION".stable \
-            ~/.local/share/godot/export_templates/"$GODOT_VERSION".stable
-      - name: Linux Build
-        run: |
-          mkdir -v -p build/linux/*
-          EXPORT_DIR="$(readlink -f build)"
-          cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "linux" \
-            "$EXPORT_DIR"/linux/bited.x86_64
-          cd "$EXPORT_DIR"/linux
-          zip bited.zip ./*
-      - name: Upload to Release
-        uses: svenstaro/upload-release-action@v2
+      - uses: actions/cache/restore@v4
         with:
-          file: build/linux/bited.zip
-          asset_name: bited_linux_$tag.zip
-  export-mac:
-    name: Mac Export
-    runs-on: ubuntu-latest
-    container:
-      image: barichello/godot-ci:4.3
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+          path: rust/target/release
+          key: ${{ matrix.platform.key }}
+          fail-on-cache-miss: true
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - name: Build
+        run: |
+          git add -Nf rust/target/release
+          nix build .#${{ matrix.platform.pkg }}
+      - if: ${{ env.IS_MANUAL }}
+        uses: actions/upload-artifact@v4
         with:
-          lfs: true
-      - name: Setup
-        run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/"$GODOT_VERSION".stable \
-            ~/.local/share/godot/export_templates/"$GODOT_VERSION".stable
-      - name: Mac Build
-        run: |
-          mkdir -v -p build/mac/*
-          EXPORT_DIR="$(readlink -f build)"
-          cd "$PROJECT_PATH"
-          godot --headless --verbose --export-release "mac" \
-            "$EXPORT_DIR"/mac/bited.zip
-      - name: Upload to Release
+          name: ${{ matrix.platform.pkg }}
+          path: result/bited.zip
+      - if: ${{ !env.IS_MANUAL }}
+        name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/mac/bited.zip

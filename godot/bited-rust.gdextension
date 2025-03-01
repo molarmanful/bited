@@ -4,8 +4,8 @@ compatibility_minimum = 4.3
 
 [libraries]
 linux.debug.x86_64 =     "res://../rust/target/debug/libbited_rust.so"
-linux.release.x86_64 =   "res://addons/bited-rust/bin/libbited_rust.so"
+linux.release.x86_64 =   "res://../rust/target/release/libbited_rust.so"
 windows.debug.x86_64 =   "res://../rust/target/debug/bited_rust.dll"
-windows.release.x86_64 = "res://addons/bited-rust/bin/bited_rust.dll"
+windows.release.x86_64 = "res://../rust/target/release/bited_rust.dll"
 macos.debug =            "res://../rust/target/debug/libbited_rust.dylib"
-macos.release =          "res://addons/bited-rust/bin/libbited_rust.dylib"
+macos.release =          "res://../rust/target/release/libbited_rust.dylib"

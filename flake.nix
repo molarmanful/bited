@@ -23,23 +23,36 @@
 
         let
           gdtk = pkgs.callPackage ./gdtoolkit.nix { };
+          rust =
+            let
+              toolchain = inputs.fenix.packages.${system}.minimal;
+              craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+            in
+            craneLib.buildPackage {
+              src = ./rust;
+              doCheck = false;
+              depsBuildBuild = with pkgs; [ mold ];
+              CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
+              RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
+            };
+          release-pkgs =
+            builtins.mapAttrs (name: attrs: pkgs.callPackage ./release.nix ({ inherit name; } // attrs))
+              {
+                release-windows = {
+                  release = "windows";
+                  ext = "exe";
+                };
+                release-linux = {
+                  release = "linux";
+                  ext = "x86_64";
+                };
+              };
         in
         {
 
           packages = {
-            bited-rust =
-              let
-                toolchain = inputs.fenix.packages.${system}.minimal;
-                craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
-              in
-              craneLib.buildPackage {
-                src = ./rust;
-                doCheck = false;
-                depsBuildBuild = with pkgs; [ mold ];
-                CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
-                RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
-              };
-          };
+            inherit rust;
+          } // release-pkgs;
 
           devenv.shells = {
             default = {
