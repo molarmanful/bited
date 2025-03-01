@@ -30,7 +30,7 @@ jobs:
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: target/release
+          path: rust/target/release
           key: ${{ env.WINDOWS_KEY }}
   linux:
     name: Build Rust Lib (Linux)
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: target/release
+          path: rust/target/release
           key: ${{ env.LINUX_KEY }}
   releases:
     name: Build Releases
