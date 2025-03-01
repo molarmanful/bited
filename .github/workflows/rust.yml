@@ -27,13 +27,10 @@ jobs:
         with:
           toolchain: nightly
       - run: cargo build --release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: target/release/*.dll
+          path: target/release
           key: ${{ env.WINDOWS_KEY }}
   linux:
     name: Build Rust Lib (Linux)
@@ -53,7 +50,7 @@ jobs:
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: target/release/*.so
+          path: target/release
           key: ${{ env.LINUX_KEY }}
   releases:
     name: Build Releases
@@ -64,6 +61,7 @@ jobs:
         with:
           path: rust/target/release
           key: ${{ env.WINDOWS_KEY }}
+          fail-on-cache-miss: true
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
