@@ -5,6 +5,9 @@ on:
   push:
     paths: [rust/**, .github/workflows/rust.yml]
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   WINDOWS_KEY: ${{ github.sha }}-windows
   LINUX_KEY: ${{ github.sha }}-linux
@@ -15,6 +18,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: rust
     steps:
       - uses: actions/checkout@v4
         with:
