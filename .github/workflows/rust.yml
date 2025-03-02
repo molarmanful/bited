@@ -70,7 +70,6 @@ jobs:
           fail-on-cache-miss: true
       - name: Patch
         run: |
-          cp -r libbited_rust.macos.framework target/release
           cd target/release
           lipo -create -output libbited_rust.macos.dylib \
             ../x86_64-apple-darwin/release/libbited_rust.dylib \
