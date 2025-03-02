@@ -19,13 +19,13 @@
       imports = [ inputs.devenv.flakeModule ];
       systems = import systems;
       perSystem =
-        { pkgs, system, ... }:
+        { inputs', pkgs, ... }:
 
         let
           gdtk = pkgs.callPackage ./gdtoolkit.nix { };
           rust =
             let
-              toolchain = inputs.fenix.packages.${system}.minimal;
+              toolchain = inputs'.fenix.packages.minimal;
               craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
             in
             craneLib.buildPackage {
@@ -67,7 +67,7 @@
                 marksman
                 just
                 yaml-language-server
-                yamlfix
+                yamlfmt
               ];
 
               languages = {

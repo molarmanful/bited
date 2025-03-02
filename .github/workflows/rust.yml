@@ -1,0 +1,120 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: release
+on:
+  push:
+    branches: [main]
+    paths: [rust/**, .github/workflows/rust.yml]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rust:
+    strategy:
+      matrix:
+        platform:
+          - name: MacOS x86
+            os: macos-latest
+            key: ${{ github.ref }}-macos-x86
+            target: x86_64-apple-darwin
+          - name: MacOS ARM
+            os: macos-latest
+            key: ${{ github.ref }}-macos-arm
+            target: aarch64-apple-darwin
+          - name: Windows
+            os: windows-latest
+            key: ${{ github.ref }}-windows
+          - name: Linux
+            os: ubuntu-latest
+            key: ${{ github.ref }}-linux
+    name: Rust Lib (${{ matrix.platform.name }})
+    runs-on: ${{ matrix.platform.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: nightly
+          target: ${{ matrix.platform.target }}
+      - run: cargo build --release ${{ matrix.platform.target != '' && format('--target {0}', matrix.platform.target) || '' }}
+      - run: gh cache delete ${{ matrix.platform.key }} || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/cache/save@v4
+        id: cache
+        with:
+          path: rust/target/${{ matrix.platform.target != '' && format('{0}/', matrix.platform.target) || '' }}release
+          key: ${{ matrix.platform.key }}
+          enableCrossOsArchive: true
+  macos-bruh:
+    name: MacOS is Pain
+    runs-on: macos-latest
+    needs: rust
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/x86_64-apple-darwin/release
+          key: ${{ github.ref }}-macos-x86
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/aarch64-apple-darwin/release
+          key: ${{ github.ref }}-macos-arm
+          fail-on-cache-miss: true
+      - name: Patch
+        run: |
+          cp -r libbited_rust.macos.framework target/release
+          cd target/release
+          lipo -create -output libbited_rust.macos.dylib \
+            ../x86_64-apple-darwin/release/libbited_rust.dylib \
+            ../aarch64-apple-darwin/release/libbited_rust.dylib
+          cp libbited_rust.macos.dylib libbited_rust.macos.framework
+      - run: gh cache delete "${{ github.ref }}-macos" || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/cache/save@v4
+        id: cache
+        with:
+          path: rust/target/release
+          key: ${{ github.ref }}-macos
+          enableCrossOsArchive: true
+  combine:
+    name: Combine Libs
+    runs-on: ubuntu-latest
+    needs: macos-bruh
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/release
+          key: ${{ github.ref }}-macos
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/release
+          key: ${{ github.ref }}-windows
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/release
+          key: ${{ github.ref }}-linux
+          fail-on-cache-miss: true
+      - name: Add Libs
+        run: |
+          cd rust/target/release
+          git add -f *.so *.dylib *.dll
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: auto-generate release rust libs
+          file_pattern: rust/target/release

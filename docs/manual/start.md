@@ -75,7 +75,7 @@ Feel free to explore around; just return to the Start Menu when you're done.
 
 !!! warning "Before You Continue"
 
-    [:material-download:Download](https://github.com/molarmanful/bited/blob/master/assets/bited.bdf)
+    [:material-download:Download](https://github.com/molarmanful/bited/blob/main/assets/bited.bdf)
     the BDF for bited's UI font.
 
 Let's see how to import BDFs into bited. Pressing "import" (++3++) will bring
