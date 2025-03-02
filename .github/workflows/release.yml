@@ -9,8 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
-  WINDOWS_KEY: ${{ github.ref }}-windows
-  LINUX_KEY: ${{ github.ref }}-linux
   IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
 jobs:
   rust:
@@ -19,10 +17,10 @@ jobs:
         platform:
           - name: Windows
             os: windows-latest
-            key: ${{ env.WINDOWS_KEY }}
+            key: ${{ github.ref }}-windows
           - name: Linux
             os: ubuntu-latest
-            key: ${{ env.LINUX_KEY }}
+            key: ${{ github.ref }}-linux
     name: Rust Lib (${{ matrix.platform.name }})
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -49,10 +47,10 @@ jobs:
         platform:
           - name: Windows
             pkg: release-windows
-            key: ${{ env.WINDOWS_KEY }}
+            key: ${{ github.ref }}-windows
           - name: Linux
             pkg: release-linux
-            key: ${{ env.LINUX_KEY }}
+            key: ${{ github.ref }}-linux
     name: Release (${{ matrix.platform.name }})
     runs-on: ubuntu-latest
     needs: rust
@@ -71,12 +69,12 @@ jobs:
         run: |
           git add -Nf rust/target/release
           nix build .#${{ matrix.platform.pkg }}
-      - if: ${{ env.IS_MANUAL }}
+      - if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform.pkg }}
           path: result/bited.zip
-      - if: ${{ !env.IS_MANUAL }}
+      - if: github.event_name != 'workflow_dispatch'
         name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
