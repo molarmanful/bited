@@ -8,8 +8,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-env:
-  IS_MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
 jobs:
   rust:
     strategy:
@@ -35,6 +33,7 @@ jobs:
         with:
           toolchain: nightly
       - run: cargo build --release
+      - run: gh cache delete ${{ matrix.platform.key }}
       - uses: actions/cache/save@v4
         id: cache
         with:
@@ -68,11 +67,11 @@ jobs:
       - name: Build
         run: |
           git add -Nf rust/target/release
-          nix build .#release-${{ matrix.platform.pkg }}
+          nix build -L .#release-${{ matrix.platform.pkg }}
       - if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform.pkg }}
+          name: bited_${{ matrix.platform.pkg }}
           path: result/bited.zip
       - if: github.event_name != 'workflow_dispatch'
         name: Upload to Release
