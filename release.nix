@@ -31,7 +31,7 @@ stdenv.mkDerivation {
     pushd godot
     mkdir -p build
     godot4 --headless --verbose --export-release "${release}" build/bited.${ext}
-    ${lib.optionalString (ext != "zip") "zip build/bited.zip ./*"}
+    ${lib.optionalString (ext != "zip") "zip build/bited.zip build/*"}
     popd
 
     runHook postBuild
