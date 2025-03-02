@@ -92,8 +92,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
