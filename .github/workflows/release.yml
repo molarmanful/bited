@@ -41,7 +41,7 @@ jobs:
         with:
           toolchain: nightly
           target: ${{ matrix.platform.target }}
-      - run: cargo build --release ${{ matrix.platform.target != '' && '--target' + matrix.platform.target || '' }}
+      - run: cargo build --release ${{ matrix.platform.target != '' && format('--target {0}', matrix.platform.target) || '' }}
       - run: gh cache delete ${{ matrix.platform.key }}
         continue-on-error: true
         env:
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/cache/save@v4
         id: cache
         with:
-          path: rust/target/${{ matrix.platform.target != '' && matrix.platform.target + '/' || '' }}release
+          path: rust/target/${{ matrix.platform.target != '' && format('{0}/', matrix.platform.target) || '' }}release
           key: ${{ matrix.platform.key }}
           enableCrossOsArchive: true
   macos-bruh:
