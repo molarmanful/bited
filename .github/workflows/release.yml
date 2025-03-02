@@ -60,7 +60,7 @@ jobs:
           lfs: true
       - uses: actions/cache/restore@v4
         with:
-          path: rust/target/release
+          path: rust/target/release/*
           key: ${{ matrix.platform.key }}
           fail-on-cache-miss: true
       - uses: DeterminateSystems/nix-installer-action@main
