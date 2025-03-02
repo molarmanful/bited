@@ -40,7 +40,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    cp godot/build/bited.zip $out
+    cp godot/build/bited.zip $out/bited.zip
 
     runHook postInstall
   '';
