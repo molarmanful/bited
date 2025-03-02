@@ -46,10 +46,10 @@ jobs:
       matrix:
         platform:
           - name: Windows
-            pkg: release-windows
+            pkg: windows
             key: ${{ github.ref }}-windows
           - name: Linux
-            pkg: release-linux
+            pkg: linux
             key: ${{ github.ref }}-linux
     name: Release (${{ matrix.platform.name }})
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
       - name: Build
         run: |
           git add -Nf rust/target/release
-          nix build .#${{ matrix.platform.pkg }}
+          nix build .#release-${{ matrix.platform.pkg }}
       - if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
@@ -78,5 +78,5 @@ jobs:
         name: Upload to Release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/mac/bited.zip
-          asset_name: bited_mac_$tag.zip
+          file: result/bited.zip
+          asset_name: bited_${{ matrix.platform.pkg }}_$tag.zip
