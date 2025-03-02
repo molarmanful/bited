@@ -62,20 +62,20 @@ jobs:
           lfs: true
       - uses: actions/cache/restore@v4
         with:
-          path: rust/target/release
+          path: rust/target/x86_64-apple-darwin/release
           key: ${{ github.ref }}-macos-x86
           fail-on-cache-miss: true
       - uses: actions/cache/restore@v4
         with:
-          path: rust/target/release
+          path: rust/target/aarch64-apple-darwin/release
           key: ${{ github.ref }}-macos-arm
           fail-on-cache-miss: true
       - run: |
           cp libbited_rust.macos.framework target/release
           cd target/release
           lipo -create -output libbited_rust.macos.framework/libbited_rust.macos.dylib \
-            ../aarch64-apple-darwin/release/libbited_rust.dylib \
-            ../x86_64-apple-darwin/release/libbited_rust.dylib
+            ../x86_64-apple-darwin/release/libbited_rust.dylib \
+            ../aarch64-apple-darwin/release/libbited_rust.dylib
       - run: gh cache delete "${{ github.ref }}-macos"
         continue-on-error: true
         env:
