@@ -38,6 +38,10 @@
           release-pkgs =
             builtins.mapAttrs (name: attrs: pkgs.callPackage ./release.nix ({ inherit name; } // attrs))
               {
+                release-macos = {
+                  release = "macos";
+                  ext = "zip";
+                };
                 release-windows = {
                   release = "windows";
                   ext = "exe";

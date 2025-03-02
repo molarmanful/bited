@@ -3,7 +3,7 @@ site_name: bited
 site_url: https://benpa.ng/bited
 repo_url: https://github.com/molarmanful/bited
 repo_name: molarmanful/bited
-copyright: Copyright &copy; 2024 Benjamin Pang
+copyright: Copyright &copy; 2024 The bited Project Authors
 plugins: [search, awesome-pages, glightbox]
 extra:
   version:
@@ -41,13 +41,13 @@ theme:
       toggle:
         icon: material/brightness-auto
         name: Switch to light mode
-    - media: "(prefers-color-scheme: light)"
+    - media: '(prefers-color-scheme: light)'
       scheme: default
       primary: white
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
+    - media: '(prefers-color-scheme: dark)'
       scheme: slate
       primary: black
       toggle:
