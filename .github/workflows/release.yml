@@ -56,6 +56,9 @@ jobs:
     name: MacOS is Pain
     runs-on: macos-latest
     needs: rust
+    defaults:
+      run:
+        working-directory: rust
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,7 +73,8 @@ jobs:
           path: rust/target/aarch64-apple-darwin/release
           key: ${{ github.ref }}-macos-arm
           fail-on-cache-miss: true
-      - run: |
+      - name: Patch
+        run: |
           cp libbited_rust.macos.framework target/release
           cd target/release
           lipo -create -output libbited_rust.macos.framework/libbited_rust.macos.dylib \
