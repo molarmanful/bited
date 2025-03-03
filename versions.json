@@ -1,9 +1,14 @@
 [
   {
-    "version": "v0.0.0-4",
-    "title": "v0.0.0-4",
+    "version": "v0.0.0-5",
+    "title": "v0.0.0-5",
     "aliases": [
       "prerelease"
     ]
+  },
+  {
+    "version": "v0.0.0-4",
+    "title": "v0.0.0-4",
+    "aliases": []
   }
 ]
