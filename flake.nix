@@ -22,19 +22,16 @@
         { inputs', pkgs, ... }:
 
         let
-          gdtk = pkgs.callPackage ./gdtoolkit.nix { };
-          rust =
-            let
-              toolchain = inputs'.fenix.packages.minimal;
-              craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
-            in
-            craneLib.buildPackage {
-              src = ./rust;
-              doCheck = false;
-              depsBuildBuild = with pkgs; [ mold ];
-              CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
-              RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
-            };
+          gdtk = pkgs.callPackage ./nix/gdtoolkit.nix { };
+          toolchain = inputs'.fenix.packages.minimal;
+          craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+          rust = craneLib.buildPackage {
+            src = ./rust;
+            doCheck = false;
+            depsBuildBuild = with pkgs; [ mold ];
+            CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
+            RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
+          };
           release-pkgs =
             builtins.mapAttrs (name: attrs: pkgs.callPackage ./release.nix ({ inherit name; } // attrs))
               {
