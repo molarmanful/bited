@@ -5,8 +5,8 @@ extends HBoxContainer
 
 
 func save() -> void:
-	StateVars.font.bb.x = spin_bb_x.value
-	StateVars.font.bb.y = spin_bb_y.value
+	StateVars.font.bb.x = int(spin_bb_x.value)
+	StateVars.font.bb.y = int(spin_bb_y.value)
 
 
 func load() -> void:

@@ -2,7 +2,7 @@ extends SpinFoc
 
 
 func save() -> void:
-	StateVars.font.cap_h = value
+	StateVars.font.cap_h = int(value)
 
 
 func load() -> void:
