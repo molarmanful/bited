@@ -36,8 +36,8 @@ The glyph view inside the Editor exposes several metrics as colored grid lines:
 
     ???+ question "DWidth"
 
-        A glyph-specific metric for the amount of horizontal space this
-        character occupies.
+        Typically known as advance width. A glyph-specific metric for the
+        amount of horizontal space this character occupies.
 
 ???+ info "Vertical Metrics (from top to bottom)"
 

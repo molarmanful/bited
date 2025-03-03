@@ -5,3 +5,6 @@ run: build-rs
 [working-directory: 'rust']
 build-rs *FLAGS:
   cargo build {{FLAGS}}
+
+docs:
+  mkdocs serve

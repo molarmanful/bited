@@ -3,11 +3,11 @@
 bited is proudly built with:
 
 - [Godot](https://godotengine.org/)
-- [SQLite](https://www.sqlite.org/)
-- [godot-ci](https://github.com/aBARICHELLO/godot-ci)
+- [godot-rust](https://godot-rust.github.io/)
 - [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
 - [GNU Unifont](https://unifoundry.com/unifont)
+- [Nerd Fonts](https://www.nerdfonts.com)
 - [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
 - [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
 - [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
@@ -22,6 +22,7 @@ inspirations and resources:
     - [FontForge](https://fontforge.org)
     - [Pixelorama](https://github.com/Orama-Interactive/Pixelorama)
     - [FreeType BDF drivers](https://github.com/ImageMagick/freetype/tree/main/src/bdf)
+    - [FlakeHub](https://flakehub.com/)
 
 ???+ info "Font Testers"
 

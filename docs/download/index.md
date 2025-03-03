@@ -10,3 +10,8 @@ Requirements:
 
 Clone the [repo](https://github.com/molarmanful/bited), open via Godot, and
 modify/export/etc.
+
+!!! note
+
+    If you wish to run bited in debug mode, you will need to `cargo build` the
+    Rust library, located in `rust/`.

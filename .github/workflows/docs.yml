@@ -1,9 +1,9 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: docs
 on:
   push:
-    tags: ['*']
+    tags: ['v*']
+  workflow_dispatch:
 jobs:
   pub-docs:
     name: Publish MkDocs
@@ -21,11 +21,6 @@ jobs:
       - uses: DeterminateSystems/flakehub-cache-action@main
       - name: Deploy
         run: |-
-          case $GITHUB_REF_NAME in
-            doc*-*)
-              GITHUB_REF_NAME=$(sed -E 's/^doc.*-//' <<< "$GITHUB_REF_NAME")
-              ;;
-          esac
           alias=$(case $GITHUB_REF_NAME in
             *-*) echo -n "prerelease" ;;
             *) echo -n "latest" ;;
