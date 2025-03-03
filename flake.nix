@@ -22,7 +22,7 @@
         { inputs', pkgs, ... }:
 
         let
-          gdtk = pkgs.callPackage ./nix/gdtoolkit.nix { };
+          godot_4_4 = pkgs.callPackage ./nix/godot_4.nix { };
           toolchain = inputs'.fenix.packages.minimal;
           craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
           rust = craneLib.buildPackage {
@@ -33,7 +33,17 @@
             RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
           };
           release-pkgs =
-            builtins.mapAttrs (name: attrs: pkgs.callPackage ./release.nix ({ inherit name; } // attrs))
+            builtins.mapAttrs
+              (
+                name: attrs:
+                pkgs.callPackage ./release.nix (
+                  {
+                    inherit name;
+                    godot_4 = godot_4_4;
+                  }
+                  // attrs
+                )
+              )
               {
                 release-macos = {
                   release = "macos";
@@ -59,8 +69,8 @@
             default = {
 
               packages = with pkgs; [
-                gdtk
-                godot_4
+                gdtoolkit_4
+                godot_4_4
                 marksman
                 just
                 yaml-language-server
