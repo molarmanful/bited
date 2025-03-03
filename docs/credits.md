@@ -11,6 +11,7 @@ bited is proudly built with:
 - [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
 - [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
 - [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
+- [FlakeHub Cache](https://flakehub.com/cache)
 
 Development of bited would not have been possible without the following
 inspirations and resources:
