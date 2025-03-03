@@ -3,7 +3,6 @@
   release,
   ext,
 
-  lib,
   stdenv,
   godot_4,
   godot_4-export-templates,
@@ -31,7 +30,7 @@ stdenv.mkDerivation {
     pushd godot
     mkdir -p bited
     godot4 --headless --verbose --export-release "${release}" bited/bited.${ext}
-    ${lib.optionalString (ext != "zip") "zip -r bited.zip bited"}
+    ${if ext == "zip" then "cp bited/bited.zip ." else "zip -r bited.zip bited"}
     popd
 
     runHook postBuild
