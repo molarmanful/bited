@@ -29,9 +29,9 @@ stdenv.mkDerivation {
     ln -s ${godot_4-export-templates} "$HOME"/.local/share/godot/export_templates/4.3.stable
 
     pushd godot
-    mkdir -p build
-    godot4 --headless --verbose --export-release "${release}" build/bited.${ext}
-    ${lib.optionalString (ext != "zip") "zip build/bited.zip build/*"}
+    mkdir -p bited
+    godot4 --headless --verbose --export-release "${release}" bited/bited.${ext}
+    ${lib.optionalString (ext != "zip") "zip -r bited.zip bited"}
     popd
 
     runHook postBuild
@@ -40,7 +40,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    install -Dm 644 godot/build/bited.zip -t $out
+    install -Dm 644 godot/bited.zip -t $out
 
     runHook postInstall
   '';
