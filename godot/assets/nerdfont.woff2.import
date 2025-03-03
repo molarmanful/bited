@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c1pebpej3mt7p"
-path="res://.godot/imported/nerdfont.ttf-13fd878f76fcd47d5a5871404630a895.fontdata"
+uid="uid://dkpyjb6qhf0ov"
+path="res://.godot/imported/nerdfont.woff2-665073df496f5548fb3eb8f6ac37340b.fontdata"
 
 [deps]
 
-source_file="res://assets/nerdfont.ttf"
-dest_files=["res://.godot/imported/nerdfont.ttf-13fd878f76fcd47d5a5871404630a895.fontdata"]
+source_file="res://assets/nerdfont.woff2"
+dest_files=["res://.godot/imported/nerdfont.woff2-665073df496f5548fb3eb8f6ac37340b.fontdata"]
 
 [params]
 
@@ -28,7 +28,13 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[]
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
+}]
 language_support={}
 script_support={}
 opentype_features={}

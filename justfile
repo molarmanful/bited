@@ -6,5 +6,9 @@ run: build-rs
 build-rs *FLAGS:
   cargo build {{FLAGS}}
 
+[working-directory: 'godot']
+ed:
+  godot4 -e
+
 docs:
   mkdocs serve
