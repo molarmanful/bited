@@ -1,20 +1,25 @@
 {
+  withWayland ? true,
   lib,
   stdenv,
   autoPatchelfHook,
   godot_4,
   godot_4-export-templates,
   zip,
-  alsa-lib,
   libGL,
-  libpulseaudio,
+  vulkan-loader,
   libX11,
   libXcursor,
   libXext,
+  libXfixes,
   libXi,
+  libXinerama,
+  libxkbcommon,
   libXrandr,
-  udev,
-  vulkan-loader,
+  libXrender,
+  wayland-scanner,
+  libdecor,
+  wayland,
   ...
 }:
 
@@ -28,20 +33,26 @@ stdenv.mkDerivation {
     stdenv.cc.cc.lib
     godot_4
     zip
-  ];
+  ] ++ lib.optionals withWayland [ wayland-scanner ];
 
-  runtimeDependencies = map lib.getLib [
-    alsa-lib
-    libGL
-    libpulseaudio
-    libX11
-    libXcursor
-    libXext
-    libXi
-    libXrandr
-    udev
-    vulkan-loader
-  ];
+  runtimeDependencies =
+    map lib.getLib [
+      libGL
+      vulkan-loader
+      libX11
+      libXcursor
+      libXext
+      libXfixes
+      libXi
+      libXinerama
+      libxkbcommon
+      libXrandr
+      libXrender
+    ]
+    ++ lib.optionals withWayland [
+      libdecor
+      wayland
+    ];
 
   buildPhase = ''
     runHook preBuild
