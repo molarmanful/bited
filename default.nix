@@ -1,6 +1,6 @@
 {
+  withX11 ? true,
   withWayland ? true,
-  withDbus ? true,
 
   lib,
   stdenv,
@@ -44,8 +44,10 @@ stdenv.mkDerivation {
     map lib.getLib [
       libGL
       vulkan-loader
-      alsa-lib
-      libpulseaudio
+      dbus
+      dbus.lib
+    ]
+    ++ lib.optionals withX11 [
       libX11
       libXcursor
       libXext
@@ -55,10 +57,6 @@ stdenv.mkDerivation {
       libxkbcommon
       libXrandr
       libXrender
-    ]
-    ++ lib.optionals withDbus [
-      dbus
-      dbus.lib
     ]
     ++ lib.optionals withWayland [
       libdecor

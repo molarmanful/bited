@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    systems.url = "systems";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
     fenix = {
@@ -14,10 +13,13 @@
   };
 
   outputs =
-    inputs@{ flake-parts, systems, ... }:
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ inputs.devenv.flakeModule ];
-      systems = import systems;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       perSystem =
         { inputs', pkgs, ... }:
 
@@ -32,7 +34,6 @@
             src = ./rust;
             doCheck = false;
             depsBuildBuild = with pkgs; [ mold ];
-            CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
             RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
           };
           release-pkgs =
