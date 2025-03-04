@@ -41,6 +41,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
 theme_type_variation = &"Title"
+theme_override_constants/line_spacing = 0
 text = "load font from db"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -66,6 +67,7 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_type_variation = &"Muted"
+theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 32
 text = "no fonts... yet."
 horizontal_alignment = 1

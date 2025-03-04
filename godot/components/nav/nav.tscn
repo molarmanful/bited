@@ -117,6 +117,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 32
 text = "bited"
 vertical_alignment = 1
@@ -289,6 +290,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="Label" parent="BDFProg/PanelContainer/Body"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Loading..."
 
 [node name="BDFErr" type="Window" parent="." node_paths=PackedStringArray("input", "btn_ok")]
@@ -330,6 +332,7 @@ theme_override_constants/separation = 12
 [node name="Label" type="Label" parent="BDFErr/PanelContainer/VBoxContainer/Body/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Error encountered during parsing:"
 autowrap_mode = 3
 
@@ -402,6 +405,7 @@ theme_override_constants/separation = 12
 [node name="Label" type="Label" parent="BDFWarn/PanelContainer/VBoxContainer/Body/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Warning(s) encountered during parsing:"
 autowrap_mode = 3
 
@@ -416,6 +420,7 @@ wrap_mode = 1
 [node name="Label2" type="Label" parent="BDFWarn/PanelContainer/VBoxContainer/Body/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Continue?"
 autowrap_mode = 3
 

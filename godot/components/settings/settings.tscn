@@ -112,6 +112,7 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_constants/line_spacing = 0
 text = "theme"
 vertical_alignment = 1
 
@@ -155,6 +156,7 @@ tooltip_text = "Number of columns to fit into a table row.
 This field is saved on a per-font basis."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "table columns"
 vertical_alignment = 1
 
@@ -184,6 +186,7 @@ tooltip_text = "Scale factor when displaying table glyphs.
 This field is saved on a per-font basis."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "table cell scale"
 vertical_alignment = 1
 
@@ -214,6 +217,7 @@ tooltip_text = "Number of cells to display in the editor grid's width.
 This field is saved on a per-font basis."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "editor grid size"
 vertical_alignment = 1
 
@@ -242,6 +246,7 @@ tooltip_text = "Size of an individual cell in the editor grid.
 This field is saved on a per-font basis."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "editor cell size"
 vertical_alignment = 1
 
@@ -285,6 +290,7 @@ tooltip_text = "Unique identifier that references this font in bited's database.
 Set this to an existing ID to overwrite the font at that ID."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "font id"
 vertical_alignment = 1
 
@@ -313,6 +319,7 @@ tooltip_text = "Path to a BDF file that this font can save to or load from.
 If left blank, you will be prompted with a file dialog during save/load."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "linked bdf"
 vertical_alignment = 1
 
@@ -359,6 +366,7 @@ tooltip_text = "Name of the type foundry or organization that made the font.
 New fonts created in bited have this field set to \"bited\"."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "foundry name"
 vertical_alignment = 1
 
@@ -387,6 +395,7 @@ E.g. \"Helvetica Regular\" and \"Helvetica Bold\" both belong to the typeface
 \"Helvetica\"."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "family name"
 vertical_alignment = 1
 
@@ -414,6 +423,7 @@ tooltip_text = "Name of this font's variation.
 E.g. \"Regular\", \"Medium\", \"Light\", \"Bold\""
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "weight name"
 vertical_alignment = 1
 
@@ -445,6 +455,7 @@ tooltip_text = "Code indicating the posture of the font.
 - RO : reverse oblique"
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "slant"
 vertical_alignment = 1
 
@@ -481,6 +492,7 @@ tooltip_text = "Name of this font's typographic proportional width.
 E.g. \"Normal\", \"Condensed\", \"Narrow\", \"Double Wide\""
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "setwidth name"
 vertical_alignment = 1
 
@@ -509,6 +521,7 @@ typeface. This field will typically be left blank.
 E.g. \"Serif\", \"Sans Serif\", \"Informal\", \"Decorated\""
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "add style name"
 vertical_alignment = 1
 
@@ -540,6 +553,7 @@ bited only uses these fields to calculate certain fields like SIZE and SWIDTH
 in the resulting BDF."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "resolution"
 vertical_alignment = 1
 
@@ -598,6 +612,7 @@ within bited may still have variable glyph widths.
 "
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "spacing"
 vertical_alignment = 1
 
@@ -628,6 +643,7 @@ size_flags_vertical = 1
 tooltip_text = "Font copyright information."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "copyright"
 vertical_alignment = 1
 
@@ -664,6 +680,7 @@ then you'll probably want to add at least 1px of kerning so the glyph doesn't
 smush into other glyphs. Therefore, you would use a width >=6px."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "default dimensions"
 vertical_alignment = 1
 
@@ -709,6 +726,7 @@ tooltip_text = "Font-wide offset above the baseline.
 ascent = font_size - descent"
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "ascent"
 vertical_alignment = 1
 
@@ -738,6 +756,7 @@ tooltip_text = "Font-wide offset below the baseline.
 descent = font_size - ascent"
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "descent"
 vertical_alignment = 1
 
@@ -762,6 +781,7 @@ size_flags_vertical = 1
 tooltip_text = "Normal height above the baseline of capital letters in the font."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "cap height"
 vertical_alignment = 1
 
@@ -786,6 +806,7 @@ size_flags_vertical = 1
 tooltip_text = "Normal height above the baseline of lowercase letters in the font."
 mouse_filter = 1
 mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
 text = "x-height"
 vertical_alignment = 1
 
@@ -892,6 +913,7 @@ theme_override_constants/margin_bottom = 16
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_constants/line_spacing = 0
 autowrap_mode = 3
 
 [node name="Footer" type="PanelContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
@@ -964,6 +986,7 @@ size_flags_vertical = 4
 [node name="Label" type="Label" parent="AddProp/PanelContainer/VBoxContainer/Body/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
 text = "property name"
 vertical_alignment = 1
 

@@ -34,6 +34,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
 theme_type_variation = &"Title"
+theme_override_constants/line_spacing = 0
 text = "bdf parse error"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -54,6 +55,7 @@ theme_override_constants/separation = 12
 [node name="Label" type="Label" parent="VBoxContainer/Body/VBoxContainer"]
 custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Error encountered during parsing:"
 autowrap_mode = 3
 
@@ -61,6 +63,7 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/line_spacing = 0
 placeholder_text = "error..."
 editable = false
 wrap_mode = 1

@@ -51,6 +51,7 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Muted"
+theme_override_constants/line_spacing = 0
 text = "input"
 
 [node name="spacer" type="Control" parent="MarginContainer/SplitContainer/VBoxContainer/HBoxContainer"]
@@ -74,6 +75,7 @@ text = "🔃"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/line_spacing = 0
 theme_override_fonts/font = ExtResource("2_8cdh3")
 placeholder_text = "text..."
 structured_text_bidi_override = 5
@@ -91,6 +93,7 @@ theme_override_constants/separation = 8
 [node name="Label" type="Label" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"Muted"
+theme_override_constants/line_spacing = 0
 text = "output"
 
 [node name="spacer" type="Control" parent="MarginContainer/SplitContainer/VBoxContainer2/HBoxContainer"]

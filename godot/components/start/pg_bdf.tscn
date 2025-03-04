@@ -41,6 +41,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
 theme_type_variation = &"Title"
+theme_override_constants/line_spacing = 0
 text = "import font from bdf"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -63,6 +64,7 @@ columns = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_constants/line_spacing = 0
 text = "bdf path"
 vertical_alignment = 1
 
@@ -77,6 +79,7 @@ structured_text_bidi_override = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_constants/line_spacing = 0
 text = "font id"
 vertical_alignment = 1
 
@@ -91,6 +94,7 @@ script = ExtResource("2_cmxgo")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_constants/line_spacing = 0
 text = "default dwidth"
 vertical_alignment = 1
 

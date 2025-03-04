@@ -113,6 +113,7 @@ theme_override_constants/margin_bottom = 12
 
 [node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer/MarginContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer"]
 layout_mode = 2
@@ -289,6 +290,7 @@ theme_override_constants/margin_bottom = 12
 
 [node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 
 [node name="Nav" parent="Body" node_paths=PackedStringArray("table") instance=ExtResource("2_rafec")]
 layout_mode = 2

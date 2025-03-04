@@ -24,6 +24,7 @@ theme_override_constants/margin_bottom = 4
 [node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
 theme_type_variation = &"Title"
+theme_override_constants/line_spacing = 0
 text = "parsing bdf"
 horizontal_alignment = 1
 text_overrun_behavior = 3
@@ -37,4 +38,5 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="Label" parent="VBoxContainer/Body"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 text = "Loading..."

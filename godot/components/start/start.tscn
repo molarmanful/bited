@@ -60,6 +60,7 @@ btn_bdf = NodePath("VBoxContainer/bdf")
 [node name="Label" type="Label" parent="CenterContainer/X"]
 layout_mode = 2
 theme_type_variation = &"Double"
+theme_override_constants/line_spacing = 0
 text = "bited"
 horizontal_alignment = 1
 vertical_alignment = 1

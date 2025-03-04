@@ -538,6 +538,7 @@ text = "🡒"
 visible = false
 layout_mode = 2
 theme_type_variation = &"Muted"
+theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 32
 text = "select a glyph to start..."
 horizontal_alignment = 1

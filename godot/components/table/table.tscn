@@ -59,6 +59,7 @@ theme_override_constants/separation = 8
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"TableHeader"
+theme_override_constants/line_spacing = 0
 vertical_alignment = 1
 text_overrun_behavior = 3
 
@@ -66,6 +67,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_vertical = 1
 theme_type_variation = &"TableSubHeader"
+theme_override_constants/line_spacing = 0
 horizontal_alignment = 3
 vertical_alignment = 1
 
@@ -77,6 +79,7 @@ size_flags_vertical = 3
 [node name="Label" type="Label" parent="Inner/Placeholder"]
 layout_mode = 2
 theme_type_variation = &"Muted"
+theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 32
 text = "no glyphs... yet."
 horizontal_alignment = 1

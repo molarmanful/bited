@@ -37,6 +37,7 @@ theme_override_constants/separation = 8
 [node name="key" type="Label" parent="HBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_constants/line_spacing = 0
 vertical_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="HBoxContainer/HBoxContainer"]
