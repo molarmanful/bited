@@ -19,6 +19,7 @@
   libXrandr,
   libXrender,
   dbus,
+  udev,
   wayland-scanner,
   libdecor,
   wayland,
@@ -42,6 +43,7 @@ stdenv.mkDerivation {
       vulkan-loader
       dbus
       dbus.lib
+      udev
     ]
     ++ lib.optionals withX11 [
       libX11
