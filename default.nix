@@ -1,5 +1,7 @@
 {
   withWayland ? true,
+  withDbus ? true,
+
   lib,
   stdenv,
   autoPatchelfHook,
@@ -17,6 +19,7 @@
   libxkbcommon,
   libXrandr,
   libXrender,
+  dbus,
   wayland-scanner,
   libdecor,
   wayland,
@@ -48,6 +51,10 @@ stdenv.mkDerivation {
       libxkbcommon
       libXrandr
       libXrender
+    ]
+    ++ lib.optionals withDbus [
+      dbus
+      dbus.lib
     ]
     ++ lib.optionals withWayland [
       libdecor
