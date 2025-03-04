@@ -1,5 +1,6 @@
 {
   name,
+  version,
   release,
   ext,
 
@@ -20,8 +21,8 @@ let
 in
 
 stdenv.mkDerivation {
+  inherit version;
   pname = "bited-${name}";
-  version = "0.0.0-0";
   src = ./.;
 
   nativeBuildInputs = [
@@ -47,6 +48,8 @@ stdenv.mkDerivation {
     }
 
     pushd godot
+    sed -i 's#^\s*config/version\s*=\s*".*"\s*$#config/version="v${version}"#' project.godot
+    cat project.godot
     mkdir -p bited
     godot4 --headless --v --export-release "${release}" bited/bited.${ext}
     ${if ext == "zip" then "cp bited/bited.zip ." else "zip -r bited.zip bited"}

@@ -36,13 +36,14 @@
             depsBuildBuild = with pkgs; [ mold ];
             RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
           };
+          version = builtins.readFile ./VERSION;
           release-pkgs =
             builtins.mapAttrs
               (
                 name: attrs:
                 pkgs.callPackage ./release.nix (
                   {
-                    inherit name;
+                    inherit name version;
                     godot_4 = my_godot;
                     godot_4-export-templates = my_godot-export-templates;
                   }

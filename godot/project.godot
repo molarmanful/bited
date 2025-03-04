@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="bited"
-config/description="	"
+config/description="A bitmap font editor."
+config/version="dev"
 run/main_scene="res://components/start/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bited"

@@ -27,8 +27,8 @@
 }:
 
 stdenv.mkDerivation {
+  inherit (bited-release) version;
   pname = "bited";
-  version = "0.0.0-0";
   src = ./.;
 
   nativeBuildInputs = [
