@@ -10,6 +10,8 @@
   zip,
   libGL,
   vulkan-loader,
+  alsa-lib,
+  libpulseaudio,
   libX11,
   libXcursor,
   libXext,
@@ -42,6 +44,8 @@ stdenv.mkDerivation {
     map lib.getLib [
       libGL
       vulkan-loader
+      alsa-lib
+      libpulseaudio
       libX11
       libXcursor
       libXext
