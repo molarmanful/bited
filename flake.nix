@@ -43,7 +43,6 @@
                 pkgs.callPackage ./release.nix (
                   {
                     inherit name;
-                    isNix = false;
                     godot_4 = my_godot;
                     godot_4-export-templates = my_godot-export-templates;
                   }
@@ -65,8 +64,7 @@
                 };
               };
           bited = pkgs.callPackage ./. {
-            godot_4 = my_godot;
-            godot_4-export-templates = my_godot-export-templates;
+            bited-release = release-pkgs.release-linux;
           };
         in
         {
