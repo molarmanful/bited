@@ -22,7 +22,10 @@
         { inputs', pkgs, ... }:
 
         let
-          godot_4_4 = pkgs.callPackage ./nix/godot_4.nix { };
+          my_godot = pkgs.callPackage ./nix/godot_4.nix { };
+          my_godot-export-templates = pkgs.callPackage ./nix/godot_4-export-templates.nix {
+            godot_4 = my_godot;
+          };
           toolchain = inputs'.fenix.packages.minimal;
           craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
           rust = craneLib.buildPackage {
@@ -39,7 +42,9 @@
                 pkgs.callPackage ./release.nix (
                   {
                     inherit name;
-                    godot_4 = godot_4_4;
+                    isNix = false;
+                    godot_4 = my_godot;
+                    godot_4-export-templates = my_godot-export-templates;
                   }
                   // attrs
                 )
@@ -58,11 +63,16 @@
                   ext = "x86_64";
                 };
               };
+          bited = pkgs.callPackage ./. {
+            godot_4 = my_godot;
+            godot_4-export-templates = my_godot-export-templates;
+          };
         in
         {
 
           packages = {
-            inherit rust;
+            inherit rust bited;
+            default = bited;
           } // release-pkgs;
 
           devenv.shells = {
@@ -70,7 +80,7 @@
 
               packages = with pkgs; [
                 gdtoolkit_4
-                godot_4_4
+                my_godot
                 marksman
                 just
                 yaml-language-server
