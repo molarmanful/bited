@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1cjx57ksqn6a"]
 
-[ext_resource type="Script" path="res://components/table/glyph.gd" id="1_mjxq3"]
+[ext_resource type="Script" uid="uid://dcyy5e7my8v6n" path="res://components/table/glyph.gd" id="1_mjxq3"]
 
 [node name="Glyph" type="PanelContainer" node_paths=PackedStringArray("node_code", "node_tex")]
 mouse_default_cursor_shape = 2

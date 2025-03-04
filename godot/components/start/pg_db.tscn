@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://0iifg4w8rgni"]
 
-[ext_resource type="Script" path="res://components/start/pg_db.gd" id="1_pvccy"]
+[ext_resource type="Script" uid="uid://doqkgcldsxpkp" path="res://components/start/pg_db.gd" id="1_pvccy"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
 action = &"bited_ok"
@@ -14,12 +14,10 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_dgiu6"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="DB" type="PanelContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
+[node name="DB" type="PanelContainer" node_paths=PackedStringArray("tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
 custom_minimum_size = Vector2(300, 0)
 theme_type_variation = &"Border"
 script = ExtResource("1_pvccy")
-pg_x = NodePath("")
-pg_del_warn = NodePath("")
 tree = NodePath("VBoxContainer/Body/Tree")
 placeholder = NodePath("VBoxContainer/Body/Placeholder")
 btn_start = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/start")

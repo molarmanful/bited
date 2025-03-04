@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://di6py440rmdhh"]
 
-[ext_resource type="Script" path="res://components/start/pg_over_warn.gd" id="1_jlt75"]
+[ext_resource type="Script" uid="uid://ctdif56cy052s" path="res://components/start/pg_over_warn.gd" id="1_jlt75"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
 action = &"bited_ok"

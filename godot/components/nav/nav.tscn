@@ -1,13 +1,13 @@
 [gd_scene load_steps=32 format=3 uid="uid://d10css7y2eb1o"]
 
-[ext_resource type="Script" path="res://components/nav/nav.gd" id="1_i15a6"]
+[ext_resource type="Script" uid="uid://bbeuylbx4mrhr" path="res://components/nav/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
 [ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
-[ext_resource type="Script" path="res://components/nav/win_bdf_err.gd" id="4_vogii"]
-[ext_resource type="Script" path="res://components/nav/win_bdf_warn.gd" id="5_iswbp"]
-[ext_resource type="Script" path="res://components/nav/win_new_glyph.gd" id="6_6sojv"]
-[ext_resource type="Script" path="res://components/validators/glyph_val.gd" id="7_3rto3"]
-[ext_resource type="Script" path="res://components/nav/win_finder.gd" id="8_ayivh"]
+[ext_resource type="Script" uid="uid://b0wo6djat2wos" path="res://components/nav/win_bdf_err.gd" id="4_vogii"]
+[ext_resource type="Script" uid="uid://nobxen5aou23" path="res://components/nav/win_bdf_warn.gd" id="5_iswbp"]
+[ext_resource type="Script" uid="uid://cbgrjnn8nul8l" path="res://components/nav/win_new_glyph.gd" id="6_6sojv"]
+[ext_resource type="Script" uid="uid://cq0s6ql72o4ft" path="res://components/validators/glyph_val.gd" id="7_3rto3"]
+[ext_resource type="Script" uid="uid://brbjl0edgkstr" path="res://components/nav/win_finder.gd" id="8_ayivh"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_5q25s"]
 action = &"bited_home"
@@ -220,7 +220,6 @@ text = "⚙️"
 [node name="save" type="FileDialog" parent="."]
 auto_translate_mode = 1
 size = Vector2i(200, 147)
-ok_button_text = "Save"
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true

@@ -1,10 +1,10 @@
 [gd_scene load_steps=20 format=3 uid="uid://vuvwrmullfm8"]
 
-[ext_resource type="Script" path="res://components/all.gd" id="1_bbici"]
+[ext_resource type="Script" uid="uid://bbwi8wg1wp6w6" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
 [ext_resource type="PackedScene" uid="uid://bhghm74u2o8ik" path="res://components/editor/editor.tscn" id="2_q0u5u"]
 [ext_resource type="PackedScene" uid="uid://d10css7y2eb1o" path="res://components/nav/nav.tscn" id="2_rafec"]
-[ext_resource type="Script" path="res://components/charsets.gd" id="5_uxapv"]
+[ext_resource type="Script" uid="uid://dn5hemc4n5prg" path="res://components/charsets.gd" id="5_uxapv"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_lsect"]
 action = &"ui_text_select_all"
@@ -213,7 +213,7 @@ tooltip_text = "filter selection by dwidth"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_gqwb0")
-text = "⧪𜸈"
+text = "⧪"
 
 [node name="VSeparator" type="VSeparator" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
 layout_mode = 2

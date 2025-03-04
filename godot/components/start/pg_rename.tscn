@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c27gbuwb57t7i"]
 
-[ext_resource type="Script" path="res://components/start/pg_rename.gd" id="1_7v8mo"]
-[ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_ja2fq"]
+[ext_resource type="Script" uid="uid://dvqae67gtu0rp" path="res://components/start/pg_rename.gd" id="1_7v8mo"]
+[ext_resource type="Script" uid="uid://ccvwkwn21g2vk" path="res://components/validators/id_val.gd" id="2_ja2fq"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
 action = &"bited_ok"

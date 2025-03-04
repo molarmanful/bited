@@ -1,16 +1,16 @@
 [gd_scene load_steps=59 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
-[ext_resource type="Script" path="res://components/editor/editor.gd" id="1_wb1k2"]
-[ext_resource type="Script" path="res://components/spin_foc.gd" id="2_ikoqp"]
-[ext_resource type="Script" path="res://components/editor/grid_lines.gd" id="2_jsp0s"]
+[ext_resource type="Script" uid="uid://b7rs4os6wj4cs" path="res://components/editor/editor.gd" id="1_wb1k2"]
+[ext_resource type="Script" uid="uid://bj4k70ax17xpx" path="res://components/spin_foc.gd" id="2_ikoqp"]
+[ext_resource type="Script" uid="uid://bd1geqidfj4fx" path="res://components/editor/grid_lines.gd" id="2_jsp0s"]
 [ext_resource type="Texture2D" uid="uid://bkq4iy7vqadw3" path="res://assets/cmode/inv.svg" id="2_od75m"]
 [ext_resource type="ButtonGroup" uid="uid://c6kxtnnl4kyma" path="res://components/editor/cmode_group.tres" id="2_qbssp"]
 [ext_resource type="Texture2D" uid="uid://3q48hfg0mxcv" path="res://assets/cmode/cell.svg" id="3_gnkst"]
 [ext_resource type="Texture2D" uid="uid://bwgdu8vufmqcl" path="res://assets/cmode/t.svg" id="6_mqen1"]
 [ext_resource type="Texture2D" uid="uid://qef2nehtarn1" path="res://assets/cmode/f.svg" id="7_ukwbh"]
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
-[ext_resource type="Script" path="res://components/editor/grid.gd" id="9_8b0ie"]
+[ext_resource type="Script" uid="uid://cmf158hy1yp5d" path="res://components/editor/grid.gd" id="9_8b0ie"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_2r100"]
 action = &"bited_prev_uc"

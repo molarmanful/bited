@@ -1,31 +1,31 @@
 [gd_scene load_steps=33 format=3 uid="uid://csa3ukn3fcr2n"]
 
-[ext_resource type="Script" path="res://components/settings/settings.gd" id="1_f5q05"]
-[ext_resource type="Script" path="res://components/settings/font/id.gd" id="2_8xqh3"]
-[ext_resource type="Script" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
-[ext_resource type="Script" path="res://components/settings/display/table_width.gd" id="3_orxr2"]
-[ext_resource type="Script" path="res://components/settings/font/family.gd" id="4_3lktb"]
-[ext_resource type="Script" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
-[ext_resource type="Script" path="res://components/settings/display/editor_grid_size.gd" id="4_nreqd"]
-[ext_resource type="Script" path="res://components/settings/font/weight.gd" id="5_ey81o"]
-[ext_resource type="Script" path="res://components/settings/display/editor_cell_size.gd" id="5_gqxa1"]
-[ext_resource type="Script" path="res://components/settings/font/slant.gd" id="6_2x7pt"]
-[ext_resource type="Script" path="res://components/settings/font/setwidth.gd" id="7_phs2n"]
-[ext_resource type="Script" path="res://components/settings/font/add_style.gd" id="8_iwt5s"]
-[ext_resource type="Script" path="res://components/settings/font/resolution.gd" id="10_ms5sx"]
-[ext_resource type="Script" path="res://components/settings/font/spacing.gd" id="11_x5ybt"]
-[ext_resource type="Script" path="res://components/settings/font/desc.gd" id="13_1akul"]
-[ext_resource type="Script" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
-[ext_resource type="Script" path="res://components/settings/font/asc.gd" id="15_18s1e"]
-[ext_resource type="Script" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
-[ext_resource type="Script" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
-[ext_resource type="Script" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
-[ext_resource type="Script" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
-[ext_resource type="Script" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
-[ext_resource type="Script" path="res://components/spin_foc.gd" id="18_1hwvf"]
-[ext_resource type="Script" path="res://components/settings/font/copyright.gd" id="18_bv3pj"]
-[ext_resource type="Script" path="res://components/settings/win_add_prop.gd" id="19_efg64"]
-[ext_resource type="Script" path="res://components/validators/prop_val.gd" id="20_2pfww"]
+[ext_resource type="Script" uid="uid://daimsacok3r2t" path="res://components/settings/settings.gd" id="1_f5q05"]
+[ext_resource type="Script" uid="uid://cylt6s7o5n88s" path="res://components/settings/font/id.gd" id="2_8xqh3"]
+[ext_resource type="Script" uid="uid://bmo4gn3mi2knu" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
+[ext_resource type="Script" uid="uid://b858ttv3av50w" path="res://components/settings/display/table_width.gd" id="3_orxr2"]
+[ext_resource type="Script" uid="uid://bel8kco7pxyhh" path="res://components/settings/font/family.gd" id="4_3lktb"]
+[ext_resource type="Script" uid="uid://c3w0i32ng1fep" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
+[ext_resource type="Script" uid="uid://dduy47mhvm5nj" path="res://components/settings/display/editor_grid_size.gd" id="4_nreqd"]
+[ext_resource type="Script" uid="uid://njkd2jww7u0i" path="res://components/settings/font/weight.gd" id="5_ey81o"]
+[ext_resource type="Script" uid="uid://drmnrnrsufa4q" path="res://components/settings/display/editor_cell_size.gd" id="5_gqxa1"]
+[ext_resource type="Script" uid="uid://ddvefc7wytibo" path="res://components/settings/font/slant.gd" id="6_2x7pt"]
+[ext_resource type="Script" uid="uid://cc8tn80u2qajj" path="res://components/settings/font/setwidth.gd" id="7_phs2n"]
+[ext_resource type="Script" uid="uid://bxo1anyphn0hb" path="res://components/settings/font/add_style.gd" id="8_iwt5s"]
+[ext_resource type="Script" uid="uid://bv4bg5jv0f8g0" path="res://components/settings/font/resolution.gd" id="10_ms5sx"]
+[ext_resource type="Script" uid="uid://c402yas8t48ng" path="res://components/settings/font/spacing.gd" id="11_x5ybt"]
+[ext_resource type="Script" uid="uid://c1o0ex7rdiele" path="res://components/settings/font/desc.gd" id="13_1akul"]
+[ext_resource type="Script" uid="uid://4x2gjbahttcs" path="res://components/settings/font/bb.gd" id="13_jg4tp"]
+[ext_resource type="Script" uid="uid://cn611mgup10ex" path="res://components/settings/font/asc.gd" id="15_18s1e"]
+[ext_resource type="Script" uid="uid://ci0u43bsjj8sj" path="res://components/settings/font/cap_h.gd" id="15_oq3fj"]
+[ext_resource type="Script" uid="uid://d2xgahf563x6p" path="res://components/settings/font/x_h.gd" id="16_26mdr"]
+[ext_resource type="Script" uid="uid://bbv3aret4sc5f" path="res://components/settings/font/save_path.gd" id="16_qrqxx"]
+[ext_resource type="Script" uid="uid://bk3bw55s18gb3" path="res://components/settings/win_over_warn.gd" id="17_4k0nd"]
+[ext_resource type="Script" uid="uid://cprcamasxg4uy" path="res://components/settings/display/theme.gd" id="17_j3ewv"]
+[ext_resource type="Script" uid="uid://bj4k70ax17xpx" path="res://components/spin_foc.gd" id="18_1hwvf"]
+[ext_resource type="Script" uid="uid://dwy0ils2xlwoh" path="res://components/settings/font/copyright.gd" id="18_bv3pj"]
+[ext_resource type="Script" uid="uid://73t7valxfig2" path="res://components/settings/win_add_prop.gd" id="19_efg64"]
+[ext_resource type="Script" uid="uid://dg10t8j7ujfva" path="res://components/validators/prop_val.gd" id="20_2pfww"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_lttd8"]
 action = &"bited_save"
@@ -125,6 +125,7 @@ size_flags_horizontal = 3
 selected = 0
 item_count = 3
 popup/item_0/text = "system"
+popup/item_0/id = 0
 popup/item_1/text = "light"
 popup/item_1/id = 1
 popup/item_2/text = "dark"
@@ -456,6 +457,7 @@ layout_mode = 2
 selected = 0
 item_count = 5
 popup/item_0/text = "R (Roman)"
+popup/item_0/id = 0
 popup/item_1/text = "I (Italic)"
 popup/item_1/id = 1
 popup/item_2/text = "O (Oblique)"
@@ -608,6 +610,7 @@ layout_mode = 2
 selected = 0
 item_count = 3
 popup/item_0/text = "M (Monospaced)"
+popup/item_0/id = 0
 popup/item_1/text = "P (Proportional)"
 popup/item_1/id = 1
 popup/item_2/text = "C (Character Cell)"
@@ -847,7 +850,6 @@ text = "cancel"
 auto_translate_mode = 1
 title = "Choose a File"
 size = Vector2i(200, 147)
-ok_button_text = "Choose"
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true

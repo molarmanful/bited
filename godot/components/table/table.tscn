@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://bnhlhp8evbrv3"]
 
-[ext_resource type="Script" path="res://components/table/table.gd" id="1_21spc"]
-[ext_resource type="Script" path="res://components/table/sel.gd" id="3_ex1o2"]
-[ext_resource type="Script" path="res://components/spin_foc.gd" id="4_762e1"]
-[ext_resource type="Script" path="res://components/table/win_filter_dwidth.gd" id="4_x03ce"]
+[ext_resource type="Script" uid="uid://d2besw8ipif3c" path="res://components/table/table.gd" id="1_21spc"]
+[ext_resource type="Script" uid="uid://cqj2u2oqvvc37" path="res://components/table/sel.gd" id="3_ex1o2"]
+[ext_resource type="Script" uid="uid://bj4k70ax17xpx" path="res://components/spin_foc.gd" id="4_762e1"]
+[ext_resource type="Script" uid="uid://d13xoyenj1x6n" path="res://components/table/win_filter_dwidth.gd" id="4_x03ce"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
 action = &"bited_ok"

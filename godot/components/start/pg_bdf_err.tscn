@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkktjy6loe6ek"]
 
-[ext_resource type="Script" path="res://components/start/pg_bdf_err.gd" id="1_ixatt"]
+[ext_resource type="Script" uid="uid://fknxvo3pw6na" path="res://components/start/pg_bdf_err.gd" id="1_ixatt"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_a6vou"]
 action = &"bited_ok"

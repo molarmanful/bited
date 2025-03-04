@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cx31pl6h4w4s4"]
 
-[ext_resource type="Script" path="res://components/start/pg_bdf_prog.gd" id="1_hdqal"]
+[ext_resource type="Script" uid="uid://cgdg4dmw0y7p6" path="res://components/start/pg_bdf_prog.gd" id="1_hdqal"]
 
 [node name="BDFProg" type="PanelContainer" node_paths=PackedStringArray("label")]
 custom_minimum_size = Vector2(200, 0)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://csy0fr30bo24j"]
 
-[ext_resource type="Script" path="res://components/start/pg_new.gd" id="1_tr7ok"]
-[ext_resource type="Script" path="res://components/validators/id_val.gd" id="2_70x5b"]
+[ext_resource type="Script" uid="uid://bg6fqph8gcqcr" path="res://components/start/pg_new.gd" id="1_tr7ok"]
+[ext_resource type="Script" uid="uid://ccvwkwn21g2vk" path="res://components/validators/id_val.gd" id="2_70x5b"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_3ub0n"]
 action = &"bited_ok"
@@ -85,6 +85,7 @@ mouse_default_cursor_shape = 2
 selected = 0
 item_count = 4
 popup/item_0/text = "empty"
+popup/item_0/id = 0
 popup/item_1/text = "5×11 creep2"
 popup/item_1/id = 1
 popup/item_2/text = "6×13 cozette"

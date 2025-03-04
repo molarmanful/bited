@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://x0scle6appyy"]
 
-[ext_resource type="Script" path="res://components/settings/font_prop.gd" id="1_uqcut"]
+[ext_resource type="Script" uid="uid://0wyaldyufoi8" path="res://components/settings/font_prop.gd" id="1_uqcut"]
 
 [node name="FontProp" type="HBoxContainer" node_paths=PackedStringArray("text_key", "input_type", "input_str", "input_num", "btn_del")]
 anchors_preset = 10
@@ -48,6 +48,7 @@ layout_mode = 2
 selected = 0
 item_count = 2
 popup/item_0/text = "string"
+popup/item_0/id = 0
 popup/item_1/text = "number"
 popup/item_1/id = 1
 
