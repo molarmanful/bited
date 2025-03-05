@@ -5,7 +5,8 @@ extends LineEdit
 
 
 func _ready() -> void:
-	btn.pressed.connect(browse)
+	btn.pressed.connect(dialog_file.popup)
+	dialog_file.file_selected.connect(set_text)
 
 
 func save() -> void:
@@ -14,11 +15,3 @@ func save() -> void:
 
 func load() -> void:
 	text = StateVars.path()
-
-
-func browse() -> void:
-	dialog_file.popup()
-	var path := dialog_file.current_file
-	if not path:
-		return
-	text = path
