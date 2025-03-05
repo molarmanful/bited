@@ -85,6 +85,7 @@
                 just
                 yaml-language-server
                 yamlfmt
+                pixelorama
               ];
 
               languages = {

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=92 format=3 uid="uid://b6feeb3hp5b30"]
+[gd_resource type="Theme" load_steps=102 format=3 uid="uid://b6feeb3hp5b30"]
 
 [ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_h7wu0"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="1_v2ekf"]
@@ -7,13 +7,18 @@
 [ext_resource type="Texture2D" uid="uid://cbk82nmterw1o" path="res://assets/ui-light/radio_checked_disabled.png" id="4_nlcsy"]
 [ext_resource type="Texture2D" uid="uid://byh472d83i0ym" path="res://assets/ui-light/radio_unchecked.png" id="5_6egtu"]
 [ext_resource type="Texture2D" uid="uid://ccfmg0buhjnsw" path="res://assets/ui-light/radio_unchecked_disabled.png" id="6_wpvfr"]
-[ext_resource type="Texture2D" uid="uid://c112kq143mwl0" path="res://assets/ui-light/updown.png" id="7_7vtsm"]
+[ext_resource type="Texture2D" uid="uid://uvn4pkjbs2w1" path="res://assets/ui-light/down.png" id="8_2wb0b"]
 [ext_resource type="Texture2D" uid="uid://bnce13dto1pxh" path="res://assets/ui-light/tree_arrow.png" id="8_xqfys"]
+[ext_resource type="Texture2D" uid="uid://dxqp2350fuy3t" path="res://assets/ui-light/down_hover.png" id="9_1rlic"]
 [ext_resource type="Texture2D" uid="uid://tbippuhyktx5" path="res://assets/ui-light/tree_arrow_collapsed.png" id="9_be6u1"]
 [ext_resource type="Texture2D" uid="uid://crgsu17llwdof" path="res://assets/ui-light/tree_arrow_collapsed_mirrored.png" id="10_5bey8"]
+[ext_resource type="Texture2D" uid="uid://vbdiul6wnkr5" path="res://assets/ui-light/down_pressed.png" id="10_vidkg"]
 [ext_resource type="Texture2D" uid="uid://cgfl1wcl67cc6" path="res://assets/ui-light/close.png" id="11_6r33l"]
+[ext_resource type="Texture2D" uid="uid://be7ysqg7s21lw" path="res://assets/ui-light/up.png" id="11_76gph"]
+[ext_resource type="Texture2D" uid="uid://dfinew76frpqa" path="res://assets/ui-light/up_hover.png" id="12_f1d25"]
 [ext_resource type="Texture2D" uid="uid://chm3pyfghplid" path="res://assets/ui-light/close_pressed.png" id="12_gfla8"]
 [ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="13_kkxe3"]
+[ext_resource type="Texture2D" uid="uid://csxna1pb0vas0" path="res://assets/ui-light/up_pressed.png" id="13_rpkqw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phuxh"]
 bg_color = Color(0, 0, 0, 0)
@@ -588,6 +593,14 @@ content_margin_right = 4.0
 content_margin_bottom = 0.0
 color = Color(0.25098, 0.25098, 0.25098, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fwpyu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8hd0i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wfkt5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j75co"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ppusu"]
 content_margin_left = 8.0
 content_margin_top = 4.0
@@ -703,6 +716,14 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wb0b"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.25098)
+corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id3oo"]
 draw_center = false
@@ -829,7 +850,7 @@ Button/colors/font_color = Color(0, 0, 0, 1)
 Button/colors/font_disabled_color = Color(0, 0, 0, 0.501961)
 Button/colors/font_focus_color = Color(0, 0, 0, 1)
 Button/colors/font_hover_color = Color(0, 0, 0, 1)
-Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 0.501961)
 Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/colors/icon_disabled_color = Color(0, 0, 0, 0.5)
 Button/colors/icon_focus_color = Color(0, 0, 0, 1)
@@ -958,7 +979,18 @@ PopupMenu/styles/labeled_separator_left = SubResource("StyleBoxLine_iuvlp")
 PopupMenu/styles/labeled_separator_right = SubResource("StyleBoxLine_ui7gb")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_fps1t")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_37y7g")
-SpinBox/icons/updown = ExtResource("7_7vtsm")
+SpinBox/icons/down = ExtResource("8_2wb0b")
+SpinBox/icons/down_disabled = ExtResource("8_2wb0b")
+SpinBox/icons/down_hover = ExtResource("9_1rlic")
+SpinBox/icons/down_pressed = ExtResource("10_vidkg")
+SpinBox/icons/up = ExtResource("11_76gph")
+SpinBox/icons/up_disabled = ExtResource("11_76gph")
+SpinBox/icons/up_hover = ExtResource("12_f1d25")
+SpinBox/icons/up_pressed = ExtResource("13_rpkqw")
+SpinBox/styles/down_background_hovered = SubResource("StyleBoxEmpty_fwpyu")
+SpinBox/styles/down_background_pressed = SubResource("StyleBoxEmpty_8hd0i")
+SpinBox/styles/up_background_hovered = SubResource("StyleBoxEmpty_wfkt5")
+SpinBox/styles/up_background_pressed = SubResource("StyleBoxEmpty_j75co")
 TabBar/colors/font_disabled_color = Color(0, 0, 0, 0.501961)
 TabBar/colors/font_hovered_color = Color(0.25098, 0.25098, 0.25098, 1)
 TabBar/colors/font_selected_color = Color(1, 1, 1, 1)
@@ -995,7 +1027,10 @@ Tool/fonts/font = ExtResource("1_v2ekf")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_wl8op")
 Tree/colors/children_hl_line_color = Color(0, 0, 0, 1)
+Tree/colors/custom_button_font_highlight = Color(0, 0, 0, 1)
+Tree/colors/drop_position_color = Color(0, 0, 0, 1)
 Tree/colors/font_color = Color(0.25098, 0.25098, 0.25098, 1)
+Tree/colors/font_hovered_color = Color(0, 0, 0, 1)
 Tree/colors/font_selected_color = Color(0, 0, 0, 1)
 Tree/colors/parent_hl_line_color = Color(0, 0, 0, 1)
 Tree/colors/relationship_line_color = Color(0.639216, 0.639216, 0.639216, 1)
@@ -1006,6 +1041,7 @@ Tree/icons/arrow = ExtResource("8_xqfys")
 Tree/icons/arrow_collapsed = ExtResource("9_be6u1")
 Tree/icons/arrow_collapsed_mirrored = ExtResource("10_5bey8")
 Tree/styles/focus = SubResource("StyleBoxFlat_sbn1k")
+Tree/styles/hovered = SubResource("StyleBoxFlat_2wb0b")
 Tree/styles/panel = SubResource("StyleBoxFlat_id3oo")
 Tree/styles/selected = SubResource("StyleBoxFlat_ugd8m")
 Tree/styles/selected_focus = SubResource("StyleBoxFlat_ag633")
