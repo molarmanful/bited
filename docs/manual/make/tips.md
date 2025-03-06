@@ -1,7 +1,8 @@
 # Tips & Tricks
 
 Here is an assortment of design tips that I've learned and discovered over the
-course of my bitmap font journey that may help you on your own journey.
+course of my bitmap font journey that may help you on your own journey. Many of
+these tips apply not just to bited, but also to bitmap type design in general.
 
 ## Tradeoffs between different font characteristics
 
@@ -72,12 +73,12 @@ get at that tiny of a size.
 glyphs are drawn to fit into a 4px width.
 ///
 
-### Width-Height Ratio
+### Width-to-Height Ratio
 
-The effect of width-height ratio on your font is somewhat subtle. If you don't
-plan on supporting Unicode symbols blocks and box drawings in your font, then
-choosing this ratio is largely a matter of aesthetic preference. On the other
-hand, if you want your font to support these symbols, then here's a few
+The effect of width-to-height ratio on your font can be a bit subtle. If you
+don't plan on supporting Unicode symbols blocks and box drawings in your font,
+then choosing this ratio is largely a matter of aesthetic preference. On the
+other hand, if you want your font to support these symbols, then here are a few
 considerations to keep in mind:
 
 - **Block elements** (`U+2580..U+259F`) are composed of 8ths. These are easiest to
@@ -109,3 +110,15 @@ had to make.
 ///
 
 ### x-height
+
+When targeting readability at smaller sizes, it's pretty common practice for
+designers to increase the x-height of their font. Frankly though, I find that
+the choice of x-height is up to personal taste. For example, I personally am
+partial towards fonts with lower x-heights.
+
+![Cozette](assets/cozette-vim.png){ loading=lazy }
+/// caption
+[Cozette](https://github.com/slavfox/Cozette) 6x13. Cozette's x-height isn't
+that high, but its uppercase letters are 1px shorter than the tallest lowercase
+letters. This makes it feel like a font with high x-height.
+///

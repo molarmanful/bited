@@ -24,7 +24,7 @@ features include:
 
 - Simple, composable tools for drawing and manipulating glyphs.
 - Font preview with text presets for testing fonts.
-- Custom UI font made with bited.
+- Custom UI fonts made with bited.
 - Light and dark mode.
 
 ---
