@@ -1,4 +1,4 @@
-# HAMBURGEFONTSIV
+# "hamburgefontsiv"
 
 At this point, you have all the tools you need to finish the rest of the
 letterforms. The next word we'll target is "hamburgefontsiv" (weird word, I

@@ -1,4 +1,4 @@
-# ADHESION
+# "adhesion"
 
 When making fonts from scratch, it's pretty useful to have a starter word for
 feeling out the letterforms and defining a style. We'll use "adhesion" as our
