@@ -74,9 +74,9 @@ Typesetting glyphs relies on boxes formed from each glyph's ascent, descent,
 horizontal baseline, and dwidth. In other words:
 
 - Given two consecutive glyphs, the next glyph's horizontal baseline and the
-  previous glyph's dwidth will be equal.
+    previous glyph's dwidth will be equal.
 - Given two consecutive lines of glyphs, the next line's ascent and the
-  previous line's descent will be equal.
+    previous line's descent will be equal.
 
 When choosing your bitmap font's metrics, you should make sure to reserve
 enough space so that glyphs don't crowd each other out.
@@ -87,12 +87,12 @@ Here are some other useful things to know about these metrics:
 
 - Font size can be determined by adding the ascent and descent.
 - Diacritics will typically go between the ascent and cap height or between the
-  descent and vertical baseline. If you're planning on adding glyphs with
-  diacritics, make sure to also reserve space for these.
+    descent and vertical baseline. If you're planning on adding glyphs with
+    diacritics, make sure to also reserve space for these.
 - A glyph may extend beyond its box. This is especially common in small
-  monospace fonts, where the designer might opt to trade spacing for visual
-  clarity. Such a tradeoff is more acceptable for symbols that are more likely
-  to appear on their own.
+    monospace fonts, where the designer might opt to trade spacing for visual
+    clarity. Such a tradeoff is more acceptable for symbols that are more
+    likely to appear on their own.
 
 ## Sample Glyphs
 

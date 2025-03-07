@@ -44,3 +44,19 @@ And so I decided to build my own.
 ![thanos meme](assets/thanos.gif)
 /// caption
 ///
+
+## Why BDF?
+
+Reading the [Wikipedia entry for
+BDF](https://en.wikipedia.org/wiki/Glyph_Bitmap_Distribution_Format), you might
+get the impression that BDF is an obsolete font format. And while BDF is pretty
+old -- after all, it was released in 1987 -- it's still perfectly usable! Sure,
+it may not have the fancy Opentype features of more modern formats, but BDF has
+plenty going for it.
+
+- **Human-readable**: You can open up a BDF in your text editor of choice and
+    directly edit it.
+- **Computer-readable**: The BDF structure is very simple and diff-friendly,
+    which is great when you want to build tools that can read or edit BDFs.
+- **Compatibility**: BDFs are plug-and-play on systems that support them (e.g.
+    Linux).
