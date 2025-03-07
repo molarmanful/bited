@@ -43,7 +43,7 @@ database of all the fonts that you loaded into bited. bited also reads from
 
 ## BDF File
 
-Since BDFs are both human-readable and computer-renderable, saving to BDF
+Since BDFs are both human-readable and machine-renderable, saving to BDF
 (++ctrl+s++) serves both as a backup and an export. BDFs are also very
 diff-friendly, so I highly recommend committing your BDF to a version control
 system like Git. bited even includes metadata to ensure that bited BDFs are
