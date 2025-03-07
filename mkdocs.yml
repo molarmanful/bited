@@ -4,7 +4,18 @@ site_url: https://benpa.ng/bited
 repo_url: https://github.com/molarmanful/bited
 repo_name: molarmanful/bited
 copyright: Copyright &copy; 2024 The bited Project Authors
-plugins: [search, awesome-pages, glightbox]
+plugins:
+  - search
+  - awesome-pages
+  - glightbox
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml
+      theme:
+        enabled: false
+        light: material/indigo-light
+        dark: material/indigo-dark
+      interaction:
+        enabled: false
 extra:
   version:
     provider: mike

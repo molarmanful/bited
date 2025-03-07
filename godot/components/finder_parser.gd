@@ -13,11 +13,16 @@ enum Mode {
 	BLOCK_,
 }
 
+const AND = ") and "
+const OR = ") or "
+
 var tks_in: PackedStringArray
 var qs: PackedStringArray
 var binds: Array
 
 var mode := Mode.X
+var sep := AND
+var nsep := 0
 var tks: PackedStringArray
 
 
@@ -60,6 +65,10 @@ func parse():
 				next()
 				mode = Mode.BLOCK_
 			"&":
+				sep = AND
+				next()
+			"|":
+				sep = OR
 				next()
 			_:
 				if w:
@@ -71,7 +80,7 @@ func next() -> void:
 	match mode:
 		Mode.Q:
 			if tks:
-				qs.append("name like ? escape '\\'")
+				push_qs("name like ? escape '\\'")
 				binds.append(" ".join(tks))
 		Mode.U:
 			build_u()
@@ -89,9 +98,10 @@ func next() -> void:
 			build_block(true)
 		_:
 			if tks:
-				qs.append("name like ? escape '\\'")
+				push_qs("name like ? escape '\\'")
 				binds.append("%%%s%%" % " ".join(tks))
 	mode = Mode.X
+	sep = AND
 	tks.clear()
 
 
@@ -101,16 +111,17 @@ func build_u() -> void:
 		if tk:
 			if tk.contains("-"):
 				var hs := tk.split("-", true, 1)
-				xs.append("id between ? and ?")
-				binds.append(hs[0].hex_to_int())
-				binds.append(hs[1].hex_to_int())
+				if hs[0].is_valid_hex_number() && hs[1].is_valid_hex_number():
+					xs.append("id between ? and ?")
+					binds.append(hs[0].hex_to_int())
+					binds.append(hs[1].hex_to_int())
 			else:
 				xs.append("printf('%X', id) like ? escape '\\'")
 				xs.append("printf('%04X', id) like ? escape '\\'")
 				binds.append(tk)
 				binds.append(tk)
 	if xs:
-		qs.append("(%s)" % " or ".join(xs))
+		push_qs("(%s)" % " or ".join(xs))
 
 
 func build_cat(r := false) -> void:
@@ -120,7 +131,7 @@ func build_cat(r := false) -> void:
 			xs.append("category like ? escape '\\'")
 			binds.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		qs.append("(%s)" % " or ".join(xs))
+		push_qs("(%s)" % " or ".join(xs))
 
 
 func build_page(r := false) -> void:
@@ -133,7 +144,7 @@ func build_page(r := false) -> void:
 		for q in StateVars.db_uc.query_result:
 			xs.append("select code from p_%s" % q.id)
 		if xs:
-			qs.append("id in (%s)" % " union ".join(xs))
+			push_qs("id in (%s)" % " union ".join(xs))
 
 
 func build_block(r := false) -> void:
@@ -148,8 +159,17 @@ func build_block(r := false) -> void:
 			binds.append(q.start)
 			binds.append(q.end)
 		if xs:
-			qs.append("(%s)" % " or ".join(xs))
+			push_qs("(%s)" % " or ".join(xs))
 
 
 func query() -> String:
-	return " and ".join(qs) if qs else "0"
+	if qs and [AND, OR].has(qs[-1]):
+		qs.resize(qs.size() - 1)
+		nsep -= 1
+	return "(".repeat(nsep) + "".join(qs) if qs else "0"
+
+
+func push_qs(q: String) -> void:
+	qs.append(q)
+	qs.append(sep)
+	nsep += 1
