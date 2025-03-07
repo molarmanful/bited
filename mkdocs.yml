@@ -1,4 +1,4 @@
----
+# yaml-language-server: $schema=https://json.schemastore.org/mkdocs-1.6.json
 site_name: bited
 site_url: https://benpa.ng/bited
 repo_url: https://github.com/molarmanful/bited
@@ -12,7 +12,11 @@ extra:
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.keys
   - pymdownx.blocks.caption
   - attr_list
