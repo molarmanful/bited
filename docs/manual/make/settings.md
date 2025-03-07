@@ -1,17 +1,18 @@
 # Settings
 
-After opening up `unicorn` and getting to the Main Screen, the first thing
-we'll do is open the Settings Menu (++ctrl+comma++). Verify that it's on the
-FONTS tab.
+After opening up `unicorn` and getting to the Main Screen, the first thing we'll
+do is open the Settings Menu (++ctrl+comma++). Verify that it's on the FONTS
+tab.
 
-![settings menu for unicorn](assets/settings.png)
+![settings menu for unicorn](assets/settings.png){loading=lazy}
+
 /// caption
+
 ///
 
 !!! tip
 
-    Hover over each settings field's label to get more information about that
-    field!
+    Hover over each settings field's label to get more information about that field!
 
 ???+ question "foundry name"
 

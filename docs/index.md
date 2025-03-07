@@ -6,12 +6,14 @@ title: Home
 
 A **bit**map font **ed**itor.
 
-[:material-download: Download](download/index.md){ .md-button }
+[:material-download: Download](download/index.md){.md-button}
 
 ---
 
-![bited UI](assets/ui.png){ loading=lazy }
+![bited UI](assets/ui.png){loading=lazy}
+
 /// caption
+
 ///
 
 ---

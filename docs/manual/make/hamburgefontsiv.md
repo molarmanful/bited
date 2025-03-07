@@ -7,36 +7,52 @@ consistent.
 
 <div class='grid cards' markdown>
 
-![unicorn glyph for "m"](assets/unicorn-m.png)
+![unicorn glyph for "m"](assets/unicorn-m.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "b"](assets/unicorn-b.png)
+![unicorn glyph for "b"](assets/unicorn-b.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "u"](assets/unicorn-u.png)
+![unicorn glyph for "u"](assets/unicorn-u.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "r"](assets/unicorn-r.png)
+![unicorn glyph for "r"](assets/unicorn-r.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "g"](assets/unicorn-g.png)
+![unicorn glyph for "g"](assets/unicorn-g.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "f"](assets/unicorn-f.png)
+![unicorn glyph for "f"](assets/unicorn-f.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "t"](assets/unicorn-t.png)
+![unicorn glyph for "t"](assets/unicorn-t.png){loading=lazy}
+
 /// caption
+
 ///
 
-![unicorn glyph for "v"](assets/unicorn-v.png)
+![unicorn glyph for "v"](assets/unicorn-v.png){loading=lazy}
+
 /// caption
+
 ///
 
 </div>
@@ -44,6 +60,8 @@ consistent.
 You can preview the letters you've drawn so far using the "hamburgefontsiv"
 preset.
 
-![unicorn hamburgefontsiv preview](assets/unicorn-hamburgefontsiv.png)
+![unicorn hamburgefontsiv preview](assets/unicorn-hamburgefontsiv.png){loading=lazy}
+
 /// caption
+
 ///

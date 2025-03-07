@@ -11,3 +11,8 @@ dependencies = [
 
 [tool.setuptools]
 py-modules = []
+
+[dependency-groups]
+dev = [
+    "mdformat-mkdocs[recommended]>=4.1.2",
+]

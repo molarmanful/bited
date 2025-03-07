@@ -1,6 +1,6 @@
 # Save System
 
-``` mermaid
+```mermaid
 sequenceDiagram
     participant D as bited database
     participant B as bited
@@ -28,9 +28,10 @@ sequenceDiagram
 ```
 
 ## Database
-After each change you make to your font, bited autosaves to `saves.db`, a
-SQLite database of all the fonts that you loaded into bited. bited also reads
-from `saves.db` when loading fonts from the start menu.
+
+After each change you make to your font, bited autosaves to `saves.db`, a SQLite
+database of all the fonts that you loaded into bited. bited also reads from
+`saves.db` when loading fonts from the start menu.
 
 ???+ question "Location of `saves.db`"
 

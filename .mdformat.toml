@@ -1,0 +1,4 @@
+wrap = 80
+
+[plugin.mkdocs]
+align_semantic_breaks_in_lists = true

@@ -1,6 +1,6 @@
 # Download
 
-[:material-github: Github Releases](https://github.com/molarmanful/bited/releases){ .md-button }
+[:material-github: Github Releases](https://github.com/molarmanful/bited/releases){.md-button}
 
 ## Build from Source
 
@@ -13,8 +13,8 @@ modify/export/etc.
 
 !!! note
 
-    If you wish to run bited in debug mode, you will need to `cargo build` the
-    Rust library, located in `rust/`.
+    If you wish to run bited in debug mode, you will need to `cargo build` the Rust
+    library, located in `rust/`.
 
 ### Nix Flake
 
