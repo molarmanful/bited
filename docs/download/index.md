@@ -15,3 +15,11 @@ modify/export/etc.
 
     If you wish to run bited in debug mode, you will need to `cargo build` the
     Rust library, located in `rust/`.
+
+### Nix Flake
+
+Inside the cloned repo's root:
+
+```bash
+nix run
+```

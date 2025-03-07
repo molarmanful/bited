@@ -23,6 +23,8 @@ features include:
 - Custom UI fonts made with bited.
 - Light and dark mode.
 
+For more info, [head over to the docs](https://benpa.ng/bited)!
+
 > [!warning]
 > bited is still under heavy development; any bugs should be reported to
 > [Issues](https://github.com/molarmanful/bited/issues).
