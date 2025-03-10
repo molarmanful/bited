@@ -5,6 +5,8 @@ repo_url: https://github.com/molarmanful/bited
 repo_name: molarmanful/bited
 copyright: Copyright &copy; 2024 The bited Project Authors
 plugins:
+  - mike:
+      canonical_version: latest
   - search
   - awesome-pages
   - glightbox

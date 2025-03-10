@@ -9,7 +9,7 @@ jobs:
     name: Publish MkDocs
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
