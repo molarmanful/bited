@@ -113,5 +113,5 @@ jobs:
           git add -f *.so *.dylib *.dll
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: auto-generate release rust libs
+          commit_message: 'chore: auto-generate release rust libs'
           file_pattern: rust/target/release
