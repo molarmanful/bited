@@ -5,6 +5,10 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
+    devenv-root = {
+      url = "file+file:///dev/null";
+      flake = false;
+    };
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,8 +81,14 @@
 
           devenv.shells = {
             default = {
+              devenv.root =
+                let
+                  path = builtins.readFile inputs.devenv-root.outPath;
+                in
+                pkgs.lib.mkIf (path != "") path;
 
               packages = with pkgs; [
+                stdenv.cc.cc
                 gdtoolkit_4
                 my_godot
                 marksman
