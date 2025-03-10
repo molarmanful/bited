@@ -23,6 +23,8 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - uses: aldoborrero/direnv-nix-action@v2
+        with:
+          use_nix_profile: true
       - name: Deploy
         run: |-
           alias=$(case $GITHUB_REF_NAME in
