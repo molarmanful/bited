@@ -22,11 +22,7 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
-      - name: "Setup env"
-        uses: JRMurr/direnv-nix-action@v4.1.0
-        with:
-          install-nix: false
-          cache-store: false
+      - uses: aldoborrero/direnv-nix-action@v2
       - name: Deploy
         run: |-
           alias=$(case $GITHUB_REF_NAME in
