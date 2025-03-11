@@ -9,37 +9,8 @@ func between(x: int, n0: int, n1: int) -> bool:
 
 
 ## Copies an [Image].
-func img_copy(im: Image) -> Image:
-	return im.get_region(Rect2i(Vector2i.ZERO, im.get_size()))
-
-
-## Converts an [Image] alpha channel to a byte array, where each bit
-## corresponds to a pixel in the source.
-func alpha_to_bits(img: Image) -> PackedByteArray:
-	var res := PackedByteArray()
-	var h := img.get_height()
-	var w := img.get_width()
-	var w8 := (w + 7) & ~7
-	res.resize(w8 / 8 * h)
-
-	var byte := 0
-	var pos := 7
-	var i_res := 0
-	for y in range(h):
-		for x in range(w8):
-			var bit := 0
-			if x < w:
-				bit = img.get_pixel(x, y).a > 0
-			byte |= bit << pos
-			pos -= 1
-
-			if pos < 0:
-				res[i_res] = byte
-				i_res += 1
-				byte = 0
-				pos = 7
-
-	return res
+func img_copy(img: Image) -> Image:
+	return img.get_region(Rect2i(Vector2i.ZERO, img.get_size()))
 
 
 ## Converts a byte array to an array of hex values.

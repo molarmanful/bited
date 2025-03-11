@@ -1,6 +1,13 @@
 use std::iter;
 
-use godot::prelude::*;
+use bitvec::prelude::*;
+use godot::{
+    classes::{
+        Image,
+        image::Format,
+    },
+    prelude::*,
+};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -25,6 +32,27 @@ impl UtilR {
             h.into(),
         )
         .collect()
+    }
+
+    #[func]
+    fn alpha_to_bits(img: Gd<Image>) -> PackedByteArray {
+        assert!(img.get_format() == Format::LA8);
+        let w = img.get_width() as usize;
+        let w8 = (w + 7) & !7;
+        img.get_data()
+            .as_slice()
+            .chunks_exact(w * 2)
+            .flat_map(|row| {
+                row.iter()
+                    .skip(1)
+                    .step_by(2)
+                    .map(|&x| x > 0)
+                    .chain(iter::repeat(false))
+                    .take(w8)
+            })
+            .collect::<BitVec<u8, Msb0>>()
+            .into_vec()
+            .into()
     }
 
     pub fn hexes_to_bits_r(

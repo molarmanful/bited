@@ -24,7 +24,7 @@ pub struct Parser<'a> {
     font: &'a mut BFontR,
     mode: Mode,
     defs: HashSet<String>,
-    dws: BitVec<u8, Msb0>,
+    dws: BitVec<u8>,
     p_gen: PGen,
 }
 
