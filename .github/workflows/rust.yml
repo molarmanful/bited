@@ -3,7 +3,7 @@ name: rust
 on:
   push:
     branches: [main]
-    paths: [rust/**, godot/bited-rust.gdextension, .github/workflows/rust.yml]
+    paths: [rust/**, godot/addons/bited-rust/**, .github/workflows/rust.yml]
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
