@@ -43,7 +43,7 @@ impl UtilR {
                 row.iter()
                     .map(|byte| format!("{:02X}", byte))
                     .collect::<Vec<_>>()
-                    .join(" ")
+                    .concat()
                     .to_godot()
             })
             .collect()
