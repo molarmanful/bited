@@ -4,7 +4,7 @@ use bitvec::prelude::*;
 use godot::{
     classes::{
         Image,
-        image::Format,
+        image,
     },
     prelude::*,
 };
@@ -36,7 +36,7 @@ impl UtilR {
 
     #[func]
     fn alpha_to_bits(img: Gd<Image>) -> PackedByteArray {
-        assert!(img.get_format() == Format::LA8);
+        assert!(img.get_format() == image::Format::LA8);
         let w = img.get_width() as usize;
         let w8 = (w + 7) & !7;
         img.get_data()
@@ -46,13 +46,33 @@ impl UtilR {
                 row.iter()
                     .skip(1)
                     .step_by(2)
-                    .map(|&x| x > 0)
+                    .map(|&byte| byte > 0)
                     .chain(iter::repeat(false))
                     .take(w8)
             })
             .collect::<BitVec<u8, Msb0>>()
             .into_vec()
             .into()
+    }
+
+    #[func]
+    fn bits_to_alpha(bytes: PackedByteArray, w: i32, h: i32) -> Option<Gd<Image>> {
+        let bits = BitSlice::<u8, Msb0>::from_slice(bytes.as_slice());
+        Image::create_from_data(
+            w,
+            h,
+            false,
+            image::Format::LA8,
+            &bits
+                .chunks_exact(bits.len() / (h as usize))
+                .flat_map(|row| {
+                    row.iter()
+                        .by_refs()
+                        .take(w as usize)
+                        .flat_map(|&bit| [255, if bit { 255 } else { 0 }])
+                })
+                .collect(),
+        )
     }
 
     pub fn hexes_to_bits_r(

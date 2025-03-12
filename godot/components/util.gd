@@ -30,24 +30,3 @@ func bits_to_hexes(bits: PackedByteArray, w: int, h: int) -> PackedStringArray:
 		i_row += 1
 
 	return res
-
-
-## Converts a byte array to an [Image] alpha channel.
-func bits_to_alpha(bits: PackedByteArray, w: int, h: int) -> Image:
-	var img := Image.create_empty(w, h, false, Image.FORMAT_LA8)
-
-	var pos := 7
-	var i_bits := 0
-	for y in h:
-		pos = 7
-		for x in w:
-			img.set_pixel(x, y, Color(1, 1, 1, (bits[i_bits] >> pos) & 1))
-			pos -= 1
-
-			if pos < 0:
-				pos = 7
-				i_bits += 1
-
-		i_bits += int(w % 8 > 0)
-
-	return img
