@@ -41,8 +41,7 @@ jobs:
           target: ${{ matrix.platform.target }}
       - run: |
           cargo build --release \
-            ${{ matrix.platform.target != '' && format('--target {0}', matrix.platform.target) || '' }} \
-            -- -Zshare-generics=y
+            ${{ matrix.platform.target != '' && format('--target {0}', matrix.platform.target) || '' }}
       - run: gh cache delete ${{ matrix.platform.key }} || true
         env:
           GH_TOKEN: ${{ github.token }}

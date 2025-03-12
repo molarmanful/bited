@@ -1,2 +1,5 @@
+[build]
+rustflags = ["-Zshare-generics=yes"]
+
 [target.x86_64-pc-windows-msvc]
 linker = "rust-lld"
