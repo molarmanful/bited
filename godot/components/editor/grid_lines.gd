@@ -3,7 +3,7 @@ extends Node2D
 
 @export var grid: Grid
 
-var lines_h := {
+var lines_h: Dictionary[String, int] = {
 	origin = 0,
 	asc = 0,
 	cap = 0,
@@ -11,12 +11,12 @@ var lines_h := {
 	desc = 0,
 }
 
-var lines_v := {
+var lines_v: Dictionary[String, int] = {
 	origin = 0,
 	w = 0,
 }
 
-var names := {
+var names: Dictionary[String, String] = {
 	origin = "baseline",
 	asc = "ascent",
 	cap = "cap height",

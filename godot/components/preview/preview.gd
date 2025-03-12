@@ -13,7 +13,7 @@ extends PanelContainer
 @export var scroll_out: ScrollContainer
 @export var file_dl: FileDialog
 
-var preset_tree := {
+var preset_tree: Dictionary[String, Array] = {
 	"BASIC":
 	[
 		"hamburgefontsiv",

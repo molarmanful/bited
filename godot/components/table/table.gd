@@ -31,8 +31,8 @@ enum Mode { RANGE, GLYPHS, PAGE }
 
 var virt := Virt.new()
 var grid: Grid
-var names := {}
-var thumbs := {}
+var names: Dictionary[String, Glyph]
+var thumbs: Dictionary[String, ImageTexture]
 var to_update := false
 var hide_tb := false
 

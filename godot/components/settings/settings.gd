@@ -9,7 +9,7 @@ extends PanelContainer
 @export var btn_save_close: Button
 @export var btn_cancel: Button
 
-var props := {}
+var props: Dictionary[String, Variant] = {}
 
 var tree_root: TreeItem
 @onready var entries := get_tree().get_nodes_in_group("entry").map(

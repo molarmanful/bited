@@ -129,7 +129,7 @@ func braillegen() -> void:
 		)
 	)
 
-	var bms := {}
+	var bms: Dictionary[int, Bitmap]
 	var qs := StateVars.db_saves.query_result
 	if qs.size() < 10:
 		# TODO: warn abt missing

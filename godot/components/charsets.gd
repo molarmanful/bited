@@ -6,9 +6,9 @@ extends Tree
 var glyphs: TreeItem
 var unicode: TreeItem
 
-var blocks := {}
-var page_cats := {}
-var pages := {}
+var blocks: Dictionary[TreeItem, Array]
+var page_cats: Dictionary[String, TreeItem]
+var pages: Dictionary[TreeItem, String]
 
 
 func _init() -> void:

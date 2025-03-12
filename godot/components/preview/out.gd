@@ -2,7 +2,7 @@ class_name PreviewOut
 extends TextureRect
 
 var lines := PackedStringArray()
-var cache := {}
+var cache: Dictionary[int, Dictionary]
 var hi := true
 var rscale := 1
 var color_fg := Color.WHITE
@@ -18,7 +18,7 @@ func refresh(hard := false) -> void:
 	if hard:
 		cache.clear()
 
-	var ucs := {}
+	var ucs: Dictionary[int, bool]
 	for line in lines:
 		for c in line:
 			var uc := c.unicode_at(0)

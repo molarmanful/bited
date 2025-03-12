@@ -13,7 +13,7 @@ var pos: Vector2i:
 	get:
 		return Vector2i(grid.get_local_mouse_position() / grid.w_cell)
 
-var tools: Dictionary
+var tools: Dictionary[String, _Tool]
 
 
 func _init(g: Grid) -> void:
