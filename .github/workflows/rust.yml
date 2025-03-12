@@ -110,7 +110,6 @@ jobs:
       - name: Add Libs
         run: |
           cd rust/target/release
-          ls
           git add -f *.so *.dylib *.dll
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
