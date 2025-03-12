@@ -35,6 +35,21 @@ impl UtilR {
     }
 
     #[func]
+    fn bits_to_hexes(bytes: PackedByteArray, w: u16, h: u16) -> PackedStringArray {
+        bytes
+            .as_slice()
+            .chunks(bytes.len() / usize::from(h))
+            .map(|row| {
+                row.iter()
+                    .map(|byte| format!("{:02X}", byte))
+                    .collect::<Vec<_>>()
+                    .join(" ")
+                    .to_godot()
+            })
+            .collect()
+    }
+
+    #[func]
     fn alpha_to_bits(img: Gd<Image>) -> PackedByteArray {
         assert!(img.get_format() == image::Format::LA8);
         let w = img.get_width() as usize;
@@ -56,19 +71,19 @@ impl UtilR {
     }
 
     #[func]
-    fn bits_to_alpha(bytes: PackedByteArray, w: i32, h: i32) -> Option<Gd<Image>> {
+    fn bits_to_alpha(bytes: PackedByteArray, w: u16, h: u16) -> Option<Gd<Image>> {
         let bits = BitSlice::<u8, Msb0>::from_slice(bytes.as_slice());
         Image::create_from_data(
-            w,
-            h,
+            w.into(),
+            h.into(),
             false,
             image::Format::LA8,
             &bits
-                .chunks_exact(bits.len() / (h as usize))
+                .chunks_exact(bits.len() / usize::from(h))
                 .flat_map(|row| {
                     row.iter()
                         .by_refs()
-                        .take(w as usize)
+                        .take(w.into())
                         .flat_map(|&bit| [255, if bit { 255 } else { 0 }])
                 })
                 .collect(),
