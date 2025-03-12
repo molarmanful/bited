@@ -38,6 +38,7 @@ jobs:
         with:
           sparse-checkout: rust
           sparse-checkout-cone-mode: false
+      - uses: rui314/setup-mold@v1
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: nightly
@@ -79,7 +80,7 @@ jobs:
       - name: Patch
         run: |
           cd target/release
-          lipo -create -output libbited_rust.macos.framework/libbited_rust.macos.dylib \
+          lipo -create -output libbited_rust.macos.dylib \
             ../x86_64-apple-darwin/release/libbited_rust.dylib \
             ../aarch64-apple-darwin/release/libbited_rust.dylib
       - run: gh cache delete "${{ github.ref }}-macos" || true
@@ -119,10 +120,9 @@ jobs:
           fail-on-cache-miss: true
       - name: Add Libs
         run: |
-          cd rust/target/release
-          git rm --cached --ignore-unmatch *.so *.dll
-          git add -f *.so *.dll
+          mv rust/target/release/*.{dll,so} godot/addons/bited-rust/bin
+          mv rust/target/release/*.dylib godot/addons/bited-rust/bin/libbited_rust.macos.framework
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate release rust libs'
-          file_pattern: rust/target/release
+          file_pattern: godot/addons/bited-rust
