@@ -71,10 +71,9 @@ jobs:
       - name: Patch
         run: |
           cd target/release
-          lipo -create -output libbited_rust.macos.dylib \
+          lipo -create -output libbited_rust.macos.framework/libbited_rust.macos.dylib \
             ../x86_64-apple-darwin/release/libbited_rust.dylib \
             ../aarch64-apple-darwin/release/libbited_rust.dylib
-          cp libbited_rust.macos.dylib libbited_rust.macos.framework
       - run: gh cache delete "${{ github.ref }}-macos" || true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -110,7 +109,8 @@ jobs:
       - name: Add Libs
         run: |
           cd rust/target/release
-          git add -f *.so *.dylib *.dll
+          git rm --cached --ignore-unmatch *.so *.dll
+          git add -f *.so *.dll
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate release rust libs'
