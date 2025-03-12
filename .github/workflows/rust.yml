@@ -35,6 +35,9 @@ jobs:
         working-directory: rust
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: rust
+          sparse-checkout-cone-mode: false
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: nightly
@@ -60,6 +63,9 @@ jobs:
         working-directory: rust
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: rust
+          sparse-checkout-cone-mode: false
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/x86_64-apple-darwin/release
@@ -93,6 +99,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: rust
+          sparse-checkout-cone-mode: false
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
