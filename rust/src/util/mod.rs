@@ -35,7 +35,7 @@ impl UtilR {
     }
 
     #[func]
-    fn bits_to_hexes(bytes: PackedByteArray, w: u16, h: u16) -> PackedStringArray {
+    fn bits_to_hexes(bytes: PackedByteArray, _w: u16, h: u16) -> PackedStringArray {
         bytes
             .as_slice()
             .chunks(bytes.len() / usize::from(h))
