@@ -102,7 +102,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: rust
+          sparse-checkout: |
+            godot/addons/bited-rust
+            rust
           sparse-checkout-cone-mode: false
       - uses: actions/cache/restore@v4
         with:

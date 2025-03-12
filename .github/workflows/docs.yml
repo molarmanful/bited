@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           lfs: true
+          sparse-checkout: |
+            mkdocs.yml
+            docs
+          sparse-checkout-cone-mode: false
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
