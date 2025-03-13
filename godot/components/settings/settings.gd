@@ -99,18 +99,14 @@ func load_props() -> void:
 
 
 func refresh_props() -> void:
-	var len_props := node_props.get_child_count()
-
-	while len_props < props.size():
+	for i in props.size() - node_props.get_child_count():
 		var prop := FontProp.create(props)
 		node_props.add_child(prop)
-		len_props += 1
 
-	while len_props > props.size():
+	for i in node_props.get_child_count() - props.size():
 		var prop := node_props.get_child(-1)
 		node_props.remove_child(prop)
 		prop.queue_free()
-		len_props -= 1
 
 	var i := 0
 	for k in props:

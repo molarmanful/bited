@@ -258,17 +258,15 @@ func gen_glyphs() -> void:
 	if not virt.length:
 		return
 
-	var len_glyphs := node_glyphs.get_child_count()
 	var i0 := virt.i0
 	var i1 := virt.i1
 
-	while len_glyphs < virt.len_ideal:
+	for i in virt.len_ideal - node_glyphs.get_child_count():
 		node_glyphs.add_child(Glyph.create(self))
-		len_glyphs += 1
 
-	while len_glyphs > i1 - i0:
-		node_glyphs.get_child(len_glyphs - 1).hide()
-		len_glyphs -= 1
+	var l := node_glyphs.get_child_count()
+	for i in l - (i1 - i0):
+		node_glyphs.get_child(l - 1 - i).hide()
 
 	var qs: Array[Dictionary]
 	if viewmode != Mode.RANGE:

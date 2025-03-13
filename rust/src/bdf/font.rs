@@ -113,7 +113,7 @@ impl BFontR {
 
     #[func]
     pub fn is_other_prop(k: GString) -> bool {
-        Parser::is_other_prop(k.to_string().as_str())
+        Parser::is_other_prop(&k.to_string())
     }
 
     fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>) -> String {

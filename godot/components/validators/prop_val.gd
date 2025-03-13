@@ -14,6 +14,6 @@ func check() -> String:
 		return "name cannot be empty"
 	if text in props:
 		return "name is reserved"
-	if not BFont.is_other_prop(text):
+	if not BFontR.is_other_prop(text):
 		return "name is already defined"
 	return ""
