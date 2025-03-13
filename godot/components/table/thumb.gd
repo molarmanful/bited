@@ -14,6 +14,6 @@ func _ready() -> void:
 func update():
 	var s := StyleVars.thumb_size_cor
 	var sz := Vector2i(s, s)
+	view.size = sz
 	node_line0.points = [Vector2i(0, 0), sz]
 	node_line1.points = [Vector2i(s, 0), Vector2i(0, s)]
-	view.size = sz

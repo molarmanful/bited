@@ -77,8 +77,8 @@ func refresh_tex(gen: Dictionary) -> void:
 
 
 func set_thumb() -> void:
-	var s := StyleVars.thumb_size
-	node_tex.custom_minimum_size = Vector2i(s, s)
+	Thumb.update()
+	node_tex.custom_minimum_size = Thumb.view.size
 	node_tex.self_modulate = get_theme_color("fg")
 	if data_name in table.thumbs:
 		node_tex.texture = table.thumbs[data_name]
