@@ -131,7 +131,7 @@ func braillegen() -> void:
 				"""
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
-				where code in (10240, 10241, 10242, 10244, 10248, 10256, 10272, 10304, 10368, 10495)
+				where code in (10240, 10241, 10242, 10244, 10248, 10256, 10272, 10304, 10368)
 				order by code
 				;"""
 				% StateVars.font.id
@@ -141,7 +141,7 @@ func braillegen() -> void:
 
 	var bms: Dictionary[int, Bitmap]
 	var qs := StateVars.db_saves.query_result
-	if qs.size() < 10:
+	if qs.size() < 9:
 		# TODO: warn abt missing
 		return
 	for q in StateVars.db_saves.query_result:
