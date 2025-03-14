@@ -16,9 +16,7 @@ jobs:
         with:
           lfs: true
           sparse-checkout: |
-            mkdocs.yml
             docs
-          sparse-checkout-cone-mode: false
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
