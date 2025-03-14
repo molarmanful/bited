@@ -17,6 +17,7 @@ jobs:
           lfs: true
           sparse-checkout: |
             docs
+            nix
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
