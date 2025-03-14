@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           lfs: true
+          fetch-tags: true
           sparse-checkout: |
             docs
             nix
@@ -37,7 +38,7 @@ jobs:
       - name: Deploy
         run: |
           TAG="$(git describe --abbrev=0 --tags)"
-          alias=$(case $TAG in
+          alias=$(case "$TAG" in
             *-*) echo -n "prerelease" ;;
             *) echo -n "latest" ;;
           esac)
