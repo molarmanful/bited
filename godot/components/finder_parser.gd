@@ -157,7 +157,7 @@ func build_block(r := false) -> void:
 		for q in StateVars.db_uc.query_result:
 			xs.append("id between ? and ?")
 			binds.append(q.start)
-			binds.append(q.end)
+			binds.append(q.end - 1)
 		if xs:
 			push_qs("(%s)" % " or ".join(xs))
 
