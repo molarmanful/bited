@@ -121,7 +121,13 @@ func _ready() -> void:
 			out.hi = on
 			preview()
 	)
-	btn_dl.pressed.connect(dl_img)
+	btn_dl.pressed.connect(file_dl.popup)
+	file_dl.file_selected.connect(
+		func(path: String):
+			if not path:
+				return
+			out.texture.get_image().save_png(path)
+	)
 	input_scale.value_changed.connect(out.scale)
 
 
@@ -143,11 +149,3 @@ func preview(hard := false) -> void:
 	out.refresh(hard)
 	window.popup()
 	input.grab_focus()
-
-
-func dl_img() -> void:
-	file_dl.popup()
-	if not file_dl.current_file:
-		return
-
-	out.texture.get_image().save_png(file_dl.current_file)

@@ -93,6 +93,7 @@ pg_x = NodePath("../X")
 pg_over_warn = NodePath("../OverWarn")
 
 [node name="DB" parent="CenterContainer" node_paths=PackedStringArray("pg_x", "pg_del_warn", "pg_rename") instance=ExtResource("4_pvvli")]
+visible = false
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 2
 pg_x = NodePath("../X")

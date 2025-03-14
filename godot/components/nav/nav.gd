@@ -32,8 +32,10 @@ func _ready() -> void:
 	StateVars.settings.connect(refresh)
 	win_finder.query.connect(finder)
 	btn_home.pressed.connect(StateVars.all_start)
-	btn_save.pressed.connect(save)
-	btn_load.pressed.connect(load)
+	btn_save.pressed.connect(save_pre)
+	dialog_save.file_selected.connect(save)
+	btn_load.pressed.connect(load_pre)
+	dialog_load.file_selected.connect(load)
 	btn_preview.pressed.connect(
 		func():
 			preview.window.hide()
@@ -49,27 +51,35 @@ func refresh() -> void:
 	font_name.text = StateVars.font.family
 
 
-func save() -> void:
+func save_pre():
 	var path := StateVars.path()
 	if not path:
 		dialog_save.popup()
-		path = dialog_save.current_file
-		if not path:
-			return
-		StateVars.set_path(path)
+		return
+	save(path)
+
+
+func save(path: String) -> void:
+	if not path:
+		return
+	StateVars.set_path(path)
 
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(StateVars.font.to_bdf())
 
 
-func load() -> void:
+func load_pre():
 	var path := StateVars.path()
 	if not path:
 		dialog_load.popup()
-		path = dialog_load.current_file
-		if not path:
-			return
-		StateVars.set_path(path)
+		return
+	load(path)
+
+
+func load(path: String) -> void:
+	if not path:
+		return
+	StateVars.set_path(path)
 
 	font = BFont.new()
 	await get_tree().process_frame
