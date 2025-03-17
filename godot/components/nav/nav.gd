@@ -32,10 +32,10 @@ func _ready() -> void:
 	StateVars.settings.connect(refresh)
 	win_finder.query.connect(finder)
 	btn_home.pressed.connect(StateVars.all_start)
-	btn_save.pressed.connect(save_pre)
-	dialog_save.file_selected.connect(save)
-	btn_load.pressed.connect(load_pre)
-	dialog_load.file_selected.connect(load)
+	btn_save.pressed.connect(save_font_pre)
+	dialog_save.file_selected.connect(save_font)
+	btn_load.pressed.connect(load_font_pre)
+	dialog_load.file_selected.connect(load_font)
 	btn_preview.pressed.connect(
 		func():
 			preview.window.hide()
@@ -51,15 +51,15 @@ func refresh() -> void:
 	font_name.text = StateVars.font.family
 
 
-func save_pre():
+func save_font_pre():
 	var path := StateVars.path()
 	if not path:
 		dialog_save.popup()
 		return
-	save(path)
+	save_font(path)
 
 
-func save(path: String) -> void:
+func save_font(path: String) -> void:
 	if not path:
 		return
 	StateVars.set_path(path)
@@ -72,15 +72,15 @@ func save(path: String) -> void:
 	glyphs.store_string(StateVars.font.to_glyphs_toml())
 
 
-func load_pre():
+func load_font_pre():
 	var path := StateVars.path()
 	if not path:
 		dialog_load.popup()
 		return
-	load(path)
+	load_font(path)
 
 
-func load(path: String) -> void:
+func load_font(path: String) -> void:
 	if not path:
 		return
 	StateVars.set_path(path)
