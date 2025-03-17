@@ -11,9 +11,10 @@ a "roadmap" you can take to expand your font:
 - *And beyond...*
 
 For reference, here's
-[:material-download: my version of unicorn](../assets/unicorn.bdf){download="unicorn.bdf"}.
-It covers all of ISO-8859-1 and includes some extra symbols from Windows Glyph
-List 4 to cover common punctuation and symbols.
+[:material-download: my version of unicorn](https://github.com/molarmanful/bited/tree/main/docs/manual/assets/unicorn);
+to look at it, simply download the BDF and `glyphs.toml` into the same directory
+and import inside bited. It covers all of ISO-8859-1 and includes some extra
+symbols from Windows Glyph List 4 to cover common punctuation and symbols.
 
 ![unicorn kern king](assets/unicorn-kernking.png){loading=lazy}
 

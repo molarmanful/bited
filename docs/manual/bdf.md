@@ -19,7 +19,7 @@ formats, but BDF has plenty going for it.
   Linux). Most bitmap fonts that you can find online use BDFs as either source
   or distribution.
 
-## Spec Extensions
+## BDF Spec Extensions
 
 bited's extensions to the BDF format occur exclusively as custom properties
 prefixed with `BITED_`. This makes bited BDFs fully compatible with the
@@ -30,13 +30,6 @@ words, you can use bited BDFs as-is anywhere you can use regular BDFs.
 
 Default font-wide dwidth. Corresponds to `FONT > default dimensions > w:` in the
 Settings Menu.
-
-### `BITED_WIDTHS`
-
-A 2-part string that encodes whether each glyph is in offset or dwidth mode. The
-first part is the glyph count. The second part is a gzipped bit sequence, where
-0 is offset mode and 1 is dwidth mode. Each bit is matched to its corresponding
-glyph based on the BDF's glyph order.
 
 ### `BITED_TABLE_WIDTH`
 
@@ -53,3 +46,33 @@ Corresponds to `DISPLAY > editor grid size`.
 ### `BITED_EDITOR_CELL_SIZE`
 
 Corresponds to `DISPLAY > editor cell size`.
+
+## `glyphs.toml`
+
+One limitation of the BDF format is that there is no spec-compliant way to store
+custom per-glyph data. To work around this, bited interfaces with a TOML file
+colocated with the BDF that follows the pattern `{bdf_basename}.glyphs.toml`.
+Like BDF, this file is intended for both human and computer consumption.
+
+!!! warning
+
+    Whenever you rename your BDF, you must also rename the corresponding
+    `glyphs.toml` to ensure bited can find it.
+
+### `glyphs.<name>`
+
+This table contains glyph-specific values. Glyphs not specified here will derive
+values from the `default` table.
+
+#### `is_abs: bool`
+
+Whether the glyph is in offset mode (`false`) or dwidth mode (`true`).
+
+### `default`
+
+This table contains fallback values for glyphs not specified in the `glyphs`
+table.
+
+| Key      | Default Value |
+| -------- | ------------- |
+| `is_abs` | `true`        |

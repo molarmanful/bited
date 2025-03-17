@@ -4,7 +4,7 @@
 sequenceDiagram
     participant D as bited database
     participant B as bited
-    participant F as bdf file
+    participant F as bdf file<br>glyphs.toml
     participant V as version control<br>(e.g. git)
 
     activate B
