@@ -151,7 +151,6 @@ func to_bdf_properties() -> PackedStringArray:
 		"X_HEIGHT %d" % x_h,
 		"COPYRIGHT %s" % stringify(copyright),
 		"BITED_DWIDTH %d" % dwidth,
-		"BITED_WIDTHS %s" % stringify(width64()),
 		"BITED_TABLE_WIDTH %d" % StyleVars.table_width,
 		"BITED_TABLE_CELL_SCALE %d" % StyleVars.thumb_px_size,
 		"BITED_EDITOR_GRID_SIZE %d" % StyleVars.grid_size,
@@ -167,14 +166,14 @@ func to_bdf_properties() -> PackedStringArray:
 	return res
 
 
-func width64() -> String:
+func to_glyphs_toml() -> String:
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
-				select is_abs
+				select name, code, is_abs
 				from font_%s
 				order by code, name
 				;"""
@@ -184,21 +183,19 @@ func width64() -> String:
 	)
 	var qs := StateVars.db_saves.query_result
 
-	var res := BitMap.new()
-	res.create(Vector2i(qs.size(), 1))
-	var i := 0
+	var res: PackedStringArray
+	res.resize(len(qs))
+	var i = 0
 	for q in qs:
-		res.set_bit(i, 0, bool(q.is_abs))
+		res[i] = (
+			("[%s]\n" + "is_abs=%s")
+			% [
+				JSON.stringify(("U+" if q.code >= 0 else "") + q.name),
+				"true" if q.is_abs else "false"
+			]
+		)
 		i += 1
-	return (
-		"%d %s"
-		% [
-			res.get_size().x,
-			Marshalls.raw_to_base64(
-				res.data.data.compress(FileAccess.COMPRESSION_GZIP)
-			)
-		]
-	)
+	return "\n".join(res)
 
 
 func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
@@ -228,7 +225,7 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 			res
 			. append_array(
 				[
-					"STARTCHAR %s%s" % ["U+" if q.code >= 0 else "", q.name],
+					"STARTCHAR %s" % (("U+" if q.code >= 0 else "") + q.name),
 					"ENCODING %d" % q.code,
 					"SWIDTH %d 0" % swidth(fb.bb_x, dw),
 					"DWIDTH %d 0" % dw,

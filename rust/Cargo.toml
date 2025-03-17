@@ -7,7 +7,7 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-base64 = "0.22.1"
 bitvec = "1.0.1"
-flate2 = "1.1.0"
 godot = "0.2.3"
+serde = { version = "1.0.219", features = ["derive"] }
+toml = "0.8.20"

@@ -64,8 +64,12 @@ func save(path: String) -> void:
 		return
 	StateVars.set_path(path)
 
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	file.store_string(StateVars.font.to_bdf())
+	var bdf := FileAccess.open(path, FileAccess.WRITE)
+	var glyphs := FileAccess.open(
+		path.trim_suffix(".bdf") + ".glyphs.toml", FileAccess.WRITE
+	)
+	bdf.store_string(StateVars.font.to_bdf())
+	glyphs.store_string(StateVars.font.to_glyphs_toml())
 
 
 func load_pre():

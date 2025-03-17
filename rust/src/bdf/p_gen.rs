@@ -37,7 +37,7 @@ impl PGen {
         let def = self.defs.contains(k);
         let mut warn = None;
         if def {
-            warn = Some(format!("{} already defined, skipping", k));
+            warn = Some(format!("{k} already defined, skipping"));
         } else {
             self.defs.insert(k.to_string());
         }

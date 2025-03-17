@@ -41,7 +41,7 @@ impl UtilR {
             .chunks(bytes.len() / usize::from(h))
             .map(|row| {
                 row.iter()
-                    .map(|byte| format!("{:02X}", byte))
+                    .map(|byte| format!("{byte:02X}"))
                     .collect::<Vec<_>>()
                     .concat()
                     .to_godot()

@@ -1,30 +1,23 @@
 use std::{
     collections::HashSet,
-    io::Read,
     str::FromStr,
 };
 
-use base64::{
-    engine::general_purpose::STANDARD,
-    read::DecoderReader,
-};
-use bitvec::prelude::*;
-use flate2::read::GzDecoder;
 use godot::meta::ToGodot;
 
 use super::{
     font::BFontR,
+    glyphs_map::GlyphsMap,
     p_gen::PGen,
     prop_val::PropVal,
 };
 
 pub struct Parser<'a> {
     pub n_line: usize,
-    pub i_glyph: usize,
     font: &'a mut BFontR,
+    glyphs_map: GlyphsMap,
     mode: Mode,
     defs: HashSet<String>,
-    dws: BitVec<u8>,
     p_gen: PGen,
 }
 
@@ -40,15 +33,14 @@ enum Mode {
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(font: &'a mut BFontR) -> Self {
+    pub fn new(font: &'a mut BFontR, glyphs_map: GlyphsMap) -> Self {
         Self {
             font,
+            glyphs_map,
             n_line: 0,
             mode: Mode::Pre,
             defs: HashSet::new(),
-            dws: BitVec::new(),
             p_gen: PGen::new(),
-            i_glyph: 0,
         }
     }
 
@@ -109,7 +101,6 @@ impl<'a> Parser<'a> {
                 | "X_HEIGHT"
                 | "COPYRIGHT"
                 | "BITED_DWIDTH"
-                | "BITED_WIDTHS"
                 | "BITED_TABLE_WIDTH"
                 | "BITED_TABLE_CELL_SCALE"
                 | "BITED_EDITOR_GRID_SIZE"
@@ -164,7 +155,7 @@ impl<'a> Parser<'a> {
                 self.notdef(k);
             }
 
-            _ => self.warn(&format!("unknown keyword {}, skipping", k)),
+            _ => self.warn(&format!("unknown keyword {k}, skipping")),
         }
         None
     }
@@ -172,7 +163,7 @@ impl<'a> Parser<'a> {
     fn parse_props(&mut self, k: &str, v: &str) -> Option<String> {
         if k == "ENDPROPERTIES" {
             self.mode = Mode::X;
-        } else if self.notdef(&format!("prop {}", k)) {
+        } else if self.notdef(&format!("prop {k}")) {
             match self.parse_propval(v) {
                 Some(pv) => match k {
                     "FONT_DESCENT" => match pv {
@@ -197,11 +188,6 @@ impl<'a> Parser<'a> {
                         _ => self.warn("BITED_DWIDTH is not a valid int >= 0, ignoring"),
                     },
 
-                    "BITED_WIDTHS" => match pv {
-                        PropVal::Str(s) => self.parse_widths(s),
-                        _ => self.warn("BITED_WIDTHS is not a string, ignoring"),
-                    },
-
                     "BITED_TABLE_WIDTH" => match pv {
                         PropVal::Num(n) => self.font.table_width = n,
                         _ => self.warn("BITED_TABLE_WIDTH is not a valid int, ignoring"),
@@ -224,7 +210,7 @@ impl<'a> Parser<'a> {
                     }
                 },
 
-                _ => self.warn(&format!("unable to parse property {}, skipping", k)),
+                _ => self.warn(&format!("unable to parse property {k}, skipping")),
             }
         }
         None
@@ -233,10 +219,16 @@ impl<'a> Parser<'a> {
     fn parse_chars(&mut self, k: &str, v: &str) -> Option<String> {
         match k {
             "STARTCHAR" => {
-                if self.notdef(&format!("char {}", v)) {
+                if self.notdef(&format!("char {v}")) {
                     self.mode = Mode::Char;
                     self.p_gen = PGen::new();
                     self.p_gen.name = v.to_string();
+                    self.p_gen.is_abs = self
+                        .glyphs_map
+                        .0
+                        .get(&self.p_gen.name)
+                        .map(|glyph| glyph.is_abs)
+                        .unwrap_or(true);
                 } else {
                     self.mode = Mode::CharIgnore;
                 }
@@ -244,7 +236,7 @@ impl<'a> Parser<'a> {
 
             "ENDFONT" => self.mode = Mode::Post,
 
-            _ => self.warn(&format!("unknown keyword {} in chars section, skipping", k)),
+            _ => self.warn(&format!("unknown keyword {k} in chars section, skipping")),
         }
 
         None
@@ -258,7 +250,7 @@ impl<'a> Parser<'a> {
                         Some(n) => {
                             self.p_gen.code = n;
                             if n >= 0 {
-                                self.p_gen.name = format!("{:04X}", n)
+                                self.p_gen.name = format!("{n:04X}")
                             }
                         }
                         None => self.warn("ENCODING is not a valid int, defaulting to -1"),
@@ -295,7 +287,6 @@ impl<'a> Parser<'a> {
 
             "DWIDTH" => {
                 if self.p_gen_notdef(k) {
-                    self.p_gen.is_abs = *self.dws.get(self.i_glyph).as_deref().unwrap_or(&true);
                     match one_int::<i32>(v) {
                         Some(n) => {
                             self.p_gen.dwidth = n - self.font.bb.x * (!self.p_gen.is_abs as i32);
@@ -317,8 +308,8 @@ impl<'a> Parser<'a> {
             "SWIDTH" | "SWIDTH1" | "DWIDTH1" | "VVECTOR" => {}
 
             _ => self.warn(&format!(
-                "unknown keyword {} in glyph '{}', skipping",
-                k, self.p_gen.name
+                "unknown keyword {k} in glyph '{}', skipping",
+                self.p_gen.name
             )),
         }
 
@@ -339,8 +330,7 @@ impl<'a> Parser<'a> {
                 Ok(_) => self.p_gen.bm.push(k.to_string()),
                 Err(_) => {
                     self.warn(&format!(
-                        "'{}' is not valid hex, replacing with empty line",
-                        k
+                        "'{k}' is not valid hex, replacing with empty line",
                     ));
                     self.p_gen.bm.push("".to_string());
                 }
@@ -354,11 +344,10 @@ impl<'a> Parser<'a> {
             [] => {}
             xs => {
                 let s = xs.join(", ");
-                self.warn(&format!("glyph {} is missing {}", self.p_gen.name, s))
+                self.warn(&format!("glyph {} is missing {s}", self.p_gen.name))
             }
         }
         self.mode = Mode::Chars;
-        self.i_glyph += 1;
         self.font
             .set_glyph_pre(&self.p_gen.name, self.p_gen.to_glyph())
     }
@@ -489,45 +478,10 @@ impl<'a> Parser<'a> {
         }
     }
 
-    fn parse_widths(&mut self, s: &str) {
-        match if let [a, b] = &s.split_whitespace().take(2).collect::<Vec<_>>()[..] {
-            a.parse().ok().and_then(|n| {
-                let mut buf: Vec<u8> = Vec::with_capacity(n);
-                GzDecoder::new(DecoderReader::new(b.as_bytes(), &STANDARD))
-                    .read_to_end(&mut buf)
-                    .ok()
-                    .map(|_| {
-                        let mut bits = BitVec::from_vec(buf);
-                        bits.truncate(n);
-                        bits
-                    })
-                    .inspect(|bits| {
-                        if bits.len() < n {
-                            self.warn(&format!(
-                                concat!(
-                                    "BITED_WIDTHS bit len ({}) < n ({}), ",
-                                    "please manually verify BDF integrity"
-                                ),
-                                bits.len(),
-                                n
-                            ));
-                        }
-                    })
-            })
-        } else {
-            None
-        } {
-            Some(bits) => {
-                self.dws = bits;
-            }
-            None => self.warn("BITED_WIDTHS does not follow a valid format, ignoring"),
-        }
-    }
-
     fn notdef(&mut self, k: &str) -> bool {
         let def = self.defs.contains(k);
         if def {
-            self.warn(&format!("{} already defined, skipping", k));
+            self.warn(&format!("{k} already defined, skipping"));
         } else {
             self.defs.insert(k.to_string());
         }

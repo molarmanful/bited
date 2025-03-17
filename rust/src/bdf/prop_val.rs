@@ -10,8 +10,8 @@ pub enum PropVal<'a> {
 impl fmt::Display for PropVal<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            PropVal::Num(n) => write!(f, "{}", n),
-            PropVal::Str(s) => write!(f, "{}", s),
+            PropVal::Num(n) => write!(f, "{n}"),
+            PropVal::Str(s) => write!(f, "{s}"),
         }
     }
 }

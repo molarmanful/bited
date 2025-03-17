@@ -1,5 +1,9 @@
 use std::{
-    io::BufRead,
+    error::Error,
+    io::{
+        BufRead,
+        Read,
+    },
     time::Instant,
 };
 
@@ -12,7 +16,10 @@ use godot::{
     prelude::*,
 };
 
-use super::parser::Parser;
+use super::{
+    glyphs_map::GlyphsMap,
+    parser::Parser,
+};
 
 #[derive(GodotClass)]
 #[class(base=RefCounted)]
@@ -99,10 +106,13 @@ impl IRefCounted for BFontR {
 impl BFontR {
     #[func]
     pub fn read_file(&mut self, path: GString) -> GString {
+        let path_ = path.to_string();
+        let base = path_.strip_suffix(".bdf").unwrap_or(&path_);
         match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
-                let e = self.parse(file.lines().map(|l| l.unwrap_or("".to_string())));
+                let gm = self.read_glyphs_map(&format!("{base}.glyphs.toml"));
+                let e = self.parse(file.lines().map(|l| l.unwrap_or("".to_string())), gm);
                 godot_print!("parsed {:.2?}", start.elapsed());
                 e
             }
@@ -116,8 +126,23 @@ impl BFontR {
         Parser::is_other_prop(&k.to_string())
     }
 
-    fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>) -> String {
-        let mut parser = Parser::new(self);
+    fn read_glyphs_map(&mut self, path: &str) -> GlyphsMap {
+        GFile::open(path, ModeFlags::READ)
+            .map_err(|e| e.into())
+            .and_then(|mut file| {
+                let mut s = String::new();
+                file.read_to_string(&mut s)
+                    .map_err(|e| e.into())
+                    .and_then(|_| GlyphsMap::from_toml(&s).map_err(|e| e.into()))
+            })
+            .unwrap_or_else(|e: Box<dyn Error>| {
+                self.warn(0, &e.to_string());
+                GlyphsMap::new()
+            })
+    }
+
+    fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>, gm: GlyphsMap) -> String {
+        let mut parser = Parser::new(self, gm);
         for line in lines {
             let e = parser.parse_line(line.as_ref());
             if let Some(msg) = e {
@@ -142,16 +167,16 @@ impl BFontR {
 
     pub fn warn(&mut self, n_line: usize, msg: &str) {
         self.warns
-            .push(&Self::rs_print(format!("WARN @ line {}: {}", n_line, msg)));
+            .push(&Self::rs_print(format!("WARN @ line {n_line}: {msg}")));
     }
 
     fn err(&self, n_line: usize, msg: &str) -> String {
-        Self::rs_print(format!("ERR @ line {}: {}", n_line, msg))
+        Self::rs_print(format!("ERR @ line {n_line}: {msg}"))
     }
 
     #[func]
     fn rs_print(str: String) -> String {
-        godot_print!("{}", str);
+        godot_print!("{str}");
         str
     }
 }
