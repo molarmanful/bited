@@ -26,11 +26,6 @@ var names: Dictionary[String, String] = {
 }
 
 
-func _input(e: InputEvent) -> void:
-	if e is InputEventMouseMotion:
-		print(get_local_mouse_position())
-
-
 func _draw() -> void:
 	var w_cell := grid.w_cell
 	var w_grid := grid.w_grid
