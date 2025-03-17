@@ -106,11 +106,11 @@ impl IRefCounted for BFontR {
 impl BFontR {
     #[func]
     pub fn read_file(&mut self, path: GString) -> GString {
-        let path_ = path.to_string();
-        let base = path_.strip_suffix(".bdf").unwrap_or(&path_);
         match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
+                let path_ = path.to_string();
+                let base = path_.strip_suffix(".bdf").unwrap_or(&path_);
                 let gm = self.read_glyphs_map(&format!("{base}.glyphs.toml"));
                 let e = self.parse(file.lines().map(|l| l.unwrap_or("".to_string())), gm);
                 godot_print!("parsed {:.2?}", start.elapsed());
@@ -136,8 +136,8 @@ impl BFontR {
                     .and_then(|_| GlyphsMap::from_toml(&s).map_err(|e| e.into()))
             })
             .unwrap_or_else(|e: Box<dyn Error>| {
-                self.warn(0, &e.to_string());
-                GlyphsMap::new()
+                self.warn(0, &format!("unable to read glyphs.toml [\n{}\n]", e));
+                GlyphsMap::default()
             })
     }
 

@@ -223,12 +223,7 @@ impl<'a> Parser<'a> {
                     self.mode = Mode::Char;
                     self.p_gen = PGen::new();
                     self.p_gen.name = v.to_string();
-                    self.p_gen.is_abs = self
-                        .glyphs_map
-                        .0
-                        .get(&self.p_gen.name)
-                        .map(|glyph| glyph.is_abs)
-                        .unwrap_or(true);
+                    self.p_gen.is_abs = self.glyphs_map.is_abs(&self.p_gen.name);
                 } else {
                     self.mode = Mode::CharIgnore;
                 }

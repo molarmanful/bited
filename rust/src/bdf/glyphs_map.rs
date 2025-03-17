@@ -5,8 +5,13 @@ use serde::{
     Serialize,
 };
 
-#[derive(Deserialize, Serialize)]
-pub struct GlyphsMap(pub HashMap<String, Glyph>);
+#[derive(Deserialize, Serialize, Default)]
+pub struct GlyphsMap {
+    #[serde(default)]
+    pub default: Glyph,
+    #[serde(default)]
+    pub glyphs: HashMap<String, Glyph>,
+}
 
 #[derive(Deserialize, Serialize)]
 pub struct Glyph {
@@ -14,11 +19,20 @@ pub struct Glyph {
 }
 
 impl GlyphsMap {
-    pub fn new() -> Self {
-        Self(HashMap::new())
-    }
-
     pub fn from_toml(toml: &str) -> Result<Self, toml::de::Error> {
         toml::from_str(toml)
+    }
+
+    pub fn is_abs(&self, name: &str) -> bool {
+        self.glyphs
+            .get(name)
+            .map(|glyph| glyph.is_abs)
+            .unwrap_or(self.default.is_abs)
+    }
+}
+
+impl Default for Glyph {
+    fn default() -> Self {
+        Self { is_abs: true }
     }
 }

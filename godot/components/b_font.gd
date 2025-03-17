@@ -173,29 +173,54 @@ func to_glyphs_toml() -> String:
 		. query(
 			(
 				"""
-				select name, code, is_abs
+				select is_abs, count(is_abs) as n
 				from font_%s
-				order by code, name
+				order by n desc
+				limit 1
 				;"""
 				% id
 			)
 		)
 	)
 	var qs := StateVars.db_saves.query_result
+	var d_is_abs: int = qs[0].is_abs if qs else 1
+
+	var default := (
+		("[default]\n" + "is_abs=%s\n") % ("true" if d_is_abs else "false")
+	)
+
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				select name, code, is_abs
+				from font_%s
+				where is_abs <> ?
+				order by code, name
+				;"""
+				% id
+			),
+			[d_is_abs]
+		)
+	)
+	qs = StateVars.db_saves.query_result
 
 	var res: PackedStringArray
 	res.resize(len(qs))
 	var i = 0
 	for q in qs:
 		res[i] = (
-			("[%s]\n" + "is_abs=%s")
+			("[glyphs.%s]\n" + "is_abs=%s\n")
 			% [
 				JSON.stringify(("U+" if q.code >= 0 else "") + q.name),
 				"true" if q.is_abs else "false"
 			]
 		)
 		i += 1
-	return "\n".join(res)
+
+	return default + "".join(res)
 
 
 func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
