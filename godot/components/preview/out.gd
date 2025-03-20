@@ -89,7 +89,7 @@ func render() -> void:
 
 	if not mx:
 		return
-	img.resize(mx.x, mx.y, Image.INTERPOLATE_NEAREST)
+	img.resize(mini(mx.x, 16384), mini(mx.y, 16384), Image.INTERPOLATE_NEAREST)
 
 	pos = Vector2i(0, StateVars.font.asc)
 	for line in lines:
