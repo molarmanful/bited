@@ -13,15 +13,30 @@ enum Mode {
 	BLOCK_,
 }
 
-const AND = ") and "
-const OR = ") or "
+const Op: Dictionary[String, String] = {
+	Q = ":;",
+	U = ":u",
+	CAT = ":cat",
+	CAT_ = ":cat;",
+	PAGE = ":page",
+	PAGE_ = ":page;",
+	BLOCK = ":block",
+	BLOCK_ = ":block;",
+	AND = "&",
+	OR = "|",
+}
+
+const Sep: Dictionary[String, String] = {
+	AND = ") and ",
+	OR = ") or ",
+}
 
 var tks_in: PackedStringArray
 var qs: PackedStringArray
 var binds: Array
 
 var mode := Mode.X
-var sep := AND
+var sep := Sep.AND
 var nsep := 0
 var tks: PackedStringArray
 
@@ -40,35 +55,35 @@ func tokenize(q: String) -> void:
 func parse():
 	for w in tks_in:
 		match w.to_lower():
-			":;":
+			Op.Q:
 				next()
 				mode = Mode.Q
-			":u":
+			Op.U:
 				next()
 				mode = Mode.U
-			":cat":
+			Op.CAT:
 				next()
 				mode = Mode.CAT
-			":cat;":
+			Op.CAT_:
 				next()
 				mode = Mode.CAT_
-			":page":
+			Op.PAGE:
 				next()
 				mode = Mode.PAGE
-			":page;":
+			Op.PAGE_:
 				next()
 				mode = Mode.PAGE_
-			":block":
+			Op.BLOCK:
 				next()
 				mode = Mode.BLOCK
-			":block;":
+			Op.BLOCK_:
 				next()
 				mode = Mode.BLOCK_
-			"&":
-				sep = AND
+			Op.AND:
+				sep = Sep.AND
 				next()
-			"|":
-				sep = OR
+			Op.OR:
+				sep = Sep.AND
 				next()
 			_:
 				if w:
@@ -101,7 +116,7 @@ func next() -> void:
 				push_qs("name like ? escape '\\'")
 				binds.append("%%%s%%" % " ".join(tks))
 	mode = Mode.X
-	sep = AND
+	sep = Sep.AND
 	tks.clear()
 
 
@@ -121,7 +136,7 @@ func build_u() -> void:
 				binds.append(tk)
 				binds.append(tk)
 	if xs:
-		push_qs("(%s)" % " or ".join(xs))
+		push_qs("(%s)" % Sep.OR.join(xs))
 
 
 func build_cat(r := false) -> void:
@@ -131,7 +146,7 @@ func build_cat(r := false) -> void:
 			xs.append("category like ? escape '\\'")
 			binds.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		push_qs("(%s)" % " or ".join(xs))
+		push_qs("(%s)" % Sep.OR.join(xs))
 
 
 func build_page(r := false) -> void:
@@ -159,11 +174,11 @@ func build_block(r := false) -> void:
 			binds.append(q.start)
 			binds.append(q.end - 1)
 		if xs:
-			push_qs("(%s)" % " or ".join(xs))
+			push_qs("(%s)" % Sep.OR.join(xs))
 
 
 func query() -> String:
-	if qs and [AND, OR].has(qs[-1]):
+	if qs and [Sep.AND, Sep.OR].has(qs[-1]):
 		qs.resize(qs.size() - 1)
 		nsep -= 1
 	return "(".repeat(nsep) + "".join(qs) if qs else "0"
