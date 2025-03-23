@@ -1,17 +1,7 @@
 class_name FinderParser
 extends RefCounted
 
-enum Mode {
-	X,
-	Q,
-	U,
-	CAT,
-	CAT_,
-	PAGE,
-	PAGE_,
-	BLOCK,
-	BLOCK_,
-}
+enum Mode { X, Q, U, CAT, CAT_, PAGE, PAGE_, BLOCK, BLOCK_ }
 
 const Op: Dictionary[String, String] = {
 	Q = ":;",
@@ -24,37 +14,40 @@ const Op: Dictionary[String, String] = {
 	BLOCK_ = ":block;",
 	AND = "&",
 	OR = "|",
+	LPAREN = "(",
+	RPAREN = ")",
 }
 
 const Sep: Dictionary[String, String] = {
-	AND = ") and ",
-	OR = ") or ",
+	AND = " and ",
+	OR = " or ",
 }
 
-var tks_in: PackedStringArray
+var tks: PackedStringArray
 var qs: PackedStringArray
 var binds: Array
-
+var i_tks := 0
+var skip := 0
 var mode := Mode.X
 var sep := Sep.AND
-var nsep := 0
-var tks: PackedStringArray
+var args: PackedStringArray
 
 
 static func from(q: String) -> FinderParser:
 	var parser := FinderParser.new()
-	parser.tokenize(q)
+	parser.tks = FinderTokenizer.tokenize(q)
 	parser.parse()
 	return parser
 
 
-func tokenize(q: String) -> void:
-	tks_in = q.split(" ")
+func parse() -> void:
+	for tk in tks:
+		i_tks += 1
+		if skip > 0:
+			skip -= 1
+			continue
 
-
-func parse():
-	for w in tks_in:
-		match w.to_lower():
+		match tk.to_lower():
 			Op.Q:
 				next()
 				mode = Mode.Q
@@ -83,20 +76,32 @@ func parse():
 				sep = Sep.AND
 				next()
 			Op.OR:
-				sep = Sep.AND
+				sep = Sep.OR
 				next()
-			_:
-				if w:
-					tks.append(w)
+			Op.LPAREN:
+				next()
+				var fp := FinderParser.new()
+				fp.tks = tks.slice(i_tks)
+				fp.parse()
+				push_qs("(%s)" % fp.query())
+				binds.append_array(fp.binds)
+				skip = fp.i_tks
+			Op.RPAREN:
+				break
+			_ when tk.begins_with('"'):
+				args.append(JSON.parse_string(tk))
+			_ when tk:
+				args.append(tk)
+
 	next()
+	if qs and [Sep.AND, Sep.OR].has(qs[-1]):
+		qs.resize(qs.size() - 1)
 
 
 func next() -> void:
 	match mode:
 		Mode.Q:
-			if tks:
-				push_qs("name like ? escape '\\'")
-				binds.append(" ".join(tks))
+			build_x(true)
 		Mode.U:
 			build_u()
 		Mode.CAT:
@@ -112,17 +117,16 @@ func next() -> void:
 		Mode.BLOCK_:
 			build_block(true)
 		_:
-			if tks:
-				push_qs("name like ? escape '\\'")
-				binds.append("%%%s%%" % " ".join(tks))
+			build_x()
+
 	mode = Mode.X
 	sep = Sep.AND
-	tks.clear()
+	args.clear()
 
 
 func build_u() -> void:
 	var xs: PackedStringArray
-	for tk in tks:
+	for tk in args:
 		if tk:
 			if tk.contains("-"):
 				var hs := tk.split("-", true, 1)
@@ -133,6 +137,8 @@ func build_u() -> void:
 			else:
 				xs.append("printf('%X', id) like ? escape '\\'")
 				xs.append("printf('%04X', id) like ? escape '\\'")
+				xs.append("printf('%06X', id) like ? escape '\\'")
+				binds.append(tk)
 				binds.append(tk)
 				binds.append(tk)
 	if xs:
@@ -141,7 +147,7 @@ func build_u() -> void:
 
 func build_cat(r := false) -> void:
 	var xs: PackedStringArray
-	for tk in tks:
+	for tk in args:
 		if tk:
 			xs.append("category like ? escape '\\'")
 			binds.append(("%s" if r else "%%%s%%") % tk)
@@ -150,10 +156,10 @@ func build_cat(r := false) -> void:
 
 
 func build_page(r := false) -> void:
-	if tks:
+	if args:
 		StateVars.db_uc.query_with_bindings(
 			"select id from pages where name like ? escape '\\';",
-			[("%s" if r else "%%%s%%") % " ".join(tks)]
+			[("%s" if r else "%%%s%%") % " ".join(args)]
 		)
 		var xs: PackedStringArray
 		for q in StateVars.db_uc.query_result:
@@ -163,10 +169,10 @@ func build_page(r := false) -> void:
 
 
 func build_block(r := false) -> void:
-	if tks:
+	if args:
 		StateVars.db_uc.query_with_bindings(
 			"select start, end from blocks where name like ? escape '\\';",
-			[("%s" if r else "%%%s%%") % " ".join(tks)]
+			[("%s" if r else "%%%s%%") % " ".join(args)]
 		)
 		var xs: PackedStringArray
 		for q in StateVars.db_uc.query_result:
@@ -177,14 +183,20 @@ func build_block(r := false) -> void:
 			push_qs("(%s)" % Sep.OR.join(xs))
 
 
+func build_x(r := false) -> void:
+	if args:
+		var xs: PackedStringArray
+		for tk in args:
+			xs.append("name like ? escape '\\'")
+			binds.append(tk if r else "%%%s%%" % tk)
+		if xs:
+			push_qs("(%s)" % Sep.OR.join(xs))
+
+
 func query() -> String:
-	if qs and [Sep.AND, Sep.OR].has(qs[-1]):
-		qs.resize(qs.size() - 1)
-		nsep -= 1
-	return "(".repeat(nsep) + "".join(qs) if qs else "0"
+	return "".join(qs) if qs else "0"
 
 
 func push_qs(q: String) -> void:
 	qs.append(q)
 	qs.append(sep)
-	nsep += 1
