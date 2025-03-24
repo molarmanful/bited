@@ -26,7 +26,7 @@ then copy your design across all the matched glyphs.
     The query language is experimental (a.k.a. scuffed and subject to change).
 
 The Finder has a rudimentary query language that internally transpiles to a
-SQLite statement. Queries evaluate from left to right.
+SQLite statement.
 
 ```puml
 @startebnf
@@ -39,17 +39,16 @@ SQLite statement. Queries evaluate from left to right.
 
 query = {
   (
-    [":cat" | ":block" | ":page"], ? <phrase> ?
-    | (":;" | ":cat;" | ":block;" | ":page;"), ? <sql_like> ?
-    | ":u", (? <hex> ? | ? <hex>-<hex> ?)
-  ),
-  ["&" | "|"]
+    [":;" | ":u" | ":cat" | ":cat;" | ":block" | ":block;" | ":page" | ":page;"],
+    {? <phrase> ? | ? <string> ?}
+  )
+  | "&" | "|" | "(" | ")"
 };
 
 @endebnf
 ```
 
-### Phrases and SQL-LIKE
+### Phrases
 
 ???+ question "`%` `_` Wildcards"
 
@@ -58,10 +57,27 @@ query = {
 
     You can escape these with `\`, which treats them as normal characters.
 
-By default, the transpiler wraps "phrases" with `%` -- i.e.
+Phrases are one of the query language's search primitives. If a word in the
+query isn't a special keyword, then it's a phrase.
+
+The transpiler joins consecutive phrases with OR, so the query `just some words`
+will return the combined results of `just`, `some`, and `words`.
+
+### Strings
+
+In addition to phrases, the query language also features strings, denoted by
+wrapping with `"`. This is useful if you want to search using a term that would
+otherwise get broken up by the transpiler. The transpiler treats the contents of
+strings as one phrase; strings and phrases are interchangeable.
+
+You can escape `"` and `\` inside strings with `\`.
+
+### `;` and SQL-Like
+
+By default, the transpiler wraps phrases and strings with `%` -- i.e.
 `column LIKE '%<phrase>%' ESCAPE '\'` in SQLite. But there are also keywords
-followed by `;` that won't wrap their subsequent phrases. For example, `test`
-and `:; %test%` are equivalent queries.
+followed by `;` that won't wrap their subsequent phrases/strings. For example,
+`test` and `:; %test%` are equivalent queries.
 
 ### `:cat`
 
@@ -88,7 +104,8 @@ Filters any matching bited codepages. Has a SQL-LIKE variant.
 ### `:u`
 
 Filters any characters that match the specified hex codepoint or range of hex
-codepoints. Individual hex codepoints can have `%` `_` wildcards.
+codepoints. Individual hex codepoints can have `%` `_` wildcards. Codepoint
+ranges follow the format `<hex>-<hex>`, where `<hex>` is a valid hex number.
 
 **Example**: `:u 00A_`, `:u a0-ffff`
 
@@ -96,8 +113,17 @@ codepoints. Individual hex codepoints can have `%` `_` wildcards.
 
 Logical AND and OR, respectively.
 
-By default, the transpiler will join consecutive keyword sequences with AND --
-e.g. `:block some words :page other words` and
+By default, the transpiler will join consecutive queries with AND -- e.g.
+`:block some words :page other words` and
 `:block some words & :page other words` are equivalent queries. Explicitly
 including `&` becomes necessary when you want to join a keyword sequence with a
 separate phrase, like in `:block some words & a separate phrase`.
+
+### `(` `)`
+
+By default, AND takes higher precedence than OR -- e.g. `a & b | c & d` is
+equivalent to `(a & b) | c & d`. For more fine-grained control over this
+precedence, you can wrap queries with `(` `)`, like `a & (b | c) & d`.
+
+The transpiler is also nice enough to let you unbalance your parentheses. If you
+write `a | b) & c & (d`, the transpiler will process it as `(a | b) & c & (d)`.
