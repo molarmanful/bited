@@ -44,7 +44,7 @@ theme:
   favicon: assets/favicon.ico
   features:
     - content.code.copy
-    # - navigation.instant
+    - navigation.instant
     - navigation.tracking
     - navigation.tabs
     - navigation.expand
