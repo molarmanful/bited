@@ -127,3 +127,21 @@ precedence, you can wrap queries with `(` `)`, like `a & (b | c) & d`.
 
 The transpiler is also nice enough to let you unbalance your parentheses. If you
 write `a | b) & c & (d`, the transpiler will process it as `(a | b) & c & (d)`.
+
+## Query Spellbook
+
+Here are some queries that might come in handy when designing your fonts:
+
+### Latin Characters
+
+```
+latin | :block latin
+```
+
+You can replace this with e.g. `cyrillic` or `greek` to get those chars instead.
+
+### APL and Friends
+
+```
+"apl " | :page dyalog omnibar bqn uiua
+```
