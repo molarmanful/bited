@@ -156,12 +156,17 @@ func build_cat(r := false) -> void:
 
 
 func build_page(r := false) -> void:
-	if args:
+	var xs: PackedStringArray
+	var ys: PackedStringArray
+	for tk in args:
+		if tk:
+			xs.append("name like ? escape '\\'")
+			ys.append(("%s" if r else "%%%s%%") % tk)
+	if xs:
 		StateVars.db_uc.query_with_bindings(
-			"select id from pages where name like ? escape '\\';",
-			[("%s" if r else "%%%s%%") % " ".join(args)]
+			"select id from pages where %s;" % " or ".join(xs), ys
 		)
-		var xs: PackedStringArray
+		xs.clear()
 		for q in StateVars.db_uc.query_result:
 			xs.append("select code from p_%s" % q.id)
 		if xs:
@@ -169,12 +174,17 @@ func build_page(r := false) -> void:
 
 
 func build_block(r := false) -> void:
-	if args:
+	var xs: PackedStringArray
+	var ys: PackedStringArray
+	for tk in args:
+		if tk:
+			xs.append("name like ? escape '\\'")
+			ys.append(("%s" if r else "%%%s%%") % tk)
+	if xs:
 		StateVars.db_uc.query_with_bindings(
-			"select start, end from blocks where name like ? escape '\\';",
-			[("%s" if r else "%%%s%%") % " ".join(args)]
+			"select start, end from blocks where %s;" % " or ".join(xs), ys
 		)
-		var xs: PackedStringArray
+		xs.clear()
 		for q in StateVars.db_uc.query_result:
 			xs.append("id between ? and ?")
 			binds.append(q.start)
