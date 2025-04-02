@@ -6,8 +6,8 @@
 
   stdenv,
   fetchurl,
-  godot_4,
-  godot_4-export-templates,
+  godot,
+  godot-export-templates,
   wineWowPackages,
   zip,
   ...
@@ -26,7 +26,7 @@ stdenv.mkDerivation {
   src = ./.;
 
   nativeBuildInputs = [
-    godot_4
+    godot
     zip
   ];
 
@@ -35,7 +35,7 @@ stdenv.mkDerivation {
 
     export HOME=$(mktemp -d)
     mkdir -p "$HOME"/.local/share/godot/export_templates
-    ln -s ${godot_4-export-templates} "$HOME"/.local/share/godot/export_templates/4.4.stable
+    ln -s ${godot-export-templates} "$HOME"/.local/share/godot/export_templates/4.4.stable
     ${
       if release == "windows" then
         ''

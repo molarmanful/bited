@@ -2,7 +2,7 @@
   description = "A bitmap font editor.";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     devenv.url = "github:cachix/devenv";
     devenv-root = {
@@ -28,10 +28,8 @@
         { inputs', pkgs, ... }:
 
         let
-          my_godot = pkgs.callPackage ./nix/godot_4.nix { };
-          my_godot-export-templates = pkgs.callPackage ./nix/godot_4-export-templates.nix {
-            godot_4 = my_godot;
-          };
+          my_godot = pkgs.godot_4_4;
+          my_godot-export-templates = pkgs.godot_4_4-export-templates;
           toolchain = inputs'.fenix.packages.minimal;
           craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
           rust = craneLib.buildPackage {
@@ -48,8 +46,8 @@
                 pkgs.callPackage ./release.nix (
                   {
                     inherit name version;
-                    godot_4 = my_godot;
-                    godot_4-export-templates = my_godot-export-templates;
+                    godot = my_godot;
+                    godot-export-templates = my_godot-export-templates;
                   }
                   // attrs
                 )
