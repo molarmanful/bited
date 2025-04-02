@@ -61,3 +61,9 @@ jobs:
         with:
           file_pattern: VERSION
           commit_message: 'chore: bump version to ${{ github.ref_name }}'
+      - uses: DeterminateSystems/flakehub-push@main
+        with:
+          visibility: public
+          name: molarmanful/bited
+          tag: ${{ inputs.tag }}
+          include-output-paths: true
