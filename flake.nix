@@ -4,11 +4,6 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devenv.url = "github:cachix/devenv";
-    devenv-root = {
-      url = "file+file:///dev/null";
-      flake = false;
-    };
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,25 +14,41 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.devenv.flakeModule ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
       perSystem =
-        { inputs', pkgs, ... }:
+        {
+          inputs',
+          pkgs,
+          ...
+        }:
 
         let
           my_godot = pkgs.godot_4_4;
           my_godot-export-templates = pkgs.godot_4_4-export-templates;
-          toolchain = inputs'.fenix.packages.minimal;
-          craneLib = (inputs.crane.mkLib pkgs).overrideToolchain toolchain;
+
+          baseCraneLib = inputs.crane.mkLib pkgs;
+          craneLib = baseCraneLib.overrideToolchain inputs'.fenix.packages.minimal.toolchain;
+          craneLibDev = baseCraneLib.overrideToolchain (
+            inputs'.fenix.packages.complete.withComponents [
+              "rustc"
+              "cargo"
+              "clippy"
+              "rustfmt"
+              "rust-analyzer"
+              "rust-src"
+            ]
+          );
+
           rust = craneLib.buildPackage {
             src = ./rust;
             doCheck = false;
             depsBuildBuild = with pkgs; [ mold ];
             RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
           };
+
           version = builtins.readFile ./VERSION;
           release-pkgs =
             builtins.mapAttrs
@@ -66,6 +77,7 @@
                   ext = "x86_64";
                 };
               };
+
           bited = pkgs.callPackage ./. {
             bited-release = release-pkgs.release-linux;
           };
@@ -77,16 +89,9 @@
             default = bited;
           } // release-pkgs;
 
-          devenv.shells = {
-            default = {
-              devenv.root =
-                let
-                  path = builtins.readFile inputs.devenv-root.outPath;
-                in
-                pkgs.lib.mkIf (path != "") path;
-
+          devShells = {
+            default = pkgs.mkShell {
               packages = with pkgs; [
-                stdenv.cc.cc
                 gdtoolkit_4
                 my_godot
                 marksman
@@ -94,33 +99,16 @@
                 yaml-language-server
                 yamlfmt
                 pixelorama
+                uv
+                python314
               ];
 
-              languages = {
-                rust = {
-                  enable = true;
-                  channel = "nightly";
-                  components = [
-                    "rustc"
-                    "cargo"
-                    "clippy"
-                    "rustfmt"
-                    "rust-analyzer"
-                    "rust-src"
-                  ];
-                };
-                python = {
-                  enable = true;
-                  venv.enable = true;
-                  uv = {
-                    enable = true;
-                    sync.enable = true;
-                  };
-                };
-              };
+              inputsFrom = [ (craneLibDev.devShell { }) ];
 
-              enterShell = ''
+              shellHook = ''
                 export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc ]}:$LD_LIBRARY_PATH"
+                uv venv
+                source .venv/bin/activate
               '';
             };
           };
