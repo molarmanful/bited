@@ -21,12 +21,15 @@ jobs:
             os: macos-latest
             key: ${{ github.ref }}-macos-arm
             target: aarch64-apple-darwin
-          - name: Windows
+          - name: Windows x86
             os: windows-latest
-            key: ${{ github.ref }}-windows
-          - name: Linux
+            key: ${{ github.ref }}-windows-x86
+          - name: Linux x86
             os: ubuntu-latest
-            key: ${{ github.ref }}-linux
+            key: ${{ github.ref }}-linux-x86
+          - name: Linux ARM
+            os: ubuntu-latest-arm
+            key: ${{ github.ref }}-linux-arm
     name: Rust Lib (${{ matrix.platform.name }})
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -115,13 +118,21 @@ jobs:
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
-          key: ${{ github.ref }}-windows
+          key: ${{ github.ref }}-windows-x86
           fail-on-cache-miss: true
+      - run: rename 's/(.*)\.dll$/$1.x86_64.dll' rust/target/release/*.dll
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
-          key: ${{ github.ref }}-linux
+          key: ${{ github.ref }}-linux-x86
           fail-on-cache-miss: true
+      - run: rename 's/(.*)\.so$/$1.x86_64.so' rust/target/release/*.so
+      - uses: actions/cache/restore@v4
+        with:
+          path: rust/target/release
+          key: ${{ github.ref }}-linux-arm
+          fail-on-cache-miss: true
+      - run: rename 's/(.*)\.so$/$1.arm64.so' rust/target/release/*.so
       - name: Add Libs
         run: |
           mv rust/target/release/*.{dll,so} godot/addons/bited-rust/bin
