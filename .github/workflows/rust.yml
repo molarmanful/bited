@@ -28,9 +28,8 @@ jobs:
             os: ubuntu-latest
             key: ${{ github.ref }}-linux-x86
           - name: Linux ARM
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
             key: ${{ github.ref }}-linux-arm
-            target: aarch64-unknown-linux-gnu
     name: Rust Lib (${{ matrix.platform.name }})
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -109,32 +108,39 @@ jobs:
           lfs: true
           sparse-checkout: |
             godot/addons/bited-rust
-            rust
           sparse-checkout-cone-mode: false
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
           key: ${{ github.ref }}-macos
           fail-on-cache-miss: true
-      - run: mv rust/target/release/libbited_rust.macos.dylib godot/addons/bited-rust/bin/libbited_rust.macos.framework
+      - run: |
+          mv rust/target/release/libbited_rust.macos.dylib \
+             godot/addons/bited-rust/bin/libbited_rust.macos.framework
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
           key: ${{ github.ref }}-windows-x86
           fail-on-cache-miss: true
-      - run: mv rust/target/release/bited_rust.dll godot/addons/bited-rust/bin/bited_rust.x86_64.dll
+      - run: |
+          mv rust/target/release/bited_rust.dll \
+             godot/addons/bited-rust/bin/bited_rust.x86_64.dll
       - uses: actions/cache/restore@v4
         with:
           path: rust/target/release
           key: ${{ github.ref }}-linux-x86
           fail-on-cache-miss: true
-      - run: mv rust/target/release/libbited_rust.so godot/addons/bited-rust/bin/libbited_rust.x86_64.so
+      - run: |
+          mv rust/target/release/libbited_rust.so \
+             godot/addons/bited-rust/bin/libbited_rust.x86_64.so
       - uses: actions/cache/restore@v4
         with:
-          path: rust/target/aarch64-unknown-linux-gnu/release
+          path: rust/target/release
           key: ${{ github.ref }}-linux-arm
           fail-on-cache-miss: true
-      - run: mv rust/target/release/aarch64-unknown-linux-gnu/libbited_rust.so godot/addons/bited-rust/bin/libbited_rust.arm64.so
+      - run: |
+          mv rust/target/release/libbited_rust.so \
+             godot/addons/bited-rust/bin/libbited_rust.arm64.so
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate release rust libs'
