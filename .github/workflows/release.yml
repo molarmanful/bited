@@ -70,5 +70,5 @@ jobs:
         with:
           visibility: public
           name: molarmanful/bited
-          tag: ${{ inputs.tag }}
+          tag: ${{ github.ref_name }}
           include-output-paths: true
