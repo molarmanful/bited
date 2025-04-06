@@ -4,6 +4,7 @@
   release,
   ext,
 
+  lib,
   stdenv,
   fetchurl,
   godot,
@@ -18,6 +19,7 @@ let
     url = "https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x86.exe";
     hash = "sha256-OPtek118tY16mLTtj4dsg/XbAyvNAymwpN5OSh3odrY=";
   };
+  gd_ver = lib.removeSuffix "-stable" godot.version;
 in
 
 stdenv.mkDerivation {
@@ -35,13 +37,13 @@ stdenv.mkDerivation {
 
     export HOME=$(mktemp -d)
     mkdir -p "$HOME"/.local/share/godot/export_templates
-    ln -s ${godot-export-templates} "$HOME"/.local/share/godot/export_templates/4.4.stable
+    ln -s ${godot-export-templates} "$HOME"/.local/share/godot/export_templates/${gd_ver}.stable
     ${
       if release == "windows" then
         ''
           godot4 --headless -v -e --quit
-          echo 'export/windows/rcedit = "${rcedit}"' >> "$HOME"/.config/godot/editor_settings-4.4.tres
-          echo 'export/windows/wine = "${wineWowPackages.stable}/bin/wine64"' >> "$HOME"/.config/godot/editor_settings-4.4.tres
+          echo 'export/windows/rcedit = "${rcedit}"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
+          echo 'export/windows/wine = "${wineWowPackages.stable}/bin/wine64"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
         ''
       else
         ""
