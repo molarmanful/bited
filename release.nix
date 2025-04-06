@@ -39,7 +39,7 @@ stdenv.mkDerivation {
     mkdir -p "$HOME"/.local/share/godot/export_templates
     ln -s ${godot-export-templates} "$HOME"/.local/share/godot/export_templates/${gd_ver}.stable
     ${
-      if release == "windows" then
+      if release == "windows" && stdenv.hostPlatform.system == "x86_64-linux" then
         ''
           godot4 --headless -v -e --quit
           echo 'export/windows/rcedit = "${rcedit}"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
