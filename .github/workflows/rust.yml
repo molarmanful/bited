@@ -27,9 +27,6 @@ jobs:
           - name: Linux x86
             os: ubuntu-latest
             key: ${{ github.ref }}-linux-x86
-          - name: Linux ARM
-            os: ubuntu-24.04-arm
-            key: ${{ github.ref }}-linux-arm
     name: Rust Lib (${{ matrix.platform.name }})
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -133,14 +130,6 @@ jobs:
       - run: |
           mv rust/target/release/libbited_rust.so \
              godot/addons/bited-rust/bin/libbited_rust.x86_64.so
-      - uses: actions/cache/restore@v4
-        with:
-          path: rust/target/release
-          key: ${{ github.ref }}-linux-arm
-          fail-on-cache-miss: true
-      - run: |
-          mv rust/target/release/libbited_rust.so \
-             godot/addons/bited-rust/bin/libbited_rust.arm64.so
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate release rust libs'
