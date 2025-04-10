@@ -23,6 +23,7 @@
   wayland-scanner,
   libdecor,
   wayland,
+  fontconfig,
   ...
 }:
 
@@ -44,6 +45,8 @@ stdenv.mkDerivation {
       dbus
       dbus.lib
       udev
+      fontconfig
+      fontconfig.lib
     ]
     ++ lib.optionals withX11 [
       libX11
