@@ -2,12 +2,12 @@ use core::fmt;
 
 use godot::prelude::*;
 
-pub enum PropVal<'a> {
+pub enum PropVal {
     Num(i32),
-    Str(&'a str),
+    Str(String),
 }
 
-impl fmt::Display for PropVal<'_> {
+impl fmt::Display for PropVal {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             PropVal::Num(n) => write!(f, "{n}"),
@@ -16,11 +16,11 @@ impl fmt::Display for PropVal<'_> {
     }
 }
 
-impl GodotConvert for PropVal<'_> {
+impl GodotConvert for PropVal {
     type Via = Variant;
 }
 
-impl ToGodot for PropVal<'_> {
+impl ToGodot for PropVal {
     type ToVia<'v>
         = Variant
     where

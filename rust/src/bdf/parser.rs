@@ -458,7 +458,7 @@ impl<'a> Parser<'a> {
         None
     }
 
-    fn parse_propval<'c>(&mut self, v: &'c str) -> Option<PropVal<'c>> {
+    fn parse_propval<'c>(&mut self, v: &'c str) -> Option<PropVal> {
         if v.starts_with('"') {
             let mut cs = v.chars();
             cs.next();
@@ -467,7 +467,8 @@ impl<'a> Parser<'a> {
             } else {
                 cs.next_back();
             }
-            Some(PropVal::Str(cs.as_str()))
+            let s = cs.as_str().replace("\"\"", "\"");
+            Some(PropVal::Str(s))
         } else {
             one_int(v).map(PropVal::Num)
         }
