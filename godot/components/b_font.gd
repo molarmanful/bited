@@ -186,7 +186,7 @@ func to_glyphs_toml() -> String:
 	var d_is_abs: int = qs[0].is_abs if qs else 1
 
 	var default := (
-		("[default]\n" + "is_abs=%s\n") % ("true" if d_is_abs else "false")
+		("[default]\n" + "is_abs = %s\n") % ("true" if d_is_abs else "false")
 	)
 
 	(
@@ -212,7 +212,7 @@ func to_glyphs_toml() -> String:
 	var i = 0
 	for q in qs:
 		res[i] = (
-			("[glyphs.%s]\n" + "is_abs=%s\n")
+			("[glyphs.%s]\n" + "is_abs = %s\n")
 			% [
 				JSON.stringify(("U+" if q.code >= 0 else "") + q.name),
 				"true" if q.is_abs else "false"
