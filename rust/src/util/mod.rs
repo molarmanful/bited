@@ -90,6 +90,26 @@ impl UtilR {
         )
     }
 
+    #[func]
+    fn img_and(dst: Gd<Image>, src: Gd<Image>) {
+        Self::bits_zip(dst, src, |a, b| a & b);
+    }
+
+    #[func]
+    fn img_or(dst: Gd<Image>, src: Gd<Image>) {
+        Self::bits_zip(dst, src, |a, b| a | b);
+    }
+
+    #[func]
+    fn img_xor(dst: Gd<Image>, src: Gd<Image>) {
+        Self::bits_zip(dst, src, |a, b| a ^ b);
+    }
+
+    #[func]
+    fn img_andn(dst: Gd<Image>, src: Gd<Image>) {
+        Self::bits_zip(dst, src, |a, b| a & !b);
+    }
+
     pub fn hexes_to_bits_r(
         hexes: impl IntoIterator<Item: AsRef<str>>,
         w: usize,
@@ -109,5 +129,21 @@ impl UtilR {
             })
             .chain(iter::repeat(0))
             .take(chunk * h)
+    }
+
+    fn bits_zip(mut dst: Gd<Image>, src: Gd<Image>, f: fn(u8, u8) -> u8) {
+        let w = dst.get_width();
+        let h = dst.get_height();
+        let format = dst.get_format();
+        let new = &dst
+            .get_data()
+            .as_slice()
+            .into_iter()
+            .zip(src.get_data().as_slice().into_iter())
+            .skip(1)
+            .step_by(2)
+            .flat_map(|(&a, &b)| [255, f(a, b)])
+            .collect();
+        dst.set_data(w, h, false, format, new);
     }
 }

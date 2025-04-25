@@ -4,6 +4,7 @@ extends PanelContainer
 @export var editor: Editor
 @export var node_wrapper: Container
 @export var node_cells: TextureRect
+@export var node_sels: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: GridLines
 @export var node_placeholder: Label
@@ -31,6 +32,10 @@ extends PanelContainer
 @export var btn_down: Button
 @export var btn_up: Button
 @export var btn_right: Button
+@export var btn_grid_clr: Button
+@export var btn_selmode: Button
+@export var btn_overwrite: Button
+@export var btn_stamp: Button
 
 var dim_grid: int:
 	get:
@@ -47,9 +52,17 @@ var size_grid: Vector2i:
 
 var to_update_cells := false
 var pressed := false
+var is_sel := false:
+	set(s):
+		is_sel = s
+		btn_selmode.set_pressed_no_signal(s)
+		node_sels.visible = s
+		tool_sel = tool_sel
 
 var cells := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
 var tex_cells := ImageTexture.create_from_image(cells)
+var sels := Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
+var tex_sels := ImageTexture.create_from_image(sels)
 
 var table: Table
 var toolman := Tool.new(self)
@@ -59,6 +72,16 @@ var tool_sel := "pen":
 		toolman.tools[tool_sel].pre()
 var bitmap := Bitmap.new(dim_grid, cells)
 var undoman := UndoRedo.new()
+
+var layer_node: TextureRect:
+	get:
+		return node_sels if is_sel else node_cells
+var layer_img: Image:
+	get:
+		return sels if is_sel else cells
+var layer_tex: ImageTexture:
+	get:
+		return tex_sels if is_sel else tex_cells
 
 
 func _ready() -> void:
@@ -94,6 +117,10 @@ func _ready() -> void:
 	btn_down.pressed.connect(translate.bind(Vector2i.DOWN))
 	btn_up.pressed.connect(translate.bind(Vector2i.UP))
 	btn_right.pressed.connect(translate.bind(Vector2i.RIGHT))
+	btn_grid_clr.pressed.connect(clear)
+	btn_selmode.toggled.connect(func(on: bool): is_sel = on)
+	btn_overwrite.pressed.connect(overwrite)
+	btn_stamp.pressed.connect(stamp)
 
 
 func _process(_delta: float) -> void:
@@ -165,14 +192,22 @@ func refresh(hard := false) -> void:
 		bitmap.data_name, bitmap.data_code
 	)
 	node_cells.texture = tex_cells
+	node_sels.texture = tex_sels
 	to_update_cells = true
 	update_grid()
 
 
 func update_grid() -> void:
 	tooltip_text = ""
+
 	node_cells.custom_minimum_size = size_grid
 	node_cells.self_modulate = get_theme_color("fg")
+
+	var c_sel := get_theme_color("sel")
+	c_sel.a = 0.69
+	node_sels.custom_minimum_size = size_grid
+	node_sels.self_modulate = c_sel
+
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()
 
@@ -183,6 +218,7 @@ func update_cells() -> void:
 	to_update_cells = false
 
 	tex_cells.update(cells)
+	tex_sels.update(sels)
 
 
 func tt_line() -> void:
@@ -361,44 +397,83 @@ func act_cells(prev: Image) -> void:
 	undoman.commit_action(false)
 
 
-func op(f: Callable) -> void:
-	var prev := Util.img_copy(cells)
+func op(f: Callable, cells_only := false) -> void:
+	var prev := Util.img_copy(cells if cells_only else layer_img)
 	f.call(prev)
 	to_update_cells = true
-	act_cells(prev)
-	bitmap.save()
+	if !is_sel:
+		act_cells(prev)
+		bitmap.save()
 
 
 func dim_norm(f: Callable) -> void:
 	var dx := bitmap.dim - posmod(bitmap.dim - bitmap.dwidth_calc, 2)
 	var dy := bitmap.dim - posmod(bitmap.dim - StateVars.font.bb.y, 2)
-	cells.crop(dx, dy)
+	layer_img.crop(dx, dy)
 	f.call()
-	cells.crop(bitmap.dim, bitmap.dim)
+	layer_img.crop(bitmap.dim, bitmap.dim)
 
 
 func flip_x() -> void:
-	op(func(_prev: Image): dim_norm(cells.flip_x))
+	op(func(_prev: Image): dim_norm(layer_img.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): dim_norm(cells.flip_y))
+	op(func(_prev: Image): dim_norm(layer_img.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): dim_norm(cells.rotate_90.bind(COUNTERCLOCKWISE)))
+	op(func(_prev: Image): dim_norm(layer_img.rotate_90.bind(COUNTERCLOCKWISE)))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): dim_norm(cells.rotate_90.bind(CLOCKWISE)))
+	op(func(_prev: Image): dim_norm(layer_img.rotate_90.bind(CLOCKWISE)))
 
 
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
 			bitmap.clear_cells()
-			cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
+			layer_img.blit_rect(
+				prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst
+			)
 	)
+
+
+func clear() -> void:
+	op(func(_prev: Image): layer_img.fill(Color.TRANSPARENT))
+
+func overwrite() -> void:
+	op(
+		func(_prev: Image):
+			var layer_img1 := cells if is_sel else sels
+			layer_img1.blit_rect(
+				layer_img,
+				Rect2i(Vector2i.ZERO, layer_img.get_size()),
+				Vector2i.ZERO
+			)
+			is_sel = !is_sel,
+		true
+	)
+	is_sel = true
+
+func stamp() -> void:
+	op(
+		func(_prev: Image):
+			var layer_img1 := cells if is_sel else sels
+			match toolman.cmode:
+				Tool.CMode.DEFAULT, Tool.CMode.T:
+					Util.img_or(layer_img1, layer_img)
+				Tool.CMode.F:
+					Util.img_andn(layer_img1, layer_img)
+				Tool.CMode.INV:
+					Util.img_xor(layer_img1, layer_img)
+				Tool.CMode.CELL:
+					Util.img_and(layer_img1, layer_img)
+			is_sel = !is_sel,
+		true
+	)
+	is_sel = true
 
 
 func dwidth() -> void:

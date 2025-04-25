@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=67 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" uid="uid://b7rs4os6wj4cs" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -93,6 +93,24 @@ events = [SubResource("InputEventAction_ow1e3")]
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
 
+[sub_resource type="InputEventAction" id="InputEventAction_fp0vg"]
+action = &"bited_selmode"
+
+[sub_resource type="Shortcut" id="Shortcut_xaubg"]
+events = [SubResource("InputEventAction_fp0vg")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_850sg"]
+action = &"bited_overwrite"
+
+[sub_resource type="Shortcut" id="Shortcut_ai11x"]
+events = [SubResource("InputEventAction_850sg")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_mnipk"]
+action = &"bited_stamp"
+
+[sub_resource type="Shortcut" id="Shortcut_850sg"]
+events = [SubResource("InputEventAction_mnipk")]
+
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
 
@@ -152,6 +170,12 @@ action = &"bited_right"
 
 [sub_resource type="Shortcut" id="Shortcut_1lpad"]
 events = [SubResource("InputEventAction_u2sts")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_xaubg"]
+action = &"bited_grid_clr"
+
+[sub_resource type="Shortcut" id="Shortcut_mnipk"]
+events = [SubResource("InputEventAction_xaubg")]
 
 [node name="Editor" type="PanelContainer" node_paths=PackedStringArray("grid")]
 anchors_preset = 15
@@ -313,7 +337,8 @@ theme_override_constants/separation = 9
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: default"
+tooltip_text = "color mode: default
+layer mode: default"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -328,7 +353,8 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: draw"
+tooltip_text = "color mode: draw
+layer mode: union"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -370,7 +396,8 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: first-cell "
+tooltip_text = "color mode: first-cell
+layer mode: intersection"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -383,7 +410,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -391,6 +418,7 @@ script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")
 node_wrapper = NodePath("../..")
 node_cells = NodePath("Cells")
+node_sels = NodePath("Sels")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 node_placeholder = NodePath("../../../Placeholder")
@@ -412,8 +440,18 @@ btn_left = NodePath("../../8/left")
 btn_down = NodePath("../../8/down")
 btn_up = NodePath("../../8/up")
 btn_right = NodePath("../../8/right")
+btn_grid_clr = NodePath("../../8/grid_clr")
+btn_selmode = NodePath("../../6/selmode")
+btn_overwrite = NodePath("../../6/overwrite")
+btn_stamp = NodePath("../../6/stamp")
 
 [node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
+texture_filter = 1
+texture_repeat = 1
+layout_mode = 2
+mouse_default_cursor_shape = 3
+
+[node name="Sels" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
@@ -437,6 +475,31 @@ grid = NodePath("../../..")
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 8
+
+[node name="selmode" type="Button" parent="CenterContainer/GridContainer/6"]
+layout_mode = 2
+tooltip_text = "toggle select layer"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Tool"
+toggle_mode = true
+shortcut = SubResource("Shortcut_xaubg")
+text = "👆"
+
+[node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6"]
+layout_mode = 2
+tooltip_text = "overwrite"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_ai11x")
+text = "✍"
+
+[node name="stamp" type="Button" parent="CenterContainer/GridContainer/6"]
+layout_mode = 2
+tooltip_text = "stamp"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_850sg")
+text = "🖃"
 
 [node name="7" type="Control" parent="CenterContainer/GridContainer"]
 custom_minimum_size = Vector2(0, 24)
@@ -533,6 +596,18 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_1lpad")
 text = "🡒"
+
+[node name="VSeparator3" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="grid_clr" type="Button" parent="CenterContainer/GridContainer/8"]
+layout_mode = 2
+tooltip_text = "clear"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_mnipk")
+text = "⎚"
 
 [node name="Placeholder" type="Label" parent="CenterContainer"]
 visible = false

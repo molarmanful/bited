@@ -70,7 +70,7 @@ class _Tool:
 		c_grid = c_tool.grid
 
 	func pre() -> void:
-		c_grid.node_cells.mouse_default_cursor_shape = Control.CURSOR_CROSS
+		c_grid.layer_node.mouse_default_cursor_shape = Control.CURSOR_CROSS
 
 	func handle(state := State.X) -> void:
 		if state == State.END:
@@ -90,14 +90,16 @@ class _Tool:
 	func start() -> void:
 		a = true
 		if c_tool.cmode == CMode.CELL:
-			a = not c_grid.cells.get_pixelv(p).a
-		c_tool.prev = Util.img_copy(c_grid.cells)
+			a = not c_grid.layer_img.get_pixelv(p).a
+		c_tool.prev = Util.img_copy(c_grid.layer_img)
 		c_grid.grab_focus()
 
 	func update() -> void:
 		pass
 
 	func end() -> void:
+		if c_grid.is_sel:
+			return
 		c_grid.act_cells(Util.img_copy(c_tool.prev))
 		c_grid.bitmap.save()
 
@@ -125,12 +127,12 @@ class ToolPen:
 
 	func start() -> void:
 		super()
-		a = not c_grid.cells.get_pixelv(p).a
+		a = not c_grid.layer_img.get_pixelv(p).a
 		c_tool.pivot = p
 
 	func update() -> void:
 		super()
-		c_tool.interp(p, func(v): c_grid.cells.set_pixelv(v, get_c(v)))
+		c_tool.interp(p, func(v): c_grid.layer_img.set_pixelv(v, get_c(v)))
 		c_tool.pivot = p
 
 
@@ -147,8 +149,8 @@ class ToolLine:
 
 	func update() -> void:
 		super()
-		c_grid.cells.copy_from(c_tool.prev)
-		c_tool.interp(p, func(v): c_grid.cells.set_pixelv(v, get_c(v)))
+		c_grid.layer_img.copy_from(c_tool.prev)
+		c_tool.interp(p, func(v): c_grid.layer_img.set_pixelv(v, get_c(v)))
 
 
 class ToolRect:
@@ -164,7 +166,7 @@ class ToolRect:
 
 	func update() -> void:
 		super()
-		c_grid.cells.copy_from(c_tool.prev)
+		c_grid.layer_img.copy_from(c_tool.prev)
 		var rect := (
 			Rect2i(c_tool.pivot, p - c_tool.pivot)
 			. abs()
@@ -175,9 +177,9 @@ class ToolRect:
 			for x in rect.size.x:
 				for y in rect.size.y:
 					var v := Vector2i(x, y) + rect.position
-					c_grid.cells.set_pixelv(v, get_c(v))
+					c_grid.layer_img.set_pixelv(v, get_c(v))
 		else:
-			c_grid.cells.fill_rect(rect, get_c(p))
+			c_grid.layer_img.fill_rect(rect, get_c(p))
 
 
 class ToolMove:
@@ -188,7 +190,7 @@ class ToolMove:
 		name = "move"
 
 	func pre() -> void:
-		c_grid.node_cells.mouse_default_cursor_shape = Control.CURSOR_MOVE
+		c_grid.layer_node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func start() -> void:
 		super()
@@ -196,8 +198,8 @@ class ToolMove:
 
 	func update() -> void:
 		super()
-		c_grid.cells.fill(Color.TRANSPARENT)
-		c_grid.cells.blit_rect(
+		c_grid.layer_img.fill(Color.TRANSPARENT)
+		c_grid.layer_img.blit_rect(
 			c_tool.prev,
 			Rect2i(Vector2i.ZERO, c_tool.prev.get_size()),
 			p - c_tool.pivot
