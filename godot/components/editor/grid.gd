@@ -71,6 +71,7 @@ var tool_sel := "pen":
 		tool_sel = t
 		toolman.tools[tool_sel].pre()
 var bitmap := Bitmap.new(dim_grid, cells)
+var bm_sels := Bitmap.new(dim_grid, sels)
 var undoman := UndoRedo.new()
 
 var layer_node: TextureRect:
@@ -160,11 +161,20 @@ func start_edit(data_name: String, data_code: int) -> void:
 
 func refresh(hard := false) -> void:
 	if hard:
-		bitmap.dim = dim_grid
-		cells.copy_from(
-			Image.create_empty(dim_grid, dim_grid, false, Image.FORMAT_LA8)
+		var empty := Image.create_empty(
+			dim_grid, dim_grid, false, Image.FORMAT_LA8
 		)
+		bitmap.dim = dim_grid
+		cells.copy_from(empty)
 		tex_cells.set_image(cells)
+
+		var gen_sels := bm_sels.to_gen()
+		gen_sels.dwidth = bitmap.dwidth
+		gen_sels.is_abs = bitmap.is_abs
+		bm_sels.dim = dim_grid
+		sels.copy_from(empty)
+		tex_sels.set_image(sels)
+		bm_sels.update_cells(gen_sels)
 
 	bitmap.load()
 

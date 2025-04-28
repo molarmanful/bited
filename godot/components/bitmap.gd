@@ -26,7 +26,7 @@ func _init(
 	d: int,
 	cs := Image.create_empty(d, d, false, Image.FORMAT_LA8),
 	dc := -1,
-	dn := &""
+	dn := ""
 ) -> void:
 	dim = d
 	cells = cs
