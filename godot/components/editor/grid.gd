@@ -443,6 +443,7 @@ func translate(dst: Vector2i) -> void:
 func clear() -> void:
 	op(func(_prev: Image): layer_img.fill(Color.TRANSPARENT))
 
+
 func overwrite() -> void:
 	op(
 		func(_prev: Image):
@@ -457,23 +458,28 @@ func overwrite() -> void:
 	)
 	is_sel = true
 
+
 func stamp() -> void:
 	op(
 		func(_prev: Image):
-			var layer_img1 := cells if is_sel else sels
-			match toolman.cmode:
-				Tool.CMode.DEFAULT, Tool.CMode.T:
-					Util.img_or(layer_img1, layer_img)
-				Tool.CMode.F:
-					Util.img_andn(layer_img1, layer_img)
-				Tool.CMode.INV:
-					Util.img_xor(layer_img1, layer_img)
-				Tool.CMode.CELL:
-					Util.img_and(layer_img1, layer_img)
+			stamp_mode()
 			is_sel = !is_sel,
 		true
 	)
 	is_sel = true
+
+
+func stamp_mode() -> void:
+	var layer_img1 := cells if is_sel else sels
+	match toolman.cmode:
+		Tool.CMode.DEFAULT, Tool.CMode.T:
+			Util.img_or(layer_img1, layer_img)
+		Tool.CMode.F:
+			Util.img_andn(layer_img1, layer_img)
+		Tool.CMode.INV:
+			Util.img_xor(layer_img1, layer_img)
+		Tool.CMode.CELL:
+			Util.img_and(layer_img1, layer_img)
 
 
 func dwidth() -> void:

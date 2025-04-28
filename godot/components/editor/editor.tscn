@@ -354,7 +354,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: draw
-layer mode: union"
+layer mode: add"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -368,7 +368,8 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: erase"
+tooltip_text = "color mode: erase
+layer mode: subtract"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -382,7 +383,8 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: invert"
+tooltip_text = "color mode: invert
+layer mode: exclude"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -397,7 +399,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: first-cell
-layer mode: intersection"
+layer mode: multiply"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
