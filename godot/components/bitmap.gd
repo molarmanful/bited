@@ -114,12 +114,8 @@ func from_gen(gen: Dictionary) -> void:
 	dwidth = gen.dwidth
 
 
-func clear_cells() -> void:
-	cells.fill(Color.TRANSPARENT)
-
-
 func update_cells(gen := to_gen()) -> void:
-	clear_cells()
+	cells.fill(Color.TRANSPARENT)
 	from_gen(gen)
 	if not gen.img:
 		return

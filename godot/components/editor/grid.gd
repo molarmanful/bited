@@ -152,7 +152,7 @@ func start_edit(data_name: String, data_code: int) -> void:
 	bitmap.data_code = data_code
 	bitmap.dwidth = 0
 	bitmap.is_abs = false
-	bitmap.clear_cells()
+	bitmap.cells.fill(Color.TRANSPARENT)
 	bitmap.save(false)
 	table.to_update = true
 	refresh(true)
@@ -433,7 +433,7 @@ func rot_cw() -> void:
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
-			bitmap.clear_cells()
+			layer_img.fill(Color.TRANSPARENT)
 			layer_img.blit_rect(
 				prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst
 			)
