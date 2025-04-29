@@ -6,7 +6,7 @@
 
 Requirements:
 
-- [Godot 4.4](https://godotengine.org/download/)
+- [Godot 4.4.1](https://godotengine.org/download/)
 
 Clone the [repo](https://github.com/molarmanful/bited), open via Godot, and
 modify/export/etc.
@@ -18,8 +18,6 @@ modify/export/etc.
 
 ### Nix Flake
 
-Inside the cloned repo's root:
-
 ```bash
-nix run
+nix run github:molarmanful/bited
 ```
