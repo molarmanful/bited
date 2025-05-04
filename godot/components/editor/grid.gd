@@ -142,7 +142,6 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if e is not InputEventKey:
 		return
 
-	print(e)
 	if e.pressed:
 		var kc: Key = e.get_keycode_with_modifiers()
 		if kc >= KEY_1 && kc <= KEY_9:
