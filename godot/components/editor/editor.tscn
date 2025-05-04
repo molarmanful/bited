@@ -480,12 +480,12 @@ theme_override_constants/separation = 8
 
 [node name="selmode" type="Button" parent="CenterContainer/GridContainer/6"]
 layout_mode = 2
-tooltip_text = "toggle select layer"
+tooltip_text = "toggle layer 1"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
 shortcut = SubResource("Shortcut_xaubg")
-text = "👆"
+text = ":1"
 
 [node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6"]
 layout_mode = 2

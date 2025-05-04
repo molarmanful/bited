@@ -70,8 +70,7 @@ class _Tool:
 		c_grid = c_tool.grid
 
 	func pre() -> void:
-		var node := c_grid.layer_TOP.node
-		node.mouse_default_cursor_shape = Control.CURSOR_CROSS
+		c_grid.layer_TOP.node.mouse_default_cursor_shape = Control.CURSOR_CROSS
 
 	func handle(state := State.X) -> void:
 		if state == State.END:
@@ -195,8 +194,7 @@ class ToolMove:
 		name = "move"
 
 	func pre() -> void:
-		var node := c_grid.layer_TOP.node
-		node.mouse_default_cursor_shape = Control.CURSOR_MOVE
+		c_grid.layer_TOP.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func start() -> void:
 		super()

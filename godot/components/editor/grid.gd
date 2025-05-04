@@ -59,8 +59,23 @@ var is_sel := false:
 		node_sels.visible = s
 		tool_sel = tool_sel
 
+var layers: Dictionary[int, Layer] = {}
+var k_layer := 1:
+	set(k):
+		k_layer = k
+		if !layers.has(k):
+			layers[k] = Layer.new(node_sels)
+		btn_selmode.text = ":%d" % k
+		btn_selmode.tooltip_text = "toggle layer %d" % k
+		refresh()
+
+var layer_sels: Layer:
+	get:
+		return layers[k_layer]
+	set(l):
+		layers[k_layer] = l
+
 var layer_root: Layer
-var layer_sels: Layer
 var layer_TOP: Layer:
 	get:
 		return layer_sels if is_sel else layer_root
@@ -79,7 +94,7 @@ var undoman := UndoRedo.new()
 
 func _ready() -> void:
 	layer_root = Layer.new(node_root)
-	layer_sels = Layer.new(node_sels)
+	k_layer = 1
 	table = editor.table
 	refresh()
 
@@ -123,16 +138,23 @@ func _process(_delta: float) -> void:
 	update_cells()
 
 
+func _unhandled_key_input(e: InputEvent) -> void:
+	if e is not InputEventKey:
+		return
+
+	if e.pressed:
+		if e.keycode >= KEY_1 && e.keycode <= KEY_9:
+			get_viewport().set_input_as_handled()
+			k_layer = e.keycode - KEY_1 + 1
+
+
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion:
 		tt_line()
 		return
 	if e is not InputEventMouseButton:
 		return
-	if (
-		e is InputEventMouseButton
-		and [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP].has(e.button_index)
-	):
+	if [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP].has(e.button_index):
 		return
 
 	pressed = e.pressed
