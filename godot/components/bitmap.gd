@@ -22,12 +22,7 @@ var origin: Vector2i:
 		return corner_bl - Vector2i(0, StateVars.font.desc)
 
 
-func _init(
-	d: int,
-	cs := Image.create_empty(d, d, false, Image.FORMAT_LA8),
-	dc := -1,
-	dn := ""
-) -> void:
+func _init(d: int, cs := Util.blank_img(d), dc := -1, dn := "") -> void:
 	dim = d
 	cells = cs
 	data_code = dc

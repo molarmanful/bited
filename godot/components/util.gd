@@ -11,3 +11,7 @@ func between(x: int, n0: int, n1: int) -> bool:
 ## Copies an [Image].
 func img_copy(img: Image) -> Image:
 	return img.get_region(Rect2i(Vector2i.ZERO, img.get_size()))
+
+
+func blank_img(dim: int) -> Image:
+	return Image.create_empty(dim, dim, false, Image.FORMAT_LA8)

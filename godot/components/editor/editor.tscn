@@ -412,14 +412,14 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_cells", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")
 node_wrapper = NodePath("../..")
-node_cells = NodePath("Cells")
+node_root = NodePath("Root")
 node_sels = NodePath("Sels")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
@@ -447,7 +447,7 @@ btn_selmode = NodePath("../../6/selmode")
 btn_overwrite = NodePath("../../6/overwrite")
 btn_stamp = NodePath("../../6/stamp")
 
-[node name="Cells" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
+[node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
