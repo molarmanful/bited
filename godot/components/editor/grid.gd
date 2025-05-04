@@ -142,10 +142,11 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if e is not InputEventKey:
 		return
 
+	print(e)
 	if e.pressed:
-		if e.keycode >= KEY_1 && e.keycode <= KEY_9:
-			get_viewport().set_input_as_handled()
-			k_layer = e.keycode - KEY_1 + 1
+		var kc: Key = e.get_keycode_with_modifiers()
+		if kc >= KEY_1 && kc <= KEY_9:
+			k_layer = kc - KEY_1 + 1
 
 
 func _gui_input(e: InputEvent) -> void:
