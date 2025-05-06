@@ -58,6 +58,7 @@ var is_sel := false:
 		btn_selmode.set_pressed_no_signal(s)
 		node_sels.visible = s
 		tool_sel = tool_sel
+		refresh()
 
 var patterns: Dictionary[int, Pattern]
 var k_pattern := 1:
@@ -67,7 +68,8 @@ var k_pattern := 1:
 			patterns[k] = Pattern.new(node_sels)
 		btn_selmode.text = ":%d" % k
 		btn_selmode.tooltip_text = "toggle pattern %d" % k
-		refresh()
+		if is_sel:
+			refresh()
 
 var pattern_sels: Pattern:
 	get:
@@ -198,7 +200,8 @@ func refresh(hard := false) -> void:
 
 	btn_is_abs.set_pressed_no_signal(pattern_root.bitmap.is_abs)
 	btn_is_abs.tooltip_text = (
-		"dwidth mode: %s" % ("dwidth" if pattern_root.bitmap.is_abs else "offset")
+		"dwidth mode: %s"
+		% ("dwidth" if pattern_root.bitmap.is_abs else "offset")
 	)
 
 	input_dwidth.allow_lesser = true
@@ -453,7 +456,10 @@ func rot_ccw() -> void:
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): dim_norm(pattern_TOP.cells.rotate_90.bind(CLOCKWISE)))
+	op(
+		func(_prev: Image):
+			dim_norm(pattern_TOP.cells.rotate_90.bind(CLOCKWISE))
+	)
 
 
 func translate(dst: Vector2i) -> void:
