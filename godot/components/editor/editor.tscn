@@ -338,7 +338,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: default
-layer mode: default"
+pattern mode: default"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -354,7 +354,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: draw
-layer mode: add"
+pattern mode: add"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -369,7 +369,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: erase
-layer mode: subtract"
+pattern mode: subtract"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -384,7 +384,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: invert
-layer mode: exclude"
+pattern mode: exclude"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -399,7 +399,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: first-cell
-layer mode: multiply"
+pattern mode: multiply"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"CMode"
 toggle_mode = true
@@ -480,7 +480,7 @@ theme_override_constants/separation = 8
 
 [node name="selmode" type="Button" parent="CenterContainer/GridContainer/6"]
 layout_mode = 2
-tooltip_text = "toggle layer 1"
+tooltip_text = "toggle pattern 1"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
