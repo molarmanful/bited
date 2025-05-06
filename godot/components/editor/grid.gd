@@ -59,27 +59,27 @@ var is_sel := false:
 		node_sels.visible = s
 		tool_sel = tool_sel
 
-var patterns: Dictionary[int, Layer]
+var patterns: Dictionary[int, Pattern]
 var k_pattern := 1:
 	set(k):
 		k_pattern = k
 		if !patterns.has(k):
-			patterns[k] = Layer.new(node_sels)
+			patterns[k] = Pattern.new(node_sels)
 		btn_selmode.text = ":%d" % k
 		btn_selmode.tooltip_text = "toggle pattern %d" % k
 		refresh()
 
-var pattern_sels: Layer:
+var pattern_sels: Pattern:
 	get:
 		return patterns[k_pattern]
 	set(l):
 		patterns[k_pattern] = l
 
-var pattern_root: Layer
-var pattern_TOP: Layer:
+var pattern_root: Pattern
+var pattern_TOP: Pattern:
 	get:
 		return pattern_sels if is_sel else pattern_root
-var pattern_BTM: Layer:
+var pattern_BTM: Pattern:
 	get:
 		return pattern_root if is_sel else pattern_sels
 
@@ -93,7 +93,7 @@ var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
-	pattern_root = Layer.new(node_root)
+	pattern_root = Pattern.new(node_root)
 	k_pattern = 1
 	table = editor.table
 	refresh()

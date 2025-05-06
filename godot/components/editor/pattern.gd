@@ -1,4 +1,4 @@
-class_name Layer
+class_name Pattern
 extends RefCounted
 
 var dim_grid: int:
