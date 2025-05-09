@@ -58,7 +58,6 @@ var is_sel := false:
 		btn_selmode.set_pressed_no_signal(s)
 		node_sels.visible = s
 		tool_sel = tool_sel
-		refresh()
 
 var patterns: Dictionary[int, Pattern]
 var k_pattern := 1:
@@ -130,7 +129,11 @@ func _ready() -> void:
 	btn_up.pressed.connect(translate.bind(Vector2i.UP))
 	btn_right.pressed.connect(translate.bind(Vector2i.RIGHT))
 	btn_grid_clr.pressed.connect(clear)
-	btn_selmode.toggled.connect(func(on: bool): is_sel = on)
+	btn_selmode.toggled.connect(
+		func(on: bool):
+			is_sel = on
+			refresh()
+	)
 	btn_overwrite.pressed.connect(overwrite)
 	btn_stamp.pressed.connect(stamp)
 
@@ -488,6 +491,7 @@ func overwrite() -> void:
 		true
 	)
 	is_sel = true
+	refresh()
 
 
 func stamp() -> void:
@@ -498,6 +502,7 @@ func stamp() -> void:
 		true
 	)
 	is_sel = true
+	refresh()
 
 
 func stamp_mode() -> void:
