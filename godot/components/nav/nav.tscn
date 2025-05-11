@@ -76,7 +76,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_braille", "btn_octify")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_octify", "btn_braille")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -101,8 +101,9 @@ btn_preview = NodePath("MarginContainer/HBoxContainer2/preview")
 btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 btn_new_glyph = NodePath("MarginContainer/HBoxContainer2/new_glyph")
 btn_finder = NodePath("MarginContainer/HBoxContainer2/finder")
-btn_braille = NodePath("MarginContainer/HBoxContainer2/braillegen")
+btn_sexify = NodePath("MarginContainer/HBoxContainer2/sexify")
 btn_octify = NodePath("MarginContainer/HBoxContainer2/octify")
+btn_braille = NodePath("MarginContainer/HBoxContainer2/braillegen")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -193,14 +194,23 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_36wsi")
 text = "🔍"
 
-[node name="braillegen" type="Button" parent="MarginContainer/HBoxContainer2"]
+[node name="sexify" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "braillegen"
+tooltip_text = "sexify"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
-text = "⡄⣤"
+text = "🬣🬤"
+
+[node name="sepsexify" type="Button" parent="MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "sepsexify"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "𜹩𜺋"
 
 [node name="octify" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
@@ -210,6 +220,15 @@ tooltip_text = "octify"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "𜶴𜶉"
+
+[node name="braillegen" type="Button" parent="MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "braillegen"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "⡄⣤"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2

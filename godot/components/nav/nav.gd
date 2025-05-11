@@ -21,8 +21,10 @@ extends PanelContainer
 @export var btn_settings: Button
 @export var btn_new_glyph: Button
 @export var btn_finder: Button
-@export var btn_braille: Button
+@export var btn_sexify: Button
+@export var btn_sepsexify: Button
 @export var btn_octify: Button
+@export var btn_braille: Button
 
 var font: BFont
 
@@ -45,8 +47,10 @@ func _ready() -> void:
 	btn_settings.pressed.connect(settings.popup)
 	btn_new_glyph.pressed.connect(new_glyph)
 	btn_finder.pressed.connect(win_finder.find)
-	btn_braille.pressed.connect(braillegen)
+	btn_sexify.pressed.connect(sexify)
+	btn_sepsexify.pressed.connect(sepsexify)
 	btn_octify.pressed.connect(octify)
+	btn_braille.pressed.connect(braillegen)
 
 
 func refresh() -> void:
@@ -129,104 +133,93 @@ func finder(q: String) -> void:
 
 
 func braillegen() -> void:
-	(
-		StateVars
-		. db_saves
-		. query(
-			(
-				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
-				where code in (0x2800, 0x2801, 0x2802, 0x2804, 0x2808, 0x2810, 0x2820, 0x2840, 0x2880, 0x28ff)
-				order by code
-				;"""
-				% StateVars.font.id
-			)
-		)
+	antgen(
+		"p_block2x4braille",
+		[
+			0x2800,
+			0x2801,
+			0x2802,
+			0x2804,
+			0x2808,
+			0x2810,
+			0x2820,
+			0x2840,
+			0x2880,
+			0x28ff
+		]
 	)
 
-	var qs := StateVars.db_saves.query_result
-	if qs.size() < 9:
-		return
 
-	var bms: Dictionary[int, Bitmap]
-	for q in qs:
-		var bm := Bitmap.new(StyleVars.grid_size_cor)
-		bm.update_cells(q)
-		bms[q.code - 0x2800] = bm
+func sexify() -> void:
+	antgen(
+		"p_block2x3",
+		[0x20, 0x1fb00, 0x1fb01, 0x1fb03, 0x1fb07, 0x1fb0f, 0x1fb1e]
+	)
 
-	StateVars.db_saves.query("begin transaction;")
 
-	for c in 256:
-		var bm := Bitmap.new(
-			StyleVars.grid_size_cor,
-			Util.img_copy(bms[0].cells),
-			10240 + c,
-			"%04X" % (0x2800 + c)
-		)
-		var i := 1
-		while c > 0:
-			if c & 1:
-				bm.cells.blend_rect(
-					bms[i].cells,
-					Rect2i(Vector2i.ZERO, bm.cells.get_size()),
-					Vector2i.ZERO
-				)
-			c = c >> 1
-			i = i << 1
-		bm.save()
-
-	StateVars.db_saves.query("commit;")
+func sepsexify() -> void:
+	antgen(
+		"p_block2x3sep",
+		[0x20, 0x1ce51, 0x1ce52, 0x1ce54, 0x1ce58, 0x1ce60, 0x1ce70]
+	)
 
 
 func octify() -> void:
-	StateVars.db_uc.query("select code from p_block2x4 order by row;")
-	var octants := StateVars.db_saves.query_result.map(func(q): q.code)
+	antgen(
+		"p_block2x4",
+		[
+			0x20,
+			0x1cea8,
+			0x1ceab,
+			0x1cd00,
+			0x1cd03,
+			0x1cd09,
+			0x1cd18,
+			0x1cea3,
+			0x1cea0
+		]
+	)
 
-	(
-		StateVars
-		. db_saves
-		. query(
-			(
-				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
-				where code in (0x20, 0x1cea8, 0x1ceab, 0x1cd00, 0x1cd03, 0x1cd09, 0x1cd18, 0x1cea3, 0x1cea0)
-				order by
-					code = 0x20 desc,
-					code = 0x1cea8 desc,
-					code = 0x1ceab desc,
-					code = 0x1cd00 desc,
-					code = 0x1cd03 desc,
-					code = 0x1cd09 desc, 
-					code = 0x1cd18 desc, 
-					code = 0x1cea3 desc,
-					code = 0x1cea0 desc
-				;"""
-				% StateVars.font.id
-			)
+
+func antgen(tbl: String, needs: Array[int]) -> void:
+	StateVars.db_saves.query(
+		(
+			"""
+			select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+			from font_%s
+			where code in (%s)
+			order by %s
+			;"""
+			% [
+				StateVars.font.id,
+				",".join(needs),
+				",".join(needs.map(func(n): return "code=%d desc" % n))
+			]
 		)
 	)
 
 	var qs := StateVars.db_saves.query_result
-	if qs.size() < 9:
+	if qs.size() < needs.size():
 		return
 
 	var bms: Array[Bitmap]
-	bms.resize(9)
-	for i in 9:
+	bms.resize(needs.size())
+	for i in needs.size():
 		var bm := Bitmap.new(StyleVars.grid_size_cor)
 		bm.update_cells(qs[i])
 		bms[i] = bm
 
+	StateVars.db_uc.query("select code from %s order by row;" % tbl)
+	var codes := StateVars.db_uc.query_result.map(func(q): return q.code)
+
 	StateVars.db_saves.query("begin transaction;")
 
-	for c in 256:
+	for c in codes.size():
 		var bm := Bitmap.new(
 			StyleVars.grid_size_cor,
 			Util.img_copy(bms[0].cells),
-			octants[c],
-			"%04X" % octants[c]
+			codes[c],
+			"%04X" % codes[c]
 		)
 		var i := 1
 		while c > 0:
