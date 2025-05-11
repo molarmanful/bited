@@ -149,8 +149,17 @@ You can replace this with e.g. `cyrillic` or `greek` to get those chars instead.
 ### Braillegen Starter
 
 These are the glyphs that Braillegen needs to generate the rest of the Braille
-block.
+glyphs.
 
 ```
 :u 2800 2801 2802 2804 2808 2810 2820 2840 2880 28ff
+```
+
+### Octify Starter
+
+These are the glyphs that Octify needs to generate the rest of the octant
+glyphs.
+
+```
+:u 20 1cea8 1ceab 1cd00 1cd03 1cd09 1cd18 1cea3 1cea0
 ```
