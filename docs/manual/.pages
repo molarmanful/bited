@@ -6,4 +6,5 @@ nav:
   - Making a Font: make
   - bdf.md
   - save.md
-  - finder.md
+  - finder
+  - generators.md
