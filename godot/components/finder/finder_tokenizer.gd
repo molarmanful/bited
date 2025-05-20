@@ -6,6 +6,7 @@ enum Mode { X, STR, STR_ESC }
 const Op: Dictionary[String, String] = {
 	AND = "&",
 	OR = "|",
+	NOT = "!",
 	LPAREN = "(",
 	RPAREN = ")",
 }
@@ -43,7 +44,7 @@ func _init(q: String) -> void:
 				next()
 				tk += c
 
-			_ when c in [Op.AND, Op.OR, Op.LPAREN, Op.RPAREN]:
+			_ when c in [Op.AND, Op.OR, Op.NOT, Op.LPAREN, Op.RPAREN]:
 				next()
 				if c == Op.LPAREN:
 					balance += 1

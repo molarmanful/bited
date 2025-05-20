@@ -76,7 +76,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_octify", "btn_braille")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_sepsexify", "btn_octify", "btn_braille")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -102,6 +102,7 @@ btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 btn_new_glyph = NodePath("MarginContainer/HBoxContainer2/new_glyph")
 btn_finder = NodePath("MarginContainer/HBoxContainer2/finder")
 btn_sexify = NodePath("MarginContainer/HBoxContainer2/sexify")
+btn_sepsexify = NodePath("MarginContainer/HBoxContainer2/sepsexify")
 btn_octify = NodePath("MarginContainer/HBoxContainer2/octify")
 btn_braille = NodePath("MarginContainer/HBoxContainer2/braillegen")
 

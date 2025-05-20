@@ -14,6 +14,7 @@ const Op: Dictionary[String, String] = {
 	BLOCK_ = ":block;",
 	AND = "&",
 	OR = "|",
+	NOT = "!",
 	LPAREN = "(",
 	RPAREN = ")",
 }
@@ -21,6 +22,7 @@ const Op: Dictionary[String, String] = {
 const Sep: Dictionary[String, String] = {
 	AND = " and ",
 	OR = " or ",
+	NOT = "not ",
 }
 
 var tks: PackedStringArray
@@ -30,6 +32,7 @@ var i_tks := 0
 var skip := 0
 var mode := Mode.X
 var sep := Sep.AND
+var is_not := false
 var args: PackedStringArray
 
 
@@ -78,6 +81,9 @@ func parse() -> void:
 			Op.OR:
 				sep = Sep.OR
 				next()
+			Op.NOT:
+				next()
+				is_not = !is_not
 			Op.LPAREN:
 				next()
 				var fp := FinderParser.new()
@@ -208,5 +214,8 @@ func query() -> String:
 
 
 func push_qs(q: String) -> void:
+	if is_not:
+		qs.append(Sep.NOT)
 	qs.append(q)
 	qs.append(sep)
+	is_not = false

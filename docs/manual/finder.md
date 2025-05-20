@@ -42,7 +42,7 @@ query = {
     [":;" | ":u" | ":cat" | ":cat;" | ":block" | ":block;" | ":page" | ":page;"],
     {? <phrase> ? | ? <string> ?}
   )
-  | "&" | "|" | "(" | ")"
+  | "&" | "|" | "!" | "(" | ")"
 };
 
 @endebnf
@@ -109,9 +109,9 @@ ranges follow the format `<hex>-<hex>`, where `<hex>` is a valid hex number.
 
 **Example**: `:u 00A_`, `:u a0-ffff`
 
-### `&` `|`
+### `&` `|` `!`
 
-Logical AND and OR, respectively.
+Logical AND, OR, and NOT, respectively.
 
 By default, the transpiler will join consecutive queries with AND -- e.g.
 `:block some words :page other words` and
