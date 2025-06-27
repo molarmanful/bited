@@ -7,7 +7,7 @@ build-rs *FLAGS:
   cargo build {{FLAGS}}
 
 [working-directory: 'godot']
-ed:
+ed: build-rs
   godot4 -e
 
 docs:
