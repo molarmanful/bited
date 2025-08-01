@@ -136,7 +136,7 @@ impl BFontR {
                     .and_then(|_| GlyphsMap::from_toml(&s).map_err(|e| e.into()))
             })
             .unwrap_or_else(|e: Box<dyn Error>| {
-                self.warn(0, &format!("unable to read glyphs.toml [\n{}\n]", e));
+                self.warn(0, &format!("unable to read glyphs.toml [\n{e}\n]"));
                 GlyphsMap::default()
             })
     }

@@ -364,7 +364,7 @@ impl<'a> Parser<'a> {
             _,
             _,
             _,
-        ] = &v.split('-').map(str::trim).take(15).collect::<Vec<_>>()[..]
+        ] = v.split('-').map(str::trim).take(15).collect::<Vec<_>>()[..]
         else {
             return Some("XLFD must have 14 entries".to_string());
         };
@@ -378,7 +378,7 @@ impl<'a> Parser<'a> {
                 self.font.foundry,
             ));
         } else {
-            self.font.foundry = (*foundry).into();
+            self.font.foundry = foundry.into();
         }
 
         if family.is_empty() {
@@ -387,7 +387,7 @@ impl<'a> Parser<'a> {
                 self.font.family,
             ));
         } else {
-            self.font.family = (*family).into();
+            self.font.family = family.into();
         }
 
         if weight.is_empty() {
@@ -396,7 +396,7 @@ impl<'a> Parser<'a> {
                 self.font.weight,
             ));
         } else {
-            self.font.weight = (*weight).into();
+            self.font.weight = weight.into();
         }
 
         let slant_up = slant.to_uppercase();
@@ -414,10 +414,10 @@ impl<'a> Parser<'a> {
                 self.font.setwidth,
             ));
         } else {
-            self.font.weight = (*weight).into();
+            self.font.weight = weight.into();
         }
 
-        self.font.add_style = (*add_style).into();
+        self.font.add_style = add_style.into();
 
         if let Ok(n) = px_size.parse() {
             self.font.bb.y = n
