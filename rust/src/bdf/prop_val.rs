@@ -21,12 +21,9 @@ impl GodotConvert for PropVal {
 }
 
 impl ToGodot for PropVal {
-    type ToVia<'v>
-        = Variant
-    where
-        Self: 'v;
+    type Pass = godot::meta::ByValue;
 
-    fn to_godot(&self) -> Self::ToVia<'_> {
+    fn to_godot(&self) -> Self::Via {
         match self {
             PropVal::Num(n) => n.to_variant(),
             PropVal::Str(s) => s.to_variant(),

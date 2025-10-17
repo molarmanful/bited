@@ -23,8 +23,8 @@
         }:
 
         let
-          my_godot = pkgs.godot_4_4;
-          my_godot-export-templates = pkgs.godot_4_4-export-templates;
+          my_godot = pkgs.godot_4_5;
+          my_godot-export-templates = pkgs.godot_4_5-export-templates-bin;
 
           baseCraneLib = inputs.crane.mkLib pkgs;
           craneLib = baseCraneLib.overrideToolchain inputs'.fenix.packages.minimal.toolchain;

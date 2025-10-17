@@ -52,7 +52,7 @@ impl PGen {
     }
 
     pub fn to_glyph(&self) -> Dictionary {
-        dict! {
+        vdict! {
             "name": self.name.clone(),
             "code": self.code,
             "dwidth": self.dwidth,

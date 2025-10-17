@@ -96,8 +96,8 @@ impl IRefCounted for BFontR {
             thumb_px_size: 2,
             grid_size: 32,
             grid_px_size: 12,
-            props: dict! {},
-            glyphs: dict! {},
+            props: Dictionary::new(),
+            glyphs: Dictionary::new(),
         }
     }
 }
@@ -106,7 +106,7 @@ impl IRefCounted for BFontR {
 impl BFontR {
     #[func]
     pub fn read_file(&mut self, path: GString) -> GString {
-        match GFile::open(&path, ModeFlags::READ) {
+        (&match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
                 let path_ = path.to_string();
@@ -117,8 +117,8 @@ impl BFontR {
                 e
             }
             Err(e) => e.to_string(),
-        }
-        .into()
+        })
+            .into()
     }
 
     #[func]

@@ -6,7 +6,7 @@
 
 Requirements:
 
-- [Godot 4.4.1](https://godotengine.org/download/)
+- [Godot 4.5](https://godotengine.org/download/)
 
 Clone the [repo](https://github.com/molarmanful/bited), open via Godot, and
 modify/export/etc.

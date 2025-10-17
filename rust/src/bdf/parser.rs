@@ -181,7 +181,7 @@ impl<'font> Parser<'font> {
                         _ => self.warn("X_HEIGHT is not a valid int >= 0, ignoring"),
                     },
 
-                    "COPYRIGHT" => self.font.copyright = pv.to_string().into(),
+                    "COPYRIGHT" => self.font.copyright = (&pv.to_string()).into(),
 
                     "BITED_DWIDTH" => match pv {
                         PropVal::Num(n) if n >= 0 => self.font.bb.x = n,
@@ -399,7 +399,7 @@ impl<'font> Parser<'font> {
 
         let slant_up = slant.to_uppercase();
         match slant_up.as_str() {
-            "R" | "I" | "O" | "RI" | "RO" => self.font.slant = slant_up.into(),
+            "R" | "I" | "O" | "RI" | "RO" => self.font.slant = (&slant_up).into(),
             _ => self.warn(&format!(
                 "XLFD slant is not one of (R, I, O, RI, RO), defaulting to '{}'",
                 self.font.slant,
@@ -446,7 +446,7 @@ impl<'font> Parser<'font> {
 
         let spacing_up = spacing.to_uppercase();
         match spacing_up.as_str() {
-            "P" | "M" | "C" => self.font.spacing = spacing_up.into(),
+            "P" | "M" | "C" => self.font.spacing = (&spacing_up).into(),
             _ => self.warn(&format!(
                 "XLFD slant is not one of (R, I, O, RI, RO), defaulting to '{}'",
                 self.font.spacing,
