@@ -12,9 +12,9 @@ use super::{
     prop_val::PropVal,
 };
 
-pub struct Parser<'a> {
+pub struct Parser<'font> {
     pub n_line: usize,
-    font: &'a mut BFontR,
+    font: &'font mut BFontR,
     glyphs_map: GlyphsMap,
     mode: Mode,
     defs: HashSet<String>,
@@ -32,8 +32,8 @@ enum Mode {
     Post,
 }
 
-impl<'a> Parser<'a> {
-    pub fn new(font: &'a mut BFontR, glyphs_map: GlyphsMap) -> Self {
+impl<'font> Parser<'font> {
+    pub fn new(font: &'font mut BFontR, glyphs_map: GlyphsMap) -> Self {
         Self {
             font,
             glyphs_map,
@@ -48,11 +48,11 @@ impl<'a> Parser<'a> {
         matches!(self.mode, Mode::Post)
     }
 
-    pub fn parse_line(&mut self, line: &str) -> Option<String> {
+    pub fn parse_line(&mut self, line: &str) -> Result<(), String> {
         self.n_line += 1;
         let (k, v) = kv(line);
         if k.is_empty() || k == "COMMENT" {
-            return None;
+            return Ok(());
         }
 
         match self.mode {
@@ -63,7 +63,7 @@ impl<'a> Parser<'a> {
             Mode::Char => self.parse_char(&k, v),
             Mode::CharIgnore => self.parse_char_ignore(&k),
             Mode::BM => self.parse_bm(&k),
-            Mode::Post => None,
+            Mode::Post => Ok(()),
         }
     }
 
@@ -108,14 +108,14 @@ impl<'a> Parser<'a> {
         )
     }
 
-    fn parse_pre(&mut self, k: &str) -> Option<String> {
+    fn parse_pre(&mut self, k: &str) -> Result<(), String> {
         if k == "STARTFONT" && self.notdef(k) {
             self.mode = Mode::X;
         }
-        None
+        Ok(())
     }
 
-    fn parse_x(&mut self, k: &str, v: &str) -> Option<String> {
+    fn parse_x(&mut self, k: &str, v: &str) -> Result<(), String> {
         match k {
             "FONT" => {
                 if self.notdef(k) {
@@ -134,7 +134,7 @@ impl<'a> Parser<'a> {
 
             "STARTPROPERTIES" => {
                 if !self.defs.contains("FONT") {
-                    return Some("missing FONT before STARTPROPERTIES".to_string());
+                    return Err("missing FONT before STARTPROPERTIES".to_string());
                 }
                 self.notdef(k);
                 self.mode = Mode::Props;
@@ -157,10 +157,10 @@ impl<'a> Parser<'a> {
 
             _ => self.warn(&format!("unknown keyword {k}, skipping")),
         }
-        None
+        Ok(())
     }
 
-    fn parse_props(&mut self, k: &str, v: &str) -> Option<String> {
+    fn parse_props(&mut self, k: &str, v: &str) -> Result<(), String> {
         if k == "ENDPROPERTIES" {
             self.mode = Mode::X;
         } else if self.notdef(&format!("prop {k}")) {
@@ -213,10 +213,10 @@ impl<'a> Parser<'a> {
                 _ => self.warn(&format!("unable to parse property {k}, skipping")),
             }
         }
-        None
+        Ok(())
     }
 
-    fn parse_chars(&mut self, k: &str, v: &str) -> Option<String> {
+    fn parse_chars(&mut self, k: &str, v: &str) -> Result<(), String> {
         match k {
             "STARTCHAR" => {
                 if self.notdef(&format!("char {v}")) {
@@ -233,11 +233,10 @@ impl<'a> Parser<'a> {
 
             _ => self.warn(&format!("unknown keyword {k} in chars section, skipping")),
         }
-
-        None
+        Ok(())
     }
 
-    fn parse_char(&mut self, k: &str, v: &str) -> Option<String> {
+    fn parse_char(&mut self, k: &str, v: &str) -> Result<(), String> {
         match k {
             "ENCODING" => {
                 if self.p_gen_notdef(k) {
@@ -255,28 +254,28 @@ impl<'a> Parser<'a> {
 
             "BBX" => {
                 if self.p_gen_notdef(k) {
-                    let mut bb = arr_int::<i64>(v, 4);
-                    let bb_x = bb.next()?.map(|n| {
+                    let mut bb = arr_int::<i32>(v, 4).flatten();
+                    let bb_x = bb.next().map(|n| {
                         n.try_into().unwrap_or_else(|_| {
                             self.warn("bounding box x < 0, defaulting to 0");
                             0
                         })
                     });
-                    let bb_y = bb.next()?.map(|n| {
+                    let bb_y = bb.next().map(|n| {
                         n.try_into().unwrap_or_else(|_| {
-                            self.warn("bounding box x < 0, defaulting to 0");
+                            self.warn("bounding box y < 0, defaulting to 0");
                             0
                         })
                     });
-                    let off_x = bb.next()?;
-                    let off_y = bb.next()?;
-                    if bb_x.and(bb_y).and(off_x).and(off_y).is_none() {
-                        self.warn("BBX has invalid entries, filling with 0");
-                    }
+                    let off_x = bb.next();
+                    let off_y = bb.next();
                     self.p_gen.bb_x = bb_x.unwrap_or(0);
                     self.p_gen.bb_y = bb_y.unwrap_or(0);
                     self.p_gen.off_x = off_x.unwrap_or(0);
                     self.p_gen.off_y = off_y.unwrap_or(0);
+                    if bb_x.and(bb_y).and(off_x).and(off_y).is_none() {
+                        self.warn("BBX has invalid entries, filling with 0");
+                    }
                 }
             }
 
@@ -307,18 +306,17 @@ impl<'a> Parser<'a> {
                 self.p_gen.name
             )),
         }
-
-        None
+        Ok(())
     }
 
-    fn parse_char_ignore(&mut self, k: &str) -> Option<String> {
+    fn parse_char_ignore(&mut self, k: &str) -> Result<(), String> {
         if k == "ENDCHAR" {
             self.mode = Mode::X;
         }
-        None
+        Ok(())
     }
 
-    fn parse_bm(&mut self, k: &str) -> Option<String> {
+    fn parse_bm(&mut self, k: &str) -> Result<(), String> {
         match k {
             "ENDCHAR" => self.end_char(),
             _ => match usize::from_str_radix(k, 16) {
@@ -331,7 +329,7 @@ impl<'a> Parser<'a> {
                 }
             },
         }
-        None
+        Ok(())
     }
 
     fn end_char(&mut self) {
@@ -347,7 +345,7 @@ impl<'a> Parser<'a> {
             .set_glyph_pre(&self.p_gen.name, self.p_gen.to_glyph())
     }
 
-    fn parse_xlfd(&mut self, v: &str) -> Option<String> {
+    fn parse_xlfd(&mut self, v: &str) -> Result<(), String> {
         let [
             blank,
             foundry,
@@ -366,10 +364,10 @@ impl<'a> Parser<'a> {
             _,
         ] = v.split('-').map(str::trim).take(15).collect::<Vec<_>>()[..]
         else {
-            return Some("XLFD must have 14 entries".to_string());
+            return Err("XLFD must have 14 entries".to_string());
         };
         if !blank.is_empty() {
-            return Some("XLFD must start with '-'".to_string());
+            return Err("XLFD must start with '-'".to_string());
         }
 
         if foundry.is_empty() {
@@ -455,10 +453,10 @@ impl<'a> Parser<'a> {
             )),
         }
 
-        None
+        Ok(())
     }
 
-    fn parse_propval<'c>(&mut self, v: &'c str) -> Option<PropVal> {
+    fn parse_propval(&mut self, v: &str) -> Option<PropVal> {
         if v.starts_with('"') {
             let mut cs = v.chars();
             cs.next();

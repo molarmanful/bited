@@ -133,7 +133,7 @@ impl BFontR {
                 let mut s = String::new();
                 file.read_to_string(&mut s)
                     .map_err(|e| e.into())
-                    .and_then(|_| GlyphsMap::from_toml(&s).map_err(|e| e.into()))
+                    .and_then(|_| toml::from_str(&s).map_err(|e| e.into()))
             })
             .unwrap_or_else(|e: Box<dyn Error>| {
                 self.warn(0, &format!("unable to read glyphs.toml [\n{e}\n]"));
@@ -144,8 +144,7 @@ impl BFontR {
     fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>, gm: GlyphsMap) -> String {
         let mut parser = Parser::new(self, gm);
         for line in lines {
-            let e = parser.parse_line(line.as_ref());
-            if let Some(msg) = e {
+            if let Err(msg) = parser.parse_line(line.as_ref()) {
                 let l = parser.n_line;
                 return self.err(l, &msg);
             }

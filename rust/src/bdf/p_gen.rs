@@ -11,8 +11,8 @@ pub struct PGen {
     pub is_abs: bool,
     pub bb_x: usize,
     pub bb_y: usize,
-    pub off_x: i64,
-    pub off_y: i64,
+    pub off_x: i32,
+    pub off_y: i32,
     pub bm: Vec<String>,
     defs: HashSet<String>,
 }
@@ -53,7 +53,7 @@ impl PGen {
 
     pub fn to_glyph(&self) -> Dictionary {
         dict! {
-            "name": self.name.to_owned(),
+            "name": self.name.clone(),
             "code": self.code,
             "dwidth": self.dwidth,
             "is_abs": self.is_abs,

@@ -19,10 +19,6 @@ pub struct Glyph {
 }
 
 impl GlyphsMap {
-    pub fn from_toml(toml: &str) -> Result<Self, toml::de::Error> {
-        toml::from_str(toml)
-    }
-
     pub fn is_abs(&self, name: &str) -> bool {
         self.glyphs
             .get(name)

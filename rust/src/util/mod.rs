@@ -138,8 +138,8 @@ impl UtilR {
         let new = &dst
             .get_data()
             .as_slice()
-            .into_iter()
-            .zip(src.get_data().as_slice().into_iter())
+            .iter()
+            .zip(src.get_data().as_slice())
             .skip(1)
             .step_by(2)
             .flat_map(|(&a, &b)| [255, f(a, b)])
