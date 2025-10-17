@@ -84,7 +84,8 @@
           packages = {
             inherit rust bited;
             default = bited;
-          } // release-pkgs;
+          }
+          // release-pkgs;
 
           devShells = {
             default = pkgs.mkShell {
@@ -101,13 +102,6 @@
               ];
 
               inputsFrom = [ (craneLibDev.devShell { }) ];
-
-              shellHook = ''
-                export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc ]}:$LD_LIBRARY_PATH"
-                uv venv
-                uv sync
-                source .venv/bin/activate
-              '';
             };
           };
         };

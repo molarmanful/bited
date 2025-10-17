@@ -32,10 +32,10 @@ jobs:
       - name: Clear prereleases
         continue-on-error: true
         run: |
-          mike list |
+          uv run mike list |
             cut -d ' ' -f1 |
             grep -vP '^v\d+\.\d+\.\d+$' |
-            xargs -n1 -d'\n' mike delete
+            xargs -n1 -d'\n' uv run mike delete
       - name: Deploy
         run: |
           TAG="$(git describe --abbrev=0 --tags)"
@@ -43,4 +43,4 @@ jobs:
             *-*) echo -n "prerelease" ;;
             *) echo -n "latest" ;;
           esac)
-          mike deploy --push --update-aliases "$TAG" "$alias"
+          uv run mike deploy --push --update-aliases "$TAG" "$alias"
