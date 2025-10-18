@@ -23,6 +23,7 @@
         }:
 
         let
+          gdpkgs = pkgs.godotPackages_4_5;
           baseCraneLib = inputs.crane.mkLib pkgs;
           craneLib = baseCraneLib.overrideToolchain inputs'.fenix.packages.minimal.toolchain;
           craneLibDev = baseCraneLib.overrideToolchain (
@@ -51,7 +52,7 @@
                 pkgs.callPackage ./release.nix (
                   {
                     inherit name version;
-                    inherit (pkgs.godotPackages_4_5) godot export-templates-bin;
+                    inherit (gdpkgs) godot export-templates-bin;
                   }
                   // attrs
                 )
@@ -87,7 +88,7 @@
             default = pkgs.mkShell {
               packages = with pkgs; [
                 gdtoolkit_4
-                my_godot
+                gdpkgs.godot
                 marksman
                 just
                 yaml-language-server
