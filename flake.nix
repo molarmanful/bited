@@ -23,9 +23,6 @@
         }:
 
         let
-          my_godot = pkgs.godot_4_5;
-          my_godot-export-templates = pkgs.godot_4_5-export-templates-bin;
-
           baseCraneLib = inputs.crane.mkLib pkgs;
           craneLib = baseCraneLib.overrideToolchain inputs'.fenix.packages.minimal.toolchain;
           craneLibDev = baseCraneLib.overrideToolchain (
@@ -54,8 +51,7 @@
                 pkgs.callPackage ./release.nix (
                   {
                     inherit name version;
-                    godot = my_godot;
-                    godot-export-templates = my_godot-export-templates;
+                    inherit (pkgs.godotPackages_4_5) godot export-templates-bin;
                   }
                   // attrs
                 )

@@ -1,6 +1,9 @@
 use core::fmt;
 
-use godot::prelude::*;
+use godot::{
+    meta::ByValue,
+    prelude::*,
+};
 
 pub enum PropVal {
     Num(i32),
@@ -21,7 +24,7 @@ impl GodotConvert for PropVal {
 }
 
 impl ToGodot for PropVal {
-    type Pass = godot::meta::ByValue;
+    type Pass = ByValue;
 
     fn to_godot(&self) -> Self::Via {
         match self {

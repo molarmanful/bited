@@ -8,7 +8,7 @@
   stdenv,
   fetchurl,
   godot,
-  godot-export-templates,
+  export-templates-bin,
   wineWowPackages,
   zip,
   ...
@@ -36,8 +36,8 @@ stdenv.mkDerivation {
     runHook preBuild
 
     export HOME=$(mktemp -d)
-    mkdir -p "$HOME"/.local/share/godot/export_templates
-    ln -s ${godot-export-templates} "$HOME"/.local/share/godot/export_templates/${gd_ver}.stable
+    mkdir -p "$HOME"/.local/share/godot
+    ln -s ${export-templates-bin}/share/godot/export_templates "$HOME"/.local/share/godot/export_templates
     ${
       if release == "windows" && stdenv.hostPlatform.system == "x86_64-linux" then
         ''
