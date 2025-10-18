@@ -41,7 +41,7 @@ stdenv.mkDerivation {
     ${
       if release == "windows" && stdenv.hostPlatform.system == "x86_64-linux" then
         ''
-          godot4 --headless -v -e --quit
+          godot --headless -v -e --quit
           echo 'export/windows/rcedit = "${rcedit}"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
           echo 'export/windows/wine = "${wineWowPackages.stable}/bin/wine64"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
         ''
@@ -51,9 +51,8 @@ stdenv.mkDerivation {
 
     pushd godot
     sed -i 's#^\s*config/version\s*=\s*".*"\s*$#config/version="v${version}"#' project.godot
-    cat project.godot
     mkdir -p bited
-    godot4 --headless --v --export-release "${release}" bited/bited.${ext}
+    godot --headless --v --export-release "${release}" bited/bited.${ext}
     ${if ext == "zip" then "cp bited/bited.zip ." else "zip -r bited.zip bited"}
     popd
 
