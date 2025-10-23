@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=105 format=3 uid="uid://co6jxl87eleb2"]
+[gd_resource type="Theme" load_steps=108 format=3 uid="uid://co6jxl87eleb2"]
 
 [ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_2a66r"]
 [ext_resource type="FontFile" uid="uid://bgu4wl822gald" path="res://assets/bited.woff2" id="1_stftx"]
@@ -697,6 +697,25 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.639216, 0.639216, 0.639216, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6p55"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xdhyr"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lu43s"]
+bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.6, 0.6, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id3oo"]
 draw_center = false
 
@@ -1014,6 +1033,9 @@ Tree/icons/arrow = ExtResource("8_xrcs3")
 Tree/icons/arrow_collapsed = ExtResource("8_4rta4")
 Tree/icons/arrow_collapsed_mirrored = ExtResource("9_imbqb")
 Tree/styles/focus = SubResource("StyleBoxFlat_sbn1k")
+Tree/styles/hovered = SubResource("StyleBoxFlat_a6p55")
+Tree/styles/hovered_selected = SubResource("StyleBoxFlat_xdhyr")
+Tree/styles/hovered_selected_focus = SubResource("StyleBoxFlat_lu43s")
 Tree/styles/panel = SubResource("StyleBoxFlat_id3oo")
 Tree/styles/selected = SubResource("StyleBoxFlat_ugd8m")
 Tree/styles/selected_focus = SubResource("StyleBoxFlat_ag633")
