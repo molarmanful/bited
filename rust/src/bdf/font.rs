@@ -109,10 +109,13 @@ impl BFontR {
         (&match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
-                let path_ = path.to_string();
-                let base = path_.strip_suffix(".bdf").unwrap_or(&path_);
+                let path = path.to_string();
+                let base = path.strip_suffix(".bdf").unwrap_or(&path);
                 let gm = self.read_glyphs_map(&format!("{base}.glyphs.toml"));
-                let e = self.parse(file.lines().map(|l| l.unwrap_or("".to_string())), gm);
+                let e = self
+                    .parse(file.lines().map(|l| l.unwrap_or("".to_string())), gm)
+                    .err()
+                    .unwrap_or("".to_string());
                 godot_print!("parsed {:.2?}", start.elapsed());
                 e
             }
@@ -141,19 +144,23 @@ impl BFontR {
             })
     }
 
-    fn parse(&mut self, lines: impl IntoIterator<Item: AsRef<str>>, gm: GlyphsMap) -> String {
+    fn parse(
+        &mut self,
+        lines: impl IntoIterator<Item: AsRef<str>>,
+        gm: GlyphsMap,
+    ) -> Result<(), String> {
         let mut parser = Parser::new(self, gm);
         for line in lines {
             if let Err(msg) = parser.parse_line(line.as_ref()) {
                 let l = parser.n_line;
-                return self.err(l, &msg);
+                return Err(self.err(l, &msg));
             }
             if parser.is_done() {
-                return "".to_string();
+                return Ok(());
             }
         }
         parser.recover();
-        "".to_string()
+        Ok(())
     }
 
     pub fn set_prop(&mut self, k: &str, v: Variant) {
