@@ -1,6 +1,6 @@
 [working-directory: 'godot']
 run: build-rs
-  godot4
+  godot
 
 [working-directory: 'rust']
 build-rs *FLAGS:
@@ -8,7 +8,7 @@ build-rs *FLAGS:
 
 [working-directory: 'godot']
 ed: build-rs
-  godot4 -e
+  godot -e
 
 docs:
   mkdocs serve
