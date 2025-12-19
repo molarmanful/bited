@@ -39,7 +39,7 @@ func _draw() -> void:
 		res.push_back(Vector2i(iw, 0))
 		res.push_back(Vector2i(iw, w_grid))
 
-	draw_multiline(res, grid.get_theme_color("bord"))
+	draw_multiline(res, grid.get_theme_color("border"))
 
 	lines_h = {
 		origin = 0,

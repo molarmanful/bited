@@ -28,7 +28,7 @@ theme_override_constants/separation = 0
 
 [node name="Header" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Inner"
+theme_type_variation = &"BgBorder"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
 layout_mode = 2
@@ -37,7 +37,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
 layout_mode = 2
-theme_type_variation = &"Title"
+theme_type_variation = &"TooltipLabel"
 theme_override_constants/line_spacing = 0
 text = "db font delete warning"
 horizontal_alignment = 1
@@ -61,7 +61,7 @@ autowrap_mode = 3
 
 [node name="Footer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer"]
 layout_mode = 2

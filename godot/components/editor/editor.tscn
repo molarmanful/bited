@@ -304,7 +304,6 @@ tooltip_text = "pen"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
-button_pressed = true
 button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_lgybh")
 text = "✎"
@@ -340,7 +339,7 @@ layout_mode = 2
 tooltip_text = "color mode: default
 pattern mode: default"
 mouse_default_cursor_shape = 2
-theme_type_variation = &"CMode"
+theme_type_variation = &"Tool"
 toggle_mode = true
 button_pressed = true
 button_group = ExtResource("2_qbssp")
@@ -356,7 +355,7 @@ layout_mode = 2
 tooltip_text = "color mode: draw
 pattern mode: add"
 mouse_default_cursor_shape = 2
-theme_type_variation = &"CMode"
+theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
 shortcut = SubResource("Shortcut_fvamu")
@@ -371,7 +370,7 @@ layout_mode = 2
 tooltip_text = "color mode: erase
 pattern mode: subtract"
 mouse_default_cursor_shape = 2
-theme_type_variation = &"CMode"
+theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
 shortcut = SubResource("Shortcut_oxwf8")
@@ -386,7 +385,7 @@ layout_mode = 2
 tooltip_text = "color mode: invert
 pattern mode: exclude"
 mouse_default_cursor_shape = 2
-theme_type_variation = &"CMode"
+theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
 shortcut = SubResource("Shortcut_s1vyv")
@@ -401,7 +400,7 @@ layout_mode = 2
 tooltip_text = "color mode: first-cell
 pattern mode: multiply"
 mouse_default_cursor_shape = 2
-theme_type_variation = &"CMode"
+theme_type_variation = &"Tool"
 toggle_mode = true
 button_group = ExtResource("2_qbssp")
 shortcut = SubResource("Shortcut_8wt2y")

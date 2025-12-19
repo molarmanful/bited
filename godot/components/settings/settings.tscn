@@ -836,7 +836,7 @@ text = "+"
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -870,7 +870,7 @@ text = "cancel"
 [node name="FileDialog" type="FileDialog" parent="."]
 auto_translate_mode = 1
 title = "Choose a File"
-size = Vector2i(200, 147)
+size = Vector2i(308, 147)
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true
@@ -918,7 +918,7 @@ autowrap_mode = 3
 
 [node name="Footer" type="PanelContainer" parent="OverWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="OverWarn/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2
@@ -999,7 +999,7 @@ script = ExtResource("20_2pfww")
 
 [node name="Footer" type="PanelContainer" parent="AddProp/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="AddProp/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2

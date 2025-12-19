@@ -8,8 +8,8 @@ signal set_thumb
 ## Emits when grid styling (e.g. size) changes.
 signal set_grid
 
-const ThemeDark := preload("res://components/dark.tres")
-const ThemeLight := preload("res://components/light.tres")
+const ThemeDark := preload("res://components/themes/dark.tres")
+const ThemeLight := preload("res://components/themes/light.tres")
 
 var table_width := -16:
 	set(n):

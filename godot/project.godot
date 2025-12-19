@@ -16,7 +16,7 @@ config/version="dev"
 run/main_scene="res://components/start/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bited"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/fullsize=false
 boot_splash/use_filter=false
@@ -51,16 +51,16 @@ project/assembly_name="bited"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/theme_gen_save_sync/plugin.cfg")
 
 [gui]
 
 timers/tooltip_delay_sec=0.1
-theme/custom="res://components/dark.tres"
-theme/custom_font="res://assets/bited.woff2"
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0
+theme/custom="uid://f4r415hvld2n"
+theme/custom_font="res://assets/bited.woff2"
 
 [input]
 

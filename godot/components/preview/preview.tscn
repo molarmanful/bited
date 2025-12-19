@@ -1,13 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://igqtugaw0g61"]
+[gd_scene load_steps=6 format=3 uid="uid://igqtugaw0g61"]
 
 [ext_resource type="Script" uid="uid://b7ukpbftxialh" path="res://components/preview/preview.gd" id="1_jy7h6"]
-[ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_8cdh3"]
-[ext_resource type="Shader" uid="uid://7jr3jxx12vg5" path="res://components/preview/mod.gdshader" id="3_makfi"]
+[ext_resource type="Shader" uid="uid://7jr3jxx12vg5" path="res://components/shaders/mul_if.gdshader" id="3_8khxk"]
 [ext_resource type="Script" uid="uid://bj4k70ax17xpx" path="res://components/spin_foc.gd" id="3_v5562"]
 [ext_resource type="Script" uid="uid://jb587vhieh87" path="res://components/preview/out.gd" id="3_wdqwx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lggnd"]
-shader = ExtResource("3_makfi")
+shader = ExtResource("3_8khxk")
 shader_parameter/mod = Color(1, 1, 1, 1)
 
 [node name="Preview" type="PanelContainer" node_paths=PackedStringArray("presets", "input", "node_split", "btn_split", "btn_hi", "btn_dl", "input_scale", "out", "scroll_out", "file_dl")]
@@ -75,8 +74,7 @@ text = "🔃"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/line_spacing = -1
-theme_override_fonts/font = ExtResource("2_8cdh3")
+theme_type_variation = &"TextEditUC"
 placeholder_text = "text..."
 structured_text_bidi_override = 5
 

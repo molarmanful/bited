@@ -120,8 +120,8 @@ alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"Label2x"
 theme_override_constants/line_spacing = 0
-theme_override_font_sizes/font_size = 32
 text = "bited"
 vertical_alignment = 1
 justification_flags = 0
@@ -250,7 +250,7 @@ text = "⚙️"
 
 [node name="save" type="FileDialog" parent="."]
 auto_translate_mode = 1
-size = Vector2i(200, 147)
+size = Vector2i(308, 147)
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true
@@ -258,7 +258,7 @@ use_native_dialog = true
 [node name="load" type="FileDialog" parent="."]
 auto_translate_mode = 1
 title = "Open a File"
-size = Vector2i(200, 147)
+size = Vector2i(308, 147)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
@@ -376,7 +376,7 @@ wrap_mode = 1
 
 [node name="Footer" type="PanelContainer" parent="BDFErr/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="BDFErr/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2
@@ -456,7 +456,7 @@ autowrap_mode = 3
 
 [node name="Footer" type="PanelContainer" parent="BDFWarn/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="BDFWarn/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2
@@ -527,7 +527,7 @@ script = ExtResource("7_3rto3")
 
 [node name="Footer" type="PanelContainer" parent="NewGlyph/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="NewGlyph/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2
@@ -594,7 +594,7 @@ select_all_on_focus = true
 
 [node name="Footer" type="PanelContainer" parent="Finder/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"Nav"
+theme_type_variation = &"BorderT"
 
 [node name="MarginContainer" type="MarginContainer" parent="Finder/PanelContainer/VBoxContainer/Footer"]
 layout_mode = 2
