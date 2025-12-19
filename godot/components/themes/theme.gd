@@ -3,14 +3,14 @@ extends ProgrammaticTheme
 
 const UPDATE_ON_SAVE = true
 
-var font_ui = load("res://assets/bited.woff2")
-var font_size_ui = 16
-var font_icon = load("res://assets/UnifontExMono.woff")
-var font_size_icon = 16
-var font_uc = font_icon
-var font_size_uc = 16
-var font_tiny = load("res://assets/variad.woff2")
-var font_size_tiny = 12
+var font_ui := load("res://assets/bited.woff2")
+var font_size_ui := 16
+var font_icon := load("res://assets/UnifontExMono.woff")
+var font_size_icon := 16
+var font_uc := font_icon
+var font_size_uc := 16
+var font_tiny := load("res://assets/variad.woff2")
+var font_size_tiny := 12
 
 var color_bg: Color
 var color_bg_2: Color
@@ -43,18 +43,18 @@ var color_grid_desc: Color
 var color_grid_w: Color
 var color_grid_x: Color
 
-var border_w = 1
-var border_w_foc = 1
+var border_w := 1
+var border_w_foc := 1
 
-var ui_down = load("res://assets/ui/down.png")
-var ui_up = load("res://assets/ui/up.png")
-var ui_tree_arrow = load("res://assets/ui/tree_arrow.png")
-var ui_select_arrow = load("res://assets/ui/select_arrow.png")
-var ui_radio_uncheck = load("res://assets/ui/radio_unchecked.png")
-var ui_radio_uncheck_dis = load("res://assets/ui/radio_unchecked_disabled.png")
-var ui_radio_check = load("res://assets/ui/radio_checked.png")
-var ui_close = load("res://assets/ui/close.png")
-var ui_close_press = load("res://assets/ui/close_pressed.png")
+var ui_down := load("res://assets/ui/down.png")
+var ui_up := load("res://assets/ui/up.png")
+var ui_tree_arrow := load("res://assets/ui/tree_arrow.png")
+var ui_select_arrow := load("res://assets/ui/select_arrow.png")
+var ui_radio_uncheck := load("res://assets/ui/radio_unchecked.png")
+var ui_radio_uncheck_dis := load("res://assets/ui/radio_unchecked_disabled.png")
+var ui_radio_check := load("res://assets/ui/radio_checked.png")
+var ui_close := load("res://assets/ui/close.png")
+var ui_close_press := load("res://assets/ui/close_pressed.png")
 
 
 func setup_dark():
@@ -241,8 +241,8 @@ func define_theme():
 		}
 	)
 
-	var ui_down_base = mul_tex(ui_down, Color(color_fg, 0.5))
-	var ui_up_base = mul_tex(ui_up, Color(color_fg, 0.5))
+	var ui_down_base := mul_tex(ui_down, Color(color_fg, 0.5))
+	var ui_up_base := mul_tex(ui_up, Color(color_fg, 0.5))
 	define_style(
 		"SpinBox",
 		{
@@ -261,9 +261,9 @@ func define_theme():
 		}
 	)
 
-	var tree_arrow_down = mul_tex(ui_tree_arrow, color_bg_2)
-	var tree_arrow_right = rotate_tex(tree_arrow_down, COUNTERCLOCKWISE)
-	var tree_arrow_left = rotate_tex(tree_arrow_down, CLOCKWISE)
+	var tree_arrow_down := mul_tex(ui_tree_arrow, color_bg_2)
+	var tree_arrow_right := rotate_tex(tree_arrow_down, COUNTERCLOCKWISE)
+	var tree_arrow_left := rotate_tex(tree_arrow_down, CLOCKWISE)
 	define_style(
 		"Tree",
 		{
@@ -298,8 +298,8 @@ func define_theme():
 		}
 	)
 
-	var make_style_btn = func(over = {}):
-		var final = {
+	var make_style_btn := func(over = {}):
+		var final := {
 			color_bg = color_bg,
 			color_bg_2 = color_bg_2,
 			color_fg = color_fg,
@@ -656,7 +656,7 @@ func define_theme():
 	)
 
 
-func mul_tex(tex: Texture2D, color: Color):
+func mul_tex(tex: Texture2D, color: Color) -> ImageTexture:
 	return update_tex(
 		tex,
 		func(img: Image):
@@ -667,7 +667,7 @@ func mul_tex(tex: Texture2D, color: Color):
 	)
 
 
-func rotate_tex(tex: Texture2D, dir: ClockDirection):
+func rotate_tex(tex: Texture2D, dir: ClockDirection) -> ImageTexture:
 	return update_tex(
 		tex,
 		func(img: Image):
@@ -676,7 +676,7 @@ func rotate_tex(tex: Texture2D, dir: ClockDirection):
 	)
 
 
-func flip_y_tex(tex: Texture2D):
+func flip_y_tex(tex: Texture2D) -> ImageTexture:
 	return update_tex(
 		tex,
 		func(img: Image):
@@ -685,8 +685,8 @@ func flip_y_tex(tex: Texture2D):
 	)
 
 
-func update_tex(tex: Texture2D, f: Callable):
-	var img = tex.get_image()
+func update_tex(tex: Texture2D, f: Callable) -> ImageTexture:
+	var img := tex.get_image()
 	return ImageTexture.create_from_image(
 		f.call(img.get_region(Rect2i(Vector2i.ZERO, img.get_size())))
 	)

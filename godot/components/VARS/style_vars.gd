@@ -8,8 +8,7 @@ signal set_thumb
 ## Emits when grid styling (e.g. size) changes.
 signal set_grid
 
-const ThemeDark := preload("res://components/themes/dark.tres")
-const ThemeLight := preload("res://components/themes/light.tres")
+const Themes := ["system", "light", "dark"]
 
 var table_width := -16:
 	set(n):
@@ -65,15 +64,12 @@ func _ready() -> void:
 
 
 func refresh_theme() -> void:
-	var t: int = StateVars.cfg.get_value("display", "theme", 0)
-	var theme: Theme
-	match t:
-		1:
-			theme = ThemeLight
-		2:
-			theme = ThemeDark
-		_:
-			theme = ThemeDark if DisplayServer.is_dark_mode() else ThemeLight
+	var t: String = StateVars.cfg.get_value("display", "theme", "system")
+	var theme := (
+		t
+		if Themes.has(t)
+		else "dark" if DisplayServer.is_dark_mode() else "light"
+	)
 
-	StateVars.root.set_theme(theme)
+	StateVars.root.set_theme(load("res://components/themes/%s.tres" % theme))
 	theme_changed.emit()

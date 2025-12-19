@@ -2,8 +2,10 @@ extends OptionButton
 
 
 func save() -> void:
-	StateVars.cfg.set_value("display", "theme", selected)
+	StateVars.cfg.set_value("display", "theme", StyleVars.Themes[selected])
 
 
 func load() -> void:
-	selected = StateVars.cfg.get_value("display", "theme", 0)
+	selected = StyleVars.Themes.find(
+		StateVars.cfg.get_value("display", "theme", "system")
+	)
