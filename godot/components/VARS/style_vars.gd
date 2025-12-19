@@ -8,7 +8,7 @@ signal set_thumb
 ## Emits when grid styling (e.g. size) changes.
 signal set_grid
 
-const Themes := ["system", "light", "dark"]
+const Themes := ["dark", "light"]
 
 var table_width := -16:
 	set(n):

@@ -95,6 +95,7 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
@@ -122,14 +123,9 @@ size_flags_horizontal = 3
 [node name="theme" type="OptionButton" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer" groups=["settings"]]
 layout_mode = 2
 size_flags_horizontal = 3
-selected = 0
-item_count = 3
+item_count = 1
 popup/item_0/text = "system"
 popup/item_0/id = 0
-popup/item_1/text = "light"
-popup/item_1/id = 1
-popup/item_2/text = "dark"
-popup/item_2/id = 2
 script = ExtResource("17_j3ewv")
 
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
@@ -264,7 +260,6 @@ suffix = "px"
 script = ExtResource("5_gqxa1")
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
