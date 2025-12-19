@@ -320,7 +320,7 @@ func define_theme():
 			font_disabled_color = Color(final.color_fg, 0.5),
 			font_focus_color = final.color_fg,
 			font_hover_color = final.color_fg,
-			font_hover_pressed_color = Color(final.color_bg, 0.5),
+			font_hover_pressed_color = final.color_bg,
 			font_pressed_color = final.color_bg,
 			icon_normal_color = final.color_fg,
 			icon_disabled_color = Color(final.color_fg, 0.5),
