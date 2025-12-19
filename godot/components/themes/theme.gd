@@ -285,7 +285,14 @@ func define_theme():
 			arrow = tree_arrow_down,
 			arrow_collapsed = tree_arrow_right,
 			arrow_collapsed_mirrored = tree_arrow_left,
-			panel = style_panel,
+			panel =
+			inherit(
+				style_panel,
+				{
+					border_ = border_width(border_w),
+					content_ = content_margins(0)
+				}
+			),
 			hovered = inherit(style_panel, {bg_color = color_bg_2}),
 			focus = inherit(style_input, {border_color = color_fg_2}),
 			selected = style_input,
@@ -644,6 +651,7 @@ func define_theme():
 		"Charsets",
 		"Tree",
 		{
+			panel = inherit(style_panel, {border_ = border_width(0)}),
 			focus =
 			inherit(
 				style_input_foc,
