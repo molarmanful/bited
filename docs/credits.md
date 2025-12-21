@@ -5,6 +5,7 @@ bited is proudly built with:
 - [Godot](https://godotengine.org/)
 - [godot-rust](https://godot-rust.github.io/)
 - [godot-sqlite](https://github.com/2shady4u/godot-sqlite)
+- [ThemeGen](https://github.com/Inspiaaa/ThemeGen)
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
 - [GNU Unifont](https://unifoundry.com/unifont)
 - [Nerd Fonts](https://www.nerdfonts.com)
