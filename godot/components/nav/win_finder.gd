@@ -22,6 +22,11 @@ func _ready() -> void:
 			timer_input.stop()
 			timer_input.start(0.4)
 	)
+	input.text_submitted.connect(
+		func():
+			timer_input.stop()
+			timer_input.timeout.emit()
+	)
 	timer_input.timeout.connect(func(): query.emit(input.text))
 	close_requested.connect(hide)
 	btn_ok.pressed.connect(hide)
