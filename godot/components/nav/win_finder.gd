@@ -6,11 +6,23 @@ signal query(q: String)
 @export var input: LineEdit
 @export var btn_ok: Button
 
+var timer_input := Timer.new()
+
+
+func _init() -> void:
+	timer_input.one_shot = true
+	add_child(timer_input)
+
 
 func _ready() -> void:
 	hide()
 
-	input.text_changed.connect(query.emit)
+	input.text_changed.connect(
+		func(_q):
+			timer_input.stop()
+			timer_input.start(0.4)
+	)
+	timer_input.timeout.connect(func(): query.emit(input.text))
 	close_requested.connect(hide)
 	btn_ok.pressed.connect(hide)
 
