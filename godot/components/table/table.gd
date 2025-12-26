@@ -50,13 +50,7 @@ func _ready() -> void:
 		. create_table(
 			"temp.full",
 			{
-				row =
-				{
-					data_type = "int",
-					not_null = true,
-					primary_key = true,
-					unique = true
-				},
+				row = {data_type = "int", primary_key = true},
 				name = {data_type = "text", not_null = true, unique = true},
 				code = {data_type = "int", not_null = true},
 			}

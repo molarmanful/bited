@@ -61,7 +61,6 @@ func init_font(ignore := false) -> void:
 					data_type = "text",
 					not_null = true,
 					primary_key = true,
-					unique = true
 				},
 				code = {data_type = "int", not_null = true, default = -1},
 				dwidth = {data_type = "int", not_null = true, default = 0},
@@ -89,17 +88,8 @@ func save_font(ignore = false) -> void:
 
 
 func load_font() -> void:
-	(
-		StateVars
-		. db_saves
-		. query_with_bindings(
-			"""
-			select data
-			from fonts
-			where id = ?
-			;""",
-			[id]
-		)
+	StateVars.db_saves.query_with_bindings(
+		"select data from fonts where id = ?;", [id]
 	)
 	var qs := StateVars.db_saves.query_result
 	if not qs:

@@ -93,14 +93,8 @@ func init_font_metas() -> void:
 		. create_table(
 			"fonts",
 			{
-				id =
-				{
-					data_type = "text",
-					not_null = true,
-					primary_key = true,
-					unique = true
-				},
-				data = {data_type = "blob", not_null = true},
+				id = {data_type = "text", primary_key = true},
+				data = {data_type = "blob"},
 			}
 		)
 	)
@@ -113,13 +107,7 @@ func init_locals_paths() -> void:
 		. create_table(
 			"paths",
 			{
-				id =
-				{
-					data_type = "text",
-					not_null = true,
-					primary_key = true,
-					unique = true
-				},
+				id = {data_type = "text", not_null = true, primary_key = true},
 				path = {data_type = "string", not_null = true},
 			}
 		)
