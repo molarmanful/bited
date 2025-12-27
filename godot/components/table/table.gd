@@ -63,7 +63,12 @@ func _ready() -> void:
 			to_update = true
 	)
 	StateVars.table_refresh.connect(func(): to_update = true)
-	StateVars.refresh.connect(refresh_tex)
+	StateVars.refresh.connect(
+		func(gen):
+			if gen.name not in names:
+				return
+			names[gen.name].refresh_tex(gen)
+	)
 	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
@@ -84,7 +89,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	onscroll()
-	update()
+	if to_update:
+		to_update = false
+		update()
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -103,16 +110,12 @@ func onresize() -> void:
 
 
 func onscroll() -> void:
-	var cur = -int(get_global_transform_with_canvas().get_origin().y)
+	var cur = -int(get_global_transform_with_canvas().origin.y)
 	if virt.v_scroll != cur:
 		virt.v_scroll = cur
 
 
 func update() -> void:
-	if not to_update:
-		return
-	to_update = false
-
 	node_inner.custom_minimum_size = virt.size_table
 	node_pad.custom_minimum_size.y = virt.pad_top
 	gen_glyphs()
@@ -214,7 +217,6 @@ func set_finder(query: String) -> void:
 	StateVars.db_saves.query("begin;")
 
 	for i in qs.size():
-		var q := qs[i]
 		(
 			StateVars
 			. db_saves
@@ -222,8 +224,8 @@ func set_finder(query: String) -> void:
 				"temp.full",
 				{
 					row = i,
-					name = "%04X" % q.id,
-					code = q.id,
+					name = "%04X" % qs[i].id,
+					code = qs[i].id,
 				}
 			)
 		)
@@ -262,26 +264,45 @@ func gen_glyphs() -> void:
 	for i in l - (i1 - i0):
 		node_glyphs.get_child(l - 1 - i).hide()
 
-	var qs: Array[Dictionary]
-	if viewmode != Mode.RANGE:
+	if viewmode == Mode.RANGE:
 		(
 			StateVars
 			. db_saves
 			. query_with_bindings(
-				"""
-				select row, name, code
-				from temp.full
-				where row between ? and ?
-				order by row
-				;""",
+				(
+					"""
+					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+					from font_%s
+					where code between ? and ?
+					;"""
+					% StateVars.font.id
+				),
+				[start + i0, start + i1 - 1]
+			)
+		)
+	else:
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				(
+					"""
+					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
+					from temp.full as a
+					left join font_%s as b on a.name = b.name
+					where a.row between ? and ?
+					order by a.row
+					;"""
+					% StateVars.font.id
+				),
 				[i0, i1 - 1]
 			)
 		)
-		qs.assign(StateVars.db_saves.query_result)
+	var qs := StateVars.db_saves.query_result
 
 	names.clear()
-	var i := 0
 	for c in range(i0, i1):
+		var i := c - i0
 		var g := node_glyphs.get_child(i)
 		g.nop = false
 		if viewmode == Mode.RANGE:
@@ -300,40 +321,10 @@ func gen_glyphs() -> void:
 		)
 		g.show()
 		names[g.data_name] = g
-		i += 1
 
-	update_glyphs()
-
-
-func update_glyphs() -> void:
-	var qs := PackedStringArray()
-	qs.resize(names.size())
-	qs.fill("?")
-
-	(
-		StateVars
-		. db_saves
-		. query_with_bindings(
-			(
-				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
-				where name in (%s)
-				;"""
-				% [StateVars.font.id, ",".join(qs)]
-			),
-			names.keys()
-		)
-	)
-
-	for gen in StateVars.db_saves.query_result:
-		refresh_tex(gen)
-
-
-func refresh_tex(gen: Dictionary) -> void:
-	if gen.name not in names:
-		return
-	names[gen.name].refresh_tex(gen)
+	for q in qs:
+		if q.is_abs != null:
+			names[q.name].refresh_tex(q)
 
 
 func update_tb() -> void:
