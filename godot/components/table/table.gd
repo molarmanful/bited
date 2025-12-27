@@ -302,26 +302,28 @@ func gen_glyphs() -> void:
 		names[g.data_name] = g
 		i += 1
 
-	var gs: Array[Glyph]
-	gs.assign(names.values())
-	update_glyphs(gs)
+	update_glyphs()
 
 
-func update_glyphs(gs: Array[Glyph]) -> void:
+func update_glyphs() -> void:
 	var qs := PackedStringArray()
-	qs.resize(gs.size())
+	qs.resize(names.size())
 	qs.fill("?")
 
-	StateVars.db_saves.query_with_bindings(
-		(
-			"""
-			select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-			from font_%s
-			where name in (%s)
-			;"""
-			% [StateVars.font.id, ",".join(qs)]
-		),
-		gs.map(func(g: Glyph): return g.data_name)
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+				from font_%s
+				where name in (%s)
+				;"""
+				% [StateVars.font.id, ",".join(qs)]
+			),
+			names.keys()
+		)
 	)
 
 	for gen in StateVars.db_saves.query_result:

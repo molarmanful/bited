@@ -23,7 +23,7 @@ func _ready() -> void:
 			timer_input.start(0.4)
 	)
 	input.text_submitted.connect(
-		func():
+		func(_q):
 			timer_input.stop()
 			timer_input.timeout.emit()
 	)
