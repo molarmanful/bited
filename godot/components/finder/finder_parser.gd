@@ -83,7 +83,7 @@ func parse() -> void:
 				next()
 			Op.NOT:
 				next()
-				is_not = !is_not
+				is_not = not is_not
 			Op.LPAREN:
 				next()
 				var fp := FinderParser.new()
@@ -136,7 +136,7 @@ func build_u() -> void:
 		if tk:
 			if tk.contains("-"):
 				var hs := tk.split("-", true, 1)
-				if hs[0].is_valid_hex_number() && hs[1].is_valid_hex_number():
+				if hs[0].is_valid_hex_number() and hs[1].is_valid_hex_number():
 					xs.append("id between ? and ?")
 					binds.append(hs[0].hex_to_int())
 					binds.append(hs[1].hex_to_int())

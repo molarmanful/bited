@@ -63,7 +63,7 @@ var patterns: Dictionary[int, Pattern]
 var k_pattern := 1:
 	set(k):
 		k_pattern = k
-		if !patterns.has(k):
+		if not patterns.has(k):
 			patterns[k] = Pattern.new(node_sels)
 		btn_selmode.text = ":%d" % k
 		btn_selmode.tooltip_text = "toggle pattern %d" % k
@@ -149,7 +149,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 
 	if e.pressed:
 		var kc: Key = e.get_keycode_with_modifiers()
-		if kc >= KEY_1 && kc <= KEY_9:
+		if kc >= KEY_1 and kc <= KEY_9:
 			k_pattern = kc - KEY_1 + 1
 
 
@@ -430,7 +430,7 @@ func op(f: Callable, root_only := false) -> void:
 	)
 	f.call(prev)
 	to_update_cells = true
-	if !is_sel:
+	if not is_sel:
 		act_cells(prev)
 		pattern_root.bitmap.save()
 
@@ -487,7 +487,7 @@ func overwrite() -> void:
 				Rect2i(Vector2i.ZERO, pattern_TOP.cells.get_size()),
 				Vector2i.ZERO
 			)
-			is_sel = !is_sel,
+			is_sel = not is_sel,
 		true
 	)
 	is_sel = true
@@ -498,7 +498,7 @@ func stamp() -> void:
 	op(
 		func(_prev: Image):
 			stamp_mode()
-			is_sel = !is_sel,
+			is_sel = not is_sel,
 		true
 	)
 	is_sel = true

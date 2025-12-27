@@ -110,7 +110,7 @@ func _ready() -> void:
 	)
 	btn_split.pressed.connect(
 		func():
-			node_split.vertical = !node_split.vertical
+			node_split.vertical = not node_split.vertical
 			StateVars.cfg.set_value(
 				"display", "preview_split", node_split.vertical
 			)
