@@ -258,7 +258,7 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 
 
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 	for gen in gens:
 		save_glyph(gen, over)
 	StateVars.db_saves.query("commit;")

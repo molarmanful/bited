@@ -212,7 +212,7 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 	StateVars.db_uc.query("select code from %s order by row;" % tbl)
 	var codes := StateVars.db_uc.query_result.map(func(q): return q.code)
 
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	for c in codes.size():
 		var bm := Bitmap.new(

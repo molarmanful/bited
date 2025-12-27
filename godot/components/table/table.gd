@@ -178,7 +178,7 @@ func set_page(id: String) -> void:
 	var qs := StateVars.db_uc.query_result
 
 	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	for q in qs:
 		(
@@ -211,7 +211,7 @@ func set_finder(query: String) -> void:
 	var qs := StateVars.db_uc.query_result
 
 	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	for i in qs.size():
 		var q := qs[i]

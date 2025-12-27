@@ -45,12 +45,32 @@ func _ready() -> void:
 	db_locals.path = "user://locals.db"
 	db_locals.open_db()
 
+	for db in [db_uc, db_saves, db_locals]:
+		(
+			db
+			. query(
+				"""
+				pragma journal_mode = wal;
+				pragma synchronous = normal;
+				pragma cache_size = 10000;
+				pragma temp_store = memory;
+				pragma mmap_size = 268435456;
+				"""
+			)
+		)
+
 	init_font_metas()
 	init_locals_paths()
 	init_cfg()
 
 	ResourceLoader.load_threaded_request("res://components/start/start.tscn")
 	ResourceLoader.load_threaded_request("res://components/all.tscn")
+
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		for db in [db_saves, db_locals]:
+			db.query("pragma optimize;")
 
 
 ## Transitions from "start" to "all".
@@ -169,7 +189,7 @@ func delete_font(id: String) -> void:
 
 ## Renames font [param old] to [param new].
 func rename_font(old: String, new: String) -> void:
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 	StateVars.db_saves.query("drop table if exists font_%s;" % new)
 	StateVars.db_saves.query(
 		"alter table font_%s rename to font_%s;" % [old, new]
@@ -182,7 +202,7 @@ func rename_font(old: String, new: String) -> void:
 	)
 	StateVars.db_saves.query("commit;")
 
-	StateVars.db_locals.query("begin transaction;")
+	StateVars.db_locals.query("begin;")
 	StateVars.db_locals.query_with_bindings(
 		"delete from paths where id = ?;", [new]
 	)

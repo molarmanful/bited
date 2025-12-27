@@ -30,7 +30,7 @@ func all() -> void:
 
 
 func filter_dwidth(dw: int, ia := false) -> void:
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	StateVars.db_saves.query("drop table if exists temp.filter;")
 	(
@@ -122,7 +122,7 @@ func delete() -> void:
 	if not ranges:
 		return
 
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
@@ -173,7 +173,7 @@ func copy() -> void:
 	if not ranges:
 		return
 
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	StateVars.db_saves.query("drop table if exists temp.clip;")
 	(
@@ -265,7 +265,7 @@ func paste() -> void:
 	):
 		return
 
-	StateVars.db_saves.query("begin transaction;")
+	StateVars.db_saves.query("begin;")
 
 	(
 		StateVars
