@@ -48,9 +48,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - name: Build
-        run: |
-          printf "%s" "${{ github.ref_name }}" | sed 's/^v//' > VERSION
-          nix build -L .#release-${{ matrix.platform.pkg }}
+        run: nix build -L .#release-${{ matrix.platform.pkg }}
       - if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v6
         with:
