@@ -49,7 +49,7 @@ jobs:
       - run: gh cache delete ${{ matrix.platform.key }} || true
         env:
           GH_TOKEN: ${{ github.token }}
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v5
         id: cache
         with:
           path: rust/target/${{ matrix.platform.target != '' && format('{0}/', matrix.platform.target) || '' }}release
@@ -67,12 +67,12 @@ jobs:
         with:
           sparse-checkout: rust
           sparse-checkout-cone-mode: false
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v5
         with:
           path: rust/target/x86_64-apple-darwin/release
           key: ${{ github.ref }}-macos-x86
           fail-on-cache-miss: true
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v5
         with:
           path: rust/target/aarch64-apple-darwin/release
           key: ${{ github.ref }}-macos-arm
@@ -87,7 +87,7 @@ jobs:
       - run: gh cache delete "${{ github.ref }}-macos" || true
         env:
           GH_TOKEN: ${{ github.token }}
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v5
         id: cache
         with:
           path: rust/target/release
@@ -106,7 +106,7 @@ jobs:
           sparse-checkout: |
             godot/addons/bited-rust
           sparse-checkout-cone-mode: false
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v5
         with:
           path: rust/target/release
           key: ${{ github.ref }}-macos
@@ -114,7 +114,7 @@ jobs:
       - run: |
           mv rust/target/release/libbited_rust.macos.dylib \
              godot/addons/bited-rust/bin/libbited_rust.macos.framework
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v5
         with:
           path: rust/target/release
           key: ${{ github.ref }}-windows-x86
@@ -122,7 +122,7 @@ jobs:
       - run: |
           mv rust/target/release/bited_rust.dll \
              godot/addons/bited-rust/bin/bited_rust.x86_64.dll
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v5
         with:
           path: rust/target/release
           key: ${{ github.ref }}-linux-x86
