@@ -72,6 +72,9 @@ func _ready() -> void:
 	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
+	node_scroll.get_v_scroll_bar().value_changed.connect(
+		func(value): virt.v_scroll = int(value)
+	)
 	node_toolbox.resized.connect(
 		func():
 			await get_tree().process_frame
@@ -88,7 +91,6 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	onscroll()
 	if to_update:
 		to_update = false
 		update()
@@ -107,12 +109,6 @@ func _gui_input(e: InputEvent) -> void:
 func onresize() -> void:
 	virt.w_sizer = int(size.x)
 	virt.h_view = get_viewport().size.y
-
-
-func onscroll() -> void:
-	var cur = -int(get_global_transform_with_canvas().origin.y)
-	if virt.v_scroll != cur:
-		virt.v_scroll = cur
 
 
 func update() -> void:
@@ -246,8 +242,8 @@ func after_set(top := true) -> void:
 		node_placeholder.show()
 	sel.clear()
 	if top:
-		node_scroll.set_v_scroll(0)
-	virt.v_scroll = node_scroll.get_v_scroll()
+		node_scroll.scroll_vertical = 0
+	virt.v_scroll = node_scroll.scroll_vertical
 
 
 func gen_glyphs() -> void:
