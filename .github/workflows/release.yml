@@ -56,8 +56,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flakehub-cache-action@main
       - run: printf "%s" "${{ github.ref_name }}" | sed 's/^v//' > VERSION
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
