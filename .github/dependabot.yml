@@ -4,7 +4,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: 12:00
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: cargo
     directory: /rust
     schedule:
-      interval: monthly
+      interval: weekly
+      day: monday
+      time: 12:00
