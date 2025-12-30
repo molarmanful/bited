@@ -71,9 +71,7 @@ var preset_tree: Dictionary[String, Array] = {
 
 func _ready() -> void:
 	window.hide()
-	node_split.vertical = StateVars.cfg.get_value(
-		"display", "preview_split", false
-	)
+	node_split.vertical = StateVars.cfg.get_value("display", "preview_split", false)
 
 	presets.add_separator("PRESETS")
 	for k in preset_tree.keys():
@@ -111,9 +109,7 @@ func _ready() -> void:
 	btn_split.pressed.connect(
 		func():
 			node_split.vertical = not node_split.vertical
-			StateVars.cfg.set_value(
-				"display", "preview_split", node_split.vertical
-			)
+			StateVars.cfg.set_value("display", "preview_split", node_split.vertical)
 			StateVars.cfg.save("user://settings.ini")
 	)
 	btn_hi.toggled.connect(
@@ -133,8 +129,7 @@ func _ready() -> void:
 
 func preset(i: int) -> void:
 	var file := FileAccess.open(
-		"res://assets/preview/%s.txt" % presets.get_item_text(i),
-		FileAccess.READ
+		"res://assets/preview/%s.txt" % presets.get_item_text(i), FileAccess.READ
 	)
 	input.text = file.get_as_text()
 	input.set_v_scroll(0)

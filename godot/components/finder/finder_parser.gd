@@ -169,9 +169,7 @@ func build_page(r := false) -> void:
 			xs.append("name like ? escape '\\'")
 			ys.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		StateVars.db_uc.query_with_bindings(
-			"select id from pages where %s;" % " or ".join(xs), ys
-		)
+		StateVars.db_uc.query_with_bindings("select id from pages where %s;" % " or ".join(xs), ys)
 		xs.clear()
 		for q in StateVars.db_uc.query_result:
 			xs.append("select code from p_%s" % q.id)

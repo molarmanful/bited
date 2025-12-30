@@ -52,13 +52,7 @@ func build_tree() -> void:
 			var x := tree.create_item()
 			var data: Dictionary = bytes_to_var(q.data)
 			x.set_text(0, q.id)
-			x.set_text(
-				1,
-				(
-					"%s %s %d\u00d7%d"
-					% [data.family, data.weight, data.bb.x, data.bb.y]
-				)
-			)
+			x.set_text(1, "%s %s %d\u00d7%d" % [data.family, data.weight, data.bb.x, data.bb.y])
 
 	show()
 	tree.grab_focus()

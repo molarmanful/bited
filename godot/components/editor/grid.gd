@@ -109,9 +109,7 @@ func _ready() -> void:
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
-	cmode_group.pressed.connect(
-		func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name]
-	)
+	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
 
 	btn_is_abs.toggled.connect(is_abs)
 	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
@@ -163,9 +161,7 @@ func _gui_input(e: InputEvent) -> void:
 		return
 
 	pressed = e.pressed
-	toolman.tools[tool_sel].handle(
-		Tool.State.START if pressed else Tool.State.END
-	)
+	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
 
 
 func start_edit(data_name: String, data_code: int) -> void:
@@ -203,15 +199,12 @@ func refresh(hard := false) -> void:
 
 	btn_is_abs.set_pressed_no_signal(pattern_root.bitmap.is_abs)
 	btn_is_abs.tooltip_text = (
-		"dwidth mode: %s"
-		% ("dwidth" if pattern_root.bitmap.is_abs else "offset")
+		"dwidth mode: %s" % ("dwidth" if pattern_root.bitmap.is_abs else "offset")
 	)
 
 	input_dwidth.allow_lesser = true
 	input_dwidth.prefix = "w:" if pattern_root.bitmap.is_abs else "o:"
-	input_dwidth.min_value = (
-		-StateVars.font.dwidth * int(not pattern_root.bitmap.is_abs)
-	)
+	input_dwidth.min_value = (-StateVars.font.dwidth * int(not pattern_root.bitmap.is_abs))
 	input_dwidth.set_value_no_signal(pattern_root.bitmap.dwidth)
 	input_dwidth.allow_lesser = false
 
@@ -300,11 +293,7 @@ func off_glyph(off: int) -> void:
 					limit 1
 					;"""
 					. format(
-						[
-							StateVars.font.id,
-							"<=" if off < 0 else ">=",
-							"desc" if off < 0 else ""
-						]
+						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 					)
 				),
 				[table.start, table.end, pattern_root.bitmap.data_code + off]
@@ -328,11 +317,7 @@ func off_glyph(off: int) -> void:
 					order by row %s
 					limit 1
 					;"""
-					% [
-						StateVars.font.id,
-						"<=" if off < 0 else ">=",
-						"desc" if off < 0 else ""
-					]
+					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 				),
 				[off, pattern_root.bitmap.data_name]
 			)
@@ -385,10 +370,7 @@ func off_uc(off: int) -> void:
 							order by row %s
 							limit 1
 							;"""
-							% [
-								"<=" if off < 0 else ">=",
-								"desc" if off < 0 else ""
-							]
+							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 						),
 						[off, pattern_root.bitmap.data_name]
 					)
@@ -425,9 +407,7 @@ func act_cells(prev: Image) -> void:
 
 
 func op(f: Callable, root_only := false) -> void:
-	var prev := Util.img_copy(
-		pattern_root.cells if root_only else pattern_TOP.cells
-	)
+	var prev := Util.img_copy(pattern_root.cells if root_only else pattern_TOP.cells)
 	f.call(prev)
 	to_update_cells = true
 	if not is_sel:
@@ -452,26 +432,18 @@ func flip_y() -> void:
 
 
 func rot_ccw() -> void:
-	op(
-		func(_prev: Image):
-			dim_norm(pattern_TOP.cells.rotate_90.bind(COUNTERCLOCKWISE))
-	)
+	op(func(_prev: Image): dim_norm(pattern_TOP.cells.rotate_90.bind(COUNTERCLOCKWISE)))
 
 
 func rot_cw() -> void:
-	op(
-		func(_prev: Image):
-			dim_norm(pattern_TOP.cells.rotate_90.bind(CLOCKWISE))
-	)
+	op(func(_prev: Image): dim_norm(pattern_TOP.cells.rotate_90.bind(CLOCKWISE)))
 
 
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
 			pattern_TOP.cells.fill(Color.TRANSPARENT)
-			pattern_TOP.cells.blit_rect(
-				prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst
-			)
+			pattern_TOP.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
 	)
 
 

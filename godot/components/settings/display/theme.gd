@@ -11,9 +11,4 @@ func save() -> void:
 
 
 func load() -> void:
-	selected = maxi(
-		0,
-		StyleVars.Themes.find(
-			StateVars.cfg.get_value("display", "theme", "system")
-		)
-	)
+	selected = maxi(0, StyleVars.Themes.find(StateVars.cfg.get_value("display", "theme", "system")))

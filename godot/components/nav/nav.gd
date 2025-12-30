@@ -71,9 +71,7 @@ func save_font(path: String) -> void:
 	StateVars.set_path(path)
 
 	var bdf := FileAccess.open(path, FileAccess.WRITE)
-	var glyphs := FileAccess.open(
-		path.trim_suffix(".bdf") + ".glyphs.toml", FileAccess.WRITE
-	)
+	var glyphs := FileAccess.open(path.trim_suffix(".bdf") + ".glyphs.toml", FileAccess.WRITE)
 	bdf.store_string(StateVars.font.to_bdf())
 	glyphs.store_string(StateVars.font.to_glyphs_toml())
 
@@ -135,49 +133,21 @@ func finder(q: String) -> void:
 func braillegen() -> void:
 	antgen(
 		"p_block2x4braille",
-		[
-			0x2800,
-			0x2801,
-			0x2802,
-			0x2804,
-			0x2808,
-			0x2810,
-			0x2820,
-			0x2840,
-			0x2880,
-			0x28ff
-		]
+		[0x2800, 0x2801, 0x2802, 0x2804, 0x2808, 0x2810, 0x2820, 0x2840, 0x2880, 0x28ff]
 	)
 
 
 func sexify() -> void:
-	antgen(
-		"p_block2x3",
-		[0x20, 0x1fb00, 0x1fb01, 0x1fb03, 0x1fb07, 0x1fb0f, 0x1fb1e]
-	)
+	antgen("p_block2x3", [0x20, 0x1fb00, 0x1fb01, 0x1fb03, 0x1fb07, 0x1fb0f, 0x1fb1e])
 
 
 func sepsexify() -> void:
-	antgen(
-		"p_block2x3sep",
-		[0x20, 0x1ce51, 0x1ce52, 0x1ce54, 0x1ce58, 0x1ce60, 0x1ce70]
-	)
+	antgen("p_block2x3sep", [0x20, 0x1ce51, 0x1ce52, 0x1ce54, 0x1ce58, 0x1ce60, 0x1ce70])
 
 
 func octify() -> void:
 	antgen(
-		"p_block2x4",
-		[
-			0x20,
-			0x1cea8,
-			0x1ceab,
-			0x1cd00,
-			0x1cd03,
-			0x1cd09,
-			0x1cd18,
-			0x1cea3,
-			0x1cea0
-		]
+		"p_block2x4", [0x20, 0x1cea8, 0x1ceab, 0x1cd00, 0x1cd03, 0x1cd09, 0x1cd18, 0x1cea3, 0x1cea0]
 	)
 
 
@@ -216,18 +186,13 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 
 	for c in codes.size():
 		var bm := Bitmap.new(
-			StyleVars.grid_size_cor,
-			Util.img_copy(bms[0].cells),
-			codes[c],
-			"%04X" % codes[c]
+			StyleVars.grid_size_cor, Util.img_copy(bms[0].cells), codes[c], "%04X" % codes[c]
 		)
 		var i := 1
 		while c > 0:
 			if c & 1:
 				bm.cells.blend_rect(
-					bms[i].cells,
-					Rect2i(Vector2i.ZERO, bm.cells.get_size()),
-					Vector2i.ZERO
+					bms[i].cells, Rect2i(Vector2i.ZERO, bm.cells.get_size()), Vector2i.ZERO
 				)
 			c = c >> 1
 			i += 1

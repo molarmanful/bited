@@ -65,11 +65,7 @@ func _ready() -> void:
 
 func refresh_theme() -> void:
 	var t: String = StateVars.cfg.get_value("display", "theme", "system")
-	var theme := (
-		t
-		if Themes.has(t)
-		else "dark" if DisplayServer.is_dark_mode() else "light"
-	)
+	var theme := t if Themes.has(t) else "dark" if DisplayServer.is_dark_mode() else "light"
 
 	StateVars.root.set_theme(load("res://components/themes/%s.tres" % theme))
 	theme_changed.emit()
