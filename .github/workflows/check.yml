@@ -1,0 +1,95 @@
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      godot: ${{ steps.changes.outputs.godot }}
+      rust: ${{ steps.changes.outputs.rust }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            rust:
+              - 'flake.nix'
+              - 'flake.lock'
+              - '.github/workflows/check.yml'
+              - 'rust/**'
+            godot:
+              - 'flake.nix'
+              - 'flake.lock'
+              - '.github/workflows/check.yml'
+              - 'godot/{addons,components}'
+  godot-fmt:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.godot == 'true' }}
+    defaults:
+      run:
+        working-directory: godot
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - run: nix develop -c 'bash' -c 'gdformat -c components'
+  godot-lint:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.godot == 'true' }}
+    defaults:
+      run:
+        working-directory: godot
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - run: nix develop -c 'bash' -c 'gdlint components'
+  rust-fmt:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.rust == 'true' }}
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - run: nix develop -c 'bash' -c 'cargo fmt --check'
+  rust-check:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.rust == 'true' }}
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - run: nix develop -c 'bash' -c 'cargo clippy'
+  build:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.rust == 'true' || needs.changes.outputs.godot == 'true' }}
+    defaults:
+      run:
+        working-directory: rust
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/determinate-nix-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - run: nix build
