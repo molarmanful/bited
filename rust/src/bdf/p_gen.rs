@@ -51,7 +51,7 @@ impl PGen {
             .collect()
     }
 
-    pub fn to_glyph(&self) -> Dictionary {
+    pub fn to_glyph(&self) -> VarDictionary {
         vdict! {
             "name": self.name.clone(),
             "code": self.code,
