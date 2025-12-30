@@ -66,9 +66,9 @@ pub struct BFontR {
     #[var]
     warns: PackedStringArray,
     #[var]
-    props: Dictionary,
+    props: VarDictionary,
     #[var]
-    glyphs: Dictionary,
+    glyphs: VarDictionary,
 }
 
 #[godot_api]
@@ -96,8 +96,8 @@ impl IRefCounted for BFontR {
             thumb_px_size: 2,
             grid_size: 32,
             grid_px_size: 12,
-            props: Dictionary::new(),
-            glyphs: Dictionary::new(),
+            props: VarDictionary::new(),
+            glyphs: VarDictionary::new(),
         }
     }
 }
@@ -167,7 +167,7 @@ impl BFontR {
         self.props.set(k, v)
     }
 
-    pub fn set_glyph_pre(&mut self, k: &str, v: Dictionary) {
+    pub fn set_glyph_pre(&mut self, k: &str, v: VarDictionary) {
         self.glyphs.set(k, v)
     }
 

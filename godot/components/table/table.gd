@@ -72,9 +72,7 @@ func _ready() -> void:
 	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
 	virt.refresh.connect(func(): to_update = true)
-	node_scroll.get_v_scroll_bar().value_changed.connect(
-		func(value): virt.v_scroll = int(value)
-	)
+	node_scroll.get_v_scroll_bar().value_changed.connect(func(value): virt.v_scroll = int(value))
 	node_toolbox.resized.connect(
 		func():
 			await get_tree().process_frame
@@ -97,11 +95,7 @@ func _process(_delta: float) -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if (
-		e is InputEventMouseButton
-		and e.button_index == MOUSE_BUTTON_RIGHT
-		and not e.pressed
-	):
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and not e.pressed:
 		hide_tb = not hide_tb
 		update_tb()
 
@@ -151,10 +145,7 @@ func set_glyphs(top := true) -> void:
 	)
 	viewmode = Mode.GLYPHS
 	virt.length = (
-		StateVars
-		. db_saves
-		. select_rows("temp.full", "", ["count(row) as count"])[0]
-		. count
+		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
 	)
 	after_set(top)
 
@@ -187,8 +178,7 @@ func set_page(id: String) -> void:
 				"temp.full",
 				{
 					row = q.row,
-					name =
-					"%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
+					name = "%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
 					code = q.code,
 				}
 			)
@@ -204,9 +194,7 @@ func set_page(id: String) -> void:
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
 	var fpq := fp.query()
-	StateVars.db_uc.query_with_bindings(
-		"select id from data where %s order by id;" % fpq, fp.binds
-	)
+	StateVars.db_uc.query_with_bindings("select id from data where %s order by id;" % fpq, fp.binds)
 	var qs := StateVars.db_uc.query_result
 
 	StateVars.db_saves.delete_rows("temp.full", "")
@@ -312,8 +300,7 @@ func gen_glyphs() -> void:
 		g.ind = c
 		g.selected = sel.is_selected(g.ind)
 		g.edit = (
-			grid.pattern_root.bitmap.data_name
-			and g.data_name == grid.pattern_root.bitmap.data_name
+			grid.pattern_root.bitmap.data_name and g.data_name == grid.pattern_root.bitmap.data_name
 		)
 		g.show()
 		names[g.data_name] = g

@@ -5,12 +5,8 @@ extends SpinFoc
 
 
 func _ready() -> void:
-	value_changed.connect(
-		func(new: int): desc.set_value_no_signal(bb_y.value - new)
-	)
-	desc.value_changed.connect(
-		func(new: int): set_value_no_signal(bb_y.value - new)
-	)
+	value_changed.connect(func(new: int): desc.set_value_no_signal(bb_y.value - new))
+	desc.value_changed.connect(func(new: int): set_value_no_signal(bb_y.value - new))
 	bb_y.value_changed.connect(func(new: int): value = new - desc.value)
 
 

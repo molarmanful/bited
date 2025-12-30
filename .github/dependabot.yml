@@ -16,3 +16,23 @@ updates:
       interval: weekly
       day: monday
       time: '12:00'
+    groups:
+      minor-patch:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '12:00'
+    groups:
+      minor-patch:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch

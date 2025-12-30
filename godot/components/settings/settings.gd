@@ -12,9 +12,7 @@ extends PanelContainer
 var props: Dictionary[String, Variant] = {}
 
 var tree_root: TreeItem
-@onready var entries := get_tree().get_nodes_in_group("entry").map(
-	func(x: Node): return x.name
-)
+@onready var entries := get_tree().get_nodes_in_group("entry").map(func(x: Node): return x.name)
 
 
 func _ready() -> void:

@@ -79,18 +79,13 @@ func init_font(ignore := false) -> void:
 
 func save_font(ignore = false) -> void:
 	StateVars.db_saves.query_with_bindings(
-		(
-			"insert or %s into fonts (id, data) values (?, ?);"
-			% ("ignore" if ignore else "replace")
-		),
+		"insert or %s into fonts (id, data) values (?, ?);" % ("ignore" if ignore else "replace"),
 		[id, var_to_bytes(to_dict())]
 	)
 
 
 func load_font() -> void:
-	StateVars.db_saves.query_with_bindings(
-		"select data from fonts where id = ?;", [id]
-	)
+	StateVars.db_saves.query_with_bindings("select data from fonts where id = ?;", [id])
 	var qs := StateVars.db_saves.query_result
 	if not qs:
 		return
@@ -104,10 +99,7 @@ func to_bdf() -> String:
 			"STARTFONT 2.1",
 			"FONT %s" % xlfd(),
 			"SIZE %d %d %d" % [pt_size / 10, resolution.x, resolution.y],
-			(
-				"FONTBOUNDINGBOX %d %d %d %d"
-				% [fb.bb_x, fb.bb_y, fb.off_x, fb.off_y]
-			),
+			"FONTBOUNDINGBOX %d %d %d %d" % [fb.bb_x, fb.bb_y, fb.off_x, fb.off_y],
 		]
 	)
 
@@ -175,9 +167,7 @@ func to_glyphs_toml() -> String:
 	var qs := StateVars.db_saves.query_result
 	var d_is_abs: int = qs[0].is_abs if qs else 1
 
-	var default := (
-		("[default]\n" + "is_abs = %s\n") % ("true" if d_is_abs else "false")
-	)
+	var default := ("[default]\n" + "is_abs = %s\n") % ("true" if d_is_abs else "false")
 
 	(
 		StateVars
@@ -367,9 +357,7 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id,
-		"",
-		["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
+		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
 	)
 	if not qs:
 		return 0

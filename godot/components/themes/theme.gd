@@ -161,19 +161,13 @@ func define_theme():
 		{panel = inherit(style_panel, {border_ = border_width(border_w)})}
 	)
 	define_variant_style(
-		"BorderL",
-		"PanelContainer",
-		{panel = inherit(style_panel, {border_width_left = border_w})}
+		"BorderL", "PanelContainer", {panel = inherit(style_panel, {border_width_left = border_w})}
 	)
 	define_variant_style(
-		"BorderT",
-		"PanelContainer",
-		{panel = inherit(style_panel, {border_width_top = border_w})}
+		"BorderT", "PanelContainer", {panel = inherit(style_panel, {border_width_top = border_w})}
 	)
 	define_variant_style(
-		"BorderR",
-		"PanelContainer",
-		{panel = inherit(style_panel, {border_width_right = border_w})}
+		"BorderR", "PanelContainer", {panel = inherit(style_panel, {border_width_right = border_w})}
 	)
 	define_variant_style(
 		"BorderB",
@@ -190,8 +184,7 @@ func define_theme():
 		}
 	)
 	var style_input_foc = inherit(
-		style_input,
-		{border_color = color_fg, border_ = border_width(border_w_foc)}
+		style_input, {border_color = color_fg, border_ = border_width(border_w_foc)}
 	)
 	var style_input_dis = inherit(style_input, {bg_color = color_bg_2})
 	define_style(
@@ -210,9 +203,7 @@ func define_theme():
 		}
 	)
 	define_variant_style(
-		"TextEditUC",
-		"TextEdit",
-		{font = font_uc, font_size = font_size_uc, line_spacing = -1}
+		"TextEditUC", "TextEdit", {font = font_uc, font_size = font_size_uc, line_spacing = -1}
 	)
 
 	define_style(
@@ -286,22 +277,14 @@ func define_theme():
 			arrow_collapsed = tree_arrow_right,
 			arrow_collapsed_mirrored = tree_arrow_left,
 			panel =
-			inherit(
-				style_panel,
-				{
-					border_ = border_width(border_w),
-					content_ = content_margins(0)
-				}
-			),
+			inherit(style_panel, {border_ = border_width(border_w), content_ = content_margins(0)}),
 			hovered = inherit(style_panel, {bg_color = color_bg_2}),
 			focus = inherit(style_input, {border_color = color_fg_2}),
 			selected = style_input,
 			hovered_selected = inherit(style_input, {bg_color = color_bg_2}),
 			selected_focus = inherit(style_input, {border_color = color_fg_2}),
 			hovered_selected_focus =
-			inherit(
-				style_input, {bg_color = color_bg_2, border_color = color_fg_2}
-			),
+			inherit(style_input, {bg_color = color_bg_2, border_color = color_fg_2}),
 		}
 	)
 
@@ -340,11 +323,7 @@ func define_theme():
 				}
 			),
 			hover = inherit(style, {bg_color = final.color_bg_2}),
-			pressed =
-			inherit(
-				style,
-				{bg_color = final.color_fg, border_color = final.color_fg}
-			)
+			pressed = inherit(style, {bg_color = final.color_fg, border_color = final.color_fg})
 		}
 	var style_btn = make_style_btn.call()
 	define_style("Button", style_btn)
@@ -380,9 +359,7 @@ func define_theme():
 			)
 		)
 	)
-	define_variant_style(
-		"Op", "Button", {font = font_icon, font_size = font_size_icon}
-	)
+	define_variant_style("Op", "Button", {font = font_icon, font_size = font_size_icon})
 	define_variant_style(
 		"Tool",
 		"Op",
@@ -392,9 +369,7 @@ func define_theme():
 		}
 	)
 
-	define_style(
-		"OptionButton", {arrow = mul_tex(ui_select_arrow, Color(color_fg, 0.5))}
-	)
+	define_style("OptionButton", {arrow = mul_tex(ui_select_arrow, Color(color_fg, 0.5))})
 	var style_line = stylebox_line(
 		{
 			color = Color(color_fg, 0.5),
@@ -450,10 +425,7 @@ func define_theme():
 			tab_disabled = style_tab,
 			tab_hovered = style_tab_border,
 			tab_focus =
-			inherit(
-				style_tab_border,
-				{border_color = color_fg, border_width_bottom = border_w}
-			),
+			inherit(style_tab_border, {border_color = color_fg, border_width_bottom = border_w}),
 			tab_selected = inherit(style_tab_border, {bg_color = color_border}),
 		}
 	)
@@ -467,9 +439,7 @@ func define_theme():
 		}
 	)
 	define_style("HSeparator", {separator = style_sep})
-	define_style(
-		"VSeparator", {separator = inherit(style_sep, {vertical = true})}
-	)
+	define_style("VSeparator", {separator = inherit(style_sep, {vertical = true})})
 
 	var style_scroll_thumb = inherit(style_input, {border_ = border_width(0)})
 	var style_scroll_h = inherit(
@@ -493,12 +463,9 @@ func define_theme():
 	define_style(
 		"HScrollBar",
 		{
-			grabber =
-			inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.25)}),
-			grabber_highlight =
-			inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.5)}),
-			grabber_pressed =
-			inherit(style_scroll_thumb, {bg_color = color_fg}),
+			grabber = inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.25)}),
+			grabber_highlight = inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.5)}),
+			grabber_pressed = inherit(style_scroll_thumb, {bg_color = color_fg}),
 			scroll = style_scroll_h,
 			scroll_focus = style_scroll_h,
 		}
@@ -506,12 +473,9 @@ func define_theme():
 	define_style(
 		"VScrollBar",
 		{
-			grabber =
-			inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.25)}),
-			grabber_highlight =
-			inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.5)}),
-			grabber_pressed =
-			inherit(style_scroll_thumb, {bg_color = color_fg}),
+			grabber = inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.25)}),
+			grabber_highlight = inherit(style_scroll_thumb, {bg_color = Color(color_fg, 0.5)}),
+			grabber_pressed = inherit(style_scroll_thumb, {bg_color = color_fg}),
 			scroll = style_scroll_v,
 			scroll_focus = style_scroll_v,
 		}
@@ -541,8 +505,7 @@ func define_theme():
 			close = mul_tex(ui_close, color_win_fg_2),
 			close_pressed = mul_tex(ui_close_press, color_tip_fg),
 			embedded_border = style_window,
-			embedded_unfocused_border =
-			inherit(style_window, {bg_color = color_win_dis}),
+			embedded_unfocused_border = inherit(style_window, {bg_color = color_win_dis}),
 		}
 	)
 
@@ -572,13 +535,7 @@ func define_theme():
 	define_variant_style(
 		"BgBorder",
 		"PanelContainer",
-		{
-			panel =
-			inherit(
-				style_panel,
-				{bg_color = color_border, border_ = border_width(border_w)}
-			)
-		}
+		{panel = inherit(style_panel, {bg_color = color_border, border_ = border_width(border_w)})}
 	)
 	define_variant_style(
 		"TableHeader",
@@ -612,14 +569,10 @@ func define_theme():
 	define_style("TooltipLabel", {font_color = color_tip_fg})
 
 	define_variant_style(
-		"GlyphSel",
-		"PanelContainer",
-		{panel = inherit(style_panel, {bg_color = color_sel})}
+		"GlyphSel", "PanelContainer", {panel = inherit(style_panel, {bg_color = color_sel})}
 	)
 	define_variant_style(
-		"GlyphEdit",
-		"PanelContainer",
-		{panel = inherit(style_panel, {bg_color = color_edit})}
+		"GlyphEdit", "PanelContainer", {panel = inherit(style_panel, {bg_color = color_edit})}
 	)
 	define_variant_style(
 		"GlyphEditSel",
@@ -627,24 +580,16 @@ func define_theme():
 		{panel = inherit(style_panel, {bg_color = color_edit_sel})}
 	)
 	define_variant_style(
-		"GlyphNop",
-		"PanelContainer",
-		{panel = inherit(style_panel, {bg_color = color_dis})}
+		"GlyphNop", "PanelContainer", {panel = inherit(style_panel, {bg_color = color_dis})}
 	)
 	define_variant_style(
-		"GlyphNopSel",
-		"PanelContainer",
-		{panel = inherit(style_panel, {bg_color = color_nop_sel})}
+		"GlyphNopSel", "PanelContainer", {panel = inherit(style_panel, {bg_color = color_nop_sel})}
 	)
 	define_variant_style(
-		"GlyphTxt",
-		"Label",
-		{font_color = color_fg_2, font = font_tiny, font_size = font_size_tiny}
+		"GlyphTxt", "Label", {font_color = color_fg_2, font = font_tiny, font_size = font_size_tiny}
 	)
 	define_variant_style(
-		"GlyphUC",
-		"Label",
-		{font_color = color_fg_2, font = font_uc, font_size = font_size_uc}
+		"GlyphUC", "Label", {font_color = color_fg_2, font = font_uc, font_size = font_size_uc}
 	)
 
 	define_variant_style(
