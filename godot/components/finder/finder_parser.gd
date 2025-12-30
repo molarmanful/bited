@@ -1,29 +1,30 @@
 class_name FinderParser
 extends RefCounted
 
-enum Mode { X, Q, U, CAT, CAT_, PAGE, PAGE_, BLOCK, BLOCK_ }
+enum Mode { X, Q, U, CAT, CAT_Q, PAGE, PAGE_Q, BLOCK, BLOCK_Q }
 
-const Op: Dictionary[String, String] = {
-	Q = ":;",
-	U = ":u",
-	CAT = ":cat",
-	CAT_ = ":cat;",
-	PAGE = ":page",
-	PAGE_ = ":page;",
-	BLOCK = ":block",
-	BLOCK_ = ":block;",
-	AND = "&",
-	OR = "|",
-	NOT = "!",
-	LPAREN = "(",
-	RPAREN = ")",
-}
 
-const Sep: Dictionary[String, String] = {
-	AND = " and ",
-	OR = " or ",
-	NOT = "not ",
-}
+class Op:
+	const Q = ":;"
+	const U = ":u"
+	const CAT = ":cat"
+	const CAT_Q = ":cat;"
+	const PAGE = ":page"
+	const PAGE_Q = ":page;"
+	const BLOCK = ":block"
+	const BLOCK_Q = ":block;"
+	const AND = "&"
+	const OR = "|"
+	const NOT = "!"
+	const LPAREN = "("
+	const RPAREN = ")"
+
+
+class Sep:
+	const AND = " and "
+	const OR = " or "
+	const NOT = "not "
+
 
 var tks: PackedStringArray
 var qs: PackedStringArray
@@ -60,21 +61,21 @@ func parse() -> void:
 			Op.CAT:
 				next()
 				mode = Mode.CAT
-			Op.CAT_:
+			Op.CAT_Q:
 				next()
-				mode = Mode.CAT_
+				mode = Mode.CAT_Q
 			Op.PAGE:
 				next()
 				mode = Mode.PAGE
-			Op.PAGE_:
+			Op.PAGE_Q:
 				next()
-				mode = Mode.PAGE_
+				mode = Mode.PAGE_Q
 			Op.BLOCK:
 				next()
 				mode = Mode.BLOCK
-			Op.BLOCK_:
+			Op.BLOCK_Q:
 				next()
-				mode = Mode.BLOCK_
+				mode = Mode.BLOCK_Q
 			Op.AND:
 				sep = Sep.AND
 				next()
@@ -112,15 +113,15 @@ func next() -> void:
 			build_u()
 		Mode.CAT:
 			build_cat()
-		Mode.CAT_:
+		Mode.CAT_Q:
 			build_cat(true)
 		Mode.PAGE:
 			build_page()
-		Mode.PAGE_:
+		Mode.PAGE_Q:
 			build_page(true)
 		Mode.BLOCK:
 			build_block()
-		Mode.BLOCK_:
+		Mode.BLOCK_Q:
 			build_block(true)
 		_:
 			build_x()

@@ -3,13 +3,14 @@ extends RefCounted
 
 enum Mode { X, STR, STR_ESC }
 
-const Op: Dictionary[String, String] = {
-	AND = "&",
-	OR = "|",
-	NOT = "!",
-	LPAREN = "(",
-	RPAREN = ")",
-}
+
+class Op:
+	const AND = "&"
+	const OR = "|"
+	const NOT = "!"
+	const LPAREN = "("
+	const RPAREN = ")"
+
 
 var tks: PackedStringArray
 var tk := ""

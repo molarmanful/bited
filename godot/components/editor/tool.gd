@@ -70,7 +70,7 @@ class _Tool:
 		c_grid = c_tool.grid
 
 	func pre() -> void:
-		c_grid.pattern_TOP.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
+		c_grid.pattern_top.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
 
 	func handle(state := State.X) -> void:
 		if state == State.END:
@@ -90,8 +90,8 @@ class _Tool:
 	func start() -> void:
 		a = true
 		if c_tool.cmode == CMode.CELL:
-			a = not c_grid.pattern_TOP.cells.get_pixelv(p).a
-		c_tool.prev = Util.img_copy(c_grid.pattern_TOP.cells)
+			a = not c_grid.pattern_top.cells.get_pixelv(p).a
+		c_tool.prev = Util.img_copy(c_grid.pattern_top.cells)
 		c_grid.grab_focus()
 
 	func update() -> void:
@@ -127,12 +127,12 @@ class ToolPen:
 
 	func start() -> void:
 		super()
-		a = not c_grid.pattern_TOP.cells.get_pixelv(p).a
+		a = not c_grid.pattern_top.cells.get_pixelv(p).a
 		c_tool.pivot = p
 
 	func update() -> void:
 		super()
-		c_tool.interp(p, func(v): c_grid.pattern_TOP.cells.set_pixelv(v, get_c(v)))
+		c_tool.interp(p, func(v): c_grid.pattern_top.cells.set_pixelv(v, get_c(v)))
 		c_tool.pivot = p
 
 
@@ -149,8 +149,8 @@ class ToolLine:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_TOP.cells.copy_from(c_tool.prev)
-		c_tool.interp(p, func(v): c_grid.pattern_TOP.cells.set_pixelv(v, get_c(v)))
+		c_grid.pattern_top.cells.copy_from(c_tool.prev)
+		c_tool.interp(p, func(v): c_grid.pattern_top.cells.set_pixelv(v, get_c(v)))
 
 
 class ToolRect:
@@ -166,16 +166,16 @@ class ToolRect:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_TOP.cells.copy_from(c_tool.prev)
+		c_grid.pattern_top.cells.copy_from(c_tool.prev)
 		var rect := Rect2i(c_tool.pivot, p - c_tool.pivot).abs().grow_individual(0, 0, 1, 1)
 
 		if c_tool.cmode == CMode.INV:
 			for x in rect.size.x:
 				for y in rect.size.y:
 					var v := Vector2i(x, y) + rect.position
-					c_grid.pattern_TOP.cells.set_pixelv(v, get_c(v))
+					c_grid.pattern_top.cells.set_pixelv(v, get_c(v))
 		else:
-			c_grid.pattern_TOP.cells.fill_rect(rect, get_c(p))
+			c_grid.pattern_top.cells.fill_rect(rect, get_c(p))
 
 
 class ToolMove:
@@ -186,7 +186,7 @@ class ToolMove:
 		name = "move"
 
 	func pre() -> void:
-		c_grid.pattern_TOP.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
+		c_grid.pattern_top.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func start() -> void:
 		super()
@@ -194,7 +194,7 @@ class ToolMove:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_TOP.cells.fill(Color.TRANSPARENT)
-		c_grid.pattern_TOP.cells.blit_rect(
+		c_grid.pattern_top.cells.fill(Color.TRANSPARENT)
+		c_grid.pattern_top.cells.blit_rect(
 			c_tool.prev, Rect2i(Vector2i.ZERO, c_tool.prev.get_size()), p - c_tool.pivot
 		)

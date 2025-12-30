@@ -1,3 +1,4 @@
+# gdlint:ignore = max-public-methods
 class_name Grid
 extends PanelContainer
 
@@ -77,10 +78,10 @@ var pattern_sels: Pattern:
 		patterns[k_pattern] = l
 
 var pattern_root: Pattern
-var pattern_TOP: Pattern:
+var pattern_top: Pattern:
 	get:
 		return pattern_sels if is_sel else pattern_root
-var pattern_BTM: Pattern:
+var pattern_btm: Pattern:
 	get:
 		return pattern_root if is_sel else pattern_sels
 
@@ -407,7 +408,7 @@ func act_cells(prev: Image) -> void:
 
 
 func op(f: Callable, root_only := false) -> void:
-	var prev := Util.img_copy(pattern_root.cells if root_only else pattern_TOP.cells)
+	var prev := Util.img_copy(pattern_root.cells if root_only else pattern_top.cells)
 	f.call(prev)
 	to_update_cells = true
 	if not is_sel:
@@ -418,45 +419,45 @@ func op(f: Callable, root_only := false) -> void:
 func dim_norm(f: Callable) -> void:
 	var dx := dim_grid - posmod(dim_grid - pattern_root.bitmap.dwidth_calc, 2)
 	var dy := dim_grid - posmod(dim_grid - StateVars.font.bb.y, 2)
-	pattern_TOP.cells.crop(dx, dy)
+	pattern_top.cells.crop(dx, dy)
 	f.call()
-	pattern_TOP.cells.crop(dim_grid, dim_grid)
+	pattern_top.cells.crop(dim_grid, dim_grid)
 
 
 func flip_x() -> void:
-	op(func(_prev: Image): dim_norm(pattern_TOP.cells.flip_x))
+	op(func(_prev: Image): dim_norm(pattern_top.cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): dim_norm(pattern_TOP.cells.flip_y))
+	op(func(_prev: Image): dim_norm(pattern_top.cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): dim_norm(pattern_TOP.cells.rotate_90.bind(COUNTERCLOCKWISE)))
+	op(func(_prev: Image): dim_norm(pattern_top.cells.rotate_90.bind(COUNTERCLOCKWISE)))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): dim_norm(pattern_TOP.cells.rotate_90.bind(CLOCKWISE)))
+	op(func(_prev: Image): dim_norm(pattern_top.cells.rotate_90.bind(CLOCKWISE)))
 
 
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
-			pattern_TOP.cells.fill(Color.TRANSPARENT)
-			pattern_TOP.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
+			pattern_top.cells.fill(Color.TRANSPARENT)
+			pattern_top.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
 	)
 
 
 func clear() -> void:
-	op(func(_prev: Image): pattern_TOP.cells.fill(Color.TRANSPARENT))
+	op(func(_prev: Image): pattern_top.cells.fill(Color.TRANSPARENT))
 
 
 func overwrite() -> void:
 	op(
 		func(_prev: Image):
-			pattern_BTM.cells.blit_rect(
-				pattern_TOP.cells,
-				Rect2i(Vector2i.ZERO, pattern_TOP.cells.get_size()),
+			pattern_btm.cells.blit_rect(
+				pattern_top.cells,
+				Rect2i(Vector2i.ZERO, pattern_top.cells.get_size()),
 				Vector2i.ZERO
 			)
 			is_sel = not is_sel,
@@ -480,13 +481,13 @@ func stamp() -> void:
 func stamp_mode() -> void:
 	match toolman.cmode:
 		Tool.CMode.DEFAULT, Tool.CMode.T:
-			Util.img_or(pattern_BTM.cells, pattern_TOP.cells)
+			Util.img_or(pattern_btm.cells, pattern_top.cells)
 		Tool.CMode.F:
-			Util.img_andn(pattern_BTM.cells, pattern_TOP.cells)
+			Util.img_andn(pattern_btm.cells, pattern_top.cells)
 		Tool.CMode.INV:
-			Util.img_xor(pattern_BTM.cells, pattern_TOP.cells)
+			Util.img_xor(pattern_btm.cells, pattern_top.cells)
 		Tool.CMode.CELL:
-			Util.img_and(pattern_BTM.cells, pattern_TOP.cells)
+			Util.img_and(pattern_btm.cells, pattern_top.cells)
 
 
 func dwidth() -> void:
