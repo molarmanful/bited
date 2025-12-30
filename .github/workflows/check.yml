@@ -37,7 +37,7 @@ jobs:
   godot-fmt:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.godot == 'true' }}
+    if: needs.changes.outputs.godot == 'true'
     defaults:
       run:
         working-directory: godot
@@ -49,7 +49,7 @@ jobs:
   godot-lint:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.godot == 'true' }}
+    if: needs.changes.outputs.godot == 'true'
     defaults:
       run:
         working-directory: godot
@@ -61,7 +61,7 @@ jobs:
   rust-fmt:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.rust == 'true' }}
+    if: needs.changes.outputs.rust == 'true'
     defaults:
       run:
         working-directory: rust
@@ -73,7 +73,7 @@ jobs:
   rust-lint:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.rust == 'true' }}
+    if: needs.changes.outputs.rust == 'true'
     defaults:
       run:
         working-directory: rust
@@ -85,7 +85,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.rust == 'true' || needs.changes.outputs.godot == 'true' }}
+    if: needs.changes.outputs.rust == 'true' || needs.changes.outputs.godot == 'true'
     defaults:
       run:
         working-directory: rust

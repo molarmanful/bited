@@ -95,6 +95,7 @@ jobs:
           key: ${{ github.ref }}-macos
           enableCrossOsArchive: true
   bump:
+    needs: rust
     if: github.event_name != 'workflow_dispatch'
     name: Bump VERSION
     runs-on: ubuntu-latest
