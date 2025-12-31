@@ -91,8 +91,8 @@
                 gdpkgs.godot
                 marksman
                 just
-                yaml-language-server
                 yamlfmt
+                actionlint
                 pixelorama
                 uv
                 python314
