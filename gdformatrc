@@ -1,6 +1,6 @@
 excluded_directories: !!set
   .git: null
-  addons: null
+  godot/addons: null
 line_length: 100
 safety_checks: null
 use_spaces: null

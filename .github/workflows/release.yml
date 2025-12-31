@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: release
 on:
   push:
@@ -121,12 +120,14 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
       - name: bump
-        run: printf "${GITHUB_REF_NAME#v}" > VERSION
+        run: printf '%s' "${GITHUB_REF_NAME#v}" > VERSION
       - name: push
         run: |
-          git add Cargo.{toml,lock}
-          git commit -m $'chore: bump version to ${{ github.ref_name }}\n\n\nskip-checks: true'
-          git push
+          git add VERSION
+          if ! git diff-index --quiet HEAD; then
+            git commit -m $'chore: bump version to ${{ github.ref_name }}\n\n\nskip-checks: true'
+            git push
+          fi
   release:
     needs: bump
     strategy:

@@ -9,12 +9,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     crane.url = "github:ipetkov/crane";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
+      imports = [ inputs.treefmt-nix.flakeModule ];
       perSystem =
         {
           inputs',
@@ -37,19 +39,27 @@
             ]
           );
 
-          rust = craneLib.buildPackage {
-            src = ./rust;
-            doCheck = false;
-            depsBuildBuild = with pkgs; [ mold ];
-            RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
-          };
+          rust-pkg =
+            o:
+            craneLib.buildPackage (
+              {
+                src = ./rust;
+                doCheck = false;
+                depsBuildBuild = with pkgs; [ mold ];
+                RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
+              }
+              // o
+            );
+
+          rust = rust-pkg { };
+          rust-dbg = rust-pkg { CARGO_PROFILE = ""; };
 
           version = builtins.readFile ./VERSION;
           release-pkgs =
             builtins.mapAttrs
               (
                 name: attrs:
-                pkgs.callPackage ./release.nix (
+                pkgs.callPackage ./nix/release.nix (
                   {
                     inherit name version;
                     inherit (gdpkgs) godot export-templates-bin;
@@ -72,15 +82,20 @@
                 };
               };
 
-          bited = pkgs.callPackage ./. {
+          bited = pkgs.callPackage ./nix {
             bited-release = release-pkgs.release-linux;
           };
         in
         {
 
           packages = {
-            inherit rust bited;
+            inherit bited rust rust-dbg;
             default = bited;
+
+            build-check = pkgs.callPackage ./nix/build-check.nix {
+              inherit version rust-dbg;
+              inherit (gdpkgs) godot export-templates-bin;
+            };
           }
           // release-pkgs;
 
@@ -91,14 +106,31 @@
                 gdpkgs.godot
                 marksman
                 just
-                yaml-language-server
                 yamlfmt
+                actionlint
                 pixelorama
                 uv
                 python314
               ];
 
               inputsFrom = [ (craneLibDev.devShell { }) ];
+            };
+          };
+
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              nixfmt.enable = true;
+              gdformat = {
+                enable = true;
+                includes = [ "godot/components" ];
+              };
+              rustfmt = {
+                enable = true;
+                package = craneLibDev.rustfmt;
+              };
+              yamlfmt.enable = true;
+              actionlint.enable = true;
             };
           };
         };
