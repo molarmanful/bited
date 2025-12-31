@@ -105,12 +105,19 @@
                 gdtoolkit_4
                 gdpkgs.godot
                 marksman
+                taplo
                 just
                 yamlfmt
                 actionlint
                 pixelorama
                 uv
-                python314
+                mdformat
+                (python3.withPackages (
+                  ps: with ps; [
+                    mdformat-mkdocs
+                    mdformat-mkdocs.optional-dependencies.recommended
+                  ]
+                ))
               ];
 
               inputsFrom = [ (craneLibDev.devShell { }) ];
@@ -131,6 +138,11 @@
               };
               yamlfmt.enable = true;
               actionlint.enable = true;
+              mdformat = {
+                enable = true;
+                includes = [ "docs" ];
+              };
+              taplo.enable = true;
             };
           };
         };
