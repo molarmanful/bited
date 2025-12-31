@@ -1,4 +1,5 @@
 wrap = 80
+exclude = ['README.md']
 
 [plugin.mkdocs]
 align_semantic_breaks_in_lists = true

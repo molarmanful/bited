@@ -1,24 +1,24 @@
 [default]
-is_abs=false
+is_abs = false
 [glyphs."U+02C6"]
-is_abs=true
+is_abs = true
 [glyphs."U+02C7"]
-is_abs=true
+is_abs = true
 [glyphs."U+02C9"]
-is_abs=true
+is_abs = true
 [glyphs."U+02D8"]
-is_abs=true
+is_abs = true
 [glyphs."U+02D9"]
-is_abs=true
+is_abs = true
 [glyphs."U+02DA"]
-is_abs=true
+is_abs = true
 [glyphs."U+02DB"]
-is_abs=true
+is_abs = true
 [glyphs."U+02DC"]
-is_abs=true
+is_abs = true
 [glyphs."U+02DD"]
-is_abs=true
+is_abs = true
 [glyphs."U+0384"]
-is_abs=true
+is_abs = true
 [glyphs."U+0385"]
-is_abs=true
+is_abs = true
