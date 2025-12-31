@@ -130,7 +130,7 @@
               nixfmt.enable = true;
               gdformat = {
                 enable = true;
-                includes = [ "godot/components" ];
+                includes = [ "godot/components/**/*.gd" ];
               };
               rustfmt = {
                 enable = true;
@@ -140,7 +140,7 @@
               actionlint.enable = true;
               mdformat = {
                 enable = true;
-                includes = [ "docs" ];
+                includes = [ "docs/**/*.md" ];
               };
               taplo.enable = true;
             };
