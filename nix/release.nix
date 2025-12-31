@@ -25,7 +25,7 @@ in
 stdenv.mkDerivation {
   inherit version;
   pname = "bited-${name}";
-  src = ./.;
+  src = ./..;
 
   nativeBuildInputs = [
     godot

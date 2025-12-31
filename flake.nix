@@ -37,19 +37,27 @@
             ]
           );
 
-          rust = craneLib.buildPackage {
-            src = ./rust;
-            doCheck = false;
-            depsBuildBuild = with pkgs; [ mold ];
-            RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
-          };
+          rust-pkg =
+            o:
+            craneLib.buildPackage (
+              {
+                src = ./rust;
+                doCheck = false;
+                depsBuildBuild = with pkgs; [ mold ];
+                RUSTFLAGS = [ "-C link-arg=-fuse-ld=mold" ];
+              }
+              // o
+            );
+
+          rust = rust-pkg { };
+          rust-dbg = rust-pkg { CARGO_PROFILE = ""; };
 
           version = builtins.readFile ./VERSION;
           release-pkgs =
             builtins.mapAttrs
               (
                 name: attrs:
-                pkgs.callPackage ./release.nix (
+                pkgs.callPackage ./nix/release.nix (
                   {
                     inherit name version;
                     inherit (gdpkgs) godot export-templates-bin;
@@ -72,15 +80,20 @@
                 };
               };
 
-          bited = pkgs.callPackage ./. {
+          bited = pkgs.callPackage ./nix {
             bited-release = release-pkgs.release-linux;
           };
         in
         {
 
           packages = {
-            inherit rust bited;
+            inherit bited rust rust-dbg;
             default = bited;
+
+            build-check = pkgs.callPackage ./nix/build-check.nix {
+              inherit version rust-dbg;
+              inherit (gdpkgs) godot export-templates-bin;
+            };
           }
           // release-pkgs;
 

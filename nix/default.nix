@@ -30,13 +30,14 @@
 stdenv.mkDerivation {
   inherit (bited-release) version;
   pname = "bited";
-  src = ./.;
+  src = ./..;
 
   nativeBuildInputs = [
     autoPatchelfHook
     stdenv.cc.cc.lib
     unzip
-  ] ++ lib.optionals withWayland [ wayland-scanner ];
+  ]
+  ++ lib.optionals withWayland [ wayland-scanner ];
 
   runtimeDependencies =
     map lib.getLib [
