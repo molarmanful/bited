@@ -124,8 +124,10 @@ jobs:
       - name: push
         run: |
           git add VERSION
-          git commit -m $'chore: bump version to ${{ github.ref_name }}\n\n\nskip-checks: true'
-          git push
+          if ! git diff-index --quiet HEAD; then
+            git commit -m $'chore: bump version to ${{ github.ref_name }}\n\n\nskip-checks: true'
+            git push
+          fi
   release:
     needs: bump
     strategy:
