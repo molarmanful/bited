@@ -45,20 +45,6 @@ func _ready() -> void:
 	db_locals.path = "user://locals.db"
 	db_locals.open_db()
 
-	for db in [db_uc, db_saves, db_locals]:
-		(
-			db
-			. query(
-				"""
-				pragma journal_mode = wal;
-				pragma synchronous = normal;
-				pragma cache_size = 10000;
-				pragma temp_store = memory;
-				pragma mmap_size = 268435456;
-				"""
-			)
-		)
-
 	init_font_metas()
 	init_locals_paths()
 	init_cfg()

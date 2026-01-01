@@ -56,12 +56,7 @@ func init_font(ignore := false) -> void:
 		. create_table(
 			"font_" + id,
 			{
-				name =
-				{
-					data_type = "text",
-					not_null = true,
-					primary_key = true,
-				},
+				name = {data_type = "text", not_null = true, primary_key = true},
 				code = {data_type = "int", not_null = true, default = -1},
 				dwidth = {data_type = "int", not_null = true, default = 0},
 				is_abs = {data_type = "int", not_null = true, default = 0},
@@ -71,6 +66,26 @@ func init_font(ignore := false) -> void:
 				off_y = {data_type = "int", not_null = true, default = 0},
 				img = {data_type = "blob"},
 			}
+		)
+	)
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table if not exists layers_%s (
+					parent text not null,
+					ord int not null,
+					child text not null,
+					off_x int not null default 0,
+					off_y int not null default 0,
+					blend int not null default 0,
+					primary key (parent, ord, child)
+				) without rowid
+				;"""
+				% [id]
+			)
 		)
 	)
 	save_font(ignore)
