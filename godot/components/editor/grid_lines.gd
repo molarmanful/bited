@@ -29,7 +29,7 @@ var names: Dictionary[String, String] = {
 func _draw() -> void:
 	var w_cell := grid.w_cell
 	var w_grid := grid.w_grid
-	var origin := grid.layer_root.bitmap.origin
+	var origin := grid.layers.bitmap.origin
 
 	var res: Array[Vector2i] = []
 	for i in w_grid:
@@ -55,7 +55,7 @@ func _draw() -> void:
 
 	lines_v = {
 		origin = 0,
-		w = grid.layer_root.bitmap.dwidth_calc,
+		w = grid.layers.bitmap.dwidth_calc,
 	}
 
 	for k in lines_v:

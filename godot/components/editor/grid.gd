@@ -1,4 +1,3 @@
-# gdlint:ignore = max-public-methods
 class_name Grid
 extends PanelContainer
 
@@ -51,7 +50,7 @@ var size_grid: Vector2i:
 var to_update_cells := false
 var pressed := false
 
-var layer_root: Layer
+var layers: Layers
 
 var table: Table
 var toolman := Tool.new(self)
@@ -63,7 +62,7 @@ var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
-	layer_root = Layer.new(node_root)
+	layers = Layers.new(node_root)
 	table = editor.table
 	refresh()
 
@@ -117,22 +116,22 @@ func _gui_input(e: InputEvent) -> void:
 
 func start_edit(data_name: String, data_code: int) -> void:
 	undoman.clear_history()
-	layer_root.bitmap.data_name = data_name
-	layer_root.bitmap.data_code = data_code
-	layer_root.bitmap.dwidth = 0
-	layer_root.bitmap.is_abs = false
-	layer_root.bitmap.cells.fill(Color.TRANSPARENT)
-	layer_root.bitmap.save(false)
+	layers.bitmap.data_name = data_name
+	layers.bitmap.data_code = data_code
+	layers.bitmap.dwidth = 0
+	layers.bitmap.is_abs = false
+	layers.bitmap.cells.fill(Color.TRANSPARENT)
+	layers.bitmap.save(false)
 	table.to_update = true
 	refresh(true)
 
 
 func refresh(hard := false) -> void:
 	if hard:
-		layer_root.clear()
-	layer_root.bitmap.load()
+		layers.clear()
+	layers.bitmap.load()
 
-	if not layer_root.bitmap.data_name:
+	if not layers.bitmap.data_name:
 		editor.node_info.hide()
 		node_wrapper.hide()
 		node_placeholder.show()
@@ -141,21 +140,19 @@ func refresh(hard := false) -> void:
 	node_placeholder.hide()
 	node_wrapper.show()
 
-	btn_is_abs.set_pressed_no_signal(layer_root.bitmap.is_abs)
-	btn_is_abs.tooltip_text = (
-		"dwidth mode: %s" % ("dwidth" if layer_root.bitmap.is_abs else "offset")
-	)
+	btn_is_abs.set_pressed_no_signal(layers.bitmap.is_abs)
+	btn_is_abs.tooltip_text = ("dwidth mode: %s" % ("dwidth" if layers.bitmap.is_abs else "offset"))
 
 	input_dwidth.allow_lesser = true
-	input_dwidth.prefix = "w:" if layer_root.bitmap.is_abs else "o:"
-	input_dwidth.min_value = (-StateVars.font.dwidth * int(not layer_root.bitmap.is_abs))
-	input_dwidth.set_value_no_signal(layer_root.bitmap.dwidth)
+	input_dwidth.prefix = "w:" if layers.bitmap.is_abs else "o:"
+	input_dwidth.min_value = (-StateVars.font.dwidth * int(not layers.bitmap.is_abs))
+	input_dwidth.set_value_no_signal(layers.bitmap.dwidth)
 	input_dwidth.allow_lesser = false
 
 	editor.node_info_text.text = StateVars.get_info(
-		layer_root.bitmap.data_name, layer_root.bitmap.data_code
+		layers.bitmap.data_name, layers.bitmap.data_code
 	)
-	layer_root.update_node()
+	layers.update_node()
 	to_update_cells = true
 	update_grid()
 
@@ -180,13 +177,13 @@ func update_cells() -> void:
 		return
 	to_update_cells = false
 
-	layer_root.update_tex()
+	layers.update_tex()
 
 
 func tt_line() -> void:
 	tooltip_text = ""
 	var pos := get_local_mouse_position()
-	var origin := layer_root.bitmap.origin
+	var origin := layers.bitmap.origin
 	var e := w_cell / 2
 
 	for k in node_lines.lines_h:
@@ -238,7 +235,7 @@ func off_glyph(off: int) -> void:
 						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 					)
 				),
-				[table.start, table.end, layer_root.bitmap.data_code + off]
+				[table.start, table.end, layers.bitmap.data_code + off]
 			)
 		)
 	else:
@@ -261,7 +258,7 @@ func off_glyph(off: int) -> void:
 					;"""
 					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 				),
-				[off, layer_root.bitmap.data_name]
+				[off, layers.bitmap.data_name]
 			)
 		)
 
@@ -273,7 +270,7 @@ func off_glyph(off: int) -> void:
 
 func off_uc(off: int) -> void:
 	if table.viewmode == Table.Mode.RANGE:
-		var code1 := layer_root.bitmap.data_code + off
+		var code1 := layers.bitmap.data_code + off
 		if code1 < table.start or code1 > table.end:
 			return
 		start_edit("%04X" % code1, code1)
@@ -291,7 +288,7 @@ func off_uc(off: int) -> void:
 						join temp.full as i on o.row = i.row + ?
 						where i.name = ?
 						;""",
-						[off, layer_root.bitmap.data_name]
+						[off, layers.bitmap.data_name]
 					)
 				)
 
@@ -314,7 +311,7 @@ func off_uc(off: int) -> void:
 							;"""
 							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 						),
-						[off, layer_root.bitmap.data_name]
+						[off, layers.bitmap.data_name]
 					)
 				)
 
@@ -325,22 +322,22 @@ func off_uc(off: int) -> void:
 
 
 func act_cells(prev: Image) -> void:
-	var cs := Util.img_copy(layer_root.cells)
+	var cs := Util.img_copy(layers.cells)
 
 	undoman.create_action(name)
 
 	undoman.add_undo_method(
 		func():
-			layer_root.cells.copy_from(prev)
-			layer_root.bitmap.save()
+			layers.cells.copy_from(prev)
+			layers.bitmap.save()
 			to_update_cells = true
 	)
 	undoman.add_undo_reference(prev)
 
 	undoman.add_do_method(
 		func():
-			layer_root.cells.copy_from(cs)
-			layer_root.bitmap.save()
+			layers.cells.copy_from(cs)
+			layers.bitmap.save()
 			to_update_cells = true
 	)
 	undoman.add_do_reference(cs)
@@ -349,63 +346,63 @@ func act_cells(prev: Image) -> void:
 
 
 func op(f: Callable) -> void:
-	var prev := Util.img_copy(layer_root.cells)
+	var prev := Util.img_copy(layers.cells)
 	f.call(prev)
 	to_update_cells = true
 	act_cells(prev)
-	layer_root.bitmap.save()
+	layers.bitmap.save()
 
 
 func dim_norm(f: Callable) -> void:
-	var dx := dim_grid - posmod(dim_grid - layer_root.bitmap.dwidth_calc, 2)
+	var dx := dim_grid - posmod(dim_grid - layers.bitmap.dwidth_calc, 2)
 	var dy := dim_grid - posmod(dim_grid - StateVars.font.bb.y, 2)
-	layer_root.cells.crop(dx, dy)
+	layers.cells.crop(dx, dy)
 	f.call()
-	layer_root.cells.crop(dim_grid, dim_grid)
+	layers.cells.crop(dim_grid, dim_grid)
 
 
 func flip_x() -> void:
-	op(func(_prev: Image): dim_norm(layer_root.cells.flip_x))
+	op(func(_prev: Image): dim_norm(layers.cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): dim_norm(layer_root.cells.flip_y))
+	op(func(_prev: Image): dim_norm(layers.cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): dim_norm(layer_root.cells.rotate_90.bind(COUNTERCLOCKWISE)))
+	op(func(_prev: Image): dim_norm(layers.cells.rotate_90.bind(COUNTERCLOCKWISE)))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): dim_norm(layer_root.cells.rotate_90.bind(CLOCKWISE)))
+	op(func(_prev: Image): dim_norm(layers.cells.rotate_90.bind(CLOCKWISE)))
 
 
 func translate(dst: Vector2i) -> void:
 	op(
 		func(prev: Image):
-			layer_root.cells.fill(Color.TRANSPARENT)
-			layer_root.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
+			layers.cells.fill(Color.TRANSPARENT)
+			layers.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
 	)
 
 
 func clear() -> void:
-	op(func(_prev: Image): layer_root.cells.fill(Color.TRANSPARENT))
+	op(func(_prev: Image): layers.cells.fill(Color.TRANSPARENT))
 
 
 func dwidth() -> void:
-	var old := layer_root.bitmap.dwidth
+	var old := layers.bitmap.dwidth
 	var new: int = input_dwidth.value
 	undoman.create_action("dwidth")
 	undoman.add_undo_method(
 		func():
-			layer_root.bitmap.dwidth = old
-			layer_root.bitmap.save_dwidth()
+			layers.bitmap.dwidth = old
+			layers.bitmap.save_dwidth()
 			refresh(true)
 	)
 	undoman.add_do_method(
 		func():
-			layer_root.bitmap.dwidth = new
-			layer_root.bitmap.save_dwidth()
+			layers.bitmap.dwidth = new
+			layers.bitmap.save_dwidth()
 			refresh(true)
 	)
 	undoman.commit_action()
@@ -415,14 +412,14 @@ func is_abs(on: bool) -> void:
 	undoman.create_action("is_abs")
 	undoman.add_undo_method(
 		func():
-			layer_root.bitmap.set_is_abs(not on)
-			layer_root.bitmap.save_dwidth()
+			layers.bitmap.set_is_abs(not on)
+			layers.bitmap.save_dwidth()
 			refresh()
 	)
 	undoman.add_do_method(
 		func():
-			layer_root.bitmap.set_is_abs(on)
-			layer_root.bitmap.save_dwidth()
+			layers.bitmap.set_is_abs(on)
+			layers.bitmap.save_dwidth()
 			refresh()
 	)
 	undoman.commit_action()
