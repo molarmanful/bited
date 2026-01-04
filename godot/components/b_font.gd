@@ -74,17 +74,36 @@ func init_font(ignore := false) -> void:
 		. query(
 			(
 				"""
-				create table if not exists layers_%s (
+				create table if not exists layers_{0} (
 					parent text not null,
 					ord int not null,
 					child text not null,
-					off_x int not null default 0,
-					off_y int not null default 0,
-					blend int not null default 0,
+					off_x int default 0,
+					off_y int default 0,
+					blend int default 0,
 					primary key (parent, ord, child)
 				) without rowid
 				;"""
-				% [id]
+				. format([id])
+			)
+		)
+	)
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				insert or ignore into layers_{0}
+				select
+					a.name as parent, 0 as ord, a.name as child,
+					0 as off_x, 0 as off_y, 0 as blend
+				from font_{0} as a
+				where not exists (
+					select 1 from layers_{0} as b
+					where a.name = b.parent and b.parent = b.child
+				);"""
+				. format([id])
 			)
 		)
 	)
