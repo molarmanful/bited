@@ -52,9 +52,9 @@ func interp(p: Vector2i, f: Callable) -> void:
 func check_pos(p: Vector2i) -> bool:
 	return (
 		0 <= p.x
-		and p.x < grid.pattern_root.bitmap.dim
+		and p.x < grid.layer_root.bitmap.dim
 		and 0 <= p.y
-		and p.y < grid.pattern_root.bitmap.dim
+		and p.y < grid.layer_root.bitmap.dim
 	)
 
 
@@ -70,7 +70,7 @@ class _Tool:
 		c_grid = c_tool.grid
 
 	func pre() -> void:
-		c_grid.pattern_top.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
+		c_grid.layer_root.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
 
 	func handle(state := State.X) -> void:
 		if state == State.END:
@@ -90,18 +90,16 @@ class _Tool:
 	func start() -> void:
 		a = true
 		if c_tool.cmode == CMode.CELL:
-			a = not c_grid.pattern_top.cells.get_pixelv(p).a
-		c_tool.prev = Util.img_copy(c_grid.pattern_top.cells)
+			a = not c_grid.layer_root.cells.get_pixelv(p).a
+		c_tool.prev = Util.img_copy(c_grid.layer_root.cells)
 		c_grid.grab_focus()
 
 	func update() -> void:
 		pass
 
 	func end() -> void:
-		if c_grid.is_sel:
-			return
 		c_grid.act_cells(Util.img_copy(c_tool.prev))
-		c_grid.pattern_root.bitmap.save()
+		c_grid.layer_root.bitmap.save()
 
 	func get_c(v: Vector2i) -> Color:
 		return Color(1, 1, 1, get_a(v))
@@ -127,12 +125,12 @@ class ToolPen:
 
 	func start() -> void:
 		super()
-		a = not c_grid.pattern_top.cells.get_pixelv(p).a
+		a = not c_grid.layer_root.cells.get_pixelv(p).a
 		c_tool.pivot = p
 
 	func update() -> void:
 		super()
-		c_tool.interp(p, func(v): c_grid.pattern_top.cells.set_pixelv(v, get_c(v)))
+		c_tool.interp(p, func(v): c_grid.layer_root.cells.set_pixelv(v, get_c(v)))
 		c_tool.pivot = p
 
 
@@ -149,8 +147,8 @@ class ToolLine:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_top.cells.copy_from(c_tool.prev)
-		c_tool.interp(p, func(v): c_grid.pattern_top.cells.set_pixelv(v, get_c(v)))
+		c_grid.layer_root.cells.copy_from(c_tool.prev)
+		c_tool.interp(p, func(v): c_grid.layer_root.cells.set_pixelv(v, get_c(v)))
 
 
 class ToolRect:
@@ -166,16 +164,16 @@ class ToolRect:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_top.cells.copy_from(c_tool.prev)
+		c_grid.layer_root.cells.copy_from(c_tool.prev)
 		var rect := Rect2i(c_tool.pivot, p - c_tool.pivot).abs().grow_individual(0, 0, 1, 1)
 
 		if c_tool.cmode == CMode.INV:
 			for x in rect.size.x:
 				for y in rect.size.y:
 					var v := Vector2i(x, y) + rect.position
-					c_grid.pattern_top.cells.set_pixelv(v, get_c(v))
+					c_grid.layer_root.cells.set_pixelv(v, get_c(v))
 		else:
-			c_grid.pattern_top.cells.fill_rect(rect, get_c(p))
+			c_grid.layer_root.cells.fill_rect(rect, get_c(p))
 
 
 class ToolMove:
@@ -186,7 +184,7 @@ class ToolMove:
 		name = "move"
 
 	func pre() -> void:
-		c_grid.pattern_top.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
+		c_grid.layer_root.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func start() -> void:
 		super()
@@ -194,7 +192,7 @@ class ToolMove:
 
 	func update() -> void:
 		super()
-		c_grid.pattern_top.cells.fill(Color.TRANSPARENT)
-		c_grid.pattern_top.cells.blit_rect(
+		c_grid.layer_root.cells.fill(Color.TRANSPARENT)
+		c_grid.layer_root.cells.blit_rect(
 			c_tool.prev, Rect2i(Vector2i.ZERO, c_tool.prev.get_size()), p - c_tool.pivot
 		)
