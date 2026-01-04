@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene load_steps=61 format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" uid="uid://b7rs4os6wj4cs" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -92,24 +92,6 @@ events = [SubResource("InputEventAction_ow1e3")]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
-
-[sub_resource type="InputEventAction" id="InputEventAction_fp0vg"]
-action = &"bited_selmode"
-
-[sub_resource type="Shortcut" id="Shortcut_xaubg"]
-events = [SubResource("InputEventAction_fp0vg")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_850sg"]
-action = &"bited_overwrite"
-
-[sub_resource type="Shortcut" id="Shortcut_ai11x"]
-events = [SubResource("InputEventAction_850sg")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_mnipk"]
-action = &"bited_stamp"
-
-[sub_resource type="Shortcut" id="Shortcut_850sg"]
-events = [SubResource("InputEventAction_mnipk")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
@@ -336,8 +318,7 @@ theme_override_constants/separation = 9
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: default
-pattern mode: default"
+tooltip_text = "color mode: default"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -352,8 +333,7 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: draw
-pattern mode: add"
+tooltip_text = "color mode: draw"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -367,8 +347,7 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: erase
-pattern mode: subtract"
+tooltip_text = "color mode: erase"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -382,8 +361,7 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: invert
-pattern mode: exclude"
+tooltip_text = "color mode: invert"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -397,8 +375,7 @@ expand_icon = true
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
-tooltip_text = "color mode: first-cell
-pattern mode: multiply"
+tooltip_text = "color mode: first-cell"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -411,7 +388,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -442,9 +419,6 @@ btn_down = NodePath("../../8/down")
 btn_up = NodePath("../../8/up")
 btn_right = NodePath("../../8/right")
 btn_grid_clr = NodePath("../../8/grid_clr")
-btn_selmode = NodePath("../../6/selmode")
-btn_overwrite = NodePath("../../6/overwrite")
-btn_stamp = NodePath("../../6/stamp")
 
 [node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
 texture_filter = 1
@@ -476,31 +450,6 @@ grid = NodePath("../../..")
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 8
-
-[node name="selmode" type="Button" parent="CenterContainer/GridContainer/6"]
-layout_mode = 2
-tooltip_text = "toggle pattern 1"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Tool"
-toggle_mode = true
-shortcut = SubResource("Shortcut_xaubg")
-text = ":1"
-
-[node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6"]
-layout_mode = 2
-tooltip_text = "overwrite"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_ai11x")
-text = "✍"
-
-[node name="stamp" type="Button" parent="CenterContainer/GridContainer/6"]
-layout_mode = 2
-tooltip_text = "stamp"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_850sg")
-text = "🖃"
 
 [node name="7" type="Control" parent="CenterContainer/GridContainer"]
 custom_minimum_size = Vector2(0, 24)
