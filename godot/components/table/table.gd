@@ -300,7 +300,7 @@ func gen_glyphs() -> void:
 		g.ind = c
 		g.selected = sel.is_selected(g.ind)
 		g.edit = (
-			grid.layer_root.bitmap.data_name and g.data_name == grid.layer_root.bitmap.data_name
+			grid.layers.bitmap.data_name and g.data_name == grid.layers.bitmap.data_name
 		)
 		g.show()
 		names[g.data_name] = g

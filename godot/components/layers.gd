@@ -1,4 +1,4 @@
-class_name Layer
+class_name Layers
 extends RefCounted
 
 var dim_grid: int:
