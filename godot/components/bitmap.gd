@@ -58,11 +58,17 @@ func load() -> void:
 		. query_with_bindings(
 			(
 				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
-				where name = ?
+				select
+					b.ord, a.name, a.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y,
+					a.off_x + b.off_x as off_x,
+					a.off_y + b.off_y as off_y,
+					a.img
+				from font_{0} as a
+				join layers_{0} as b on a.name = b.child
+				where b.parent = ?
+				order by b.ord
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			),
 			[data_name]
 		)
