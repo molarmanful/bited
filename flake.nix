@@ -108,6 +108,7 @@
                 taplo
                 just
                 yamlfmt
+                clang-tools
                 actionlint
                 pixelorama
                 uv
@@ -119,7 +120,13 @@
                   ]
                 ))
               ];
+              inputsFrom = [ (craneLibDev.devShell { }) ];
+            };
 
+            ci-check = {
+              packages = with pkgs; [
+                gdtoolkit_4
+              ];
               inputsFrom = [ (craneLibDev.devShell { }) ];
             };
           };
@@ -143,6 +150,10 @@
               mdformat = {
                 enable = true;
                 includes = [ "docs/**/*.md" ];
+              };
+              clang-format = {
+                enable = true;
+                include = [ "godot/components/**/*.gdshader" ];
               };
               taplo.enable = true;
             };

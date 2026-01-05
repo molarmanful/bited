@@ -54,7 +54,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
-      - run: nix develop -c 'bash' -c 'gdlint components'
+      - run: nix develop .#ci-check -c 'bash' -c 'gdlint components'
   rust-lint:
     runs-on: ubuntu-latest
     needs: fmt
@@ -68,7 +68,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
-      - run: nix develop -c 'bash' -c 'cargo clippy'
+      - run: nix develop .#ci-check -c 'bash' -c 'cargo clippy'
   build:
     runs-on: ubuntu-latest
     needs: fmt
