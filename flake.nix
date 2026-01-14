@@ -153,7 +153,7 @@
               };
               clang-format = {
                 enable = true;
-                include = [ "godot/components/**/*.gdshader" ];
+                includes = [ "godot/components/**/*.gdshader" ];
               };
               taplo.enable = true;
             };
