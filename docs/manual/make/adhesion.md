@@ -66,7 +66,7 @@ flip horizontally (++shift+h++) and draw the following:
     side, then you may need to translate the glyph left or right (++shift+left++ /
     ++shift+right++) after flipping.
 
-______________________________________________________________________
+---
 
 The glyphs for "e" and "s" should be pretty straightforward to draw:
 
@@ -134,7 +134,7 @@ Since "i" is a thinner letterform, we'll use an offset of -2:
 
 ///
 
-______________________________________________________________________
+---
 
 The glyphs for "o" and "n" will also be pretty straightforward:
 

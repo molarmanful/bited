@@ -85,6 +85,9 @@
           bited = pkgs.callPackage ./nix {
             bited-release = release-pkgs.release-linux;
           };
+
+          mdformat-plugins =
+            ps: with ps; [ mdformat-mkdocs ] ++ mdformat-mkdocs.optional-dependencies.recommended;
         in
         {
 
@@ -113,12 +116,7 @@
                 pixelorama
                 uv
                 mdformat
-                (python3.withPackages (
-                  ps: with ps; [
-                    mdformat-mkdocs
-                    mdformat-mkdocs.optional-dependencies.recommended
-                  ]
-                ))
+                (python3.withPackages mdformat-plugins)
               ];
               inputsFrom = [ (craneLibDev.devShell { }) ];
             };
@@ -149,6 +147,7 @@
               actionlint.enable = true;
               mdformat = {
                 enable = true;
+                plugins = mdformat-plugins;
                 includes = [ "docs/**/*.md" ];
               };
               clang-format = {

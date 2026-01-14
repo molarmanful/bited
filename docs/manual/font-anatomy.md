@@ -83,7 +83,7 @@ horizontal baseline, and dwidth. In other words:
 When choosing your bitmap font's metrics, you should make sure to reserve enough
 space so that glyphs don't crowd each other out.
 
-______________________________________________________________________
+---
 
 Here are some other useful things to know about these metrics:
 
