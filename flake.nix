@@ -123,7 +123,7 @@
               inputsFrom = [ (craneLibDev.devShell { }) ];
             };
 
-            ci-check = {
+            ci-check = pkgs.mkShell {
               packages = with pkgs; [
                 gdtoolkit_4
               ];

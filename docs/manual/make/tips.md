@@ -22,9 +22,7 @@ without having to compromise compactness.
 ![text sample in Times New Roman](assets/times-new-roman.webp){loading=lazy}
 
 /// caption
-
 Source: [nypl.org](https://nypl.org)
-
 ///
 
 Monospaced fonts tend to be more niche than proportional fonts, and are
@@ -39,9 +37,7 @@ aesthetics and legibility through compromises in compactness and spacing.
 ![htop command in a terminal](assets/htop.png){loading=lazy}
 
 /// caption
-
 Source: [htop.dev](https://htop.dev)
-
 ///
 
 The choice between proportional and monospaced is not entirely black-and-white,
@@ -62,10 +58,8 @@ fonts with great Unicode support while remaining reasonably compact.
 ![Terminus 10x20 Bold](assets/terminus-10x20b.gif){loading=lazy}
 
 /// caption
-
 [Terminus](https://terminus-font.sourceforge.net/) 10x20 Bold. The large size
 allows for bold variants and Unicode coverage, even in monospace.
-
 ///
 
 There is a **practical** lower limit to the bounding box size. For example, with
@@ -78,10 +72,8 @@ tiny of a size.
 ![eldur](assets/eldur-prog.png){loading=lazy}
 
 /// caption
-
 [eldur](https://github.com/molarmanful/eldur) 5x13. Note how the "m" and "w"
 glyphs are drawn to fit into a 4px width.
-
 ///
 
 ### Width-to-Height Ratio
@@ -116,11 +108,9 @@ Fortunately, our eyes are quite easy to fool!
 ![ANAKRON](assets/anakron-box.png){loading=lazy}
 
 /// caption
-
 [ANAKRON](https://github.com/molarmanful/ANAKRON) 8x12. If you look closely, you
 may be able to pick out tiny imperfections resulting from the tradeoffs I had to
 make.
-
 ///
 
 ### x-height
@@ -133,9 +123,7 @@ partial towards fonts with lower x-heights.
 ![Cozette](assets/cozette-vim.png){loading=lazy}
 
 /// caption
-
 [Cozette](https://github.com/slavfox/Cozette) 6x13. Cozette's x-height isn't
 that high, but its uppercase letters are 1px shorter than the tallest lowercase
 letters. This makes it feel like a font with high x-height.
-
 ///

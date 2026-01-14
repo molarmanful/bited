@@ -83,7 +83,7 @@ horizontal baseline, and dwidth. In other words:
 When choosing your bitmap font's metrics, you should make sure to reserve enough
 space so that glyphs don't crowd each other out.
 
----
+______________________________________________________________________
 
 Here are some other useful things to know about these metrics:
 
@@ -103,35 +103,27 @@ Here are some other useful things to know about these metrics:
 ![glyph "y" annotated with metrics](assets/glyph-y.png){loading=lazy}
 
 /// caption
-
 The tail in this "y" extends below the baseline, while the body remains above
 the baseline.
-
 ///
 
 ![glyph "Ä" annotated with metrics](assets/glyph-a-diar.png){loading=lazy}
 
 /// caption
-
 The diaresis in this "Ä" sit above the letter, between the ascent and cap
 height.
-
 ///
 
 ![glyph "ţ" annotated with metrics](assets/glyph-t-ced.png){loading=lazy}
 
 /// caption
-
 The cedilla in this "ţ" sits below the letter, between the descent and baseline.
-
 ///
 
 ![glyph "♥" annotated with metrics](assets/glyph-heart.png){loading=lazy}
 
 /// caption
-
 This "♥" extends a bit beyond its dwidth.
-
 ///
 
 </div>
