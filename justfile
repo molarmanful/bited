@@ -11,4 +11,4 @@ ed: build-rs
   godot -e
 
 docs:
-  mkdocs serve
+  uv run mkdocs serve

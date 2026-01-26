@@ -79,6 +79,11 @@
                 release-linux = {
                   release = "linux";
                   ext = "x86_64";
+                  rust-release = {
+                    pkg = rust;
+                    old = "libbited_rust.so";
+                    new = "libbited_rust.x86_64.so";
+                  };
                 };
               };
 

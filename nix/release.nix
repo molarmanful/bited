@@ -3,6 +3,7 @@
   version,
   release,
   ext,
+  rust-release ? null,
 
   lib,
   stdenv,
@@ -51,6 +52,12 @@ stdenv.mkDerivation {
 
     pushd godot
     sed -i 's#^\s*config/version\s*=\s*".*"\s*$#config/version="v${version}"#' project.godot
+    ${
+      if rust-release != null then
+        "cp ${rust-release.pkg}/lib/${rust-release.old} addons/bited-rust/bin/${rust-release.new}"
+      else
+        ""
+    }
     mkdir -p bited
     godot --headless --v --export-release "${release}" bited/bited.${ext}
     ${if ext == "zip" then "cp bited/bited.zip ." else "zip -r bited.zip bited"}
