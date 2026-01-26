@@ -3,6 +3,7 @@
 /android/
 
 .direnv
+.venv
 result
 build
 site
