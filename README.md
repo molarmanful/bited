@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![bited](assets/icons/icon.svg)
+# ![bited](docs/assets/icon.svg)
 
 A **bit**map font **ed**itor.
 
@@ -31,4 +31,4 @@ For more info, [head over to the docs](https://benpa.ng/bited)!
 
 ## Credits
 
-See the [Credits](https://benpa.ng/bited/credits) section of the bited docs.
+See the [Credits](https://benpa.ng/bited/latest/credits) section of the bited docs.
