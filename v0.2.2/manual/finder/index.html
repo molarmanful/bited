@@ -1,0 +1,1585 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://benpa.ng/bited/latest/manual/finder/">
+      
+      
+        <link rel="prev" href="../save/">
+      
+      
+        <link rel="next" href="query-spellbook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Finder - bited</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#finder" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="bited" class="md-header__button md-logo" aria-label="bited" data-md-component="logo">
+      
+  <img src="../../assets/icon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            bited
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Finder
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo" aria-label="Switch to system preference" type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/molarmanful/bited" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    molarmanful/bited
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../download/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Download
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  User Manual
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="bited" class="md-nav__button md-logo" aria-label="bited" data-md-component="logo">
+      
+  <img src="../../assets/icon.svg" alt="logo">
+
+    </a>
+    bited
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/molarmanful/bited" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    molarmanful/bited
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../why/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why bited?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../credits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../download/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Download
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Download
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Manual
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Manual
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start Menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Screen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../font-anatomy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anatomy of a Font
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../make/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making a Font
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Making a Font
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/first/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The First Glyph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/adhesion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    "adhesion"
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/hamburgefontsiv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    "hamburgefontsiv"
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/fin-lower/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing Lowercase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/next/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What's Next?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../make/tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tips &amp; Tricks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bdf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bited BDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../save/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finder
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finder
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="query-spellbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Spellbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#query-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Query Language
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Language">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phrases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phrases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and-sql-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ; and SQL-Like
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        :cat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        :block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        :page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#u" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        :u
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &amp; | !
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ( )
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="finder">Finder</h1>
+<p>The Finder (<span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-f">F</kbd></span>) allows you to create dynamic Tables by querying for
+glyphs.</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/finder.png" data-desc-position="bottom"><img alt="Finder UI and results" loading="lazy" src="assets/finder.png"></a></p>
+<figcaption></figcaption>
+</figure>
+<p>This is especially useful if, for example, you're looking for all instances of
+the Python logo in Nerd Fonts. You can type in a query like <code>:cat nf &amp; python</code>,
+then copy your design across all the matched glyphs.</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="assets/finder-python.png" data-desc-position="bottom"><img alt="Finder after querying for python" loading="lazy" src="assets/finder-python.png"></a></p>
+<figcaption></figcaption>
+</figure>
+<h2 id="query-language">Query Language</h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query language is experimental (a.k.a. scuffed and subject to change).</p>
+</div>
+<p>The Finder has a rudimentary query language that internally transpiles to a
+SQLite statement.</p>
+<div class="puml-container"><div class="puml light" style="display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="EBNF" height="577px" preserveAspectRatio="xMidYMid meet" style="width:616px;height:577px;background:#FFFFFF;" version="1.1" viewBox="0 0 616 577" width="616px" zoomAndPan="magnify" class="diagram"><defs/><g><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="42.1436" x="10" y="22.9951">query</text><line style="stroke:#181818;stroke-width:1.5;" x1="40" x2="571.2881" y1="46.2969" y2="46.2969"/><path d="M250.5152,46.2969 L250.5152,43.2969 L256.5152,46.2969 L250.5152,49.2969 L250.5152,46.2969" fill="#181818"/><path d="M40,46.2969 C49,46.2969 52,53.2969 52,62.2969 C52,71.2969 55,78.2969 64,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M547.2881,78.2969 C556.2881,78.2969 559.2881,71.2969 559.2881,62.2969 C559.2881,53.2969 562.2881,46.2969 571.2881,46.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M72,70.2969 C72,76.2969 74,78.2969 80,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="72" x2="72" y1="69.2969" y2="70.2969"/><path d="M72,69.2969 C72,63.2969 74,61.2969 80,61.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="79" x2="532.2881" y1="61.2969" y2="61.2969"/><path d="M348.9729,61.2969 L348.9729,58.2969 L342.9729,61.2969 L348.9729,64.2969 L348.9729,61.2969" fill="#181818"/><path d="M539.2881,70.2969 C539.2881,76.2969 537.2881,78.2969 531.2881,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="539.2881" x2="539.2881" y1="69.2969" y2="70.2969"/><path d="M531.2881,61.2969 C537.2881,61.2969 539.2881,63.2969 539.2881,69.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="64" x2="79" y1="78.2969" y2="78.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="532.2881" x2="547.2881" y1="78.2969" y2="78.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="103" x2="103" y1="78.2969" y2="78.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="103" x2="268.001" y1="78.2969" y2="78.2969"/><path d="M167.0004,78.2969 L167.0004,75.2969 L173.0004,78.2969 L167.0004,81.2969 L167.0004,78.2969" fill="#181818"/><path d="M103,78.2969 C112,78.2969 115,80.8711 115,89.8711 C115,98.8711 118,101.4453 127,101.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M244.001,101.4453 C253.001,101.4453 256.001,98.8711 256.001,89.8711 C256.001,80.8711 259.001,78.2969 268.001,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="26.8574" x="151" y="88.2969"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="16.8574" x="156" y="106.292">:;</text><line style="stroke:#181818;stroke-width:1.5;" x1="127" x2="151" y1="101.4453" y2="101.4453"/><line style="stroke:#181818;stroke-width:1.5;" x1="177.8574" x2="244.001" y1="101.4453" y2="101.4453"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="26.8574" x="151" y="124.5938"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="16.8574" x="156" y="142.5889">:u</text><path d="M139,125.7422 C139,134.7422 142,137.7422 151,137.7422" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="177.8574" x2="220.001" y1="137.7422" y2="137.7422"/><path d="M196.9292,137.7422 L196.9292,134.7422 L202.9292,137.7422 L196.9292,140.7422 L196.9292,137.7422" fill="#181818"/><path d="M232.001,125.7422 C232.001,134.7422 229.001,137.7422 220.001,137.7422" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="43.7148" x="151" y="160.8906"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="33.7148" x="156" y="178.8857">:cat</text><path d="M139,162.0391 C139,171.0391 142,174.0391 151,174.0391" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="194.7148" x2="220.001" y1="174.0391" y2="174.0391"/><path d="M205.3579,174.0391 L205.3579,171.0391 L211.3579,174.0391 L205.3579,177.0391 L205.3579,174.0391" fill="#181818"/><path d="M232.001,162.0391 C232.001,171.0391 229.001,174.0391 220.001,174.0391" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="52.1436" x="151" y="197.1875"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="42.1436" x="156" y="215.1826">:cat;</text><path d="M139,198.3359 C139,207.3359 142,210.3359 151,210.3359" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="203.1436" x2="220.001" y1="210.3359" y2="210.3359"/><path d="M232.001,198.3359 C232.001,207.3359 229.001,210.3359 220.001,210.3359" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="60.5723" x="151" y="233.4844"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="50.5723" x="156" y="251.4795">:block</text><path d="M139,234.6328 C139,243.6328 142,246.6328 151,246.6328" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="211.5723" x2="220.001" y1="246.6328" y2="246.6328"/><path d="M232.001,234.6328 C232.001,243.6328 229.001,246.6328 220.001,246.6328" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="69.001" x="151" y="269.7813"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="59.001" x="156" y="287.7764">:block;</text><path d="M139,270.9297 C139,279.9297 142,282.9297 151,282.9297" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="220.001" x2="220.001" y1="282.9297" y2="282.9297"/><path d="M232.001,270.9297 C232.001,279.9297 229.001,282.9297 220.001,282.9297" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="52.1436" x="151" y="306.0781"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="42.1436" x="156" y="324.0732">:page</text><path d="M139,307.2266 C139,316.2266 142,319.2266 151,319.2266" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="203.1436" x2="220.001" y1="319.2266" y2="319.2266"/><path d="M232.001,307.2266 C232.001,316.2266 229.001,319.2266 220.001,319.2266" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="60.5723" x="151" y="342.375"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="50.5723" x="156" y="360.3701">:page;</text><line style="stroke:#181818;stroke-width:1.5;" x1="211.5723" x2="220.001" y1="355.5234" y2="355.5234"/><path d="M139,343.5234 C139,352.5234 142,355.5234 151,355.5234" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="139" x2="139" y1="113.4453" y2="343.5234"/><path d="M127,101.4453 C136,101.4453 139,104.4453 139,113.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M232.001,343.5234 C232.001,352.5234 229.001,355.5234 220.001,355.5234" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="232.001" x2="232.001" y1="113.4453" y2="343.5234"/><path d="M232.001,113.4453 C232.001,104.4453 235.001,101.4453 244.001,101.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="268.001" x2="288.001" y1="78.2969" y2="78.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="288.001" x2="508.2881" y1="78.2969" y2="78.2969"/><path d="M374.1158,78.2969 L374.1158,75.2969 L380.1158,78.2969 L374.1158,81.2969 L374.1158,78.2969" fill="#181818"/><path d="M288.001,78.2969 C297.001,78.2969 300.001,86.8711 300.001,95.8711 C300.001,104.8711 303.001,113.4453 312.001,113.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M484.2881,113.4453 C493.2881,113.4453 496.2881,104.8711 496.2881,95.8711 C496.2881,86.8711 499.2881,78.2969 508.2881,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M320.001,105.4453 C320.001,111.4453 322.001,113.4453 328.001,113.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="320.001" x2="320.001" y1="101.2969" y2="105.4453"/><path d="M320.001,101.2969 C320.001,95.2969 322.001,93.2969 328.001,93.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="327.001" x2="469.2881" y1="93.2969" y2="93.2969"/><path d="M410.3732,93.2969 L410.3732,90.2969 L404.3732,93.2969 L410.3732,96.2969 L410.3732,93.2969" fill="#181818"/><path d="M476.2881,105.4453 C476.2881,111.4453 474.2881,113.4453 468.2881,113.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="476.2881" x2="476.2881" y1="101.2969" y2="105.4453"/><path d="M468.2881,93.2969 C474.2881,93.2969 476.2881,95.2969 476.2881,101.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="312.001" x2="327.001" y1="113.4453" y2="113.4453"/><line style="stroke:#181818;stroke-width:1.5;" x1="469.2881" x2="484.2881" y1="113.4453" y2="113.4453"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:1;stroke-dasharray:5,5;" width="94.2871" x="351.001" y="100.2969"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="67.4297" x="364.4297" y="118.292">&lt;phrase&gt;</text><line style="stroke:#181818;stroke-width:1.5;" x1="327.001" x2="351.001" y1="113.4453" y2="113.4453"/><line style="stroke:#181818;stroke-width:1.5;" x1="445.2881" x2="469.2881" y1="113.4453" y2="113.4453"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:1;stroke-dasharray:5,5;" width="94.2871" x="351.001" y="136.5938"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="67.4297" x="364.4297" y="154.5889">&lt;string&gt;</text><line style="stroke:#181818;stroke-width:1.5;" x1="445.2881" x2="445.2881" y1="149.7422" y2="149.7422"/><path d="M339.001,137.7422 C339.001,146.7422 342.001,149.7422 351.001,149.7422" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="339.001" x2="339.001" y1="125.4453" y2="137.7422"/><path d="M327.001,113.4453 C336.001,113.4453 339.001,116.4453 339.001,125.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M457.2881,137.7422 C457.2881,146.7422 454.2881,149.7422 445.2881,149.7422" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="457.2881" x2="457.2881" y1="125.4453" y2="137.7422"/><path d="M457.2881,125.4453 C457.2881,116.4453 460.2881,113.4453 469.2881,113.4453" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="79" x2="103" y1="78.2969" y2="78.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="508.2881" x2="532.2881" y1="78.2969" y2="78.2969"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="18.4287" x="103" y="378.6719"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="8.4287" x="108" y="396.667">&amp;</text><path d="M91,379.8203 C91,388.8203 94,391.8203 103,391.8203" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="121.4287" x2="508.2881" y1="391.8203" y2="391.8203"/><path d="M312.8584,391.8203 L312.8584,388.8203 L318.8584,391.8203 L312.8584,394.8203 L312.8584,391.8203" fill="#181818"/><path d="M520.2881,379.8203 C520.2881,388.8203 517.2881,391.8203 508.2881,391.8203" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="18.4287" x="103" y="414.9688"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="8.4287" x="108" y="432.9639">|</text><path d="M91,416.1172 C91,425.1172 94,428.1172 103,428.1172" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="121.4287" x2="508.2881" y1="428.1172" y2="428.1172"/><path d="M312.8584,428.1172 L312.8584,425.1172 L318.8584,428.1172 L312.8584,431.1172 L312.8584,428.1172" fill="#181818"/><path d="M520.2881,416.1172 C520.2881,425.1172 517.2881,428.1172 508.2881,428.1172" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="18.4287" x="103" y="451.2656"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="8.4287" x="108" y="469.2607">!</text><path d="M91,452.4141 C91,461.4141 94,464.4141 103,464.4141" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="121.4287" x2="508.2881" y1="464.4141" y2="464.4141"/><path d="M312.8584,464.4141 L312.8584,461.4141 L318.8584,464.4141 L312.8584,467.4141 L312.8584,464.4141" fill="#181818"/><path d="M520.2881,452.4141 C520.2881,461.4141 517.2881,464.4141 508.2881,464.4141" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="18.4287" x="103" y="487.5625"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="8.4287" x="108" y="505.5576">(</text><path d="M91,488.7109 C91,497.7109 94,500.7109 103,500.7109" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="121.4287" x2="508.2881" y1="500.7109" y2="500.7109"/><path d="M312.8584,500.7109 L312.8584,497.7109 L318.8584,500.7109 L312.8584,503.7109 L312.8584,500.7109" fill="#181818"/><path d="M520.2881,488.7109 C520.2881,497.7109 517.2881,500.7109 508.2881,500.7109" fill="none" style="stroke:#181818;stroke-width:1.5;"/><rect fill="none" height="26.2969" style="stroke:#181818;stroke-width:0.5;" width="18.4287" x="103" y="523.8594"/><text fill="#000000" font-family="DejaVu Sans Mono" font-size="14" lengthAdjust="spacing" textLength="8.4287" x="108" y="541.8545">)</text><line style="stroke:#181818;stroke-width:1.5;" x1="121.4287" x2="508.2881" y1="537.0078" y2="537.0078"/><path d="M312.8584,537.0078 L312.8584,534.0078 L318.8584,537.0078 L312.8584,540.0078 L312.8584,537.0078" fill="#181818"/><path d="M91,525.0078 C91,534.0078 94,537.0078 103,537.0078" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="91" x2="91" y1="90.2969" y2="525.0078"/><path d="M79,78.2969 C88,78.2969 91,81.2969 91,90.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><path d="M520.2881,525.0078 C520.2881,534.0078 517.2881,537.0078 508.2881,537.0078" fill="none" style="stroke:#181818;stroke-width:1.5;"/><line style="stroke:#181818;stroke-width:1.5;" x1="520.2881" x2="520.2881" y1="90.2969" y2="525.0078"/><path d="M520.2881,90.2969 C520.2881,81.2969 523.2881,78.2969 532.2881,78.2969" fill="none" style="stroke:#181818;stroke-width:1.5;"/><ellipse cx="14" cy="46.2969" fill="none" rx="4" ry="4" style="stroke:#181818;stroke-width:2;"/><ellipse cx="601.2881" cy="46.2969" fill="#181818" rx="4" ry="4" style="stroke:#181818;stroke-width:1;"/><line style="stroke:#181818;stroke-width:1.5;" x1="18" x2="40" y1="46.2969" y2="46.2969"/><line style="stroke:#181818;stroke-width:1.5;" x1="571.2881" x2="597.2881" y1="46.2969" y2="46.2969"/><path d="M582.2881,46.2969 L582.2881,43.2969 L588.2881,46.2969 L582.2881,49.2969 L582.2881,46.2969" fill="#181818"/><?plantuml-src JO-z3e8m58NtFiMrWu74e38u00A3STF5nCKu5BpY3xRObe40xsvJY3hqz9oU-zsagT9CQipubP18wQR4c0188JIqnW1i1TTxzaBOu8CTQpWmhc0dk31jJwBvo91tZRA1jQKSIvve45BeW0RrSELCVytOPAN8dtzsVAvOWJyNqlFCRcmJYAgRP0fZI4njejBopWiJUpFXccEWgKKxgnEhZbMNaZua94L-6JwyzFo5l_By33NpFm00?></g></svg></div></div>
+
+<h3 id="phrases">Phrases</h3>
+<details class="question" open="open">
+<summary><code>%</code> <code>_</code> Wildcards</summary>
+<ul>
+<li><code>%</code> matches zero or more of any character.</li>
+<li><code>_</code> matches one of any character.</li>
+</ul>
+<p>You can escape these with <code>\</code>, which treats them as normal characters.</p>
+</details>
+<p>Phrases are one of the query language's search primitives. If a word in the
+query isn't a special keyword, then it's a phrase.</p>
+<p>The transpiler joins consecutive phrases with OR, so the query <code>just some words</code>
+will return the combined results of <code>just</code>, <code>some</code>, and <code>words</code>.</p>
+<h3 id="strings">Strings</h3>
+<p>In addition to phrases, the query language also features strings, denoted by
+wrapping with <code>"</code>. This is useful if you want to search using a term that would
+otherwise get broken up by the transpiler. The transpiler treats the contents of
+strings as one phrase; strings and phrases are interchangeable.</p>
+<p>You can escape <code>"</code> and <code>\</code> inside strings with <code>\</code>.</p>
+<h3 id="and-sql-like"><code>;</code> and SQL-Like</h3>
+<p>By default, the transpiler wraps phrases and strings with <code>%</code> -- i.e.
+<code>column LIKE '%&lt;phrase&gt;%' ESCAPE '\'</code> in SQLite. But there are also keywords
+followed by <code>;</code> that won't wrap their subsequent phrases/strings. For example,
+<code>test</code> and <code>:; %test%</code> are equivalent queries.</p>
+<h3 id="cat"><code>:cat</code></h3>
+<p>Filters any matching Unicode character categories. Has a SQL-LIKE variant.</p>
+<p>bited has a character category <code>NF</code> for Nerd Font characters. This isn't an
+official Unicode category, but is nevertheless included for easy querying of
+Nerd Fonts.</p>
+<p><strong>Example</strong>: <code>:cat cc</code></p>
+<h3 id="block"><code>:block</code></h3>
+<p>Filters any matching Unicode blocks. Has a SQL-LIKE variant.</p>
+<p><strong>Example</strong>: <code>:cat latin</code></p>
+<h3 id="page"><code>:page</code></h3>
+<p>Filters any matching bited codepages. Has a SQL-LIKE variant.</p>
+<p><strong>Example</strong>: <code>:page dyalog</code></p>
+<h3 id="u"><code>:u</code></h3>
+<p>Filters any characters that match the specified hex codepoint or range of hex
+codepoints. Individual hex codepoints can have <code>%</code> <code>_</code> wildcards. Codepoint
+ranges follow the format <code>&lt;hex&gt;-&lt;hex&gt;</code>, where <code>&lt;hex&gt;</code> is a valid hex number.</p>
+<p><strong>Example</strong>: <code>:u 00A_</code>, <code>:u a0-ffff</code></p>
+<h3 id="_1"><code>&amp;</code> <code>|</code> <code>!</code></h3>
+<p>Logical AND, OR, and NOT, respectively.</p>
+<p>By default, the transpiler will join consecutive queries with AND -- e.g.
+<code>:block some words :page other words</code> and
+<code>:block some words &amp; :page other words</code> are equivalent queries. Explicitly
+including <code>&amp;</code> becomes necessary when you want to join a keyword sequence with a
+separate phrase, like in <code>:block some words &amp; a separate phrase</code>.</p>
+<h3 id="_2"><code>(</code> <code>)</code></h3>
+<p>By default, AND takes higher precedence than OR -- e.g. <code>a &amp; b | c &amp; d</code> is
+equivalent to <code>(a &amp; b) | c &amp; d</code>. For more fine-grained control over this
+precedence, you can wrap queries with <code>(</code> <code>)</code>, like <code>a &amp; (b | c) &amp; d</code>.</p>
+<p>The transpiler is also nice enough to let you unbalance your parentheses. If you
+write <code>a | b) &amp; c &amp; (d</code>, the transpiler will process it as <code>(a | b) &amp; c &amp; (d)</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../save/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Save System">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Save System
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="query-spellbook/" class="md-footer__link md-footer__link--next" aria-label="Next: Query Spellbook">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Query Spellbook
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2024 The bited Project Authors
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
