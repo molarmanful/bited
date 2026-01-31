@@ -41,6 +41,7 @@ file_logging/enable_file_logging=true
 window/size/viewport_width=1200
 window/size/viewport_height=675
 window/size/borderless=true
+window/size/sharp_corners=true
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
