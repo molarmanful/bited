@@ -64,6 +64,12 @@ func _ready() -> void:
 
 
 func refresh_theme() -> void:
+	var x := clampi(StateVars.cfg.get_value("display", "scale", 1), 1, 3)
+	get_tree().root.content_scale_factor = x
+
+	for win in get_tree().get_nodes_in_group("win_scale"):
+		win.content_scale_factor = x
+
 	var t: String = StateVars.cfg.get_value("display", "theme", "system")
 	var theme := t if THEMES.has(t) else "dark" if DisplayServer.is_dark_mode() else "light"
 
