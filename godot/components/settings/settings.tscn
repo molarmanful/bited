@@ -1,8 +1,9 @@
-[gd_scene load_steps=33 format=3 uid="uid://csa3ukn3fcr2n"]
+[gd_scene load_steps=34 format=3 uid="uid://csa3ukn3fcr2n"]
 
 [ext_resource type="Script" uid="uid://daimsacok3r2t" path="res://components/settings/settings.gd" id="1_f5q05"]
 [ext_resource type="Script" uid="uid://cylt6s7o5n88s" path="res://components/settings/font/id.gd" id="2_8xqh3"]
 [ext_resource type="Script" uid="uid://bmo4gn3mi2knu" path="res://components/settings/font/foundry.gd" id="3_iv5cu"]
+[ext_resource type="Script" uid="uid://bo21f5qtuit8p" path="res://components/settings/display/scale.gd" id="3_ocjq2"]
 [ext_resource type="Script" uid="uid://b858ttv3av50w" path="res://components/settings/display/table_width.gd" id="3_orxr2"]
 [ext_resource type="Script" uid="uid://bel8kco7pxyhh" path="res://components/settings/font/family.gd" id="4_3lktb"]
 [ext_resource type="Script" uid="uid://c3w0i32ng1fep" path="res://components/settings/display/table_px_size.gd" id="4_fdym7"]
@@ -95,7 +96,6 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="display" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 
@@ -127,6 +127,35 @@ item_count = 1
 popup/item_0/text = "system"
 popup/item_0/id = 0
 script = ExtResource("17_j3ewv")
+
+[node name="HBoxContainer9" type="HBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_vertical = 1
+tooltip_text = "Factor to scale everything by."
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+theme_override_constants/line_spacing = 0
+text = "display scale"
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="scale" type="SpinBox" parent="VBoxContainer/ScrollContainer/MarginContainer/display/GridContainer" groups=["settings"]]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 3.0
+value = 1.0
+rounded = true
+suffix = "×"
+script = ExtResource("3_ocjq2")
 
 [node name="GridContainer2" type="GridContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/display"]
 layout_mode = 2
@@ -260,6 +289,7 @@ suffix = "px"
 script = ExtResource("5_gqxa1")
 
 [node name="font" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer" groups=["entry"]]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 32
 

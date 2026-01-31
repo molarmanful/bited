@@ -278,7 +278,7 @@ content_scale_stretch = 1
 [node name="Settings" parent="WindowSettings" node_paths=PackedStringArray("window") instance=ExtResource("2_csear")]
 window = NodePath("..")
 
-[node name="WindowPreview" type="Window" parent="."]
+[node name="WindowPreview" type="Window" parent="." groups=["win_scale"]]
 auto_translate_mode = 1
 canvas_item_default_texture_filter = 0
 gui_embed_subwindows = true
