@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 bitvec = "1.0.1"
 godot = "0.4.5"
 serde = { version = "1.0.219", features = ["derive"] }
-toml = "1.0.1"
+toml = "1.0.3"
