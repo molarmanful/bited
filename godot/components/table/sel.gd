@@ -457,8 +457,7 @@ func get_sel_text() -> void:
 
 func is_selected(i: int) -> bool:
 	var a := mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
-	var b := func(): return ranges.bsearch(i, false) % 2
-	return a or b.call()
+	return a or ranges.bsearch(i, false) % 2
 
 
 func is_alone() -> bool:
