@@ -195,12 +195,12 @@ impl<'font> Parser<'font> {
 
                     "BITED_TABLE_CELL_SCALE" => match pv {
                         PropVal::Num(n) if n >= 0 => self.font.thumb_px_size = n,
-                        _ => self.warn("BITED_TABLE_WIDTH is not a valid int >= 0, ignoring"),
+                        _ => self.warn("BITED_TABLE_CELL_SCALE is not a valid int >= 0, ignoring"),
                     },
 
                     "BITED_EDITOR_GRID_SIZE" => match pv {
                         PropVal::Num(n) if n >= 0 => self.font.grid_size = n,
-                        _ => self.warn("BITED_TABLE_WIDTH is not a valid int >= 0, ignoring"),
+                        _ => self.warn("BITED_EDITOR_GRID_SIZE is not a valid int >= 0, ignoring"),
                     },
 
                     _ => {
@@ -412,7 +412,7 @@ impl<'font> Parser<'font> {
                 self.font.setwidth,
             ));
         } else {
-            self.font.weight = weight.into();
+            self.font.setwidth = setwidth.into();
         }
 
         self.font.add_style = add_style.into();
@@ -448,7 +448,7 @@ impl<'font> Parser<'font> {
         match spacing_up.as_str() {
             "P" | "M" | "C" => self.font.spacing = (&spacing_up).into(),
             _ => self.warn(&format!(
-                "XLFD slant is not one of (R, I, O, RI, RO), defaulting to '{}'",
+                "XLFD spacing is not one of (P, M, C), defaulting to '{}'",
                 self.font.spacing,
             )),
         }
