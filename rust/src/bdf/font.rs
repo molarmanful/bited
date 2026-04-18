@@ -106,22 +106,22 @@ impl IRefCounted for BFontR {
 impl BFontR {
     #[func]
     pub fn read_file(&mut self, path: GString) -> GString {
-        (&match GFile::open(&path, ModeFlags::READ) {
+        let s = match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
                 let path = path.to_string();
                 let base = path.strip_suffix(".bdf").unwrap_or(&path);
                 let gm = self.read_glyphs_map(&format!("{base}.glyphs.toml"));
                 let e = self
-                    .parse(file.lines().map(|l| l.unwrap_or("".to_string())), gm)
+                    .parse(file.lines().map(|l| l.unwrap_or_default()), gm)
                     .err()
-                    .unwrap_or("".to_string());
+                    .unwrap_or_default();
                 godot_print!("parsed {:.2?}", start.elapsed());
                 e
             }
             Err(e) => e.to_string(),
-        })
-            .into()
+        };
+        s.to_godot()
     }
 
     #[func]

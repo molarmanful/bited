@@ -1,4 +1,7 @@
-use std::iter;
+use std::{
+    fmt::Write,
+    iter,
+};
 
 use bitvec::prelude::*;
 use godot::{
@@ -40,11 +43,11 @@ impl UtilR {
             .as_slice()
             .chunks(bytes.len() / usize::from(h))
             .map(|row| {
-                row.iter()
-                    .map(|byte| format!("{byte:02X}"))
-                    .collect::<Vec<_>>()
-                    .concat()
-                    .to_godot()
+                let mut s = String::with_capacity(row.len() * 2);
+                for byte in row {
+                    write!(s, "{byte:02X}").unwrap();
+                }
+                s.to_godot()
             })
             .collect()
     }

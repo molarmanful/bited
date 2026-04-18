@@ -20,7 +20,7 @@ pub struct PGen {
 impl PGen {
     pub fn new() -> Self {
         Self {
-            name: "".to_string(),
+            name: "".into(),
             code: -1,
             dwidth: 0,
             is_abs: false,
@@ -39,7 +39,7 @@ impl PGen {
         if def {
             warn = Some(format!("{k} already defined, skipping"));
         } else {
-            self.defs.insert(k.to_string());
+            self.defs.insert(k.into());
         }
         (warn, !def)
     }

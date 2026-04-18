@@ -134,7 +134,7 @@ impl<'font> Parser<'font> {
 
             "STARTPROPERTIES" => {
                 if !self.defs.contains("FONT") {
-                    return Err("missing FONT before STARTPROPERTIES".to_string());
+                    return Err("missing FONT before STARTPROPERTIES".into());
                 }
                 self.notdef(k);
                 self.mode = Mode::Props;
@@ -181,7 +181,7 @@ impl<'font> Parser<'font> {
                         _ => self.warn("X_HEIGHT is not a valid int >= 0, ignoring"),
                     },
 
-                    "COPYRIGHT" => self.font.copyright = (&pv.to_string()).into(),
+                    "COPYRIGHT" => self.font.copyright = pv.to_string().to_godot(),
 
                     "BITED_DWIDTH" => match pv {
                         PropVal::Num(n) if n >= 0 => self.font.bb.x = n,
@@ -222,7 +222,7 @@ impl<'font> Parser<'font> {
                 if self.notdef(&format!("char {v}")) {
                     self.mode = Mode::Char;
                     self.p_gen = PGen::new();
-                    self.p_gen.name = v.to_string();
+                    self.p_gen.name = v.into();
                     self.p_gen.is_abs = self.glyphs_map.is_abs(&self.p_gen.name);
                 } else {
                     self.mode = Mode::CharIgnore;
@@ -320,12 +320,12 @@ impl<'font> Parser<'font> {
         match k {
             "ENDCHAR" => self.end_char(),
             _ => match usize::from_str_radix(k, 16) {
-                Ok(_) => self.p_gen.bm.push(k.to_string()),
+                Ok(_) => self.p_gen.bm.push(k.into()),
                 Err(_) => {
                     self.warn(&format!(
                         "'{k}' is not valid hex, replacing with empty line",
                     ));
-                    self.p_gen.bm.push("".to_string());
+                    self.p_gen.bm.push("".into());
                 }
             },
         }
@@ -364,10 +364,10 @@ impl<'font> Parser<'font> {
             _,
         ] = v.split('-').map(str::trim).take(15).collect::<Vec<_>>()[..]
         else {
-            return Err("XLFD must have 14 entries".to_string());
+            return Err("XLFD must have 14 entries".into());
         };
         if !blank.is_empty() {
-            return Err("XLFD must start with '-'".to_string());
+            return Err("XLFD must start with '-'".into());
         }
 
         if foundry.is_empty() {
@@ -477,7 +477,7 @@ impl<'font> Parser<'font> {
         if def {
             self.warn(&format!("{k} already defined, skipping"));
         } else {
-            self.defs.insert(k.to_string());
+            self.defs.insert(k.into());
         }
         !def
     }
