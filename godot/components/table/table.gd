@@ -65,9 +65,8 @@ func _ready() -> void:
 	StateVars.table_refresh.connect(func(): to_update = true)
 	StateVars.refresh.connect(
 		func(gen):
-			if gen.name not in names:
-				return
-			names[gen.name].refresh_tex(gen)
+			if gen.name in names:
+				names[gen.name].refresh_tex(gen)
 	)
 	StyleVars.set_thumb.connect(func(): to_update = true)
 	resized.connect(onresize)
