@@ -10,7 +10,7 @@
   fetchurl,
   godot,
   export-templates-bin,
-  wineWowPackages,
+  wineWow64Packages,
   zip,
   ...
 }:
@@ -44,7 +44,7 @@ stdenv.mkDerivation {
         ''
           godot --headless -v -e --quit
           echo 'export/windows/rcedit = "${rcedit}"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
-          echo 'export/windows/wine = "${wineWowPackages.stable}/bin/wine64"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
+          echo 'export/windows/wine = "${wineWow64Packages.stable}/bin/wine64"' >> "$HOME"/.config/godot/editor_settings-${gd_ver}.tres
         ''
       else
         ""
