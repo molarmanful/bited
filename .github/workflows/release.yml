@@ -33,7 +33,7 @@ jobs:
         shell: bash
         working-directory: rust
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: rust
           sparse-checkout-cone-mode: false
@@ -62,7 +62,7 @@ jobs:
       run:
         working-directory: rust
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: rust
           sparse-checkout-cone-mode: false
@@ -112,7 +112,7 @@ jobs:
           git config --global url.'https://x-access-token:${{ steps.app.outputs.token }}@github.com/'.insteadOf https://github.com/
           git config --global user.name '${{ steps.app.outputs.app-slug }}[bot]'
           git config --global user.email '${{ steps.user-id.outputs.user-id }}+${{ steps.app.outputs.app-slug }}[bot]@users.noreply.github.com'
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ steps.app.outputs.token }}
           ref: ${{ github.event.repository.default_branch }}
@@ -146,7 +146,7 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.repository.default_branch }}
           lfs: true
