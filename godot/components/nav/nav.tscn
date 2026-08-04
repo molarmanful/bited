@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://d10css7y2eb1o"]
+[gd_scene load_steps=34 format=3 uid="uid://d10css7y2eb1o"]
 
 [ext_resource type="Script" uid="uid://bbeuylbx4mrhr" path="res://components/nav/nav.gd" id="1_i15a6"]
 [ext_resource type="PackedScene" uid="uid://csa3ukn3fcr2n" path="res://components/settings/settings.tscn" id="2_csear"]
@@ -26,6 +26,12 @@ action = &"bited_load"
 
 [sub_resource type="Shortcut" id="Shortcut_heag0"]
 events = [SubResource("InputEventAction_r8rw3")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_sb215"]
+action = &"bited_export"
+
+[sub_resource type="Shortcut" id="Shortcut_cbahh"]
+events = [SubResource("InputEventAction_sb215")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_yfpmr"]
 action = &"bited_preview"
@@ -76,7 +82,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_sepsexify", "btn_octify", "btn_braille")]
+[node name="Nav" type="PanelContainer" node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "dialog_export", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_export", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_sepsexify", "btn_octify", "btn_braille")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -88,6 +94,7 @@ font_name = NodePath("MarginContainer/HBoxContainer/Label")
 settings = NodePath("WindowSettings")
 dialog_save = NodePath("save")
 dialog_load = NodePath("load")
+dialog_export = NodePath("export")
 win_bdf_prog = NodePath("BDFProg")
 txt_bdf_prog = NodePath("BDFProg/PanelContainer/Body/Label")
 win_bdf_err = NodePath("BDFErr")
@@ -97,6 +104,7 @@ win_finder = NodePath("Finder")
 btn_home = NodePath("MarginContainer/HBoxContainer2/home")
 btn_save = NodePath("MarginContainer/HBoxContainer2/save")
 btn_load = NodePath("MarginContainer/HBoxContainer2/load")
+btn_export = NodePath("MarginContainer/HBoxContainer2/export")
 btn_preview = NodePath("MarginContainer/HBoxContainer2/preview")
 btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 btn_new_glyph = NodePath("MarginContainer/HBoxContainer2/new_glyph")
@@ -160,6 +168,16 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_heag0")
 text = "🗁"
+
+[node name="export" type="Button" parent="MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "export to file"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_cbahh")
+text = "➡️"
 
 [node name="preview" type="Button" parent="MarginContainer/HBoxContainer2"]
 layout_mode = 2
@@ -250,7 +268,8 @@ text = "⚙️"
 
 [node name="save" type="FileDialog" parent="."]
 auto_translate_mode = 1
-size = Vector2i(308, 147)
+oversampling_override = 1.0
+size = Vector2i(432, 147)
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
 use_native_dialog = true
@@ -263,6 +282,16 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.bdf;BDF Font", "*;All Files")
+use_native_dialog = true
+
+[node name="export" type="FileDialog" parent="."]
+auto_translate_mode = 1
+oversampling_override = 1.0
+title = "Export to File"
+size = Vector2i(432, 147)
+ok_button_text = "Export"
+access = 2
+filters = PackedStringArray("*.bdf;BDF Font", "*.yaff;YAFF Font", "*;All Files")
 use_native_dialog = true
 
 [node name="WindowSettings" type="Window" parent="."]

@@ -6,6 +6,7 @@ extends PanelContainer
 @export var settings: Window
 @export var dialog_save: FileDialog
 @export var dialog_load: FileDialog
+@export var dialog_export: FileDialog
 
 @export var win_bdf_prog: Window
 @export var txt_bdf_prog: Label
@@ -17,6 +18,7 @@ extends PanelContainer
 @export var btn_home: Button
 @export var btn_save: Button
 @export var btn_load: Button
+@export var btn_export: Button
 @export var btn_preview: Button
 @export var btn_settings: Button
 @export var btn_new_glyph: Button
@@ -39,6 +41,8 @@ func _ready() -> void:
 	dialog_save.file_selected.connect(save_font)
 	btn_load.pressed.connect(load_font_pre)
 	dialog_load.file_selected.connect(load_font)
+	btn_export.pressed.connect(export_font_pre)
+	dialog_export.file_selected.connect(export_font)
 	btn_preview.pressed.connect(
 		func():
 			preview.window.hide()
@@ -69,11 +73,8 @@ func save_font(path: String) -> void:
 	if not path:
 		return
 	StateVars.set_path(path)
-
-	var bdf := FileAccess.open(path, FileAccess.WRITE)
-	var glyphs := FileAccess.open(path.trim_suffix(".bdf") + ".glyphs.toml", FileAccess.WRITE)
-	bdf.store_string(StateVars.font.to_bdf())
-	glyphs.store_string(StateVars.font.to_glyphs_toml())
+	
+	export_font(path)
 
 
 func load_font_pre():
@@ -109,6 +110,29 @@ func load_font(path: String) -> void:
 	font.id = StateVars.font.id
 	StateVars.load_parsed(font)
 	StateVars.start_all()
+
+
+# like save_font but always show dialog
+func export_font_pre(): 
+	var path := StateVars.path()
+	if path:
+		dialog_export.current_path = path.get_basename()
+	dialog_export.popup()
+
+
+func export_font(path: String) -> void:
+	if not path:
+		return
+	
+	match path.get_extension():
+		"bdf":
+			var bdf := FileAccess.open(path, FileAccess.WRITE)
+			var glyphs := FileAccess.open(path.get_basename() + ".glyphs.toml", FileAccess.WRITE)
+			bdf.store_string(StateVars.font.to_bdf())
+			glyphs.store_string(StateVars.font.to_glyphs_toml())
+		"yaff":
+			var yaff := FileAccess.open(path.get_basename() + ".yaff", FileAccess.WRITE)
+			yaff.store_string(StateVars.font.to_yaff())
 
 
 func new_glyph() -> void:

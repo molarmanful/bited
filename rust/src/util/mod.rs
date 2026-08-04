@@ -12,6 +12,8 @@ use godot::{
     prelude::*,
 };
 
+use from_ascii::FromAsciiRadix;
+
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct UtilR {
@@ -48,6 +50,23 @@ impl UtilR {
                     write!(s, "{byte:02X}").unwrap();
                 }
                 s.to_godot()
+            })
+            .collect()
+    }
+
+    #[func]
+    fn bits_to_yaff(bytes: PackedByteArray, w: u16, h: u16) -> PackedStringArray {
+        bytes
+            .as_slice()
+            .chunks(bytes.len() / usize::from(h))
+            .map(|row| {
+                let mut s = String::with_capacity(row.len() * 8 + 4);
+                for byte in row {
+                    write!(s, "{byte:08b}").unwrap();
+                }
+                s.truncate(w.into());
+                s.insert_str(0, "    ");
+                s.replace("0", ".").replace("1", "@").to_godot()
             })
             .collect()
     }

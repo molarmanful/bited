@@ -138,6 +138,7 @@ visible = false
 layout_mode = 2
 
 [node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
 title = "Open a File"
 initial_position = 2
 ok_button_text = "Open"

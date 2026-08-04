@@ -16,6 +16,7 @@ name = "bited-rust"
 version = "0.0.0"
 dependencies = [
  "bitvec",
+ "from-ascii",
  "godot",
  "serde",
  "toml",
@@ -38,6 +39,12 @@ name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
+
+[[package]]
+name = "from-ascii"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4e23b749f1923c97e3e5967ba707f6f3a381fb4ee4265d959a84f4e2f8c3127b"
 
 [[package]]
 name = "funty"
