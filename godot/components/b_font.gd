@@ -262,6 +262,124 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 	return res
 
 
+func to_yaff() -> String:
+	var fb := fbbx()
+	
+	var yaff_spacing: String
+	match spacing:
+		"M": yaff_spacing = "monospace"
+		"C": yaff_spacing = "character-cell"
+		_: yaff_spacing = "proportional"
+		
+	var res := PackedStringArray(
+		[
+			"yaff: 1.0",
+			"name: %s %s %d" % [family, weight, pt_size / 10],
+			"spacing: %s" % yaff_spacing,
+			"bounding-box: %dx%d" % [fb.bb_x - fb.off_x, fb.bb_y],
+		]
+	)
+
+	res.append_array(to_yaff_properties())
+	res.append_array(to_yaff_chars(fb))
+
+	res.push_back("")
+	return "\n".join(res)
+
+
+func to_yaff_properties() -> PackedStringArray:
+		
+	var yaff_slant: String
+	match slant:
+		"I": yaff_slant = "italic"
+		"O": yaff_slant = "oblique"
+		"RI": yaff_slant = "reverse italic"
+		"RO": yaff_slant = "reverse oblique"
+		_: yaff_slant = "roman"
+		
+	var res: Array[String] = [
+		"family: %s" % family,
+		"foundry: %s" % foundry,
+		"copyright: %s" % copyright,
+		"point-size: %d" % [pt_size / 10],
+		"weight: %s" % weight.to_lower(),
+		"dpi: %dx%d" % [resolution.x, resolution.y],
+		"average-width: %d" % avg_w(),
+		"x-height: %d" % x_h,
+		"cap-height: %d" % cap_h,
+		"ascent: %d" % asc,
+		"descent: %d" % desc,
+		"slant: %s" % yaff_slant,
+		"style: %s" % add_style.to_lower(),
+		# it doesn't seem like you can change the font from iso10646-1
+		# and I don't want to figure out how to convert from bdf encoding
+		# string to yaff (the CHARSET_REGISTRY and CHARSET_ENCODING)
+		"encoding: unicode",
+
+		#"SETWIDTH_NAME %s" % stringify(setwidth), # idk
+
+		"custom.bited-dwidth: %d" % dwidth,
+		"custom.bited-table-width: %d" % StyleVars.table_width,
+		"custom.bited-table-cell-scale: %d" % StyleVars.thumb_px_size,
+		"custom.bited-editor-grid-size: %d" % StyleVars.grid_size,
+		"custom.bited-editor-cell-size: %d" % StyleVars.grid_px_size,
+	]
+
+	for k in props:
+		if is_other_prop(k):
+			res.append("%s: %s" % [k.to_lower(), JSON.stringify(props[k])])
+
+	res.push_back("")
+	return res
+
+
+func to_yaff_chars(fb: Dictionary) -> PackedStringArray:
+	var res := PackedStringArray()
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+				from font_%s
+				order by code, name
+				;"""
+				% id
+			)
+		)
+	)
+	var qs := StateVars.db_saves.query_result
+
+	for q in qs:
+		var dw: int = dwidth * int(not q.is_abs) + q.dwidth
+
+		res.push_back("\"%s\":" % (("U+" if q.code >= 0 else "") + q.name))
+		if q.code >= 0:
+			res.push_back("0x%x:" % q.code)
+			res.push_back("'%s':" % char(q.code))
+
+		if q.img:
+			res.append_array(Util.bits_to_yaff(q.img, q.bb_x, q.bb_y))
+		else:
+			res.push_back("-")
+
+		res.push_back("")
+		
+		var shift_up: int = q.off_y
+		var left_bearing: int = q.off_x
+		var right_bearing: int = -q.off_x + dw - q.bb_x
+		
+		if shift_up: res.push_back("    shift-up: %d" % shift_up)
+		if left_bearing: res.push_back("    left_bearing: %d" % left_bearing)
+		if right_bearing: res.push_back("    right_bearing: %d" % right_bearing)
+		
+		res.push_back("")
+
+	return res
+
+
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	StateVars.db_saves.query("begin;")
 	for gen in gens:
