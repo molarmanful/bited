@@ -17,6 +17,7 @@ run/main_scene="res://components/start/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bited"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/fullsize=false
 boot_splash/use_filter=false
