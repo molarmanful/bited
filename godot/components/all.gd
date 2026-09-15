@@ -9,3 +9,4 @@ var grid: Grid
 
 func _ready() -> void:
 	grid = editor.grid
+	StyleVars.refresh_theme()

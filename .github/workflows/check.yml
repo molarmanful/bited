@@ -50,8 +50,6 @@ jobs:
         working-directory: godot
     steps:
       - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.head_ref }}
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - run: nix develop .#ci-check -c 'bash' -c 'gdlint components'
@@ -64,8 +62,6 @@ jobs:
         working-directory: rust
     steps:
       - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.head_ref }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - run: nix develop .#ci-check -c 'bash' -c 'cargo clippy'
@@ -78,8 +74,6 @@ jobs:
         working-directory: rust
     steps:
       - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.head_ref }}
       - uses: DeterminateSystems/determinate-nix-action@main
       - uses: DeterminateSystems/flakehub-cache-action@main
       - run: nix build .#build-check
