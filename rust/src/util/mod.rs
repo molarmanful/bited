@@ -125,7 +125,7 @@ impl UtilR {
                 row.as_ref()
                     .as_bytes()
                     .chunks(2)
-                    .map(|cs| u8::from_ascii_radix(cs, 16).unwrap_or(0))
+                    .map(|cs| u8::from_ascii_bytes_radix(cs, 16).unwrap_or(0))
                     .chain(iter::repeat(0))
                     .take(chunk)
                     .collect::<Vec<_>>()
