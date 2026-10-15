@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=112 format=3 uid="uid://diausvkp00rum"]
+[gd_resource type="Theme" format=3 uid="uid://diausvkp00rum"]
 
 [ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_ug268"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_topry"]
@@ -290,6 +290,9 @@ expand_margin_left = 13.0
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7bg3o"]
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
 bg_color = Color(1, 1, 1, 1)
 border_color = Color(0, 0, 0, 1)
 corner_detail = 1
@@ -828,7 +831,11 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_71m4i"]
 bg_color = Color(0.83137256, 0.83137256, 0.83137256, 1)
-border_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
 corner_detail = 1
 anti_aliasing = false
 
@@ -842,7 +849,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
+border_color = Color(0.2509804, 0.2509804, 0.2509804, 1)
 corner_detail = 1
 anti_aliasing = false
 
@@ -884,7 +891,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
+border_color = Color(0.2509804, 0.2509804, 0.2509804, 1)
 corner_detail = 1
 anti_aliasing = false
 
@@ -1213,10 +1220,10 @@ Tree/colors/parent_hl_line_color = Color(0.2509804, 0.2509804, 0.2509804, 1)
 Tree/colors/relationship_line_color = Color(0.83137256, 0.83137256, 0.83137256, 1)
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 1
-Tree/constants/inner_item_margin_bottom = 4
+Tree/constants/inner_item_margin_bottom = 0
 Tree/constants/inner_item_margin_left = 4
 Tree/constants/inner_item_margin_right = 4
-Tree/constants/inner_item_margin_top = 4
+Tree/constants/inner_item_margin_top = 0
 Tree/icons/arrow = SubResource("ImageTexture_w3p3t")
 Tree/icons/arrow_collapsed = SubResource("ImageTexture_47nbd")
 Tree/icons/arrow_collapsed_mirrored = SubResource("ImageTexture_x35hx")

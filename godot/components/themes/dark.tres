@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=112 format=3 uid="uid://f4r415hvld2n"]
+[gd_resource type="Theme" format=3 uid="uid://f4r415hvld2n"]
 
 [ext_resource type="FontFile" uid="uid://c8pis4ar64o2y" path="res://assets/variad.woff2" id="1_3kr2p"]
 [ext_resource type="FontFile" uid="uid://d4ka6ab1eywua" path="res://assets/UnifontExMono.woff" id="2_prh7o"]
@@ -278,6 +278,9 @@ expand_margin_left = 12.0
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5fvij"]
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
 bg_color = Color(0, 0, 0, 1)
 border_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
 corner_detail = 1
@@ -817,7 +820,11 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_78pmo"]
 bg_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
-border_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0)
 corner_detail = 1
 anti_aliasing = false
 
@@ -831,7 +838,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+border_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
 corner_detail = 1
 anti_aliasing = false
 
@@ -873,7 +880,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+border_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
 corner_detail = 1
 anti_aliasing = false
 
@@ -1203,10 +1210,10 @@ Tree/colors/parent_hl_line_color = Color(0.6392157, 0.6392157, 0.6392157, 1)
 Tree/colors/relationship_line_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
 Tree/constants/draw_guides = 0
 Tree/constants/draw_relationship_lines = 1
-Tree/constants/inner_item_margin_bottom = 4
+Tree/constants/inner_item_margin_bottom = 0
 Tree/constants/inner_item_margin_left = 4
 Tree/constants/inner_item_margin_right = 4
-Tree/constants/inner_item_margin_top = 4
+Tree/constants/inner_item_margin_top = 0
 Tree/icons/arrow = SubResource("ImageTexture_2tyg2")
 Tree/icons/arrow_collapsed = SubResource("ImageTexture_m8dge")
 Tree/icons/arrow_collapsed_mirrored = SubResource("ImageTexture_oygb1")
