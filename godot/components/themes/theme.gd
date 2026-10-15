@@ -261,9 +261,9 @@ func define_theme():
 			draw_guides = 0,
 			draw_relationship_lines = 1,
 			inner_item_margin_left = 4,
-			inner_item_margin_top = 4,
+			inner_item_margin_top = 0,
 			inner_item_margin_right = 4,
-			inner_item_margin_bottom = 4,
+			inner_item_margin_bottom = 0,
 			relationship_line_color = color_bg_2,
 			parent_hl_line_color = color_fg_2,
 			children_hl_line_color = color_bg_2,
@@ -278,10 +278,19 @@ func define_theme():
 			arrow_collapsed_mirrored = tree_arrow_left,
 			panel =
 			inherit(style_panel, {border_ = border_width(border_w), content_ = content_margins(0)}),
-			hovered = inherit(style_panel, {bg_color = color_bg_2}),
+			hovered =
+			inherit(
+				style_panel,
+				{
+					bg_color = color_bg_2,
+					border_ = border_width(border_w),
+					border_color = Color.TRANSPARENT,
+				}
+			),
 			focus = inherit(style_input, {border_color = color_fg_2}),
-			selected = style_input,
-			hovered_selected = inherit(style_input, {bg_color = color_bg_2}),
+			selected = inherit(style_input, {border_color = color_fg_2}),
+			hovered_selected =
+			inherit(style_input, {bg_color = color_bg_2, border_color = color_fg_2}),
 			selected_focus = inherit(style_input, {border_color = color_fg_2}),
 			hovered_selected_focus =
 			inherit(style_input, {bg_color = color_bg_2, border_color = color_fg_2}),
@@ -596,7 +605,17 @@ func define_theme():
 		"Charsets",
 		"Tree",
 		{
-			panel = inherit(style_panel, {border_ = border_width(0)}),
+			# Godot 4.7 draws row styleboxes above the focus style, so keep rows clear of its border
+			panel =
+			inherit(
+				style_panel,
+				{
+					border_ = border_width(0),
+					content_margin_top = border_w_foc,
+					content_margin_right = border_w_foc,
+					content_margin_bottom = border_w_foc,
+				}
+			),
 			focus =
 			inherit(
 				style_input_foc,

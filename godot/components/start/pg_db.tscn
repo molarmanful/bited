@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://0iifg4w8rgni"]
+[gd_scene format=3 uid="uid://0iifg4w8rgni"]
 
 [ext_resource type="Script" uid="uid://doqkgcldsxpkp" path="res://components/start/pg_db.gd" id="1_pvccy"]
 
@@ -14,7 +14,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_dgiu6"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="DB" type="PanelContainer" node_paths=PackedStringArray("tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
+[node name="DB" type="PanelContainer" unique_id=1220153939 node_paths=PackedStringArray("tree", "placeholder", "btn_start", "btn_cancel", "btn_del", "btn_rename")]
 custom_minimum_size = Vector2(300, 0)
 theme_type_variation = &"Border"
 script = ExtResource("1_pvccy")
@@ -25,20 +25,20 @@ btn_cancel = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel
 btn_del = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/del")
 btn_rename = NodePath("VBoxContainer/Footer/MarginContainer/HBoxContainer/rename")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1745697559]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Header" type="PanelContainer" parent="VBoxContainer"]
+[node name="Header" type="PanelContainer" parent="VBoxContainer" unique_id=637986928]
 layout_mode = 2
 theme_type_variation = &"BgBorder"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Header" unique_id=1812858]
 layout_mode = 2
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/Header/MarginContainer" unique_id=1260535005]
 layout_mode = 2
 theme_type_variation = &"TooltipLabel"
 theme_override_constants/line_spacing = 0
@@ -46,7 +46,7 @@ text = "load font from db"
 horizontal_alignment = 1
 text_overrun_behavior = 3
 
-[node name="Body" type="MarginContainer" parent="VBoxContainer"]
+[node name="Body" type="MarginContainer" parent="VBoxContainer" unique_id=1871113792]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -56,13 +56,13 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="Tree" type="Tree" parent="VBoxContainer/Body"]
+[node name="Tree" type="Tree" parent="VBoxContainer/Body" unique_id=1327384879]
 layout_mode = 2
 columns = 2
 hide_root = true
 select_mode = 1
 
-[node name="Placeholder" type="Label" parent="VBoxContainer/Body"]
+[node name="Placeholder" type="Label" parent="VBoxContainer/Body" unique_id=711496342]
 visible = false
 layout_mode = 2
 size_flags_vertical = 1
@@ -73,47 +73,47 @@ text = "no fonts... yet."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Footer" type="PanelContainer" parent="VBoxContainer"]
+[node name="Footer" type="PanelContainer" parent="VBoxContainer" unique_id=457262643]
 layout_mode = 2
 theme_type_variation = &"BorderT"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Footer" unique_id=282601944]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Footer/MarginContainer" unique_id=591004747]
 layout_mode = 2
 alignment = 2
 
-[node name="del" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="del" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1927723405]
 layout_mode = 2
 tooltip_text = "delete"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "🗑️"
 
-[node name="rename" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="rename" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1812239634]
 layout_mode = 2
 tooltip_text = "rename"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "✎"
 
-[node name="Spacer" type="Control" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="Spacer" type="Control" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=135861512]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="start" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="start" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=496339385]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_8yq8i")
 text = "load"
 
-[node name="cancel" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1721562375]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_dgiu6")
