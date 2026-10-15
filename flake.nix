@@ -25,7 +25,7 @@
         }:
 
         let
-          gdpkgs = pkgs.godotPackages_4_5;
+          gdpkgs = pkgs.godotPackages_4_7;
           baseCraneLib = inputs.crane.mkLib pkgs;
           craneLib = baseCraneLib.overrideToolchain inputs'.fenix.packages.minimal.toolchain;
           craneLibDev = baseCraneLib.overrideToolchain (
