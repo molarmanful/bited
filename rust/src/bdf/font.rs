@@ -8,44 +8,49 @@ use std::{
 };
 
 use godot::{
-    classes::{
-        IRefCounted,
-        RefCounted,
-        file_access::ModeFlags,
-    },
+    classes::file_access::ModeFlags,
     prelude::*,
 };
 
-use super::{
+use crate::bdf::{
     glyphs_map::GlyphsMap,
     parser::Parser,
+    prop_val::PropVal,
 };
 
 #[derive(GodotClass)]
-#[class(base=RefCounted)]
+#[class(init, base=RefCounted)]
 pub struct BFontR {
-    base: Base<RefCounted>,
     #[var]
+    #[init(val = "bited".into())]
     pub foundry: GString,
     #[var]
+    #[init(val = "new font".into())]
     pub family: GString,
     #[var]
+    #[init(val = "Regular".into())]
     pub weight: GString,
     #[var]
+    #[init(val = "R".into())]
     pub slant: GString,
     #[var]
+    #[init(val = "Normal".into())]
     pub setwidth: GString,
     #[var]
     pub add_style: GString,
     #[var]
     pub bb: Vector2i,
     #[var]
+    #[init(val = Vector2i::new(75, 75))]
     pub resolution: Vector2i,
     #[var]
+    #[init(val = "P".into())]
     pub spacing: GString,
     #[var]
+    #[init(val = "ISO10646".into())]
     pub ch_reg: GString,
     #[var]
+    #[init(val = "1".into())]
     pub ch_enc: GString,
     #[var]
     pub desc: i32,
@@ -56,60 +61,32 @@ pub struct BFontR {
     #[var]
     pub copyright: GString,
     #[var]
+    #[init(val = -16)]
     pub table_width: i32,
     #[var]
+    #[init(val = 2)]
     pub thumb_px_size: i32,
     #[var]
+    #[init(val = 32)]
     pub grid_size: i32,
     #[var]
+    #[init(val = 12)]
     pub grid_px_size: i32,
     #[var]
     warns: PackedStringArray,
     #[var]
-    props: VarDictionary,
+    props: Dictionary<GString, Variant>,
     #[var]
-    glyphs: VarDictionary,
-}
-
-#[godot_api]
-impl IRefCounted for BFontR {
-    fn init(base: Base<RefCounted>) -> Self {
-        Self {
-            base,
-            warns: PackedStringArray::new(),
-            foundry: "bited".into(),
-            family: "new font".into(),
-            weight: "Regular".into(),
-            slant: "R".into(),
-            setwidth: "Normal".into(),
-            add_style: "".into(),
-            bb: Vector2i::ZERO,
-            resolution: Vector2i::new(75, 75),
-            spacing: "P".into(),
-            ch_reg: "ISO10646".into(),
-            ch_enc: "1".into(),
-            desc: 0,
-            cap_h: 0,
-            x_h: 0,
-            copyright: "".into(),
-            table_width: -16,
-            thumb_px_size: 2,
-            grid_size: 32,
-            grid_px_size: 12,
-            props: VarDictionary::new(),
-            glyphs: VarDictionary::new(),
-        }
-    }
+    glyphs: Dictionary<GString, VarDictionary>,
 }
 
 #[godot_api]
 impl BFontR {
     #[func]
-    pub fn read_file(&mut self, path: GString) -> GString {
-        let s = match GFile::open(&path, ModeFlags::READ) {
+    pub fn read_file(&mut self, path: String) -> String {
+        match GFile::open(&path, ModeFlags::READ) {
             Ok(file) => {
                 let start = Instant::now();
-                let path = path.to_string();
                 let base = path.strip_suffix(".bdf").unwrap_or(&path);
                 let gm = self.read_glyphs_map(&format!("{base}.glyphs.toml"));
                 let e = self
@@ -120,13 +97,12 @@ impl BFontR {
                 e
             }
             Err(e) => e.to_string(),
-        };
-        s.to_godot()
+        }
     }
 
     #[func]
-    pub fn is_other_prop(k: GString) -> bool {
-        Parser::is_other_prop(&k.to_string())
+    pub fn is_other_prop(k: String) -> bool {
+        Parser::is_other_prop(&k)
     }
 
     fn read_glyphs_map(&mut self, path: &str) -> GlyphsMap {
@@ -163,12 +139,12 @@ impl BFontR {
         Ok(())
     }
 
-    pub fn set_prop(&mut self, k: &str, v: Variant) {
+    pub fn set_prop(&mut self, k: &str, v: PropVal) {
         self.props.set(k, v)
     }
 
     pub fn set_glyph_pre(&mut self, k: &str, v: VarDictionary) {
-        self.glyphs.set(k, v)
+        self.glyphs.set(k, &v)
     }
 
     pub fn warn(&mut self, n_line: usize, msg: &str) {

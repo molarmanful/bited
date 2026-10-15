@@ -1,7 +1,10 @@
 use core::fmt;
 
 use godot::{
-    meta::ByValue,
+    meta::{
+        conv::ByValue,
+        shape::GodotShape,
+    },
     prelude::*,
 };
 
@@ -21,6 +24,10 @@ impl fmt::Display for PropVal {
 
 impl GodotConvert for PropVal {
     type Via = Variant;
+
+    fn godot_shape() -> GodotShape {
+        Variant::godot_shape()
+    }
 }
 
 impl ToGodot for PropVal {

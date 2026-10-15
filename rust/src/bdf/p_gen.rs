@@ -53,15 +53,15 @@ impl PGen {
 
     pub fn to_glyph(&self) -> VarDictionary {
         vdict! {
-            "name": self.name.clone(),
-            "code": self.code,
-            "dwidth": self.dwidth,
-            "is_abs": self.is_abs,
-            "bb_x": self.bb_x as u32,
-            "bb_y": self.bb_y as u32,
-            "off_x": self.off_x,
-            "off_y": self.off_y,
-            "img": self.img(),
+            "name" => self.name.clone(),
+            "code" => self.code,
+            "dwidth" => self.dwidth,
+            "is_abs" => self.is_abs,
+            "bb_x" => self.bb_x as u32,
+            "bb_y" => self.bb_y as u32,
+            "off_x" => self.off_x,
+            "off_y" => self.off_y,
+            "img" => &self.img(),
         }
     }
 

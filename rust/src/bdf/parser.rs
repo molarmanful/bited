@@ -5,7 +5,7 @@ use std::{
 
 use godot::meta::ToGodot;
 
-use super::{
+use crate::bdf::{
     font::BFontR,
     glyphs_map::GlyphsMap,
     p_gen::PGen,
@@ -205,7 +205,7 @@ impl<'font> Parser<'font> {
 
                     _ => {
                         if Self::is_other_prop(k) {
-                            self.font.set_prop(k, pv.to_variant())
+                            self.font.set_prop(k, pv)
                         }
                     }
                 },

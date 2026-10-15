@@ -13,17 +13,8 @@ use godot::{
 };
 
 #[derive(GodotClass)]
-#[class(base=Node)]
-pub struct UtilR {
-    base: Base<Node>,
-}
-
-#[godot_api]
-impl INode for UtilR {
-    fn init(base: Base<Node>) -> Self {
-        Self { base }
-    }
-}
+#[class(init, base=Node)]
+pub struct UtilR {}
 
 #[godot_api]
 impl UtilR {
