@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bhghm74u2o8ik"]
+[gd_scene format=3 uid="uid://bhghm74u2o8ik"]
 
 [ext_resource type="ButtonGroup" uid="uid://ccxcutyn7ifmw" path="res://components/editor/tools_group.tres" id="1_88smh"]
 [ext_resource type="Script" uid="uid://b7rs4os6wj4cs" path="res://components/editor/editor.gd" id="1_wb1k2"]
@@ -177,7 +177,7 @@ action = &"bited_grid_clr"
 [sub_resource type="Shortcut" id="Shortcut_mnipk"]
 events = [SubResource("InputEventAction_xaubg")]
 
-[node name="Editor" type="PanelContainer" node_paths=PackedStringArray("grid")]
+[node name="Editor" type="PanelContainer" unique_id=864984401 node_paths=PackedStringArray("grid")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -186,28 +186,28 @@ grow_vertical = 2
 script = ExtResource("1_wb1k2")
 grid = NodePath("CenterContainer/GridContainer/5/Grid")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1370029466]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="CenterContainer"]
+[node name="GridContainer" type="GridContainer" parent="CenterContainer" unique_id=1780235283]
 layout_mode = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="1" type="Control" parent="CenterContainer/GridContainer"]
+[node name="1" type="Control" parent="CenterContainer/GridContainer" unique_id=1666317437]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 
-[node name="2" type="HBoxContainer" parent="CenterContainer/GridContainer"]
+[node name="2" type="HBoxContainer" parent="CenterContainer/GridContainer" unique_id=1674737908]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/GridContainer/2" unique_id=1706174703]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="prev_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2"]
+[node name="prev_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2" unique_id=718548295]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "prev in table"
@@ -216,7 +216,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_vypbe")
 text = "<T"
 
-[node name="prev_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2"]
+[node name="prev_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer2" unique_id=1999292029]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "prev defined glyph in table"
@@ -225,15 +225,15 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ct5mg")
 text = "<G"
 
-[node name="Spacer" type="Control" parent="CenterContainer/GridContainer/2"]
+[node name="Spacer" type="Control" parent="CenterContainer/GridContainer/2" unique_id=602576972]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/GridContainer/2" unique_id=185231692]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="is_abs" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer"]
+[node name="is_abs" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer" unique_id=1124286706]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -245,7 +245,7 @@ text = "W?"
 icon_alignment = 1
 expand_icon = true
 
-[node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2/HBoxContainer"]
+[node name="dwidth" type="SpinBox" parent="CenterContainer/GridContainer/2/HBoxContainer" unique_id=1509029925]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 rounded = true
@@ -254,15 +254,15 @@ prefix = "o:"
 select_all_on_focus = true
 script = ExtResource("2_ikoqp")
 
-[node name="Spacer2" type="Control" parent="CenterContainer/GridContainer/2"]
+[node name="Spacer2" type="Control" parent="CenterContainer/GridContainer/2" unique_id=456160704]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/GridContainer/2"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/GridContainer/2" unique_id=551358280]
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="next_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3"]
+[node name="next_glyph" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3" unique_id=1605740558]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "next defined glyph in table"
@@ -271,7 +271,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_7okrq")
 text = "G>"
 
-[node name="next_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3"]
+[node name="next_uc" type="Button" parent="CenterContainer/GridContainer/2/HBoxContainer3" unique_id=1138203598]
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "next in table"
@@ -280,15 +280,15 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_r1kjj")
 text = "T>"
 
-[node name="3" type="Control" parent="CenterContainer/GridContainer"]
+[node name="3" type="Control" parent="CenterContainer/GridContainer" unique_id=1664862100]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 
-[node name="4" type="VBoxContainer" parent="CenterContainer/GridContainer"]
+[node name="4" type="VBoxContainer" parent="CenterContainer/GridContainer" unique_id=1977679344]
 layout_mode = 2
 alignment = 1
 
-[node name="move" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="move" type="Button" parent="CenterContainer/GridContainer/4" unique_id=921096610]
 layout_mode = 2
 tooltip_text = "move"
 mouse_default_cursor_shape = 2
@@ -298,7 +298,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_kyc1p")
 text = "✥"
 
-[node name="pen" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="pen" type="Button" parent="CenterContainer/GridContainer/4" unique_id=94757239]
 layout_mode = 2
 tooltip_text = "pen"
 mouse_default_cursor_shape = 2
@@ -308,7 +308,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_lgybh")
 text = "✎"
 
-[node name="line" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="line" type="Button" parent="CenterContainer/GridContainer/4" unique_id=372200275]
 layout_mode = 2
 tooltip_text = "line"
 mouse_default_cursor_shape = 2
@@ -318,7 +318,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_el2rj")
 text = "╲"
 
-[node name="rect" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="rect" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1206765512]
 layout_mode = 2
 tooltip_text = "rectangle"
 mouse_default_cursor_shape = 2
@@ -328,11 +328,11 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_p7pfg")
 text = "█"
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4"]
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/4" unique_id=1113245768]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4" unique_id=157999059]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -348,7 +348,7 @@ icon = ExtResource("8_dxryl")
 icon_alignment = 1
 expand_icon = true
 
-[node name="T" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="T" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1079869755]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -363,7 +363,7 @@ icon = ExtResource("6_mqen1")
 icon_alignment = 1
 expand_icon = true
 
-[node name="F" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="F" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1384079527]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -378,7 +378,7 @@ icon = ExtResource("7_ukwbh")
 icon_alignment = 1
 expand_icon = true
 
-[node name="INV" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="INV" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1359687001]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -393,7 +393,7 @@ icon = ExtResource("2_od75m")
 icon_alignment = 1
 expand_icon = true
 
-[node name="CELL" type="Button" parent="CenterContainer/GridContainer/4"]
+[node name="CELL" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1004047417]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -408,10 +408,10 @@ icon = ExtResource("3_gnkst")
 icon_alignment = 1
 expand_icon = true
 
-[node name="5" type="CenterContainer" parent="CenterContainer/GridContainer"]
+[node name="5" type="CenterContainer" parent="CenterContainer/GridContainer" unique_id=1740979526]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -446,38 +446,38 @@ btn_selmode = NodePath("../../6/selmode")
 btn_overwrite = NodePath("../../6/overwrite")
 btn_stamp = NodePath("../../6/stamp")
 
-[node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
+[node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=326697129]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 mouse_default_cursor_shape = 3
 
-[node name="Sels" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
+[node name="Sels" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1871857151]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 mouse_default_cursor_shape = 3
 
-[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid"]
+[node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1128866789]
 layout_mode = 2
 mouse_filter = 2
 texture = SubResource("ViewportTexture_iwxi2")
 
-[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/5/Grid/Lines"]
+[node name="SubViewport" type="SubViewport" parent="CenterContainer/GridContainer/5/Grid/Lines" unique_id=1149390455]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(256, 256)
 
-[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/5/Grid/Lines/SubViewport" node_paths=PackedStringArray("grid")]
+[node name="Node2D" type="Node2D" parent="CenterContainer/GridContainer/5/Grid/Lines/SubViewport" unique_id=1703031991 node_paths=PackedStringArray("grid")]
 script = ExtResource("2_jsp0s")
 grid = NodePath("../../..")
 
-[node name="6" type="VBoxContainer" parent="CenterContainer/GridContainer"]
+[node name="6" type="VBoxContainer" parent="CenterContainer/GridContainer" unique_id=1850260472]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 8
 
-[node name="selmode" type="Button" parent="CenterContainer/GridContainer/6"]
+[node name="selmode" type="Button" parent="CenterContainer/GridContainer/6" unique_id=454502595]
 layout_mode = 2
 tooltip_text = "toggle pattern 1"
 mouse_default_cursor_shape = 2
@@ -486,7 +486,7 @@ toggle_mode = true
 shortcut = SubResource("Shortcut_xaubg")
 text = ":1"
 
-[node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6"]
+[node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1799455966]
 layout_mode = 2
 tooltip_text = "overwrite"
 mouse_default_cursor_shape = 2
@@ -494,7 +494,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ai11x")
 text = "✍"
 
-[node name="stamp" type="Button" parent="CenterContainer/GridContainer/6"]
+[node name="stamp" type="Button" parent="CenterContainer/GridContainer/6" unique_id=696519890]
 layout_mode = 2
 tooltip_text = "stamp"
 mouse_default_cursor_shape = 2
@@ -502,15 +502,15 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_850sg")
 text = "🖃"
 
-[node name="7" type="Control" parent="CenterContainer/GridContainer"]
+[node name="7" type="Control" parent="CenterContainer/GridContainer" unique_id=1763315270]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
-[node name="8" type="HBoxContainer" parent="CenterContainer/GridContainer"]
+[node name="8" type="HBoxContainer" parent="CenterContainer/GridContainer" unique_id=1059131432]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="undo" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="undo" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1769901325]
 layout_mode = 2
 tooltip_text = "undo"
 mouse_default_cursor_shape = 2
@@ -518,7 +518,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_8vm0w")
 text = "⮪"
 
-[node name="redo" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="redo" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1995600911]
 layout_mode = 2
 tooltip_text = "redo"
 mouse_default_cursor_shape = 2
@@ -526,11 +526,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_iofcn")
 text = "⮫"
 
-[node name="VSeparator" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+[node name="VSeparator" type="VSeparator" parent="CenterContainer/GridContainer/8" unique_id=319513539]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="flip_x" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="flip_x" type="Button" parent="CenterContainer/GridContainer/8" unique_id=917781533]
 layout_mode = 2
 tooltip_text = "flip horiz"
 mouse_default_cursor_shape = 2
@@ -538,7 +538,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_7qumc")
 text = "🡘"
 
-[node name="flip_y" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="flip_y" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1459284322]
 layout_mode = 2
 tooltip_text = "flip vert"
 mouse_default_cursor_shape = 2
@@ -546,7 +546,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_w6nfi")
 text = "🡙"
 
-[node name="rot_ccw" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="rot_ccw" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1865321494]
 layout_mode = 2
 tooltip_text = "rotate ccw"
 mouse_default_cursor_shape = 2
@@ -554,7 +554,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ctg0p")
 text = "⟲"
 
-[node name="rot_cw" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="rot_cw" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1598929960]
 layout_mode = 2
 tooltip_text = "rotate cw"
 mouse_default_cursor_shape = 2
@@ -562,11 +562,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_ren1t")
 text = "⟳"
 
-[node name="VSeparator2" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+[node name="VSeparator2" type="VSeparator" parent="CenterContainer/GridContainer/8" unique_id=347721344]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="left" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="left" type="Button" parent="CenterContainer/GridContainer/8" unique_id=484631043]
 layout_mode = 2
 tooltip_text = "left 1px"
 mouse_default_cursor_shape = 2
@@ -574,7 +574,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_5vium")
 text = "🡐"
 
-[node name="down" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="down" type="Button" parent="CenterContainer/GridContainer/8" unique_id=586468887]
 layout_mode = 2
 tooltip_text = "down 1px"
 mouse_default_cursor_shape = 2
@@ -582,7 +582,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_vbvjq")
 text = "🡓"
 
-[node name="up" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="up" type="Button" parent="CenterContainer/GridContainer/8" unique_id=885431840]
 layout_mode = 2
 tooltip_text = "up 1px"
 mouse_default_cursor_shape = 2
@@ -590,7 +590,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_8vv5b")
 text = "🡑"
 
-[node name="right" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="right" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1837509119]
 layout_mode = 2
 tooltip_text = "right 1px"
 mouse_default_cursor_shape = 2
@@ -598,11 +598,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_1lpad")
 text = "🡒"
 
-[node name="VSeparator3" type="VSeparator" parent="CenterContainer/GridContainer/8"]
+[node name="VSeparator3" type="VSeparator" parent="CenterContainer/GridContainer/8" unique_id=1807483475]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="grid_clr" type="Button" parent="CenterContainer/GridContainer/8"]
+[node name="grid_clr" type="Button" parent="CenterContainer/GridContainer/8" unique_id=629419759]
 layout_mode = 2
 tooltip_text = "clear"
 mouse_default_cursor_shape = 2
@@ -610,7 +610,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_mnipk")
 text = "⎚"
 
-[node name="Placeholder" type="Label" parent="CenterContainer"]
+[node name="Placeholder" type="Label" parent="CenterContainer" unique_id=1317477825]
 visible = false
 layout_mode = 2
 theme_type_variation = &"Muted"

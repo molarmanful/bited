@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="bited"
@@ -16,15 +20,19 @@ config/version="dev"
 run/main_scene="res://components/start/start.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bited"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 1)
-boot_splash/fullsize=false
+boot_splash/stretch_mode=0
 boot_splash/use_filter=false
 boot_splash/image="res://assets/splash/splash.png"
 config/icon="res://assets/icons/icon.svg"
 config/macos_native_icon="res://assets/icons/icon.icns"
 config/windows_native_icon="res://assets/icons/icon.ico"
+
+[audio]
+
+driver/driver="Dummy"
 
 [autoload]
 
@@ -46,6 +54,7 @@ window/size/sharp_corners=true
 window/energy_saving/keep_screen_on=false
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -251,6 +260,11 @@ bited_overwrite={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":87,"location":0,"echo":false,"script":null)
 ]
 }
+
+[physics]
+
+2d/physics_engine="Dummy"
+3d/physics_engine="Dummy"
 
 [rendering]
 

@@ -319,7 +319,7 @@ anti_aliasing = false
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prbe4"]
 bg_color = Color(0, 0, 0, 1)
 border_width_left = 1
-border_width_top = 1
+border_width_bottom = 1
 border_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
 corner_detail = 1
 anti_aliasing = false

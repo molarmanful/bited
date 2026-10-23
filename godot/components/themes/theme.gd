@@ -528,7 +528,7 @@ func define_theme():
 				{
 					border_color = color_grid_border,
 					border_width_left = border_w,
-					border_width_top = border_w
+					border_width_bottom = border_w
 				}
 			)
 		}
