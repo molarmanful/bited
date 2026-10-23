@@ -77,12 +77,12 @@ impl BitGlyph {
     }
 
     #[func]
-    pub fn get(&self, p: Vector2i) -> bool {
+    pub fn get_bit(&self, p: Vector2i) -> bool {
         Self::index(self.size, p).is_some_and(|(i, mask)| self.data[i] & mask != 0)
     }
 
     #[func]
-    pub fn set(&mut self, p: Vector2i, v: bool) -> bool {
+    pub fn set_bit(&mut self, p: Vector2i, v: bool) -> bool {
         Self::index(self.size, p).is_some_and(|(i, mask)| {
             let byte = &mut self.data[i];
             let old = *byte & mask != 0;
