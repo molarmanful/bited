@@ -49,7 +49,7 @@ func refresh(hard := false) -> void:
 		q.dw = StateVars.font.dwidth * int(not q.is_abs) + q.dwidth
 		q.tex = null
 		if q.img:
-			q.tex = Util.bits_to_alpha(q.img, q.bb_x, q.bb_y)
+			q.tex = BitGlyph.create_from_bytes(Vector2i(q.bb_x, q.bb_y), q.img).to_image()
 			q.tex.convert(Image.FORMAT_RGBA8)
 			q.rect = Rect2i(Vector2i.ZERO, Vector2i(q.bb_x, q.bb_y))
 		cache[q.code] = q

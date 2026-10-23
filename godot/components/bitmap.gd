@@ -1,8 +1,10 @@
 class_name Bitmap
 extends RefCounted
 
-var dim := 0
-var cells: Image
+var cells: BitGlyph
+var dim: int:
+	get:
+		return cells.get_size().x
 var data_code := -1
 var data_name := ""
 
@@ -19,8 +21,7 @@ var origin: Vector2i:
 		return corner_bl - Vector2i(0, StateVars.font.desc)
 
 
-func _init(d: int, cs := Util.blank_img(d), dc := -1, dn := "") -> void:
-	dim = d
+func _init(d: int, cs := BitGlyph.create(Vector2i(d, d)), dc := -1, dn := "") -> void:
 	cells = cs
 	data_code = dc
 	data_name = dn
@@ -79,12 +80,12 @@ func load() -> void:
 
 
 func to_gen() -> Dictionary:
-	var bounds := cells.get_used_rect()
+	var bounds := cells.used_rect()
 	var bl := Vector2i(bounds.position.x, bounds.end.y)
 	var off := (bl - origin) * Vector2i(1, -1) if bounds.size else bounds.size
 	var img: PackedByteArray
 	if bounds:
-		img = Util.alpha_to_bits(cells.get_region(bounds))
+		img = cells.region(bounds).to_bytes()
 
 	return {
 		name = data_name,
@@ -107,14 +108,17 @@ func from_gen(gen: Dictionary) -> void:
 
 
 func update_cells(gen := to_gen()) -> void:
-	cells.fill(Color.TRANSPARENT)
-	from_gen(gen)
-	if not gen.img:
-		return
+	cells = place(gen)
 
-	var img := Util.bits_to_alpha(gen.img, gen.bb_x, gen.bb_y)
+
+func place(gen: Dictionary) -> BitGlyph:
+	from_gen(gen)
+	var bg := BitGlyph.create_from_bytes(
+		Vector2i(gen.bb_x, gen.bb_y), gen.img if gen.img else PackedByteArray()
+	)
 	var off := Vector2i(gen.off_x, -gen.off_y) + origin - Vector2i(0, gen.bb_y)
-	cells.blit_rect(img, Rect2i(Vector2i.ZERO, Vector2i(gen.bb_x, gen.bb_y)), off)
+	bg.crop(Rect2i(-off, Vector2i(dim, dim)))
+	return bg
 
 
 func set_is_abs(ia: bool) -> void:

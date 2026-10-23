@@ -33,6 +33,7 @@ var virt := Virt.new()
 var grid: Grid
 var names: Dictionary[String, Glyph]
 var thumbs: Dictionary[String, ImageTexture]
+var thumb_bitmap := Bitmap.new(StyleVars.thumb_size_pre)
 var to_update := false
 var hide_tb := false
 
