@@ -231,6 +231,8 @@ func update_grid() -> void:
 
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()
+	await RenderingServer.frame_post_draw
+	node_view_lines.get_parent().queue_redraw()
 
 
 func update_cells() -> void:
