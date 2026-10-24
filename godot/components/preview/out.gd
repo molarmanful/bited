@@ -3,6 +3,7 @@ extends TextureRect
 
 var lines := PackedStringArray()
 var cache: Dictionary[int, Dictionary]
+var codes: Dictionary[int, bool]
 var hi := true
 var rscale := 1
 var color_fg := Color.WHITE
@@ -18,10 +19,12 @@ func refresh(hard := false) -> void:
 	if hard:
 		cache.clear()
 
+	codes.clear()
 	var ucs: Dictionary[int, bool]
 	for line in lines:
 		for c in line:
 			var uc := c.unicode_at(0)
+			codes[uc] = true
 			if uc not in cache:
 				ucs[uc] = true
 
@@ -46,15 +49,27 @@ func refresh(hard := false) -> void:
 	)
 
 	for q in StateVars.db_saves.query_result:
-		q.dw = StateVars.font.dwidth * int(not q.is_abs) + q.dwidth
-		q.tex = null
-		if q.img:
-			q.tex = BitGlyph.create_from_bytes(Vector2i(q.bb_x, q.bb_y), q.img).to_image()
-			q.tex.convert(Image.FORMAT_RGBA8)
-			q.rect = Rect2i(Vector2i.ZERO, Vector2i(q.bb_x, q.bb_y))
-		cache[q.code] = q
+		cache_glyph(q)
 
 	render()
+
+
+func refresh_glyph(gen: Dictionary) -> void:
+	if gen.code not in codes:
+		return
+	cache_glyph(gen.duplicate())
+	render()
+
+
+func cache_glyph(q: Dictionary) -> void:
+	q.dw = StateVars.font.dwidth * int(not q.is_abs) + q.dwidth
+	q.tex = null
+	if q.img:
+		var bb := Vector2i(q.bb_x, q.bb_y)
+		q.tex = BitGlyph.create_from_bytes(bb, q.img).to_image()
+		q.tex.convert(Image.FORMAT_RGBA8)
+		q.rect = Rect2i(Vector2i.ZERO, bb)
+	cache[q.code] = q
 
 
 func render() -> void:
