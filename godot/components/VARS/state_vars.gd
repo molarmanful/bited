@@ -188,7 +188,7 @@ func load_parsed(bf: BFont) -> void:
 	StyleVars.grid_px_size = font.grid_px_size
 	font.init_font()
 	var gens: Array[Dictionary]
-	gens.assign(font.glyphs.values())
+	gens.assign(font.glyphs)
 	font.save_glyphs(gens)
 
 

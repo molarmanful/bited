@@ -7,7 +7,6 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-bitvec = "1.0.1"
 godot = { version = "0.5.5", features = ["api-4-7"] }
 serde = { version = "1.0.219", features = ["derive"] }
 toml = "1.1.2"

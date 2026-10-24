@@ -51,7 +51,6 @@ var size_grid: Vector2i:
 	get:
 		return Vector2i(w_grid, w_grid)
 
-var to_update_cells := false
 var pressed := false
 var is_sel := false:
 	set(s):
@@ -171,7 +170,7 @@ func start_edit(data_name: String, data_code: int) -> void:
 	pattern_root.bitmap.data_code = data_code
 	pattern_root.bitmap.dwidth = 0
 	pattern_root.bitmap.is_abs = false
-	pattern_root.bitmap.cells.fill(Color.TRANSPARENT)
+	pattern_root.cells.fill(false)
 	pattern_root.bitmap.save(false)
 	table.to_update = true
 	refresh(true)
@@ -181,11 +180,13 @@ func refresh(hard := false) -> void:
 	if hard:
 		pattern_root.clear()
 
-		var gen_sels := pattern_sels.bitmap.to_gen()
-		gen_sels.dwidth = pattern_root.bitmap.dwidth
-		gen_sels.is_abs = pattern_root.bitmap.is_abs
+		var sels := pattern_sels.cells
+		var origin := pattern_sels.bitmap.origin
+		pattern_sels.bitmap.dwidth = pattern_root.bitmap.dwidth
+		pattern_sels.bitmap.is_abs = pattern_root.bitmap.is_abs
 		pattern_sels.clear()
-		pattern_sels.bitmap.update_cells(gen_sels)
+		sels.crop(Rect2i(origin - pattern_sels.bitmap.origin, Vector2i(dim_grid, dim_grid)))
+		pattern_sels.cells = sels
 
 	pattern_root.bitmap.load()
 
@@ -214,7 +215,8 @@ func refresh(hard := false) -> void:
 	)
 	pattern_root.update_node()
 	pattern_sels.update_node()
-	to_update_cells = true
+	pattern_root.dirty = true
+	pattern_sels.dirty = true
 	update_grid()
 
 
@@ -236,10 +238,6 @@ func update_grid() -> void:
 
 
 func update_cells() -> void:
-	if not to_update_cells:
-		return
-	to_update_cells = false
-
 	pattern_root.update_tex()
 	pattern_sels.update_tex()
 
@@ -385,16 +383,15 @@ func off_uc(off: int) -> void:
 		start_edit(qs[0].name, qs[0].code)
 
 
-func act_cells(prev: Image) -> void:
-	var cs := Util.img_copy(pattern_root.cells)
-
+func act_cells(prev: BitGlyph) -> void:
+	var cs := pattern_root.cells.dup()
 	undoman.create_action(name)
 
 	undoman.add_undo_method(
 		func():
 			pattern_root.cells.copy_from(prev)
 			pattern_root.bitmap.save()
-			to_update_cells = true
+			pattern_root.dirty = true
 	)
 	undoman.add_undo_reference(prev)
 
@@ -402,7 +399,7 @@ func act_cells(prev: Image) -> void:
 		func():
 			pattern_root.cells.copy_from(cs)
 			pattern_root.bitmap.save()
-			to_update_cells = true
+			pattern_root.dirty = true
 	)
 	undoman.add_do_reference(cs)
 
@@ -410,9 +407,10 @@ func act_cells(prev: Image) -> void:
 
 
 func op(f: Callable, root_only := false) -> void:
-	var prev := Util.img_copy(pattern_root.cells if root_only else pattern_top.cells)
+	var prev := (pattern_root if root_only else pattern_top).cells.dup()
 	f.call(prev)
-	to_update_cells = true
+	pattern_root.dirty = true
+	pattern_sels.dirty = true
 	if not is_sel:
 		act_cells(prev)
 		pattern_root.bitmap.save()
@@ -421,47 +419,39 @@ func op(f: Callable, root_only := false) -> void:
 func dim_norm(f: Callable) -> void:
 	var dx := dim_grid - posmod(dim_grid - pattern_root.bitmap.dwidth_calc, 2)
 	var dy := dim_grid - posmod(dim_grid - StateVars.font.bb.y, 2)
-	pattern_top.cells.crop(dx, dy)
+	pattern_top.cells.crop(Rect2i(0, 0, dx, dy))
 	f.call()
-	pattern_top.cells.crop(dim_grid, dim_grid)
+	pattern_top.cells.crop(Rect2i(0, 0, dim_grid, dim_grid))
 
 
 func flip_x() -> void:
-	op(func(_prev: Image): dim_norm(pattern_top.cells.flip_x))
+	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: Image): dim_norm(pattern_top.cells.flip_y))
+	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: Image): dim_norm(pattern_top.cells.rotate_90.bind(COUNTERCLOCKWISE)))
+	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.rotate_ccw))
 
 
 func rot_cw() -> void:
-	op(func(_prev: Image): dim_norm(pattern_top.cells.rotate_90.bind(CLOCKWISE)))
+	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.rotate_cw))
 
 
 func translate(dst: Vector2i) -> void:
-	op(
-		func(prev: Image):
-			pattern_top.cells.fill(Color.TRANSPARENT)
-			pattern_top.cells.blit_rect(prev, Rect2i(Vector2i.ZERO, prev.get_size()), dst)
-	)
+	op(func(_prev: BitGlyph): pattern_top.cells.translate(dst))
 
 
 func clear() -> void:
-	op(func(_prev: Image): pattern_top.cells.fill(Color.TRANSPARENT))
+	op(func(_prev: BitGlyph): pattern_top.cells.fill(false))
 
 
 func overwrite() -> void:
 	op(
-		func(_prev: Image):
-			pattern_btm.cells.blit_rect(
-				pattern_top.cells,
-				Rect2i(Vector2i.ZERO, pattern_top.cells.get_size()),
-				Vector2i.ZERO
-			)
+		func(_prev: BitGlyph):
+			pattern_btm.cells.copy_from(pattern_top.cells)
 			is_sel = not is_sel,
 		true
 	)
@@ -471,7 +461,7 @@ func overwrite() -> void:
 
 func stamp() -> void:
 	op(
-		func(_prev: Image):
+		func(_prev: BitGlyph):
 			stamp_mode()
 			is_sel = not is_sel,
 		true
@@ -483,13 +473,13 @@ func stamp() -> void:
 func stamp_mode() -> void:
 	match toolman.cmode:
 		Tool.CMode.DEFAULT, Tool.CMode.T:
-			Util.img_or(pattern_btm.cells, pattern_top.cells)
+			pattern_btm.cells.op(OP_BIT_OR, pattern_top.cells)
 		Tool.CMode.F:
-			Util.img_andn(pattern_btm.cells, pattern_top.cells)
+			pattern_btm.cells.op(OP_SUBTRACT, pattern_top.cells)
 		Tool.CMode.INV:
-			Util.img_xor(pattern_btm.cells, pattern_top.cells)
+			pattern_btm.cells.op(OP_BIT_XOR, pattern_top.cells)
 		Tool.CMode.CELL:
-			Util.img_and(pattern_btm.cells, pattern_top.cells)
+			pattern_btm.cells.op(OP_BIT_AND, pattern_top.cells)
 
 
 func dwidth() -> void:

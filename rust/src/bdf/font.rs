@@ -77,7 +77,7 @@ pub struct BFontR {
     #[var]
     props: Dictionary<GString, Variant>,
     #[var]
-    glyphs: Dictionary<GString, VarDictionary>,
+    glyphs: Array<VarDictionary>,
 }
 
 #[godot_api]
@@ -143,8 +143,8 @@ impl BFontR {
         self.props.set(k, v)
     }
 
-    pub fn set_glyph_pre(&mut self, k: &str, v: VarDictionary) {
-        self.glyphs.set(k, &v)
+    pub fn push_glyph_pre(&mut self, v: VarDictionary) {
+        self.glyphs.push(&v)
     }
 
     pub fn warn(&mut self, n_line: usize, msg: &str) {

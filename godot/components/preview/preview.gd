@@ -81,9 +81,9 @@ func _ready() -> void:
 	presets.select(0)
 
 	StateVars.refresh.connect(
-		func(_gen: Dictionary):
+		func(gen: Dictionary):
 			if window.visible:
-				preview(true)
+				out.refresh_glyph(gen)
 	)
 	StateVars.edit_refresh.connect(
 		func():

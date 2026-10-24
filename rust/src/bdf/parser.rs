@@ -341,8 +341,7 @@ impl<'font> Parser<'font> {
             }
         }
         self.mode = Mode::Chars;
-        self.font
-            .set_glyph_pre(&self.p_gen.name, self.p_gen.to_glyph())
+        self.font.push_glyph_pre(self.p_gen.to_glyph())
     }
 
     fn parse_xlfd(&mut self, v: &str) -> Result<(), String> {

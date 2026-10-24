@@ -182,20 +182,18 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 	StateVars.db_uc.query("select code from %s order by row;" % tbl)
 	var codes := StateVars.db_uc.query_result.map(func(q): return q.code)
 
-	StateVars.db_saves.query("begin;")
-
+	var gens: Array[Dictionary] = []
 	for c in codes.size():
 		var bm := Bitmap.new(
-			StyleVars.grid_size_cor, Util.img_copy(bms[0].cells), codes[c], "%04X" % codes[c]
+			StyleVars.grid_size_cor, bms[0].cells.dup(), codes[c], "%04X" % codes[c]
 		)
 		var i := 1
 		while c > 0:
 			if c & 1:
-				bm.cells.blend_rect(
-					bms[i].cells, Rect2i(Vector2i.ZERO, bm.cells.get_size()), Vector2i.ZERO
-				)
+				bm.cells.op(OP_BIT_OR, bms[i].cells)
 			c = c >> 1
 			i += 1
-		bm.save()
+		gens.push_back(bm.to_gen())
 
-	StateVars.db_saves.query("commit;")
+	StateVars.font.save_glyphs(gens)
+	StateVars.edit_refresh.emit()

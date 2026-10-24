@@ -18,8 +18,6 @@ var data_code := -1:
 			data_name = "%04X" % data_code
 		refresh()
 
-var bitmap := Bitmap.new(StyleVars.thumb_size_pre)
-
 var selected := false:
 	set(x):
 		if selected == x:
@@ -66,13 +64,13 @@ func refresh() -> void:
 
 
 func refresh_tex(gen: Dictionary) -> void:
-	if bitmap.dim != StyleVars.thumb_size_pre:
-		bitmap = Bitmap.new(StyleVars.thumb_size_pre)
-	bitmap.update_cells(gen)
+	if table.thumb_bitmap.dim != StyleVars.thumb_size_pre:
+		table.thumb_bitmap = Bitmap.new(StyleVars.thumb_size_pre)
+	var img := table.thumb_bitmap.place(gen).to_image()
 	if data_name in table.thumbs:
-		table.thumbs[data_name].update(bitmap.cells)
+		table.thumbs[data_name].update(img)
 	else:
-		table.thumbs[data_name] = ImageTexture.create_from_image(bitmap.cells)
+		table.thumbs[data_name] = ImageTexture.create_from_image(img)
 	set_thumb()
 
 

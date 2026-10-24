@@ -6,26 +6,32 @@ var dim_grid: int:
 		return StyleVars.grid_size_cor
 
 var node: TextureRect
-var cells: Image
 var tex: ImageTexture
+var dirty := false
 var bitmap: Bitmap
+var cells: BitGlyph:
+	get:
+		return bitmap.cells
+	set(c):
+		bitmap.cells = c
 
 
 func _init(r: TextureRect) -> void:
 	node = r
-	cells = Util.blank_img(dim_grid)
-	tex = ImageTexture.create_from_image(cells)
-	bitmap = Bitmap.new(dim_grid, cells)
+	bitmap = Bitmap.new(dim_grid)
+	tex = ImageTexture.create_from_image(cells.to_image())
 
 
 func clear() -> void:
-	bitmap.dim = dim_grid
-	cells.copy_from(Util.blank_img(dim_grid))
-	tex.set_image(cells)
+	cells = BitGlyph.create(Vector2i(dim_grid, dim_grid))
+	tex.set_image(cells.to_image())
 
 
 func update_tex() -> void:
-	tex.update(cells)
+	if not dirty:
+		return
+	dirty = false
+	tex.update(cells.to_image())
 
 
 func update_node() -> void:
