@@ -128,9 +128,9 @@ func delete() -> void:
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
 		var names := (
-			"select name from font_%s where code between ? and ?;" % StateVars.font.id
+			"select name from font_%s where code between ? and ?" % StateVars.font.id
 			if table.viewmode == Table.Mode.RANGE
-			else "select name from temp.full where row between ? and ?;"
+			else "select name from temp.full where row between ? and ?"
 		)
 		(
 			StateVars
