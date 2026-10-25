@@ -30,7 +30,6 @@ func _init(d: int, cs := BitGlyph.create(Vector2i(d, d)), dc := -1, dn := "") ->
 func save(over := true) -> void:
 	var gen := to_gen()
 	StateVars.font.save_glyph(gen, over)
-	StateVars.refresh.emit(gen)
 
 
 func save_dwidth() -> void:
@@ -74,9 +73,7 @@ func load() -> void:
 		data_name = ""
 		return
 
-	var gen := qs[0]
-	StateVars.refresh.emit(gen)
-	update_cells(gen)
+	update_cells(qs[0])
 
 
 func to_gen() -> Dictionary:

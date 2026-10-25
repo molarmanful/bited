@@ -30,7 +30,9 @@ enum Mode { RANGE, GLYPHS, PAGE }
 @export var btn_del: Button
 
 var virt := Virt.new()
-var grid: Grid
+var grid: Grid:
+	get:
+		return editor.grid
 var names: Dictionary[String, Glyph]
 var thumbs: Dictionary[String, ImageTexture]
 var thumb_bitmap := Bitmap.new(StyleVars.thumb_size_pre)
@@ -41,10 +43,13 @@ var viewmode := Mode.GLYPHS
 var start := 0
 var end := 0
 
+var pick_layer := false:
+	set(v):
+		pick_layer = v
+		sel.get_sel_text()
+
 
 func _ready() -> void:
-	grid = editor.grid
-	sel.table = self
 	(
 		StateVars
 		. db_saves
@@ -77,6 +82,9 @@ func _ready() -> void:
 		func():
 			await get_tree().process_frame
 			update_tb()
+	)
+	node_grid_panel.visibility_changed.connect(
+		func(): node_placeholder.visible = not node_grid_panel.visible
 	)
 
 	btn_all.pressed.connect(sel.all)
@@ -222,12 +230,7 @@ func set_finder(query: String) -> void:
 
 
 func after_set(top := true) -> void:
-	if virt.length:
-		node_placeholder.hide()
-		node_grid_panel.show()
-	else:
-		node_grid_panel.hide()
-		node_placeholder.show()
+	node_grid_panel.visible = bool(virt.length)
 	sel.clear()
 	if top:
 		node_scroll.scroll_vertical = 0

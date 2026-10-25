@@ -177,11 +177,7 @@ func define_theme():
 
 	var style_nobg = inherit(style_panel, {bg_color = Color.TRANSPARENT})
 	var style_input = inherit(
-		style_nobg,
-		{
-			border_ = border_width(border_w),
-			content_ = content_margins(4),
-		}
+		style_nobg, {border_ = border_width(border_w), content_ = content_margins(4)}
 	)
 	var style_input_foc = inherit(
 		style_input, {border_color = color_fg, border_ = border_width(border_w_foc)}
@@ -259,7 +255,7 @@ func define_theme():
 		"Tree",
 		{
 			draw_guides = 0,
-			draw_relationship_lines = 1,
+			draw_relationship_lines = border_w,
 			inner_item_margin_left = 4,
 			inner_item_margin_top = 0,
 			inner_item_margin_right = 4,
@@ -279,14 +275,7 @@ func define_theme():
 			panel =
 			inherit(style_panel, {border_ = border_width(border_w), content_ = content_margins(0)}),
 			hovered =
-			inherit(
-				style_panel,
-				{
-					bg_color = color_bg_2,
-					border_ = border_width(border_w),
-					border_color = Color.TRANSPARENT,
-				}
-			),
+			inherit(style_input, {bg_color = color_bg_2, border_color = Color.TRANSPARENT}),
 			focus = inherit(style_input, {border_color = color_fg_2}),
 			selected = inherit(style_input, {border_color = color_fg_2}),
 			hovered_selected =
@@ -294,6 +283,8 @@ func define_theme():
 			selected_focus = inherit(style_input, {border_color = color_fg_2}),
 			hovered_selected_focus =
 			inherit(style_input, {bg_color = color_bg_2, border_color = color_fg_2}),
+			cursor = inherit(style_input, {border_color = color_fg_2}),
+			cursor_unfocused = stylebox_empty({})
 		}
 	)
 
@@ -379,15 +370,7 @@ func define_theme():
 	)
 
 	define_style("OptionButton", {arrow = mul_tex(ui_select_arrow, Color(color_fg, 0.5))})
-	var style_line = stylebox_line(
-		{
-			color = Color(color_fg, 0.5),
-			content_margin_left = 4,
-			content_margin_top = 0,
-			content_margin_right = 4,
-			content_margin_bottom = 0,
-		}
-	)
+	var style_line = stylebox_line({color = Color(color_fg, 0.5), content_ = content_margins(4, 0)})
 	define_style(
 		"PopupMenu",
 		{
@@ -406,22 +389,9 @@ func define_theme():
 		}
 	)
 
-	var style_tab = inherit(
-		style_nobg,
-		{
-			content_margin_left = 8,
-			content_margin_top = 4,
-			content_margin_right = 8,
-			content_margin_bottom = 4,
-		}
-	)
+	var style_tab = inherit(style_nobg, {content_ = content_margins(8, 4)})
 	var style_tab_border = inherit(
-		style_tab,
-		{
-			border_width_left = 1,
-			border_width_top = 1,
-			border_width_right = 1,
-		}
+		style_tab, {border_ = border_width(border_w, border_w, border_w, 0)}
 	)
 	define_style(
 		"TabBar",
@@ -451,24 +421,8 @@ func define_theme():
 	define_style("VSeparator", {separator = inherit(style_sep, {vertical = true})})
 
 	var style_scroll_thumb = inherit(style_input, {border_ = border_width(0)})
-	var style_scroll_h = inherit(
-		style_nobg,
-		{
-			content_margin_left = 0,
-			content_margin_top = 4,
-			content_margin_right = 0,
-			content_margin_bottom = 4
-		}
-	)
-	var style_scroll_v = inherit(
-		style_nobg,
-		{
-			content_margin_left = 4,
-			content_margin_top = 0,
-			content_margin_right = 4,
-			content_margin_bottom = 0
-		}
-	)
+	var style_scroll_h = inherit(style_nobg, {content_ = content_margins(0, 4)})
+	var style_scroll_v = inherit(style_nobg, {content_ = content_margins(4, 0)})
 	define_style(
 		"HScrollBar",
 		{
@@ -494,14 +448,8 @@ func define_theme():
 		style_panel,
 		{
 			bg_color = color_border,
-			expand_margin_left = 1,
-			expand_margin_top = 32,
-			expand_margin_right = 1,
-			expand_margin_bottom = 1,
-			content_margin_left = 10,
-			content_margin_top = 28,
-			content_margin_right = 10,
-			content_margin_bottom = 8,
+			expand_ = expand_margins(border_w, 32, border_w, border_w),
+			content_ = content_margins(10, 28, 10, 8),
 		}
 	)
 	define_style(
@@ -567,10 +515,7 @@ func define_theme():
 					bg_color = color_tip_bg,
 					border_color = color_tip_border,
 					border_ = border_width(border_w),
-					content_margin_left = 8,
-					content_margin_top = 4,
-					content_margin_right = 8,
-					content_margin_bottom = 4,
+					content_ = content_margins(8, 4),
 				}
 			)
 		}
@@ -610,19 +555,36 @@ func define_theme():
 				style_panel,
 				{
 					border_ = border_width(0),
-					content_margin_top = border_w_foc,
-					content_margin_right = border_w_foc,
-					content_margin_bottom = border_w_foc,
+					content_ = content_margins(0, border_w_foc, border_w_foc, border_w_foc),
 				}
 			),
 			focus =
 			inherit(
 				style_input_foc,
-				{
-					border_color = color_fg_2,
-					expand_margin_left = 12 + border_w_foc / 2,
-				}
+				{border_color = color_fg_2, expand_margin_left = 12 + border_w_foc / 2}
 			)
+		}
+	)
+
+	define_variant_style(
+		"Layers",
+		"Tree",
+		{
+			item_margin = 0,
+			scrollbar_margin_top = border_w,
+			scrollbar_margin_right = border_w,
+			scrollbar_margin_bottom = border_w,
+			panel = inherit(style_input, {content_ = content_margins(0, 0, border_w + 4, 0)}),
+			selected =
+			inherit(style_input, {bg_color = color_sel, border_color = Color.TRANSPARENT}),
+			hovered_selected =
+			inherit(style_input, {bg_color = color_sel, border_color = color_fg_2}),
+			selected_focus =
+			inherit(style_input, {bg_color = color_sel, border_color = Color.TRANSPARENT}),
+			hovered_selected_focus =
+			inherit(style_input, {bg_color = color_sel, border_color = color_fg_2}),
+			button_hover = stylebox_empty({}),
+			button_pressed = stylebox_empty({}),
 		}
 	)
 

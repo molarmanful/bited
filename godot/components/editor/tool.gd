@@ -30,13 +30,14 @@ func _init(g: Grid) -> void:
 
 class _Tool:
 	var name := "tool"
-	var c_grid: Grid
+	var c_grid: Grid:
+		get:
+			return c_tool.grid
 	var c_tool: Tool
 	var p: Vector2i
 
 	func _init(t: Tool) -> void:
 		c_tool = t
-		c_grid = c_tool.grid
 
 	func pre() -> void:
 		c_grid.pattern.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)

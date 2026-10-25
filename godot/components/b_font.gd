@@ -2,6 +2,8 @@ class_name BFont
 extends BFontR
 ## BDF font abstraction for holding (meta)data.
 
+const BLENDS: Array[Variant.Operator] = [OP_BIT_OR, OP_SUBTRACT, OP_BIT_XOR, OP_BIT_AND]
+
 var id := "new_font"
 var px_size: int:
 	get:
@@ -69,6 +71,26 @@ func init_font(ignore := false) -> void:
 			}
 		)
 	)
+
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				select count(*) as n, coalesce(sum(name = 'xform'), 0) as x
+				from pragma_table_info('layers_%s')
+				;"""
+				% id
+			)
+		)
+	)
+	var cols := StateVars.db_saves.query_result[0]
+	var migrate: bool = cols.n and not cols.x
+
+	StateVars.db_saves.query("begin;")
+	if migrate:
+		StateVars.db_saves.query("alter table layers_{0} rename to layers_{0}_old;".format([id]))
 	(
 		StateVars
 		. db_saves
@@ -82,6 +104,7 @@ func init_font(ignore := false) -> void:
 					off_x int not null default 0,
 					off_y int not null default 0,
 					blend int not null default 0,
+					xform int not null default 0,
 					primary key (parent, ord)
 				) without rowid
 				;"""
@@ -89,6 +112,27 @@ func init_font(ignore := false) -> void:
 			)
 		)
 	)
+	if migrate:
+		(
+			StateVars
+			. db_saves
+			. query(
+				(
+					"""
+					insert or ignore into layers_{0} (parent, ord, child, off_x, off_y, blend)
+					select parent, ord, child, off_x, off_y, blend
+					from layers_{0}_old
+					;"""
+					. format([id])
+				)
+			)
+		)
+		StateVars.db_saves.query("drop table layers_{0}_old;".format([id]))
+	StateVars.db_saves.query(
+		"create index if not exists layers_{0}_child on layers_{0} (child);".format([id])
+	)
+	StateVars.db_saves.query("commit;")
+
 	save_font(ignore)
 	load_font()
 
@@ -266,12 +310,19 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	StateVars.db_saves.query("begin;")
 	for gen in gens:
-		save_glyph(gen, over)
+		insert_glyph(gen, over)
+	flatten_parents(gens.map(func(gen: Dictionary): return gen.name))
 	StateVars.db_saves.query("commit;")
 	StateVars.table_refresh.emit()
 
 
 func save_glyph(gen: Dictionary, over := true) -> void:
+	if insert_glyph(gen, over):
+		StateVars.refresh.emit(gen)
+	flatten_parents([gen.name])
+
+
+func insert_glyph(gen: Dictionary, over := true) -> bool:
 	(
 		StateVars
 		. db_saves
@@ -283,6 +334,7 @@ func save_glyph(gen: Dictionary, over := true) -> void:
 				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				values
 				(?, ?, ?, ?, ?, ?, ?, ?, ?)
+				returning name
 				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
 			),
@@ -299,6 +351,103 @@ func save_glyph(gen: Dictionary, over := true) -> void:
 			]
 		)
 	)
+	return not StateVars.db_saves.query_result.is_empty()
+
+
+func flatten_parents(names: Array) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				with recursive
+					up(name, depth) as (
+						select parent, 1
+						from layers_{0}
+						where child in (select value from json_each(?))
+						union
+						select l.parent, up.depth + 1
+						from layers_{0} as l
+						join up on l.child = up.name
+					)
+				select name
+				from up
+				group by name
+				order by max(depth)
+				;"""
+				. format([id])
+			),
+			[JSON.stringify(names)]
+		)
+	)
+	for q in StateVars.db_saves.query_result:
+		flatten(q.name)
+
+
+func flatten(name: String) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				select l.off_x + c.off_x as x, l.off_y + c.off_y as y, l.blend, c.bb_x, c.bb_y, c.img
+				from layers_{0} as l
+				join font_{0} as c on c.name = l.child
+				where l.parent = ?
+				order by l.ord
+				;"""
+				. format([id])
+			),
+			[name]
+		)
+	)
+	var qs := StateVars.db_saves.query_result
+	if not qs:
+		return
+
+	var r := Rect2i()
+	for q in qs:
+		var qr := Rect2i(q.x, q.y, q.bb_x, q.bb_y)
+		if qr.has_area():
+			r = r.merge(qr) if r.has_area() else qr
+
+	var bg := BitGlyph.create(r.size)
+	for q in qs:
+		bg.blit(
+			BLENDS[q.blend],
+			BitGlyph.create_from_bytes(
+				Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
+			),
+			Vector2i(q.x - r.position.x, r.end.y - q.y - q.bb_y)
+		)
+	var u := bg.used_rect()
+
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				update font_%s
+				set bb_x = ?, bb_y = ?, off_x = ?, off_y = ?, img = ?
+				where name = ?
+				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+				;"""
+				% id
+			),
+			[
+				u.size.x,
+				u.size.y,
+				r.position.x + u.position.x if u.has_area() else 0,
+				r.end.y - u.end.y if u.has_area() else 0,
+				bg.region(u).to_bytes(),
+				name,
+			]
+		)
+	)
+	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
 
 
 func to_dict() -> Dictionary:

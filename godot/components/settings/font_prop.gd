@@ -13,12 +13,8 @@ var props: Dictionary
 var type := 0:
 	set(t):
 		type = t
-		if type:
-			input_str.hide()
-			input_num.show()
-		else:
-			input_num.hide()
-			input_str.show()
+		input_num.visible = bool(type)
+		input_str.visible = not type
 var key: String
 var val: Variant = ""
 
