@@ -67,7 +67,7 @@ var row_bottom: int:
 		return row_top + rows_view
 var row0: int:
 	get:
-		return maxi(0, row_top - rows_off)
+		return clampi(row_top - rows_off, 0, row1)
 var row1: int:
 	get:
 		return mini(rows, row_bottom + rows_off)

@@ -119,7 +119,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 
 
 func delete() -> void:
-	if not ranges:
+	if table.pick_layer or not ranges:
 		return
 
 	StateVars.db_saves.query("begin;")
@@ -128,9 +128,9 @@ func delete() -> void:
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
 		var names := (
-			"select name from font_%s where code between ? and ?" % StateVars.font.id
+			"select name from font_%s where code between ?1 and ?2" % StateVars.font.id
 			if table.viewmode == Table.Mode.RANGE
-			else "select name from temp.full where row between ? and ?"
+			else "select name from temp.full where row between ?1 and ?2"
 		)
 		(
 			StateVars
@@ -138,12 +138,12 @@ func delete() -> void:
 			. query_with_bindings(
 				(
 					"""
-					delete from layers_%s
-					where parent in (%s) or child in (%s)
+					delete from layers_{0}
+					where parent in ({1}) or child in ({1})
 					;"""
-					% [StateVars.font.id, names, names]
+					. format([StateVars.font.id, names])
 				),
-				[a, b, a, b]
+				[a, b]
 			)
 		)
 		StateVars.db_saves.query_with_bindings(
@@ -159,7 +159,7 @@ func delete() -> void:
 
 
 func copy() -> void:
-	if not ranges:
+	if table.pick_layer or not ranges:
 		return
 
 	StateVars.db_saves.query("begin;")
@@ -246,7 +246,7 @@ func copy() -> void:
 
 
 func paste() -> void:
-	if not ranges:
+	if table.pick_layer or not ranges:
 		return
 	if not StateVars.db_saves.select_rows(
 		"sqlite_temp_master", "name = 'clip' and type = 'table'", ["name"]
@@ -437,10 +437,11 @@ func refresh(txt := true) -> void:
 
 
 func get_sel_text() -> void:
+	table.get_tree().call_group("selshow", "show" if ranges else "hide")
 	if not ranges:
-		table.get_tree().call_group("selshow", "hide")
 		return
-	table.get_tree().call_group("selshow", "show")
+	if table.pick_layer:
+		table.get_tree().call_group("hide_on_pick", "hide")
 	table.node_info_text.text = ("%d item%s selected" % [length, "s" if length != 1 else ""])
 
 

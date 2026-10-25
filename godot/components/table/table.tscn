@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bnhlhp8evbrv3"]
+[gd_scene format=3 uid="uid://bnhlhp8evbrv3"]
 
 [ext_resource type="Script" uid="uid://d2besw8ipif3c" path="res://components/table/table.gd" id="1_21spc"]
 [ext_resource type="Script" uid="uid://cqj2u2oqvvc37" path="res://components/table/sel.gd" id="3_ex1o2"]
@@ -17,7 +17,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_e3ld2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Table" type="PanelContainer" node_paths=PackedStringArray("node_inner", "node_header", "node_subheader", "node_glyphs", "node_pad", "node_placeholder", "node_grid_panel", "sel", "win_fltr_dw")]
+[node name="Table" type="PanelContainer" unique_id=986970579 node_paths=PackedStringArray("node_inner", "node_glyphs", "node_pad", "node_placeholder", "node_grid_panel", "sel", "win_fltr_dw")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,8 +25,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_21spc")
 node_inner = NodePath("Inner")
-node_header = NodePath("Inner/ScrollContainer/HBoxContainer/Header")
-node_subheader = NodePath("Inner/ScrollContainer/HBoxContainer/SubHeader")
 node_glyphs = NodePath("Inner/GridPanel/VBoxContainer/Glyphs")
 node_pad = NodePath("Inner/GridPanel/VBoxContainer/Pad")
 node_placeholder = NodePath("Inner/Placeholder")
@@ -35,48 +33,21 @@ sel = NodePath("Sel")
 win_fltr_dw = NodePath("FilterDWidth")
 metadata/_edit_lock_ = true
 
-[node name="Sel" type="Node" parent="." node_paths=PackedStringArray("table")]
+[node name="Sel" type="Node" parent="." unique_id=1435415082 node_paths=PackedStringArray("table")]
 script = ExtResource("3_ex1o2")
 table = NodePath("..")
 
-[node name="Inner" type="VBoxContainer" parent="."]
+[node name="Inner" type="VBoxContainer" parent="." unique_id=1124216924]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 16
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Inner"]
-layout_mode = 2
-horizontal_scroll_mode = 3
-vertical_scroll_mode = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Inner/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 8
-
-[node name="Header" type="Label" parent="Inner/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"TableHeader"
-theme_override_constants/line_spacing = 0
-vertical_alignment = 1
-text_overrun_behavior = 3
-
-[node name="SubHeader" type="Label" parent="Inner/ScrollContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_type_variation = &"TableSubHeader"
-theme_override_constants/line_spacing = 0
-horizontal_alignment = 3
-vertical_alignment = 1
-
-[node name="Placeholder" type="CenterContainer" parent="Inner"]
+[node name="Placeholder" type="CenterContainer" parent="Inner" unique_id=1106174043]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Inner/Placeholder"]
+[node name="Label" type="Label" parent="Inner/Placeholder" unique_id=1314621581]
 layout_mode = 2
 theme_type_variation = &"Muted"
 theme_override_constants/line_spacing = 0
@@ -85,25 +56,25 @@ text = "no glyphs... yet."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="GridPanel" type="PanelContainer" parent="Inner"]
+[node name="GridPanel" type="PanelContainer" parent="Inner" unique_id=269539560]
 layout_mode = 2
 theme_type_variation = &"BgBorder"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Inner/GridPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Inner/GridPanel" unique_id=545650238]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Pad" type="MarginContainer" parent="Inner/GridPanel/VBoxContainer"]
+[node name="Pad" type="MarginContainer" parent="Inner/GridPanel/VBoxContainer" unique_id=806109630]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Glyphs" type="HFlowContainer" parent="Inner/GridPanel/VBoxContainer"]
+[node name="Glyphs" type="HFlowContainer" parent="Inner/GridPanel/VBoxContainer" unique_id=941431351]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 1
 theme_override_constants/v_separation = 1
 
-[node name="FilterDWidth" type="Window" parent="." node_paths=PackedStringArray("table", "input", "btn_is_abs", "btn_ok", "btn_cancel")]
+[node name="FilterDWidth" type="Window" parent="." unique_id=758848389 node_paths=PackedStringArray("table", "input", "btn_is_abs", "btn_ok", "btn_cancel")]
 auto_translate_mode = 1
 title = "filter selection by dwidth"
 initial_position = 2
@@ -117,18 +88,18 @@ btn_is_abs = NodePath("PanelContainer/VBoxContainer/Body/HBoxContainer/is_abs")
 btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
 btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
 
-[node name="PanelContainer" type="PanelContainer" parent="FilterDWidth"]
+[node name="PanelContainer" type="PanelContainer" parent="FilterDWidth" unique_id=658106035]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="FilterDWidth/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="FilterDWidth/PanelContainer" unique_id=1330748092]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Body" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer"]
+[node name="Body" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer" unique_id=206858720]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -137,10 +108,10 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Body"]
+[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Body" unique_id=1004282065]
 layout_mode = 2
 
-[node name="is_abs" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+[node name="is_abs" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer" unique_id=1949427338]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
@@ -152,7 +123,7 @@ text = "W?"
 icon_alignment = 1
 expand_icon = true
 
-[node name="SpinFoc" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer"]
+[node name="SpinFoc" type="SpinBox" parent="FilterDWidth/PanelContainer/VBoxContainer/Body/HBoxContainer" unique_id=2093978547]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -162,28 +133,28 @@ prefix = "o:"
 select_all_on_focus = true
 script = ExtResource("4_762e1")
 
-[node name="Footer" type="PanelContainer" parent="FilterDWidth/PanelContainer/VBoxContainer"]
+[node name="Footer" type="PanelContainer" parent="FilterDWidth/PanelContainer/VBoxContainer" unique_id=1820042321]
 layout_mode = 2
 theme_type_variation = &"BorderT"
 
-[node name="MarginContainer" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer"]
+[node name="MarginContainer" type="MarginContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer" unique_id=1426198510]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer" unique_id=186721756]
 layout_mode = 2
 alignment = 2
 
-[node name="ok" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="ok" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1303363617]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_oml2e")
 text = "filter"
 
-[node name="cancel" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="FilterDWidth/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1839705146]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_e3ld2")

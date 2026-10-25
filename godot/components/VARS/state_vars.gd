@@ -171,6 +171,7 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_saves.query("drop table if exists font_%s;" % new)
 	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
 	StateVars.db_saves.query("drop table if exists layers_%s;" % new)
+	StateVars.db_saves.query("drop index if exists layers_%s_child;" % old)
 	StateVars.db_saves.query("alter table layers_%s rename to layers_%s;" % [old, new])
 	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [new])
 	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])

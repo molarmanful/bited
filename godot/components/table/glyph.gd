@@ -93,6 +93,12 @@ func lclick() -> void:
 
 	table.node_focus.grab_focus()
 
+	if table.pick_layer:
+		if nop:
+			return
+		table.editor.grid.layers.pick(data_name)
+		return
+
 	if shift and ctrl:
 		table.sel.select_range_inv(self)
 		return
@@ -106,7 +112,7 @@ func lclick() -> void:
 		return
 
 	if not nop and selected and table.sel.is_alone():
-		StateVars.edit.emit(self.data_name, self.data_code)
+		StateVars.edit.emit(data_name, data_code)
 		return
 
 	table.sel.select(self)

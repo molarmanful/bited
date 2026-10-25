@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://qef2nehtarn1" path="res://assets/cmode/f.svg" id="7_ukwbh"]
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
 [ext_resource type="Script" uid="uid://cmf158hy1yp5d" path="res://components/editor/grid.gd" id="9_8b0ie"]
+[ext_resource type="Script" uid="uid://bcq70vid0xrwv" path="res://components/editor/layers.gd" id="12_xaubg"]
+[ext_resource type="Script" uid="uid://cynhlhc076ldn" path="res://components/drag_tree.gd" id="13_mnipk"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_2r100"]
 action = &"bited_prev_uc"
@@ -92,6 +94,12 @@ events = [SubResource("InputEventAction_ow1e3")]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
+
+[sub_resource type="InputEventAction" id="InputEventAction_850sg"]
+action = &"bited_layers"
+
+[sub_resource type="Shortcut" id="Shortcut_xaubg"]
+events = [SubResource("InputEventAction_850sg")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
@@ -280,17 +288,18 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_kyc1p")
 text = "✥"
 
-[node name="pen" type="Button" parent="CenterContainer/GridContainer/4" unique_id=94757239]
+[node name="pen" type="Button" parent="CenterContainer/GridContainer/4" unique_id=94757239 groups=["hide_if_layer"]]
 layout_mode = 2
 tooltip_text = "pen"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
+button_pressed = true
 button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_lgybh")
 text = "✎"
 
-[node name="line" type="Button" parent="CenterContainer/GridContainer/4" unique_id=372200275]
+[node name="line" type="Button" parent="CenterContainer/GridContainer/4" unique_id=372200275 groups=["hide_if_layer"]]
 layout_mode = 2
 tooltip_text = "line"
 mouse_default_cursor_shape = 2
@@ -300,7 +309,7 @@ button_group = ExtResource("1_88smh")
 shortcut = SubResource("Shortcut_el2rj")
 text = "╲"
 
-[node name="rect" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1206765512]
+[node name="rect" type="Button" parent="CenterContainer/GridContainer/4" unique_id=1206765512 groups=["hide_if_layer"]]
 layout_mode = 2
 tooltip_text = "rectangle"
 mouse_default_cursor_shape = 2
@@ -393,12 +402,13 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer" unique_id=1740979526]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "layers", "node_wrapper", "node_root", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")
+layers = NodePath("../../../layers")
 node_wrapper = NodePath("../..")
 node_root = NodePath("Root")
 node_view_lines = NodePath("Lines/SubViewport")
@@ -448,6 +458,15 @@ grid = NodePath("../../..")
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 8
+
+[node name="layers" type="Button" parent="CenterContainer/GridContainer/6" unique_id=549640445]
+layout_mode = 2
+tooltip_text = "layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+toggle_mode = true
+shortcut = SubResource("Shortcut_xaubg")
+text = "⧉"
 
 [node name="7" type="Control" parent="CenterContainer/GridContainer" unique_id=1763315270]
 custom_minimum_size = Vector2(0, 24)
@@ -566,3 +585,53 @@ theme_override_font_sizes/font_size = 32
 text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick")]
+oversampling_override = 1.0
+title = "layers"
+position = Vector2i(0, 32)
+size = Vector2i(200, 200)
+visible = false
+script = ExtResource("12_xaubg")
+editor = NodePath("../..")
+btn = NodePath("../GridContainer/6/layers")
+tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/DragTree")
+btn_pick = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/pick")
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/layers" unique_id=3710046]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/layers/PanelContainer" unique_id=2049598590]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/layers/PanelContainer/MarginContainer" unique_id=146087436]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=1271668323]
+layout_mode = 2
+
+[node name="pick" type="Button" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=973372326]
+layout_mode = 2
+tooltip_text = "pick glyphs from table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+toggle_mode = true
+text = "⌖"
+
+[node name="DragTree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=845784831]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Layers"
+hide_root = true
+select_mode = 2
+script = ExtResource("13_mnipk")
+metadata/_custom_type_script = "uid://cynhlhc076ldn"
