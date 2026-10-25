@@ -1,7 +1,7 @@
 nav:
   - Home:
-    - index.md
-    - why.md
-    - credits.md
+      - index.md
+      - why.md
+      - credits.md
   - download
   - User Manual: manual
