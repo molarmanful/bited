@@ -22,10 +22,6 @@ func load_str(text: String) -> bool:
 	if not codes:
 		return false
 
-	var s := PackedStringArray()
-	s.resize(codes.size())
-	s.fill("?")
-
 	(
 		StateVars
 		. db_saves
@@ -34,11 +30,11 @@ func load_str(text: String) -> bool:
 				"""
 				select code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
-				where code in (%s)
-				"""
-				% [StateVars.font.id, ",".join(s)]
+				where code in (select value from json_each(?))
+				;"""
+				% StateVars.font.id
 			),
-			codes
+			[JSON.stringify(codes)]
 		)
 	)
 
