@@ -93,24 +93,6 @@ events = [SubResource("InputEventAction_ow1e3")]
 [sub_resource type="ViewportTexture" id="ViewportTexture_iwxi2"]
 viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
 
-[sub_resource type="InputEventAction" id="InputEventAction_fp0vg"]
-action = &"bited_selmode"
-
-[sub_resource type="Shortcut" id="Shortcut_xaubg"]
-events = [SubResource("InputEventAction_fp0vg")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_850sg"]
-action = &"bited_overwrite"
-
-[sub_resource type="Shortcut" id="Shortcut_ai11x"]
-events = [SubResource("InputEventAction_850sg")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_mnipk"]
-action = &"bited_stamp"
-
-[sub_resource type="Shortcut" id="Shortcut_850sg"]
-events = [SubResource("InputEventAction_mnipk")]
-
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
 
@@ -411,7 +393,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer" unique_id=1740979526]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_sels", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr", "btn_selmode", "btn_overwrite", "btn_stamp")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "node_wrapper", "node_root", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -419,7 +401,6 @@ script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")
 node_wrapper = NodePath("../..")
 node_root = NodePath("Root")
-node_sels = NodePath("Sels")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 node_placeholder = NodePath("../../../Placeholder")
@@ -442,17 +423,8 @@ btn_down = NodePath("../../8/down")
 btn_up = NodePath("../../8/up")
 btn_right = NodePath("../../8/right")
 btn_grid_clr = NodePath("../../8/grid_clr")
-btn_selmode = NodePath("../../6/selmode")
-btn_overwrite = NodePath("../../6/overwrite")
-btn_stamp = NodePath("../../6/stamp")
 
 [node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=326697129]
-texture_filter = 1
-texture_repeat = 1
-layout_mode = 2
-mouse_default_cursor_shape = 3
-
-[node name="Sels" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1871857151]
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
@@ -476,31 +448,6 @@ grid = NodePath("../../..")
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 8
-
-[node name="selmode" type="Button" parent="CenterContainer/GridContainer/6" unique_id=454502595]
-layout_mode = 2
-tooltip_text = "toggle pattern 1"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Tool"
-toggle_mode = true
-shortcut = SubResource("Shortcut_xaubg")
-text = ":1"
-
-[node name="overwrite" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1799455966]
-layout_mode = 2
-tooltip_text = "overwrite"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_ai11x")
-text = "✍"
-
-[node name="stamp" type="Button" parent="CenterContainer/GridContainer/6" unique_id=696519890]
-layout_mode = 2
-tooltip_text = "stamp"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_850sg")
-text = "🖃"
 
 [node name="7" type="Control" parent="CenterContainer/GridContainer" unique_id=1763315270]
 custom_minimum_size = Vector2(0, 24)
