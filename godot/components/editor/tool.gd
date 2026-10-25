@@ -39,7 +39,7 @@ class _Tool:
 		c_grid = c_tool.grid
 
 	func pre() -> void:
-		c_grid.pattern_top.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
+		c_grid.pattern.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
 
 	func handle(state := State.X) -> void:
 		if state == State.END:
@@ -54,7 +54,7 @@ class _Tool:
 			start()
 
 		update()
-		c_grid.pattern_top.dirty = true
+		c_grid.pattern.dirty = true
 
 	func start() -> void:
 		var a := get_a()
@@ -67,26 +67,24 @@ class _Tool:
 				c_tool.op = OP_BIT_XOR
 			_:
 				c_tool.op = OP_BIT_OR if a else OP_SUBTRACT
-		c_tool.prev = c_grid.pattern_top.cells.dup()
+		c_tool.prev = c_grid.pattern.cells.dup()
 		c_tool.mask = BitGlyph.create(c_tool.prev.get_size())
 		c_tool.pivot = p
 		c_grid.grab_focus()
 
 	func get_a() -> bool:
-		return c_tool.cmode != CMode.CELL or not c_grid.pattern_top.cells.get_bit(p)
+		return c_tool.cmode != CMode.CELL or not c_grid.pattern.cells.get_bit(p)
 
 	func update() -> void:
 		pass
 
 	func end() -> void:
-		if c_grid.is_sel:
-			return
 		c_grid.act_cells(c_tool.prev)
-		c_grid.pattern_root.bitmap.save()
+		c_grid.pattern.bitmap.save()
 
 	func apply_mask() -> void:
-		c_grid.pattern_top.cells.copy_from(c_tool.prev)
-		c_grid.pattern_top.cells.op(c_tool.op, c_tool.mask)
+		c_grid.pattern.cells.copy_from(c_tool.prev)
+		c_grid.pattern.cells.op(c_tool.op, c_tool.mask)
 
 
 class ToolPen:
@@ -97,7 +95,7 @@ class ToolPen:
 		name = "pen"
 
 	func get_a() -> bool:
-		return not c_grid.pattern_top.cells.get_bit(p)
+		return not c_grid.pattern.cells.get_bit(p)
 
 	func update() -> void:
 		super()
@@ -142,9 +140,9 @@ class ToolMove:
 		name = "move"
 
 	func pre() -> void:
-		c_grid.pattern_top.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
+		c_grid.pattern.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
 	func update() -> void:
 		super()
-		c_grid.pattern_top.cells.copy_from(c_tool.prev)
-		c_grid.pattern_top.cells.translate(p - c_tool.pivot)
+		c_grid.pattern.cells.copy_from(c_tool.prev)
+		c_grid.pattern.cells.translate(p - c_tool.pivot)
