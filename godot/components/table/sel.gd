@@ -127,39 +127,28 @@ func delete() -> void:
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
-		if table.viewmode == Table.Mode.RANGE:
-			(
-				StateVars
-				. db_saves
-				. query_with_bindings(
-					(
-						"""
-						delete from font_%s
-						where code between ? and ?
-						;"""
-						% StateVars.font.id
-					),
-					[a, b]
-				)
+		var names := (
+			"select name from font_%s where code between ? and ?;" % StateVars.font.id
+			if table.viewmode == Table.Mode.RANGE
+			else "select name from temp.full where row between ? and ?;"
+		)
+		(
+			StateVars
+			. db_saves
+			. query_with_bindings(
+				(
+					"""
+					delete from layers_%s
+					where parent in (%s) or child in (%s)
+					;"""
+					% [StateVars.font.id, names, names]
+				),
+				[a, b, a, b]
 			)
-		else:
-			(
-				StateVars
-				. db_saves
-				. query_with_bindings(
-					(
-						"""
-						delete from font_%s
-						where name in (
-							select name
-							from temp.full
-							where row between ? and ?
-						);"""
-						% StateVars.font.id
-					),
-					[a, b]
-				)
-			)
+		)
+		StateVars.db_saves.query_with_bindings(
+			"delete from font_%s where name in (%s);" % [StateVars.font.id, names], [a, b]
+		)
 
 	StateVars.db_saves.query("commit;")
 

@@ -50,6 +50,7 @@ static func unifontex() -> BFont:
 func init_font(ignore := false) -> void:
 	if not ignore:
 		StateVars.db_saves.query("drop table if exists font_%s;" % id)
+		StateVars.db_saves.query("drop table if exists layers_%s;" % id)
 	(
 		StateVars
 		. db_saves
@@ -81,7 +82,7 @@ func init_font(ignore := false) -> void:
 					off_x int not null default 0,
 					off_y int not null default 0,
 					blend int not null default 0,
-					primary key (parent, ord, child)
+					primary key (parent, ord)
 				) without rowid
 				;"""
 				% [id]

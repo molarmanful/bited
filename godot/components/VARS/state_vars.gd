@@ -162,6 +162,7 @@ func has_font(id: String) -> bool:
 func delete_font(id: String) -> void:
 	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
 	StateVars.db_saves.drop_table("font_" + id)
+	StateVars.db_saves.drop_table("layers_" + id)
 
 
 ## Renames font [param old] to [param new].
@@ -169,6 +170,8 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_saves.query("begin;")
 	StateVars.db_saves.query("drop table if exists font_%s;" % new)
 	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
+	StateVars.db_saves.query("drop table if exists layers_%s;" % new)
+	StateVars.db_saves.query("alter table layers_%s rename to layers_%s;" % [old, new])
 	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [new])
 	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])
 	StateVars.db_saves.query("commit;")
