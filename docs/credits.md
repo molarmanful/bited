@@ -9,10 +9,7 @@ bited is proudly built with:
 - [UnifontEX](https://github.com/stgiga/UnifontEX)
 - [GNU Unifont](https://unifoundry.com/unifont)
 - [Nerd Fonts](https://www.nerdfonts.com)
-- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
-- [MkDocs Awesome Pages Plugin](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin)
-- [MkDocs GLightbox](https://github.com/blueswen/mkdocs-glightbox)
-- [mkdocs_puml](https://github.com/MikhailKravets/mkdocs_puml)
+- [Zenical](https://zensical.org)
 - [FlakeHub Cache](https://flakehub.com/cache)
 
 Development of bited would not have been possible without the following

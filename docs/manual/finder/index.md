@@ -28,24 +28,12 @@ then copy your design across all the matched glyphs.
 The Finder has a rudimentary query language that internally transpiles to a
 SQLite statement.
 
-```puml
-@startebnf
-
-<style>
-  root {
-    FontName DejaVu Sans Mono
-  }
-</style>
-
-query = {
-  (
-    [":;" | ":u" | ":cat" | ":cat;" | ":block" | ":block;" | ":page" | ":page;"],
-    {? <phrase> ? | ? <string> ?}
-  )
-  | "&" | "|" | "!" | "(" | ")"
-};
-
-@endebnf
+```mermaid
+railroad-ebnf-beta
+query = { keyword? primitive* | op };
+keyword = ':;' | ':u' | ':cat' | ':cat;' | ':block' | ':block;' | ':page' | ':page;';
+primitive = phrase | string;
+op = '&' | '|' | '!' | '(' | ')';
 ```
 
 ### Phrases
@@ -72,6 +60,8 @@ strings as one phrase; strings and phrases are interchangeable.
 
 You can escape `"` and `\` inside strings with `\`.
 
+**Example**: `"this is one string"`
+
 ### `;` and SQL-Like
 
 By default, the transpiler wraps phrases and strings with `%` -- i.e.
@@ -93,7 +83,7 @@ Nerd Fonts.
 
 Filters any matching Unicode blocks. Has a SQL-LIKE variant.
 
-**Example**: `:cat latin`
+**Example**: `:block latin`
 
 ### `:page`
 

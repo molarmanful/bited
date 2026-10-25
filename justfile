@@ -11,4 +11,4 @@ ed: build-rs
   godot -e
 
 docs:
-  uv run mkdocs serve
+  uv run zensical serve

@@ -2,14 +2,10 @@
 name = "bited-docs"
 version = "0.0.0"
 requires-python = ">=3.12"
-dependencies = [
-  "mike>=2.2.0",
-  "mkdocs-awesome-pages-plugin>=2.10.1",
-  "mkdocs-glightbox>=0.4.0",
-  "mkdocs-material>=9.7.7",
-  "mkdocs-puml>=2.3.0",
-  "plantuml-markdown>=3.11.3",
-]
+dependencies = ["mike", "zensical>=0.0.72"]
 
 [tool.setuptools]
 py-modules = []
+
+[tool.uv.sources]
+mike = { git = "https://github.com/squidfunk/mike.git", tag = "2.2.0+zensical-0.1.0" }
