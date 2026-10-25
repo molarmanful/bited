@@ -2,7 +2,10 @@
 class_name Grid
 extends PanelContainer
 
+signal refreshed
+
 @export var editor: Editor
+@export var layers: Layers
 @export var node_wrapper: Container
 @export var node_root: TextureRect
 @export var node_view_lines: SubViewport
@@ -34,6 +37,10 @@ extends PanelContainer
 @export var btn_right: Button
 @export var btn_grid_clr: Button
 
+var table: Table:
+	get:
+		return editor.table
+
 var dim_grid: int:
 	get:
 		return StyleVars.grid_size_cor
@@ -49,7 +56,6 @@ var size_grid: Vector2i:
 
 var pressed := false
 var pattern: Pattern
-var table: Table
 var toolman := Tool.new(self)
 var tool_sel := "pen":
 	set(t):
@@ -60,8 +66,6 @@ var undoman := UndoRedo.new()
 
 func _ready() -> void:
 	pattern = Pattern.new(node_root)
-	table = editor.table
-	refresh()
 
 	StateVars.settings.connect(refresh)
 	StateVars.edit.connect(start_edit)
@@ -69,6 +73,14 @@ func _ready() -> void:
 	StyleVars.set_grid.connect(refresh.bind(true))
 
 	theme_changed.connect(pattern.update_tex)
+
+	node_wrapper.visibility_changed.connect(
+		func():
+			node_placeholder.visible = not node_wrapper.visible
+			editor.node_info.visible = node_wrapper.visible
+			if not node_wrapper.visible:
+				layers.hide()
+	)
 
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
@@ -91,6 +103,8 @@ func _ready() -> void:
 	btn_up.pressed.connect(translate.bind(Vector2i.UP))
 	btn_right.pressed.connect(translate.bind(Vector2i.RIGHT))
 	btn_grid_clr.pressed.connect(clear)
+
+	refresh()
 
 
 func _process(_delta: float) -> void:
@@ -128,14 +142,13 @@ func refresh(hard := false) -> void:
 		pattern.clear()
 
 	pattern.bitmap.load()
+	refreshed.emit()
 
 	if not pattern.bitmap.data_name:
 		editor.node_info.hide()
 		node_wrapper.hide()
-		node_placeholder.show()
 		return
 	editor.node_info.show()
-	node_placeholder.hide()
 	node_wrapper.show()
 
 	btn_is_abs.set_pressed_no_signal(pattern.bitmap.is_abs)

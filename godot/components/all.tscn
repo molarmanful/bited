@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://vuvwrmullfm8"]
+[gd_scene format=3 uid="uid://vuvwrmullfm8"]
 
 [ext_resource type="Script" uid="uid://bbwi8wg1wp6w6" path="res://components/all.gd" id="1_bbici"]
 [ext_resource type="PackedScene" uid="uid://bnhlhp8evbrv3" path="res://components/table/table.tscn" id="1_tnd3j"]
@@ -48,7 +48,7 @@ action = &"ui_text_delete"
 [sub_resource type="Shortcut" id="Shortcut_spwom"]
 events = [SubResource("InputEventAction_p7grg")]
 
-[node name="All" type="PanelContainer" node_paths=PackedStringArray("node_body", "table", "editor")]
+[node name="All" type="PanelContainer" unique_id=433808662 node_paths=PackedStringArray("node_body", "table", "editor")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -56,40 +56,40 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bbici")
 node_body = NodePath("Body")
-table = NodePath("Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/ScrollContainer2/MarginContainer/Table")
 editor = NodePath("Body/Main/HSplitContainer/PanelContainer/ScrollContainer/Editor")
 
-[node name="Body" type="VBoxContainer" parent="."]
+[node name="Body" type="VBoxContainer" parent="." unique_id=1847068227]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Main" type="MarginContainer" parent="Body"]
+[node name="Main" type="MarginContainer" parent="Body" unique_id=892860794]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="Body/Main"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Body/Main" unique_id=1864203502]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer" unique_id=728661659]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"BorderR"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main/HSplitContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main/HSplitContainer/PanelContainer" unique_id=831774745]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" node_paths=PackedStringArray("table", "node_info", "node_info_text") instance=ExtResource("2_q0u5u")]
+[node name="Editor" parent="Body/Main/HSplitContainer/PanelContainer/ScrollContainer" unique_id=1796260832 node_paths=PackedStringArray("table", "node_info", "node_info_text") instance=ExtResource("2_q0u5u")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-table = NodePath("../../../MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("../../../MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/ScrollContainer2/MarginContainer/Table")
 node_info = NodePath("../../EditorInfo")
 node_info_text = NodePath("../../EditorInfo/PanelContainer/MarginContainer/InfoText")
 metadata/_edit_lock_ = true
 
-[node name="EditorInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer"]
+[node name="EditorInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer" unique_id=1353449257]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
@@ -98,12 +98,12 @@ mouse_filter = 2
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo" unique_id=1413578232]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer" unique_id=1306281244]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 12
@@ -111,56 +111,103 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer/MarginContainer"]
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/PanelContainer/EditorInfo/PanelContainer/MarginContainer" unique_id=1173784519]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer" unique_id=150404418]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = -12
 
-[node name="HSplitContainer" type="HSplitContainer" parent="Body/Main/HSplitContainer/MarginContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Body/Main/HSplitContainer/MarginContainer" unique_id=506154897]
 layout_mode = 2
+split_offsets = PackedInt32Array(-200)
 split_offset = -200
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" unique_id=34560218]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 2
 theme_type_variation = &"BorderR"
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer" unique_id=1661533353]
 layout_mode = 2
-size_flags_horizontal = 3
-follow_focus = true
+theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer" unique_id=1406333731]
+layout_mode = 2
+theme_type_variation = &"BorderB"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/PanelContainer" unique_id=884837025]
+layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer" unique_id=580731863]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 96
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
 
-[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer" node_paths=PackedStringArray("editor", "charsets", "node_focus", "node_scroll", "node_info", "node_info_text", "node_toolbox", "btn_all", "btn_clr", "btn_fltr_dw", "btn_cut", "btn_copy", "btn_paste", "btn_del") instance=ExtResource("1_tnd3j")]
+[node name="HBoxContainer" type="HBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer" unique_id=273240789]
 layout_mode = 2
-editor = NodePath("../../../../../../PanelContainer/ScrollContainer/Editor")
-charsets = NodePath("../../../../Charsets")
-node_focus = NodePath("../../..")
-node_scroll = NodePath("../..")
-node_info = NodePath("../../../../../TableInfo")
-node_info_text = NodePath("../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
-node_toolbox = NodePath("../../../Toolbox")
-btn_all = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/all")
-btn_clr = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/clr")
-btn_fltr_dw = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/fltr_dw")
-btn_cut = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/cut")
-btn_copy = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/copy")
-btn_paste = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/paste")
-btn_del = NodePath("../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/del")
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
 
-[node name="Toolbox" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer"]
+[node name="Header" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/HBoxContainer" unique_id=1088250731]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TableHeader"
+theme_override_constants/line_spacing = 0
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="SubHeader" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/HBoxContainer" unique_id=1515617341]
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"TableSubHeader"
+theme_override_constants/line_spacing = 0
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="ScrollContainer2" type="ScrollContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer" unique_id=145039960]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/ScrollContainer2" unique_id=1320953199]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_bottom = 80
+
+[node name="Table" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/ScrollContainer2/MarginContainer" unique_id=1806224972 node_paths=PackedStringArray("editor", "charsets", "node_focus", "node_scroll", "node_header", "node_subheader", "node_info", "node_info_text", "node_toolbox", "btn_all", "btn_clr", "btn_fltr_dw", "btn_cut", "btn_copy", "btn_paste", "btn_del") instance=ExtResource("1_tnd3j")]
+layout_mode = 2
+editor = NodePath("../../../../../../../PanelContainer/ScrollContainer/Editor")
+charsets = NodePath("../../../../../Charsets")
+node_focus = NodePath("../../../..")
+node_scroll = NodePath("../..")
+node_header = NodePath("../../../PanelContainer/ScrollContainer/MarginContainer/HBoxContainer/Header")
+node_subheader = NodePath("../../../PanelContainer/ScrollContainer/MarginContainer/HBoxContainer/SubHeader")
+node_info = NodePath("../../../../../../TableInfo")
+node_info_text = NodePath("../../../../../../TableInfo/PanelContainer/MarginContainer/InfoText")
+node_toolbox = NodePath("../../../../Toolbox")
+btn_all = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/all")
+btn_clr = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/clr")
+btn_fltr_dw = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/fltr_dw")
+btn_cut = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/cut")
+btn_copy = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/copy")
+btn_paste = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/paste")
+btn_del = NodePath("../../../../Toolbox/PanelContainer2/MarginContainer/HBoxContainer/del")
+
+[node name="Toolbox" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer" unique_id=1387472109]
 z_index = 10
 layout_mode = 2
 size_flags_horizontal = 8
@@ -169,13 +216,13 @@ mouse_filter = 2
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
 
-[node name="PanelContainer2" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox"]
+[node name="PanelContainer2" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox" unique_id=1113839146]
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2" unique_id=475898218]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 8
@@ -183,10 +230,10 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer" unique_id=1563237351]
 layout_mode = 2
 
-[node name="all" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer"]
+[node name="all" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=1222197736]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -196,7 +243,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_yrm8u")
 text = "▒▒"
 
-[node name="clr" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="clr" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=332824718 groups=["selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -206,7 +253,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_0wxna")
 text = "⬜"
 
-[node name="fltr_dw" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="fltr_dw" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=1762382493 groups=["selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -216,11 +263,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_gqwb0")
 text = "⧪"
 
-[node name="VSeparator" type="VSeparator" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="VSeparator" type="VSeparator" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=309057853 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="cut" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="cut" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=178571004 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -230,7 +277,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_v1wdn")
 text = "✂"
 
-[node name="copy" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="copy" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=431155935 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -240,7 +287,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_trjha")
 text = "⎘"
 
-[node name="paste" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="paste" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=777354922 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -250,7 +297,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_xmakg")
 text = "📋"
 
-[node name="del" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" groups=["selshow"]]
+[node name="del" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=2011979685 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -260,14 +307,14 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_spwom")
 text = "🗑"
 
-[node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" node_paths=PackedStringArray("table")]
+[node name="Charsets" type="Tree" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer" unique_id=112585519 node_paths=PackedStringArray("table")]
 layout_mode = 2
 theme_type_variation = &"Charsets"
 hide_root = true
 script = ExtResource("5_uxapv")
-table = NodePath("../PanelContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("../PanelContainer/VBoxContainer/ScrollContainer2/MarginContainer/Table")
 
-[node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer" groups=["selshow"]]
+[node name="TableInfo" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer" unique_id=616249561 groups=["selshow"]]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 0
@@ -275,12 +322,12 @@ size_flags_vertical = 8
 mouse_filter = 2
 theme_override_constants/margin_bottom = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo"]
+[node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo" unique_id=654725959]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"Border"
 
-[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer" unique_id=1303569293]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 12
@@ -288,11 +335,11 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer"]
+[node name="InfoText" type="Label" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo/PanelContainer/MarginContainer" unique_id=1167884083]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 
-[node name="Nav" parent="Body" node_paths=PackedStringArray("table") instance=ExtResource("2_rafec")]
+[node name="Nav" parent="Body" unique_id=1689976263 node_paths=PackedStringArray("table") instance=ExtResource("2_rafec")]
 layout_mode = 2
 theme_type_variation = &"BorderT"
-table = NodePath("../Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/ScrollContainer2/MarginContainer/Table")
+table = NodePath("../Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/VBoxContainer/ScrollContainer2/MarginContainer/Table")
