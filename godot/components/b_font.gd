@@ -342,7 +342,9 @@ func from_dict(d: Dictionary) -> void:
 	cap_h = d.cap_h
 	x_h = d.x_h
 	copyright = d.copyright
-	props = d.props
+	var p: Dictionary[String, Variant] = {}
+	p.assign(d.props)
+	props = p
 	StyleVars.table_width = d.table_width
 	StyleVars.thumb_px_size = d.thumb_px_size
 	StyleVars.grid_size = d.grid_size
