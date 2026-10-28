@@ -58,7 +58,7 @@ var rows_view: int:
 		return h_view / size_item_gap.y
 var rows_off: int:
 	get:
-		return 1
+		return 2
 var row_top: int:
 	get:
 		return v_scroll / size_item_gap.y
