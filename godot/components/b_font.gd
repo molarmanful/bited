@@ -217,6 +217,7 @@ func to_glyphs_toml() -> String:
 				"""
 				select is_abs, count(is_abs) as n
 				from font_%s
+				group by is_abs
 				order by n desc
 				limit 1
 				;"""
@@ -227,40 +228,51 @@ func to_glyphs_toml() -> String:
 	var qs := StateVars.db_saves.query_result
 	var d_is_abs: int = qs[0].is_abs if qs else 1
 
-	var default := ("[default]\n" + "is_abs = %s\n") % ("true" if d_is_abs else "false")
-
 	(
 		StateVars
 		. db_saves
 		. query_with_bindings(
 			(
 				"""
-				select name, code, is_abs
-				from font_%s
-				where is_abs <> ?
-				order by code, name
+				with
+					g as (select *, json_quote(iif(code >= 0, 'U+', '') || name) as key from font_{0}),
+					ls as (
+						select
+							l.parent,
+							'layers = [\n' || group_concat(
+								format(
+									'    { child = %s, off_x = %d, off_y = %d, blend = %d, xform = %d },\n',
+									c.key, l.off_x, l.off_y, l.blend, l.xform
+								),
+								'' order by l.ord
+							) || ']\n' as layers
+						from layers_{0} as l
+						join g as c on c.name = l.child
+						group by l.parent
+					)
+				select
+					coalesce(
+						group_concat(
+							format('[glyphs.%s]\n', g.key)
+							|| iif(g.is_abs <> ?1, format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')), '')
+							|| coalesce(ls.layers, ''),
+							'' order by g.code, g.name
+						), ''
+					) as toml
+				from g
+				left join ls on ls.parent = g.name
+				where g.is_abs <> ?1 or ls.layers is not null
 				;"""
-				% id
+				. format([id])
 			),
 			[d_is_abs]
 		)
 	)
-	qs = StateVars.db_saves.query_result
 
-	var res: PackedStringArray
-	res.resize(len(qs))
-	var i = 0
-	for q in qs:
-		res[i] = (
-			("[glyphs.%s]\n" + "is_abs = %s\n")
-			% [
-				JSON.stringify(("U+" if q.code >= 0 else "") + q.name),
-				"true" if q.is_abs else "false"
-			]
-		)
-		i += 1
-
-	return default + "".join(res)
+	return (
+		"[default]\nis_abs = %s\n%s"
+		% ["true" if d_is_abs else "false", StateVars.db_saves.query_result[0].toml]
+	)
 
 
 func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
@@ -314,6 +326,26 @@ func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	flatten_parents(gens.map(func(gen: Dictionary): return gen.name))
 	StateVars.db_saves.query("commit;")
 	StateVars.table_refresh.emit()
+
+
+func insert_layers(ls: Array[Dictionary]) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				insert or replace into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
+				select
+					value ->> 'parent', value ->> 'ord', value ->> 'child',
+					value ->> 'off_x', value ->> 'off_y', value ->> 'blend', value ->> 'xform'
+				from json_each(?)
+				;"""
+				. format([id])
+			),
+			[JSON.stringify(ls)]
+		)
+	)
 
 
 func save_glyph(gen: Dictionary, over := true) -> void:

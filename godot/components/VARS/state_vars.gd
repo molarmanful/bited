@@ -191,9 +191,8 @@ func load_parsed(bf: BFont) -> void:
 	StyleVars.grid_size = font.grid_size
 	StyleVars.grid_px_size = font.grid_px_size
 	font.init_font()
-	var gens: Array[Dictionary]
-	gens.assign(font.glyphs)
-	font.save_glyphs(gens)
+	font.insert_layers(font.layers)
+	font.save_glyphs(font.glyphs)
 
 
 ## Returns the save path of the current font.

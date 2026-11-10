@@ -78,6 +78,8 @@ pub struct BFontR {
     props: Dictionary<GString, Variant>,
     #[var]
     glyphs: Array<VarDictionary>,
+    #[var]
+    layers: Array<VarDictionary>,
 }
 
 #[godot_api]
@@ -132,10 +134,12 @@ impl BFontR {
                 return Err(self.err(l, &msg));
             }
             if parser.is_done() {
+                parser.push_layers();
                 return Ok(());
             }
         }
         parser.recover();
+        parser.push_layers();
         Ok(())
     }
 
@@ -145,6 +149,10 @@ impl BFontR {
 
     pub fn push_glyph_pre(&mut self, v: VarDictionary) {
         self.glyphs.push(&v)
+    }
+
+    pub fn push_layer_pre(&mut self, v: VarDictionary) {
+        self.layers.push(&v)
     }
 
     pub fn warn(&mut self, n_line: usize, msg: &str) {
