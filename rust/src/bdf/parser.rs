@@ -1,9 +1,15 @@
 use std::{
-    collections::HashSet,
+    collections::{
+        HashMap,
+        HashSet,
+    },
     str::FromStr,
 };
 
-use godot::meta::ToGodot;
+use godot::{
+    meta::ToGodot,
+    prelude::*,
+};
 
 use crate::bdf::{
     font::BFontR,
@@ -19,6 +25,8 @@ pub struct Parser<'font> {
     mode: Mode,
     defs: HashSet<String>,
     p_gen: PGen,
+    key: String,
+    names: HashMap<String, String>,
 }
 
 enum Mode {
@@ -41,6 +49,8 @@ impl<'font> Parser<'font> {
             mode: Mode::Pre,
             defs: HashSet::new(),
             p_gen: PGen::new(),
+            key: String::new(),
+            names: HashMap::new(),
         }
     }
 
@@ -64,6 +74,30 @@ impl<'font> Parser<'font> {
             Mode::CharIgnore => self.parse_char_ignore(&k),
             Mode::BM => self.parse_bm(&k),
             Mode::Post => Ok(()),
+        }
+    }
+
+    pub fn push_layers(&mut self) {
+        for (key, glyph) in &self.glyphs_map.glyphs {
+            let parent = self.names.get(key);
+            for (ord, layer) in glyph.layers.iter().enumerate() {
+                if let (Some(parent), Some(child)) = (parent, self.names.get(&layer.child)) {
+                    self.font.push_layer_pre(vdict! {
+                        "parent" => parent.as_str(),
+                        "ord" => ord as u32,
+                        "child" => child.as_str(),
+                        "off_x" => layer.off_x,
+                        "off_y" => layer.off_y,
+                        "blend" => layer.blend,
+                        "xform" => layer.xform,
+                    });
+                } else {
+                    self.font.warn(
+                        self.n_line,
+                        &format!("layer {} of glyph {key} is unknown, skipping", layer.child),
+                    );
+                }
+            }
         }
     }
 
@@ -223,6 +257,7 @@ impl<'font> Parser<'font> {
                     self.mode = Mode::Char;
                     self.p_gen = PGen::new();
                     self.p_gen.name = v.into();
+                    self.key = v.into();
                     self.p_gen.is_abs = self.glyphs_map.is_abs(&self.p_gen.name);
                 } else {
                     self.mode = Mode::CharIgnore;
@@ -341,6 +376,8 @@ impl<'font> Parser<'font> {
             }
         }
         self.mode = Mode::Chars;
+        self.names
+            .insert(std::mem::take(&mut self.key), self.p_gen.name.clone());
         self.font.push_glyph_pre(self.p_gen.to_glyph())
     }
 
