@@ -323,12 +323,12 @@ text = "█"
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4" unique_id=157999059]
+[node name="DEFAULT" type="Button" parent="CenterContainer/GridContainer/4" unique_id=157999059 groups=["hide_if_layer"]]
 texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: default
-pattern mode: default"
+layer mode: default"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -344,7 +344,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: draw
-pattern mode: add"
+layer mode: add"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -359,7 +359,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: erase
-pattern mode: subtract"
+layer mode: subtract"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -374,7 +374,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: invert
-pattern mode: exclude"
+layer mode: exclude"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -389,7 +389,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 tooltip_text = "color mode: first-cell
-pattern mode: multiply"
+layer mode: multiply"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Tool"
 toggle_mode = true
@@ -592,6 +592,7 @@ title = "layers"
 position = Vector2i(0, 32)
 size = Vector2i(200, 200)
 visible = false
+unfocusable = true
 script = ExtResource("12_xaubg")
 editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
