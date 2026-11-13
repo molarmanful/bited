@@ -85,7 +85,13 @@ func _ready() -> void:
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
-	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
+	cmode_group.pressed.connect(
+		func(btn: BaseButton):
+			if layers.has_layers:
+				layers.set_blend(Tool.CMode[btn.name] - Tool.CMode.T)
+			else:
+				toolman.cmode = Tool.CMode[btn.name]
+	)
 
 	btn_is_abs.toggled.connect(is_abs)
 	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
@@ -365,23 +371,38 @@ func dim_norm(f: Callable) -> void:
 
 
 func flip_x() -> void:
-	op(func(): dim_norm(pattern.cells.flip_x))
+	if layers.has_layers:
+		layers.flip_x()
+	else:
+		op(func(): dim_norm(pattern.cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(): dim_norm(pattern.cells.flip_y))
+	if layers.has_layers:
+		layers.flip_y()
+	else:
+		op(func(): dim_norm(pattern.cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(): dim_norm(pattern.cells.rotate_ccw))
+	if layers.has_layers:
+		layers.rot_ccw()
+	else:
+		op(func(): dim_norm(pattern.cells.rotate_ccw))
 
 
 func rot_cw() -> void:
-	op(func(): dim_norm(pattern.cells.rotate_cw))
+	if layers.has_layers:
+		layers.rot_cw()
+	else:
+		op(func(): dim_norm(pattern.cells.rotate_cw))
 
 
 func translate(dst: Vector2i) -> void:
-	op(func(): pattern.cells.translate(dst))
+	if layers.has_layers:
+		layers.translate(dst)
+	else:
+		op(func(): pattern.cells.translate(dst))
 
 
 func clear() -> void:

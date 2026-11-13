@@ -424,7 +424,9 @@ func flatten(name: String) -> void:
 		. query_with_bindings(
 			(
 				"""
-				select l.off_x + c.off_x as x, l.off_y + c.off_y as y, l.blend, c.bb_x, c.bb_y, c.img
+				select
+					l.off_x + c.off_x as x, l.off_y + c.off_y as y, l.blend, l.xform,
+					c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
 				where l.parent = ?
@@ -440,20 +442,26 @@ func flatten(name: String) -> void:
 		return
 
 	var r := Rect2i()
+	var ts: Array[Array] = []
 	for q in qs:
-		var qr := Rect2i(q.x, q.y, q.bb_x, q.bb_y)
+		var g := BitGlyph.create_from_bytes(
+			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
+		)
+		if q.xform & 4:
+			g.transpose()
+		if q.xform & 1:
+			g.flip_x()
+		if q.xform & 2:
+			g.flip_y()
+		var qr := Rect2i(Vector2i(q.x, q.y), g.get_size())
+		ts.push_back([BLENDS[q.blend], g, qr])
 		if qr.has_area():
 			r = r.merge(qr) if r.has_area() else qr
 
 	var bg := BitGlyph.create(r.size)
-	for q in qs:
-		bg.blit(
-			BLENDS[q.blend],
-			BitGlyph.create_from_bytes(
-				Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
-			),
-			Vector2i(q.x - r.position.x, r.end.y - q.y - q.bb_y)
-		)
+	for t in ts:
+		var qr: Rect2i = t[2]
+		bg.blit(t[0], t[1], Vector2i(qr.position.x - r.position.x, r.end.y - qr.end.y))
 	var u := bg.used_rect()
 
 	(
