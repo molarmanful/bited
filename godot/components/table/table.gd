@@ -260,7 +260,7 @@ func gen_glyphs() -> void:
 					"""
 					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 					from font_%s
-					where code between ? and ?
+					where code between ?1 and ?2
 					;"""
 					% StateVars.font.id
 				),
@@ -277,7 +277,7 @@ func gen_glyphs() -> void:
 					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
 					from temp.full as a
 					left join font_%s as b on a.name = b.name
-					where a.row between ? and ?
+					where a.row between ?1 and ?2
 					order by a.row
 					;"""
 					% StateVars.font.id

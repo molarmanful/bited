@@ -64,7 +64,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 						insert into temp.filter (row, name)
 						select code, name
 						from font_%s
-						where (code between ? and ?) and is_abs = ? and dwidth = ?
+						where (code between ?1 and ?2) and is_abs = ?3 and dwidth = ?4
 						;"""
 						% StateVars.font.id
 					),
@@ -82,7 +82,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 						select b.row, a.name
 						from font_%s as a
 						join temp.full as b on a.name = b.name
-						where (b.row between ? and ?) and a.is_abs = ? and a.dwidth = ?
+						where (b.row between ?1 and ?2) and a.is_abs = ?3 and a.dwidth = ?4
 						;"""
 						% StateVars.font.id
 					),
@@ -198,7 +198,7 @@ func copy() -> void:
 							row_number() over (order by code, name) + (select count(*) from temp.clip) - 1,
 							name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 						from font_%s
-						where code between ? and ?
+						where code between ?1 and ?2
 						;"""
 						% StateVars.font.id
 					),
@@ -218,7 +218,7 @@ func copy() -> void:
 							a.name, a.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 						from font_%s as a
 						join temp.full as b on a.name = b.name
-						where b.row between ? and ?
+						where b.row between ?1 and ?2
 						;"""
 						% StateVars.font.id
 					),
@@ -237,7 +237,7 @@ func copy() -> void:
 				res += char(code)
 		else:
 			StateVars.db_saves.query_with_bindings(
-				"select name, code from temp.full where row between ? and ?;", [a, b]
+				"select name, code from temp.full where row between ?1 and ?2;", [a, b]
 			)
 			for q in StateVars.db_saves.query_result:
 				res += q.name if q.code < 0 else char(q.code)
@@ -294,7 +294,7 @@ func paste() -> void:
 						row_number() over (order by row) - 1,
 						name, code
 					from temp.full as f
-					where f.row between ? and ?
+					where f.row between ?1 and ?2
 					;""",
 					[a, b]
 				)
