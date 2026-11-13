@@ -40,8 +40,8 @@ func save_dwidth() -> void:
 			(
 				"""
 				update font_%s
-				set dwidth = ?, is_abs = ?
-				where name = ?
+				set dwidth = ?1, is_abs = ?2
+				where name = ?3
 				;"""
 				% StateVars.font.id
 			),
@@ -60,7 +60,7 @@ func load() -> void:
 				"""
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_%s
-				where name = ?
+				where name = ?1
 				;"""
 				% StateVars.font.id
 			),

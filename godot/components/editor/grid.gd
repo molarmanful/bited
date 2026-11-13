@@ -237,7 +237,7 @@ func off_glyph(off: int) -> void:
 					"""
 					select name, code
 					from font_{0}
-					where (code between ? and ?) and (code {1} ?)
+					where (code between ?1 and ?2) and (code {1} ?3)
 					order by code {2}, name {2}
 					limit 1
 					;"""
@@ -259,9 +259,9 @@ func off_glyph(off: int) -> void:
 					from temp.full as o
 					join font_%s as i on o.name = i.name
 					where o.row %s (
-						select row + ?
+						select row + ?1
 						from temp.full
-						where name = ?
+						where name = ?2
 					)
 					order by row %s
 					limit 1
@@ -295,8 +295,8 @@ func off_uc(off: int) -> void:
 						"""
 						select o.name, o.code
 						from temp.full as o
-						join temp.full as i on o.row = i.row + ?
-						where i.name = ?
+						join temp.full as i on o.row = i.row + ?1
+						where i.name = ?2
 						;""",
 						[off, pattern.bitmap.data_name]
 					)
@@ -312,9 +312,9 @@ func off_uc(off: int) -> void:
 							select name, code
 							from temp.full
 							where code >= 0 and row %s (
-								select row + ?
+								select row + ?1
 								from temp.full
-								where name = ?
+								where name = ?2
 							)
 							order by row %s
 							limit 1

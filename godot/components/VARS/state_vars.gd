@@ -134,7 +134,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 			"""
 			select name, category
 			from data
-			where id = ?
+			where id = ?1
 			;""",
 			[data_code]
 		)
@@ -154,13 +154,13 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
-	StateVars.db_saves.query_with_bindings("select 1 from fonts where id = ?", [id])
+	StateVars.db_saves.query_with_bindings("select 1 from fonts where id = ?1", [id])
 	return not not StateVars.db_saves.query_result
 
 
 ## Deletes font [param id].
 func delete_font(id: String) -> void:
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
+	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?1;", [id])
 	StateVars.db_saves.drop_table("font_" + id)
 	StateVars.db_saves.drop_table("layers_" + id)
 
@@ -173,13 +173,13 @@ func rename_font(old: String, new: String) -> void:
 	StateVars.db_saves.query("drop table if exists layers_%s;" % new)
 	StateVars.db_saves.query("drop index if exists layers_%s_child;" % old)
 	StateVars.db_saves.query("alter table layers_%s rename to layers_%s;" % [old, new])
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [new])
-	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])
+	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?1;", [new])
+	StateVars.db_saves.query_with_bindings("update fonts set id = ?1 where id = ?2;", [new, old])
 	StateVars.db_saves.query("commit;")
 
 	StateVars.db_locals.query("begin;")
-	StateVars.db_locals.query_with_bindings("delete from paths where id = ?;", [new])
-	StateVars.db_locals.query_with_bindings("update paths set id = ? where id = ?;", [new, old])
+	StateVars.db_locals.query_with_bindings("delete from paths where id = ?1;", [new])
+	StateVars.db_locals.query_with_bindings("update paths set id = ?1 where id = ?2;", [new, old])
 	StateVars.db_locals.query("commit;")
 
 
@@ -198,7 +198,7 @@ func load_parsed(bf: BFont) -> void:
 ## Returns the save path of the current font.
 func path() -> String:
 	StateVars.db_locals.query_with_bindings(
-		"select path from paths where id = ?", [StateVars.font.id]
+		"select path from paths where id = ?1", [StateVars.font.id]
 	)
 	var qs := StateVars.db_locals.query_result
 	return qs[0].path if qs else ""
@@ -207,5 +207,5 @@ func path() -> String:
 ## Sets the save path of the current font to [param p].
 func set_path(p: String) -> void:
 	StateVars.db_locals.query_with_bindings(
-		"insert or replace into paths (id, path) values (?, ?);", [font.id, p]
+		"insert or replace into paths (id, path) values (?1, ?2);", [font.id, p]
 	)

@@ -209,7 +209,7 @@ func refresh() -> void:
 					c.img, l.blend
 				from layers_{0} as l
 				join font_{0} as c on l.child = c.name
-				where l.parent = ?
+				where l.parent = ?1
 				order by l.ord
 				;"""
 				. format([StateVars.font.id])

@@ -139,13 +139,13 @@ func init_font(ignore := false) -> void:
 
 func save_font(ignore = false) -> void:
 	StateVars.db_saves.query_with_bindings(
-		"insert or %s into fonts (id, data) values (?, ?);" % ("ignore" if ignore else "replace"),
+		"insert or %s into fonts (id, data) values (?1, ?2);" % ("ignore" if ignore else "replace"),
 		[id, var_to_bytes(to_dict())]
 	)
 
 
 func load_font() -> void:
-	StateVars.db_saves.query_with_bindings("select data from fonts where id = ?;", [id])
+	StateVars.db_saves.query_with_bindings("select data from fonts where id = ?1;", [id])
 	var qs := StateVars.db_saves.query_result
 	if not qs:
 		return
@@ -339,7 +339,7 @@ func insert_layers(ls: Array[Dictionary]) -> void:
 				select
 					value ->> 'parent', value ->> 'ord', value ->> 'child',
 					value ->> 'off_x', value ->> 'off_y', value ->> 'blend', value ->> 'xform'
-				from json_each(?)
+				from json_each(?1)
 				;"""
 				. format([id])
 			),
@@ -365,7 +365,7 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 				into font_%s
 				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				values
-				(?, ?, ?, ?, ?, ?, ?, ?, ?)
+				(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
 				returning name
 				;"""
 				% ["replace" if over else "ignore", StateVars.font.id]
@@ -397,7 +397,7 @@ func flatten_parents(names: Array) -> void:
 					up(name, depth) as (
 						select parent, 1
 						from layers_{0}
-						where child in (select value from json_each(?))
+						where child in (select value from json_each(?1))
 						union
 						select l.parent, up.depth + 1
 						from layers_{0} as l
@@ -429,7 +429,7 @@ func flatten(name: String) -> void:
 					c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
-				where l.parent = ?
+				where l.parent = ?1
 				order by l.ord
 				;"""
 				. format([id])
@@ -471,8 +471,8 @@ func flatten(name: String) -> void:
 			(
 				"""
 				update font_%s
-				set bb_x = ?, bb_y = ?, off_x = ?, off_y = ?, img = ?
-				where name = ?
+				set bb_x = ?1, bb_y = ?2, off_x = ?3, off_y = ?4, img = ?5
+				where name = ?6
 				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				;"""
 				% id
