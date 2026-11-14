@@ -586,7 +586,7 @@ text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick")]
+[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick", "btn_del")]
 oversampling_override = 1.0
 title = "layers"
 position = Vector2i(0, 32)
@@ -598,6 +598,7 @@ editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
 tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/DragTree")
 btn_pick = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/pick")
+btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer/layers" unique_id=3710046]
 anchors_preset = 15
@@ -627,6 +628,17 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 toggle_mode = true
 text = "⌖"
+
+[node name="Spacer" type="Control" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=898146221]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="del" type="Button" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=983453432]
+layout_mode = 2
+tooltip_text = "delete selected layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+text = "🗑"
 
 [node name="DragTree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=845784831]
 layout_mode = 2

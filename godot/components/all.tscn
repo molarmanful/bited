@@ -235,8 +235,6 @@ layout_mode = 2
 
 [node name="all" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=1222197736]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "select all"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -245,8 +243,6 @@ text = "▒▒"
 
 [node name="clr" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=332824718 groups=["selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "deselect all"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -255,8 +251,6 @@ text = "⬜"
 
 [node name="fltr_dw" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=1762382493 groups=["selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "filter selection by dwidth"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -269,8 +263,6 @@ theme_override_constants/separation = 9
 
 [node name="cut" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=178571004 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "cut selection"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -279,8 +271,6 @@ text = "✂"
 
 [node name="copy" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=431155935 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "copy selection"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -289,8 +279,6 @@ text = "⎘"
 
 [node name="paste" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=777354922 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "paste into selection"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
@@ -299,8 +287,6 @@ text = "📋"
 
 [node name="del" type="Button" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox/PanelContainer2/MarginContainer/HBoxContainer" unique_id=2011979685 groups=["hide_on_pick", "selshow"]]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 tooltip_text = "delete selection"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"

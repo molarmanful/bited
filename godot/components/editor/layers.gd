@@ -6,6 +6,7 @@ extends Window
 @export var tree: DragTree
 
 @export var btn_pick: Button
+@export var btn_del: Button
 
 var grid: Grid:
 	get:
@@ -49,6 +50,7 @@ func _ready() -> void:
 	)
 
 	btn_pick.toggled.connect(func(on: bool): table.pick_layer = on)
+	btn_del.pressed.connect(del)
 	tree.multi_selected.connect(sync_cmode.unbind(3), CONNECT_DEFERRED)
 
 
@@ -74,6 +76,24 @@ func pick(gname: String) -> void:
 				. format([StateVars.font.id])
 			),
 			[parent_name, gname]
+		)
+	)
+	flatten()
+
+
+func del() -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				delete from layers_{0}
+				where parent = ?1 and ord in (select value from json_each(?2))
+				;"""
+				. format([StateVars.font.id])
+			),
+			[parent_name, JSON.stringify(selected)]
 		)
 	)
 	flatten()
