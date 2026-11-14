@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://csbivr00slmx4" path="res://assets/cmode/default.svg" id="8_dxryl"]
 [ext_resource type="Script" uid="uid://cmf158hy1yp5d" path="res://components/editor/grid.gd" id="9_8b0ie"]
 [ext_resource type="Script" uid="uid://bcq70vid0xrwv" path="res://components/editor/layers.gd" id="12_xaubg"]
-[ext_resource type="Script" uid="uid://cynhlhc076ldn" path="res://components/drag_tree.gd" id="13_mnipk"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_2r100"]
 action = &"bited_prev_uc"
@@ -596,7 +595,7 @@ unfocusable = true
 script = ExtResource("12_xaubg")
 editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
-tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/DragTree")
+tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/Tree")
 btn_pick = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/pick")
 btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")
 
@@ -640,11 +639,10 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 text = "🗑"
 
-[node name="DragTree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=845784831]
+[node name="Tree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=845784831]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Layers"
+hide_folding = true
 hide_root = true
 select_mode = 2
-script = ExtResource("13_mnipk")
-metadata/_custom_type_script = "uid://cynhlhc076ldn"

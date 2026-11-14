@@ -570,7 +570,8 @@ func define_theme():
 		"Layers",
 		"Tree",
 		{
-			item_margin = 0,
+			item_margin = 1,
+			h_separation = 0,
 			scrollbar_margin_top = border_w,
 			scrollbar_margin_right = border_w,
 			scrollbar_margin_bottom = border_w,

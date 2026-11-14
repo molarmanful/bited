@@ -3,7 +3,7 @@ extends Window
 
 @export var editor: Editor
 @export var btn: Button
-@export var tree: DragTree
+@export var tree: Tree
 
 @export var btn_pick: Button
 @export var btn_del: Button
@@ -30,6 +30,20 @@ var selected: PackedInt32Array:
 
 
 func _ready() -> void:
+	tree.set_drag_forwarding(
+		func(_at: Vector2) -> Variant:
+			var s := selected
+			if s.is_empty():
+				return null
+			var l := Label.new()
+			l.text = "%d layers" % s.size()
+			tree.set_drag_preview(l)
+			tree.drop_mode_flags = Tree.DROP_MODE_INBETWEEN
+			return s,
+		func(_at: Vector2, data: Variant) -> bool: return data is PackedInt32Array,
+		move
+	)
+
 	grid.refreshed.connect(refresh)
 
 	visibility_changed.connect(func(): btn.set_pressed_no_signal(visible))
@@ -96,6 +110,59 @@ func del() -> void:
 			[parent_name, JSON.stringify(selected)]
 		)
 	)
+	flatten()
+
+
+func move(at: Vector2, ords: PackedInt32Array) -> void:
+	var tgt := tree.get_item_at_position(at)
+	var sec := tree.get_drop_section_at_position(at)
+	var rows := PackedInt32Array()
+	for item in tree.get_root().get_children():
+		var o: int = item.get_metadata(0).ord
+		if item == tgt and sec < 0:
+			rows += ords
+		if o not in ords:
+			rows.push_back(o)
+		if item == tgt and sec > 0:
+			rows += ords
+	if not tgt:
+		rows += ords
+	rows.reverse()
+
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				update layers_{0}
+				set ord = -1 - j.key
+				from json_each(?2) as j
+				where layers_{0}.parent = ?1 and layers_{0}.ord = j.value
+				;"""
+				. format([StateVars.font.id])
+			),
+			[parent_name, JSON.stringify(rows)]
+		)
+	)
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				update layers_{0}
+				set ord = -1 - ord
+				where parent = ?1 and ord < 0
+				;"""
+				. format([StateVars.font.id])
+			),
+			[parent_name]
+		)
+	)
+
+	for item in tree.get_root().get_children():
+		item.get_metadata(0).ord = rows.find(item.get_metadata(0).ord)
 	flatten()
 
 
