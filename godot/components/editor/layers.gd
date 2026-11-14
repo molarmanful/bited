@@ -201,6 +201,10 @@ func rot_ccw() -> void:
 	_xform([6, 4, 7, 5, 2, 0, 3, 1])
 
 
+func clear_xform() -> void:
+	_xform([0, 0, 0, 0, 0, 0, 0, 0])
+
+
 func _xform(t: PackedInt32Array) -> void:
 	(
 		StateVars

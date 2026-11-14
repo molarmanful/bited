@@ -406,7 +406,10 @@ func translate(dst: Vector2i) -> void:
 
 
 func clear() -> void:
-	op(func(): pattern.cells.fill(false))
+	if layers.has_layers:
+		layers.clear_xform()
+	else:
+		op(func(): pattern.cells.fill(false))
 
 
 func dwidth() -> void:
