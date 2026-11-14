@@ -308,6 +308,19 @@ impl BitGlyph {
     }
 
     #[func]
+    pub fn xform(&mut self, m: i32) {
+        if m & 4 != 0 {
+            self.transpose();
+        }
+        if m & 1 != 0 {
+            self.flip_x();
+        }
+        if m & 2 != 0 {
+            self.flip_y();
+        }
+    }
+
+    #[func]
     pub fn rotate_cw(&mut self) {
         self.flip_y();
         self.transpose();

@@ -44,14 +44,14 @@ func _ready() -> void:
 		move
 	)
 
-	grid.refreshed.connect(refresh)
-
 	visibility_changed.connect(func(): btn.set_pressed_no_signal(visible))
 	close_requested.connect(
 		func():
 			btn_pick.button_pressed = false
 			hide()
 	)
+
+	grid.refreshed.connect(refresh)
 
 	btn.toggled.connect(
 		func(on: bool):
@@ -202,7 +202,22 @@ func rot_ccw() -> void:
 
 
 func clear_xform() -> void:
-	_xform([0, 0, 0, 0, 0, 0, 0, 0])
+	(
+		StateVars
+		. db_saves
+		. query_with_bindings(
+			(
+				"""
+				update layers_{0}
+				set xform = 0, off_x = 0, off_y = 0
+				where parent = ?1 and ord in (select value from json_each(?2))
+				;"""
+				. format([StateVars.font.id])
+			),
+			[parent_name, JSON.stringify(selected)]
+		)
+	)
+	flatten()
 
 
 func _xform(t: PackedInt32Array) -> void:
@@ -277,7 +292,7 @@ func refresh() -> void:
 				select
 					l.ord, c.name, c.code, c.dwidth, c.is_abs, c.bb_x, c.bb_y,
 					c.off_x + l.off_x as off_x, c.off_y + l.off_y as off_y,
-					c.img, l.blend
+					c.img, l.blend, l.xform
 				from layers_{0} as l
 				join font_{0} as c on l.child = c.name
 				where l.parent = ?1
@@ -297,6 +312,13 @@ func refresh() -> void:
 		var item := tree.create_item(null, 0)
 		item.set_cell_mode(0, TreeItem.CELL_MODE_STRING)
 		item.set_metadata(0, q)
+		var g := BitGlyph.create_from_bytes(
+			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
+		)
+		g.xform(q.xform)
+		q.bb_x = g.get_size().x
+		q.bb_y = g.get_size().y
+		q.img = g.to_bytes()
 		item.set_icon(
 			0,
 			ImageTexture.create_from_image(Bitmap.new(StyleVars.thumb_size_pre).place(q).to_image())

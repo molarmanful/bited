@@ -447,12 +447,7 @@ func flatten(name: String) -> void:
 		var g := BitGlyph.create_from_bytes(
 			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
 		)
-		if q.xform & 4:
-			g.transpose()
-		if q.xform & 1:
-			g.flip_x()
-		if q.xform & 2:
-			g.flip_y()
+		g.xform(q.xform)
 		var qr := Rect2i(Vector2i(q.x, q.y), g.get_size())
 		ts.push_back([BLENDS[q.blend], g, qr])
 		if qr.has_area():
