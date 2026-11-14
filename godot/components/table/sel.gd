@@ -124,13 +124,14 @@ func delete() -> void:
 
 	StateVars.db_saves.query("begin;")
 
+	var dels := []
 	for i in range(0, ranges.size(), 2):
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
-		var names := (
-			"select name from font_{0} where code between ?1 and ?2".format([StateVars.font.id])
+		var src := (
+			"font_{0} where code".format([StateVars.font.id])
 			if table.viewmode == Table.Mode.RANGE
-			else "select name from temp.full where row between ?1 and ?2"
+			else "temp.full where row"
 		)
 		(
 			StateVars
@@ -138,17 +139,31 @@ func delete() -> void:
 			. query_with_bindings(
 				(
 					"""
-					delete from layers_{0}
-					where parent in ({1}) or child in ({1})
+					delete from font_{0}
+					where name in (select name from {1} between ?1 and ?2)
+					returning name
 					;"""
-					. format([StateVars.font.id, names])
+					. format([StateVars.font.id, src])
 				),
 				[a, b]
 			)
 		)
-		StateVars.db_saves.query_with_bindings(
-			"delete from font_{0} where name in ({1});".format([StateVars.font.id, names]), [a, b]
-		)
+		dels.append_array(StateVars.db_saves.query_result.map(func(q): return q.name))
+
+	var js := JSON.stringify(dels)
+	StateVars.db_saves.query_with_bindings(
+		"delete from layers_{0} where parent in (select value from json_each(?1));".format(
+			[StateVars.font.id]
+		),
+		[js]
+	)
+	StateVars.font.flatten_parents(dels)
+	StateVars.db_saves.query_with_bindings(
+		"delete from layers_{0} where child in (select value from json_each(?1));".format(
+			[StateVars.font.id]
+		),
+		[js]
+	)
 
 	StateVars.db_saves.query("commit;")
 
@@ -226,7 +241,21 @@ func copy() -> void:
 				)
 			)
 
-	StateVars.db_saves.query("commit;")
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				drop table if exists temp.clip_layers;
+				create table temp.clip_layers as
+				select * from layers_{0} where parent in (select name from temp.clip);
+				commit;
+				"""
+				. format([StateVars.font.id])
+			)
+		)
+	)
 
 	var res := ""
 	for i in range(0, ranges.size(), 2):
@@ -306,22 +335,56 @@ func paste() -> void:
 		. query(
 			(
 				"""
-				with cyc as (
-					select b.name, b.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
-					from temp.sub as b
-					join temp.clip as a on b.row % (select count(*) from temp.clip) = a.row
-				)
 				insert or replace into font_{0} (name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from cyc
+				select b.name, b.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
+				from temp.sub as b
+				join temp.clip as a on b.row % (select count(*) from temp.clip) = a.row
+				;
+
+				delete from layers_{0} where parent in (select name from temp.sub);
+
+				with
+					m as (
+						select b.row, b.name, a.name as src
+						from temp.sub as b
+						join temp.clip as a on b.row % (select count(*) from temp.clip) = a.row
+					)
+				insert or ignore into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
+				select
+					m.name, l.ord,
+					coalesce(
+						(select name from font_{0} where name = l.child),
+						(select k.name from m as k where k.src = l.child order by k.row limit 1)
+					),
+					l.off_x, l.off_y, l.blend, l.xform
+				from m
+				join temp.clip_layers as l on l.parent = m.src
+				;
+
+				with recursive
+					down(top, name) as (
+						select parent, child
+						from layers_{0}
+						where parent in (select name from temp.sub)
+						union
+						select d.top, l.child
+						from layers_{0} as l
+						join down as d on l.parent = d.name
+					)
+				delete from layers_{0} where parent in (select top from down where top = name)
+				;
+
+				select name from temp.sub
+				union
+				select child from layers_{0} where parent in (select name from temp.sub)
 				;"""
 				. format([StateVars.font.id])
 			)
 		)
 	)
 
-	StateVars.db_saves.query("drop table temp.sub;")
-	StateVars.db_saves.query("commit;")
+	StateVars.font.flatten_parents(StateVars.db_saves.query_result.map(func(q): return q.name))
+	StateVars.db_saves.query("drop table temp.sub; commit;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
