@@ -145,9 +145,9 @@ func set_glyphs(top := true) -> void:
 				select
 					row_number() over (order by code, name) - 1 as row,
 					name, code
-				from font_%s
+				from font_{0}
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			)
 		)
 	)
@@ -166,10 +166,10 @@ func set_page(id: String) -> void:
 			(
 				"""
 				select row, coalesce(code, -1) as code
-				from p_%s
+				from p_{0}
 				order by row
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
@@ -202,7 +202,9 @@ func set_page(id: String) -> void:
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
 	var fpq := fp.query()
-	StateVars.db_uc.query_with_bindings("select id from data where %s order by id;" % fpq, fp.binds)
+	StateVars.db_uc.query_with_bindings(
+		"select id from data where {0} order by id;".format([fpq]), fp.binds
+	)
 	var qs := StateVars.db_uc.query_result
 
 	StateVars.db_saves.delete_rows("temp.full", "")
@@ -259,10 +261,10 @@ func gen_glyphs() -> void:
 				(
 					"""
 					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-					from font_%s
+					from font_{0}
 					where code between ?1 and ?2
 					;"""
-					% StateVars.font.id
+					. format([StateVars.font.id])
 				),
 				[start + i0, start + i1 - 1]
 			)
@@ -276,11 +278,11 @@ func gen_glyphs() -> void:
 					"""
 					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
 					from temp.full as a
-					left join font_%s as b on a.name = b.name
+					left join font_{0} as b on a.name = b.name
 					where a.row between ?1 and ?2
 					order by a.row
 					;"""
-					% StateVars.font.id
+					. format([StateVars.font.id])
 				),
 				[i0, i1 - 1]
 			)

@@ -257,16 +257,18 @@ func off_glyph(off: int) -> void:
 					"""
 					select o.name, o.code
 					from temp.full as o
-					join font_%s as i on o.name = i.name
-					where o.row %s (
+					join font_{0} as i on o.name = i.name
+					where o.row {1} (
 						select row + ?1
 						from temp.full
 						where name = ?2
 					)
-					order by row %s
+					order by row {2}
 					limit 1
 					;"""
-					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					. format(
+						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					)
 				),
 				[off, pattern.bitmap.data_name]
 			)
@@ -311,15 +313,15 @@ func off_uc(off: int) -> void:
 							"""
 							select name, code
 							from temp.full
-							where code >= 0 and row %s (
+							where code >= 0 and row {0} (
 								select row + ?1
 								from temp.full
 								where name = ?2
 							)
-							order by row %s
+							order by row {1}
 							limit 1
 							;"""
-							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+							. format(["<=" if off < 0 else ">=", "desc" if off < 0 else ""])
 						),
 						[off, pattern.bitmap.data_name]
 					)

@@ -43,10 +43,10 @@ func filter_dwidth(dw: int, ia := false) -> void:
 				select
 					cast(null as integer) as row,
 					name
-				from font_%s
+				from font_{0}
 				where 0
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			)
 		)
 	)
@@ -63,10 +63,10 @@ func filter_dwidth(dw: int, ia := false) -> void:
 						"""
 						insert into temp.filter (row, name)
 						select code, name
-						from font_%s
+						from font_{0}
 						where (code between ?1 and ?2) and is_abs = ?3 and dwidth = ?4
 						;"""
-						% StateVars.font.id
+						. format([StateVars.font.id])
 					),
 					[a, b, int(ia), dw]
 				)
@@ -80,11 +80,11 @@ func filter_dwidth(dw: int, ia := false) -> void:
 						"""
 						insert into temp.filter (row, name)
 						select b.row, a.name
-						from font_%s as a
+						from font_{0} as a
 						join temp.full as b on a.name = b.name
 						where (b.row between ?1 and ?2) and a.is_abs = ?3 and a.dwidth = ?4
 						;"""
-						% StateVars.font.id
+						. format([StateVars.font.id])
 					),
 					[a, b, int(ia), dw]
 				)
@@ -128,7 +128,7 @@ func delete() -> void:
 		var a := ranges[i]
 		var b := ranges[i + 1] - 1
 		var names := (
-			"select name from font_%s where code between ?1 and ?2" % StateVars.font.id
+			"select name from font_{0} where code between ?1 and ?2".format([StateVars.font.id])
 			if table.viewmode == Table.Mode.RANGE
 			else "select name from temp.full where row between ?1 and ?2"
 		)
@@ -147,7 +147,7 @@ func delete() -> void:
 			)
 		)
 		StateVars.db_saves.query_with_bindings(
-			"delete from font_%s where name in (%s);" % [StateVars.font.id, names], [a, b]
+			"delete from font_{0} where name in ({1});".format([StateVars.font.id, names]), [a, b]
 		)
 
 	StateVars.db_saves.query("commit;")
@@ -175,10 +175,10 @@ func copy() -> void:
 				select
 					cast(null as integer) as row,
 					name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
+				from font_{0}
 				where 0
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			)
 		)
 	)
@@ -197,10 +197,10 @@ func copy() -> void:
 						select
 							row_number() over (order by code, name) + (select count(*) from temp.clip) - 1,
 							name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-						from font_%s
+						from font_{0}
 						where code between ?1 and ?2
 						;"""
-						% StateVars.font.id
+						. format([StateVars.font.id])
 					),
 					[a, b]
 				)
@@ -216,11 +216,11 @@ func copy() -> void:
 						select
 							row_number() over (order by b.row) + (select count(*) from temp.clip) - 1,
 							a.name, a.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
-						from font_%s as a
+						from font_{0} as a
 						join temp.full as b on a.name = b.name
 						where b.row between ?1 and ?2
 						;"""
-						% StateVars.font.id
+						. format([StateVars.font.id])
 					),
 					[a, b]
 				)
@@ -265,10 +265,10 @@ func paste() -> void:
 				select
 					cast(null as integer) as row,
 					name, code
-				from font_%s
+				from font_{0}
 				where 0
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			)
 		)
 	)
@@ -309,13 +309,13 @@ func paste() -> void:
 				with cyc as (
 					select b.name, b.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 					from temp.sub as b
-					join temp.clip as a on b.row %% (select count(*) from temp.clip) = a.row
+					join temp.clip as a on b.row % (select count(*) from temp.clip) = a.row
 				)
-				insert or replace into font_%s (name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
+				insert or replace into font_{0} (name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from cyc
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			)
 		)
 	)

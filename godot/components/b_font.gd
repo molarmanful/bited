@@ -51,8 +51,8 @@ static func unifontex() -> BFont:
 
 func init_font(ignore := false) -> void:
 	if not ignore:
-		StateVars.db_saves.query("drop table if exists font_%s;" % id)
-		StateVars.db_saves.query("drop table if exists layers_%s;" % id)
+		StateVars.db_saves.query("drop table if exists font_{0};".format([id]))
+		StateVars.db_saves.query("drop table if exists layers_{0};".format([id]))
 	(
 		StateVars
 		. db_saves
@@ -79,9 +79,9 @@ func init_font(ignore := false) -> void:
 			(
 				"""
 				select count(*) as n, coalesce(sum(name = 'xform'), 0) as x
-				from pragma_table_info('layers_%s')
+				from pragma_table_info('layers_{0}')
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
@@ -97,7 +97,7 @@ func init_font(ignore := false) -> void:
 		. query(
 			(
 				"""
-				create table if not exists layers_%s (
+				create table if not exists layers_{0} (
 					parent text not null,
 					ord int not null,
 					child text not null,
@@ -108,7 +108,7 @@ func init_font(ignore := false) -> void:
 					primary key (parent, ord)
 				) without rowid
 				;"""
-				% [id]
+				. format([id])
 			)
 		)
 	)
@@ -139,7 +139,9 @@ func init_font(ignore := false) -> void:
 
 func save_font(ignore = false) -> void:
 	StateVars.db_saves.query_with_bindings(
-		"insert or %s into fonts (id, data) values (?1, ?2);" % ("ignore" if ignore else "replace"),
+		"insert or {0} into fonts (id, data) values (?1, ?2);".format(
+			["ignore" if ignore else "replace"]
+		),
 		[id, var_to_bytes(to_dict())]
 	)
 
@@ -216,12 +218,12 @@ func to_glyphs_toml() -> String:
 			(
 				"""
 				select is_abs, count(is_abs) as n
-				from font_%s
+				from font_{0}
 				group by is_abs
 				order by n desc
 				limit 1
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
@@ -285,10 +287,10 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 			(
 				"""
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
+				from font_{0}
 				order by code, name
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
@@ -361,14 +363,14 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 		. query_with_bindings(
 			(
 				"""
-				insert or %s
-				into font_%s
+				insert or {0}
+				into font_{1}
 				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				values
 				(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
 				returning name
 				;"""
-				% ["replace" if over else "ignore", StateVars.font.id]
+				. format(["replace" if over else "ignore", StateVars.font.id])
 			),
 			[
 				gen.name,
@@ -465,12 +467,12 @@ func flatten(name: String) -> void:
 		. query_with_bindings(
 			(
 				"""
-				update font_%s
+				update font_{0}
 				set bb_x = ?1, bb_y = ?2, off_x = ?3, off_y = ?4, img = ?5
 				where name = ?6
 				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				;"""
-				% id
+				. format([id])
 			),
 			[
 				u.size.x,
@@ -559,7 +561,9 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
+		"font_" + id,
+		"",
+		["cast(avg({0} * (is_abs = 0) + dwidth) * 10 as int) as avg".format([dwidth])]
 	)
 	if not qs:
 		return 0
@@ -579,7 +583,7 @@ func fbbx() -> Dictionary:
 			"coalesce(max(bb_y), 0) as bb_y",
 			"coalesce(min(off_x), 0) as off_x",
 			"coalesce(min(off_y), 0) as off_y",
-			"coalesce(max(%d * (is_abs = 0) + dwidth), 0) as dwidth" % dwidth
+			"coalesce(max({0} * (is_abs = 0) + dwidth), 0) as dwidth".format([dwidth])
 		]
 	)
 	return qs[0]

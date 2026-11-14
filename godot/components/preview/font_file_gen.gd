@@ -29,10 +29,10 @@ func load_str(text: String) -> bool:
 			(
 				"""
 				select code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
+				from font_{0}
 				where code in (select value from json_each(?1))
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			),
 			[JSON.stringify(codes)]
 		)

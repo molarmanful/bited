@@ -90,7 +90,7 @@ func parse() -> void:
 				var fp := FinderParser.new()
 				fp.tks = tks.slice(i_tks)
 				fp.parse()
-				push_qs("(%s)" % fp.query())
+				push_qs("({0})".format([fp.query()]))
 				binds.append_array(fp.binds)
 				skip = fp.i_tks
 			Op.RPAREN:
@@ -149,7 +149,7 @@ func build_u() -> void:
 				binds.append(tk)
 				binds.append(tk)
 	if xs:
-		push_qs("(%s)" % Sep.OR.join(xs))
+		push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func build_cat(r := false) -> void:
@@ -159,7 +159,7 @@ func build_cat(r := false) -> void:
 			xs.append("category like ? escape '\\'")
 			binds.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		push_qs("(%s)" % Sep.OR.join(xs))
+		push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func build_page(r := false) -> void:
@@ -170,12 +170,14 @@ func build_page(r := false) -> void:
 			xs.append("name like ? escape '\\'")
 			ys.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		StateVars.db_uc.query_with_bindings("select id from pages where %s;" % " or ".join(xs), ys)
+		StateVars.db_uc.query_with_bindings(
+			"select id from pages where {0};".format([" or ".join(xs)]), ys
+		)
 		xs.clear()
 		for q in StateVars.db_uc.query_result:
-			xs.append("select code from p_%s" % q.id)
+			xs.append("select code from p_{0}".format([q.id]))
 		if xs:
-			push_qs("id in (%s)" % " union ".join(xs))
+			push_qs("id in ({0})".format([" union ".join(xs)]))
 
 
 func build_block(r := false) -> void:
@@ -187,7 +189,7 @@ func build_block(r := false) -> void:
 			ys.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
 		StateVars.db_uc.query_with_bindings(
-			"select start, end from blocks where %s;" % " or ".join(xs), ys
+			"select start, end from blocks where {0};".format([" or ".join(xs)]), ys
 		)
 		xs.clear()
 		for q in StateVars.db_uc.query_result:
@@ -195,7 +197,7 @@ func build_block(r := false) -> void:
 			binds.append(q.start)
 			binds.append(q.end - 1)
 		if xs:
-			push_qs("(%s)" % Sep.OR.join(xs))
+			push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func build_x(r := false) -> void:
@@ -205,7 +207,7 @@ func build_x(r := false) -> void:
 			xs.append("name like ? escape '\\'")
 			binds.append(tk if r else "%%%s%%" % tk)
 		if xs:
-			push_qs("(%s)" % Sep.OR.join(xs))
+			push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func query() -> String:

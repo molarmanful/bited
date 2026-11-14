@@ -168,11 +168,11 @@ func delete_font(id: String) -> void:
 ## Renames font [param old] to [param new].
 func rename_font(old: String, new: String) -> void:
 	StateVars.db_saves.query("begin;")
-	StateVars.db_saves.query("drop table if exists font_%s;" % new)
-	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
-	StateVars.db_saves.query("drop table if exists layers_%s;" % new)
-	StateVars.db_saves.query("drop index if exists layers_%s_child;" % old)
-	StateVars.db_saves.query("alter table layers_%s rename to layers_%s;" % [old, new])
+	StateVars.db_saves.query("drop table if exists font_{0};".format([new]))
+	StateVars.db_saves.query("alter table font_{0} rename to font_{1};".format([old, new]))
+	StateVars.db_saves.query("drop table if exists layers_{0};".format([new]))
+	StateVars.db_saves.query("drop index if exists layers_{0}_child;".format([old]))
+	StateVars.db_saves.query("alter table layers_{0} rename to layers_{1};".format([old, new]))
 	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?1;", [new])
 	StateVars.db_saves.query_with_bindings("update fonts set id = ?1 where id = ?2;", [new, old])
 	StateVars.db_saves.query("commit;")

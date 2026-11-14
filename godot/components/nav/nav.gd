@@ -153,17 +153,16 @@ func octify() -> void:
 
 func antgen(tbl: String, needs: Array[int]) -> void:
 	StateVars.db_saves.query(
-		(
-			"""
+		"""
 			select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-			from font_%s
-			where code in (%s)
-			order by %s
-			;"""
-			% [
+			from font_{0}
+			where code in ({1})
+			order by {2}
+			;""".format(
+			[
 				StateVars.font.id,
 				",".join(needs),
-				",".join(needs.map(func(n): return "code=%d desc" % n))
+				",".join(needs.map(func(n): return "code={0} desc".format([n])))
 			]
 		)
 	)
@@ -179,7 +178,7 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 		bm.update_cells(qs[i])
 		bms[i] = bm
 
-	StateVars.db_uc.query("select code from %s order by row;" % tbl)
+	StateVars.db_uc.query("select code from {0} order by row;".format([tbl]))
 	var codes := StateVars.db_uc.query_result.map(func(q): return q.code)
 
 	var gens: Array[Dictionary] = []
