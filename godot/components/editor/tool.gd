@@ -42,6 +42,9 @@ class _Tool:
 	func pre() -> void:
 		c_grid.pattern.node.mouse_default_cursor_shape = (Control.CURSOR_CROSS)
 
+	func enabled() -> bool:
+		return not c_grid.layers.has_layers
+
 	func handle(state := State.X) -> void:
 		if state == State.END:
 			end()
@@ -143,7 +146,19 @@ class ToolMove:
 	func pre() -> void:
 		c_grid.pattern.node.mouse_default_cursor_shape = Control.CURSOR_MOVE
 
+	func enabled() -> bool:
+		return true
+
 	func update() -> void:
 		super()
-		c_grid.pattern.cells.copy_from(c_tool.prev)
-		c_grid.pattern.cells.translate(p - c_tool.pivot)
+		if c_grid.layers.has_layers:
+			if p != c_tool.pivot:
+				c_grid.layers.translate(p - c_tool.pivot)
+				c_tool.pivot = p
+		else:
+			c_grid.pattern.cells.copy_from(c_tool.prev)
+			c_grid.pattern.cells.translate(p - c_tool.pivot)
+
+	func end() -> void:
+		if not c_grid.layers.has_layers:
+			super()

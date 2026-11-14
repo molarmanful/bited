@@ -126,7 +126,7 @@ func _gui_input(e: InputEvent) -> void:
 		return
 	if [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP].has(e.button_index):
 		return
-	if layers.has_layers and not pressed:
+	if not pressed and not toolman.tools[tool_sel].enabled():
 		return
 
 	pressed = e.pressed
