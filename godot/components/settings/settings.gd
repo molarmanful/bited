@@ -20,18 +20,13 @@ func _ready() -> void:
 
 	for child in get_tree().get_nodes_in_group("settings"):
 		if child.has_method("validate"):
-			child.f = func(ok: bool):
-				if ok:
-					btn_save.show()
-					btn_save_close.show()
-				else:
-					btn_save.hide()
-					btn_save_close.hide()
+			child.f = func(ok: bool): btn_save.visible = ok
 
 	window.about_to_popup.connect(load)
 	window.close_requested.connect(window.hide)
 	node_tabs.tab_changed.connect(select)
 	btn_add_prop.pressed.connect(add_prop)
+	btn_save.visibility_changed.connect(func(): btn_save_close.visible = btn_save.visible)
 	btn_save.pressed.connect(save)
 	btn_save_close.pressed.connect(
 		func():
@@ -83,10 +78,8 @@ func is_valid() -> bool:
 	for child in get_tree().get_nodes_in_group("settings"):
 		if child.has_method("validate") and child.validate():
 			btn_save.hide()
-			btn_save_close.hide()
 			return false
 	btn_save.show()
-	btn_save_close.show()
 	return true
 
 

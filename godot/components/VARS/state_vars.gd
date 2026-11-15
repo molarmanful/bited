@@ -130,13 +130,13 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 	(
 		StateVars
 		. db_uc
-		. query_with_bindings(
+		. query_with_named_bindings(
 			"""
 			select name, category
 			from data
-			where id = ?
+			where id = :id
 			;""",
-			[data_code]
+			{id = data_code}
 		)
 	)
 	var qs := StateVars.db_uc.query_result
@@ -154,32 +154,67 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
-	StateVars.db_saves.query_with_bindings("select 1 from fonts where id = ?", [id])
+	StateVars.db_saves.query_with_named_bindings("select 1 from fonts where id = :id", {id = id})
 	return not not StateVars.db_saves.query_result
 
 
 ## Deletes font [param id].
 func delete_font(id: String) -> void:
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [id])
-	StateVars.db_saves.drop_table("font_" + id)
-	StateVars.db_saves.drop_table("layers_" + id)
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				delete from fonts where id = :id;
+				drop table if exists font_{0};
+				drop table if exists layers_{0};
+				"""
+				. format([id])
+			),
+			{id = id}
+		)
+	)
 
 
 ## Renames font [param old] to [param new].
 func rename_font(old: String, new: String) -> void:
-	StateVars.db_saves.query("begin;")
-	StateVars.db_saves.query("drop table if exists font_%s;" % new)
-	StateVars.db_saves.query("alter table font_%s rename to font_%s;" % [old, new])
-	StateVars.db_saves.query("drop table if exists layers_%s;" % new)
-	StateVars.db_saves.query("alter table layers_%s rename to layers_%s;" % [old, new])
-	StateVars.db_saves.query_with_bindings("delete from fonts where id = ?;", [new])
-	StateVars.db_saves.query_with_bindings("update fonts set id = ? where id = ?;", [new, old])
-	StateVars.db_saves.query("commit;")
-
-	StateVars.db_locals.query("begin;")
-	StateVars.db_locals.query_with_bindings("delete from paths where id = ?;", [new])
-	StateVars.db_locals.query_with_bindings("update paths set id = ? where id = ?;", [new, old])
-	StateVars.db_locals.query("commit;")
+	if not (
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				begin;
+				drop table if exists font_{1};
+				alter table font_{0} rename to font_{1};
+				drop table if exists layers_{1};
+				drop index if exists layers_{0}_child;
+				alter table layers_{0} rename to layers_{1};
+				update or replace fonts set id = :new where id = :old;
+				commit;
+				"""
+				. format([old, new])
+			),
+			{new = new, old = old}
+		)
+	):
+		StateVars.db_saves.query("rollback;")
+		return
+	if not (
+		StateVars
+		. db_locals
+		. query_with_named_bindings(
+			"""
+			begin;
+			delete from paths where id = :new;
+			update paths set id = :new where id = :old;
+			commit;
+			""",
+			{new = new, old = old}
+		)
+	):
+		StateVars.db_locals.query("rollback;")
 
 
 ## Saves [param font] to the fonts database.
@@ -190,15 +225,14 @@ func load_parsed(bf: BFont) -> void:
 	StyleVars.grid_size = font.grid_size
 	StyleVars.grid_px_size = font.grid_px_size
 	font.init_font()
-	var gens: Array[Dictionary]
-	gens.assign(font.glyphs)
-	font.save_glyphs(gens)
+	font.insert_layers(font.layers)
+	font.save_glyphs(font.glyphs)
 
 
 ## Returns the save path of the current font.
 func path() -> String:
-	StateVars.db_locals.query_with_bindings(
-		"select path from paths where id = ?", [StateVars.font.id]
+	StateVars.db_locals.query_with_named_bindings(
+		"select path from paths where id = :id", {id = StateVars.font.id}
 	)
 	var qs := StateVars.db_locals.query_result
 	return qs[0].path if qs else ""
@@ -206,6 +240,6 @@ func path() -> String:
 
 ## Sets the save path of the current font to [param p].
 func set_path(p: String) -> void:
-	StateVars.db_locals.query_with_bindings(
-		"insert or replace into paths (id, path) values (?, ?);", [font.id, p]
+	StateVars.db_locals.query_with_named_bindings(
+		"insert or replace into paths (id, path) values (:id, :path);", {id = font.id, path = p}
 	)

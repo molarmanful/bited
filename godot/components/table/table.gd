@@ -30,7 +30,9 @@ enum Mode { RANGE, GLYPHS, PAGE }
 @export var btn_del: Button
 
 var virt := Virt.new()
-var grid: Grid
+var grid: Grid:
+	get:
+		return editor.grid
 var names: Dictionary[String, Glyph]
 var thumbs: Dictionary[String, ImageTexture]
 var thumb_bitmap := Bitmap.new(StyleVars.thumb_size_pre)
@@ -41,10 +43,13 @@ var viewmode := Mode.GLYPHS
 var start := 0
 var end := 0
 
+var pick_layer := false:
+	set(v):
+		pick_layer = v
+		sel.get_sel_text()
+
 
 func _ready() -> void:
-	grid = editor.grid
-	sel.table = self
 	(
 		StateVars
 		. db_saves
@@ -77,6 +82,9 @@ func _ready() -> void:
 		func():
 			await get_tree().process_frame
 			update_tb()
+	)
+	node_grid_panel.visibility_changed.connect(
+		func(): node_placeholder.visible = not node_grid_panel.visible
 	)
 
 	btn_all.pressed.connect(sel.all)
@@ -126,27 +134,26 @@ func set_range(a: int, b: int) -> void:
 
 
 func set_glyphs(top := true) -> void:
-	StateVars.db_saves.delete_rows("temp.full", "")
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
+				delete from temp.full;
 				insert into temp.full
 				select
 					row_number() over (order by code, name) - 1 as row,
 					name, code
-				from font_%s
-				;"""
-				% StateVars.font.id
+				from font_{0};
+				select count(*) as count from temp.full;
+				"""
+				. format([StateVars.font.id])
 			)
 		)
 	)
 	viewmode = Mode.GLYPHS
-	virt.length = (
-		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
-	)
+	virt.length = StateVars.db_saves.query_result[0].count
 	after_set(top)
 
 
@@ -158,17 +165,16 @@ func set_page(id: String) -> void:
 			(
 				"""
 				select row, coalesce(code, -1) as code
-				from p_%s
+				from p_{0}
 				order by row
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
 	var qs := StateVars.db_uc.query_result
 
-	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin;")
+	StateVars.db_saves.query("delete from temp.full; begin;")
 
 	for q in qs:
 		(
@@ -194,11 +200,12 @@ func set_page(id: String) -> void:
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
 	var fpq := fp.query()
-	StateVars.db_uc.query_with_bindings("select id from data where %s order by id;" % fpq, fp.binds)
+	StateVars.db_uc.query_with_bindings(
+		"select id from data where {0} order by id;".format([fpq]), fp.binds
+	)
 	var qs := StateVars.db_uc.query_result
 
-	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin;")
+	StateVars.db_saves.query("delete from temp.full; begin;")
 
 	for i in qs.size():
 		(
@@ -222,12 +229,7 @@ func set_finder(query: String) -> void:
 
 
 func after_set(top := true) -> void:
-	if virt.length:
-		node_placeholder.hide()
-		node_grid_panel.show()
-	else:
-		node_grid_panel.hide()
-		node_placeholder.show()
+	node_grid_panel.visible = bool(virt.length)
 	sel.clear()
 	if top:
 		node_scroll.scroll_vertical = 0
@@ -252,34 +254,34 @@ func gen_glyphs() -> void:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-					from font_%s
-					where code between ? and ?
+					from font_{0}
+					where code between :a and :b
 					;"""
-					% StateVars.font.id
+					. format([StateVars.font.id])
 				),
-				[start + i0, start + i1 - 1]
+				{a = start + i0, b = start + i1 - 1}
 			)
 		)
 	else:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
 					from temp.full as a
-					left join font_%s as b on a.name = b.name
-					where a.row between ? and ?
+					left join font_{0} as b on a.name = b.name
+					where a.row between :a and :b
 					order by a.row
 					;"""
-					% StateVars.font.id
+					. format([StateVars.font.id])
 				),
-				[i0, i1 - 1]
+				{a = i0, b = i1 - 1}
 			)
 		)
 	var qs := StateVars.db_saves.query_result
@@ -299,9 +301,7 @@ func gen_glyphs() -> void:
 			g.data_code = qs[i].code
 		g.ind = c
 		g.selected = sel.is_selected(g.ind)
-		g.edit = (
-			grid.pattern_root.bitmap.data_name and g.data_name == grid.pattern_root.bitmap.data_name
-		)
+		g.edit = (grid.pattern.bitmap.data_name and g.data_name == grid.pattern.bitmap.data_name)
 		g.show()
 		names[g.data_name] = g
 

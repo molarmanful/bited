@@ -89,6 +89,8 @@ func start() -> void:
 	font.id = input_id.text
 	font.bb.x = input_w.value
 	printt("FONT", font.id)
-	StateVars.db_locals.query_with_bindings("delete from paths where id = ?", [font.id])
+	StateVars.db_locals.query_with_named_bindings(
+		"delete from paths where id = :id", {id = font.id}
+	)
 	StateVars.load_parsed(font)
 	StateVars.start_all()

@@ -10,6 +10,7 @@ extends PanelContainer
 @export var file_dl: FileDialog
 
 var font: FontFileGen
+var queue := ""
 
 var preset_tree: Dictionary[String, Array] = {
 	"BASIC":
@@ -79,9 +80,11 @@ func _ready() -> void:
 
 	StateVars.refresh.connect(
 		func(gen: Dictionary):
-			if window.visible and font.queried.erase(gen.code):
-				font.load_str(char(gen.code))
-				apply_font()
+			if not window.visible or not font.queried.erase(gen.code):
+				return
+			if not queue:
+				refresh.call_deferred()
+			queue += char(gen.code)
 	)
 	StateVars.edit_refresh.connect(
 		func():
@@ -122,6 +125,12 @@ func preview() -> void:
 	input.grab_focus()
 
 
+func refresh() -> void:
+	if font:
+		font.load_str(queue)
+	queue = ""
+
+
 func rebuild() -> void:
 	font = FontFileGen.new()
 	font.load_str(input.text + input.placeholder_text)
@@ -134,8 +143,7 @@ func load_lines(from: int, to: int) -> void:
 	var s := ""
 	for i in range(mini(from, to), mini(maxi(from, to) + 1, input.get_line_count())):
 		s += input.get_line(i)
-	if font.load_str(s):
-		apply_font()
+	font.load_str(s)
 
 
 func apply_font() -> void:

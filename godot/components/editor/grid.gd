@@ -2,10 +2,12 @@
 class_name Grid
 extends PanelContainer
 
+signal refreshed
+
 @export var editor: Editor
+@export var layers: Layers
 @export var node_wrapper: Container
 @export var node_root: TextureRect
-@export var node_sels: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: GridLines
 @export var node_placeholder: Label
@@ -34,9 +36,10 @@ extends PanelContainer
 @export var btn_up: Button
 @export var btn_right: Button
 @export var btn_grid_clr: Button
-@export var btn_selmode: Button
-@export var btn_overwrite: Button
-@export var btn_stamp: Button
+
+var table: Table:
+	get:
+		return editor.table
 
 var dim_grid: int:
 	get:
@@ -52,39 +55,7 @@ var size_grid: Vector2i:
 		return Vector2i(w_grid, w_grid)
 
 var pressed := false
-var is_sel := false:
-	set(s):
-		is_sel = s
-		btn_selmode.set_pressed_no_signal(s)
-		node_sels.visible = s
-		tool_sel = tool_sel
-
-var patterns: Dictionary[int, Pattern]
-var k_pattern := 1:
-	set(k):
-		k_pattern = k
-		if not patterns.has(k):
-			patterns[k] = Pattern.new(node_sels)
-		btn_selmode.text = ":%d" % k
-		btn_selmode.tooltip_text = "toggle pattern %d" % k
-		if is_sel:
-			refresh()
-
-var pattern_sels: Pattern:
-	get:
-		return patterns[k_pattern]
-	set(l):
-		patterns[k_pattern] = l
-
-var pattern_root: Pattern
-var pattern_top: Pattern:
-	get:
-		return pattern_sels if is_sel else pattern_root
-var pattern_btm: Pattern:
-	get:
-		return pattern_root if is_sel else pattern_sels
-
-var table: Table
+var pattern: Pattern
 var toolman := Tool.new(self)
 var tool_sel := "pen":
 	set(t):
@@ -94,22 +65,33 @@ var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
-	pattern_root = Pattern.new(node_root)
-	k_pattern = 1
-	table = editor.table
-	refresh()
+	pattern = Pattern.new(node_root)
 
 	StateVars.settings.connect(refresh)
 	StateVars.edit.connect(start_edit)
 	StateVars.edit_refresh.connect(refresh)
 	StyleVars.set_grid.connect(refresh.bind(true))
 
-	theme_changed.connect(update_cells)
+	theme_changed.connect(pattern.update_tex)
+
+	node_wrapper.visibility_changed.connect(
+		func():
+			node_placeholder.visible = not node_wrapper.visible
+			editor.node_info.visible = node_wrapper.visible
+			if not node_wrapper.visible:
+				layers.hide()
+	)
 
 	input_dwidth.value_changed.connect(func(_new: float): dwidth())
 
 	tools_group.pressed.connect(func(btn: BaseButton): tool_sel = btn.name)
-	cmode_group.pressed.connect(func(btn: BaseButton): toolman.cmode = Tool.CMode[btn.name])
+	cmode_group.pressed.connect(
+		func(btn: BaseButton):
+			if layers.has_layers:
+				layers.set_blend(Tool.CMode[btn.name] - Tool.CMode.T)
+			else:
+				toolman.cmode = Tool.CMode[btn.name]
+	)
 
 	btn_is_abs.toggled.connect(is_abs)
 	btn_prev_glyph.pressed.connect(off_glyph.bind(-1))
@@ -127,28 +109,13 @@ func _ready() -> void:
 	btn_up.pressed.connect(translate.bind(Vector2i.UP))
 	btn_right.pressed.connect(translate.bind(Vector2i.RIGHT))
 	btn_grid_clr.pressed.connect(clear)
-	btn_selmode.toggled.connect(
-		func(on: bool):
-			is_sel = on
-			refresh()
-	)
-	btn_overwrite.pressed.connect(overwrite)
-	btn_stamp.pressed.connect(stamp)
+
+	refresh()
 
 
 func _process(_delta: float) -> void:
 	toolman.tools[tool_sel].handle()
-	update_cells()
-
-
-func _unhandled_key_input(e: InputEvent) -> void:
-	if e is not InputEventKey:
-		return
-
-	if e.pressed:
-		var kc: Key = e.get_keycode_with_modifiers()
-		if kc >= KEY_1 and kc <= KEY_9:
-			k_pattern = kc - KEY_1 + 1
+	pattern.update_tex()
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -159,6 +126,8 @@ func _gui_input(e: InputEvent) -> void:
 		return
 	if [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP].has(e.button_index):
 		return
+	if not pressed and not toolman.tools[tool_sel].enabled():
+		return
 
 	pressed = e.pressed
 	toolman.tools[tool_sel].handle(Tool.State.START if pressed else Tool.State.END)
@@ -166,57 +135,46 @@ func _gui_input(e: InputEvent) -> void:
 
 func start_edit(data_name: String, data_code: int) -> void:
 	undoman.clear_history()
-	pattern_root.bitmap.data_name = data_name
-	pattern_root.bitmap.data_code = data_code
-	pattern_root.bitmap.dwidth = 0
-	pattern_root.bitmap.is_abs = false
-	pattern_root.cells.fill(false)
-	pattern_root.bitmap.save(false)
+	pattern.bitmap.data_name = data_name
+	pattern.bitmap.data_code = data_code
+	pattern.bitmap.dwidth = 0
+	pattern.bitmap.is_abs = false
+	pattern.cells.fill(false)
+	pattern.bitmap.save(false)
 	table.to_update = true
 	refresh(true)
 
 
 func refresh(hard := false) -> void:
 	if hard:
-		pattern_root.clear()
+		pattern.clear()
 
-		var sels := pattern_sels.cells
-		var origin := pattern_sels.bitmap.origin
-		pattern_sels.bitmap.dwidth = pattern_root.bitmap.dwidth
-		pattern_sels.bitmap.is_abs = pattern_root.bitmap.is_abs
-		pattern_sels.clear()
-		sels.crop(Rect2i(origin - pattern_sels.bitmap.origin, Vector2i(dim_grid, dim_grid)))
-		pattern_sels.cells = sels
+	pattern.bitmap.load()
+	refreshed.emit()
 
-	pattern_root.bitmap.load()
-
-	if not pattern_root.bitmap.data_name:
+	if not pattern.bitmap.data_name:
 		editor.node_info.hide()
 		node_wrapper.hide()
-		node_placeholder.show()
 		return
 	editor.node_info.show()
-	node_placeholder.hide()
 	node_wrapper.show()
 
-	btn_is_abs.set_pressed_no_signal(pattern_root.bitmap.is_abs)
+	btn_is_abs.set_pressed_no_signal(pattern.bitmap.is_abs)
 	btn_is_abs.tooltip_text = (
-		"dwidth mode: %s" % ("dwidth" if pattern_root.bitmap.is_abs else "offset")
+		"dwidth mode: %s" % ("dwidth" if pattern.bitmap.is_abs else "offset")
 	)
 
 	input_dwidth.allow_lesser = true
-	input_dwidth.prefix = "w:" if pattern_root.bitmap.is_abs else "o:"
-	input_dwidth.min_value = (-StateVars.font.dwidth * int(not pattern_root.bitmap.is_abs))
-	input_dwidth.set_value_no_signal(pattern_root.bitmap.dwidth)
+	input_dwidth.prefix = "w:" if pattern.bitmap.is_abs else "o:"
+	input_dwidth.min_value = (-StateVars.font.dwidth * int(not pattern.bitmap.is_abs))
+	input_dwidth.set_value_no_signal(pattern.bitmap.dwidth)
 	input_dwidth.allow_lesser = false
 
 	editor.node_info_text.text = StateVars.get_info(
-		pattern_root.bitmap.data_name, pattern_root.bitmap.data_code
+		pattern.bitmap.data_name, pattern.bitmap.data_code
 	)
-	pattern_root.update_node()
-	pattern_sels.update_node()
-	pattern_root.dirty = true
-	pattern_sels.dirty = true
+	pattern.update_node()
+	pattern.dirty = true
 	update_grid()
 
 
@@ -226,26 +184,16 @@ func update_grid() -> void:
 	node_root.custom_minimum_size = size_grid
 	node_root.self_modulate = get_theme_color("fg")
 
-	var c_sel := get_theme_color("sel")
-	c_sel.a = 0.69
-	node_sels.custom_minimum_size = size_grid
-	node_sels.self_modulate = c_sel
-
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()
 	await RenderingServer.frame_post_draw
 	node_view_lines.get_parent().queue_redraw()
 
 
-func update_cells() -> void:
-	pattern_root.update_tex()
-	pattern_sels.update_tex()
-
-
 func tt_line() -> void:
 	tooltip_text = ""
 	var pos := get_local_mouse_position()
-	var origin := pattern_root.bitmap.origin
+	var origin := pattern.bitmap.origin
 	var e := w_cell / 2
 
 	for k in node_lines.lines_h:
@@ -284,12 +232,12 @@ func off_glyph(off: int) -> void:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select name, code
 					from font_{0}
-					where (code between ? and ?) and (code {1} ?)
+					where (code between :a and :b) and (code {1} :code)
 					order by code {2}, name {2}
 					limit 1
 					;"""
@@ -297,30 +245,32 @@ func off_glyph(off: int) -> void:
 						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 					)
 				),
-				[table.start, table.end, pattern_root.bitmap.data_code + off]
+				{a = table.start, b = table.end, code = pattern.bitmap.data_code + off}
 			)
 		)
 	else:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select o.name, o.code
 					from temp.full as o
-					join font_%s as i on o.name = i.name
-					where o.row %s (
-						select row + ?
+					join font_{0} as i on o.name = i.name
+					where o.row {1} (
+						select row + :off
 						from temp.full
-						where name = ?
+						where name = :name
 					)
-					order by row %s
+					order by row {2}
 					limit 1
 					;"""
-					% [StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					. format(
+						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+					)
 				),
-				[off, pattern_root.bitmap.data_name]
+				{off = off, name = pattern.bitmap.data_name}
 			)
 		)
 
@@ -332,7 +282,7 @@ func off_glyph(off: int) -> void:
 
 func off_uc(off: int) -> void:
 	if table.viewmode == Table.Mode.RANGE:
-		var code1 := pattern_root.bitmap.data_code + off
+		var code1 := pattern.bitmap.data_code + off
 		if code1 < table.start or code1 > table.end:
 			return
 		start_edit("%04X" % code1, code1)
@@ -343,14 +293,14 @@ func off_uc(off: int) -> void:
 				(
 					StateVars
 					. db_saves
-					. query_with_bindings(
+					. query_with_named_bindings(
 						"""
 						select o.name, o.code
 						from temp.full as o
-						join temp.full as i on o.row = i.row + ?
-						where i.name = ?
+						join temp.full as i on o.row = i.row + :off
+						where i.name = :name
 						;""",
-						[off, pattern_root.bitmap.data_name]
+						{off = off, name = pattern.bitmap.data_name}
 					)
 				)
 
@@ -358,22 +308,22 @@ func off_uc(off: int) -> void:
 				(
 					StateVars
 					. db_saves
-					. query_with_bindings(
+					. query_with_named_bindings(
 						(
 							"""
 							select name, code
 							from temp.full
-							where code >= 0 and row %s (
-								select row + ?
+							where code >= 0 and row {0} (
+								select row + :off
 								from temp.full
-								where name = ?
+								where name = :name
 							)
-							order by row %s
+							order by row {1}
 							limit 1
 							;"""
-							% ["<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+							. format(["<=" if off < 0 else ">=", "desc" if off < 0 else ""])
 						),
-						[off, pattern_root.bitmap.data_name]
+						{off = off, name = pattern.bitmap.data_name}
 					)
 				)
 
@@ -384,118 +334,100 @@ func off_uc(off: int) -> void:
 
 
 func act_cells(prev: BitGlyph) -> void:
-	var cs := pattern_root.cells.dup()
+	var cs := pattern.cells.dup()
 	undoman.create_action(name)
 
 	undoman.add_undo_method(
 		func():
-			pattern_root.cells.copy_from(prev)
-			pattern_root.bitmap.save()
-			pattern_root.dirty = true
+			pattern.cells.copy_from(prev)
+			pattern.bitmap.save()
+			pattern.dirty = true
 	)
 	undoman.add_undo_reference(prev)
 
 	undoman.add_do_method(
 		func():
-			pattern_root.cells.copy_from(cs)
-			pattern_root.bitmap.save()
-			pattern_root.dirty = true
+			pattern.cells.copy_from(cs)
+			pattern.bitmap.save()
+			pattern.dirty = true
 	)
 	undoman.add_do_reference(cs)
 
 	undoman.commit_action(false)
 
 
-func op(f: Callable, root_only := false) -> void:
-	var prev := (pattern_root if root_only else pattern_top).cells.dup()
-	f.call(prev)
-	pattern_root.dirty = true
-	pattern_sels.dirty = true
-	if not is_sel:
-		act_cells(prev)
-		pattern_root.bitmap.save()
+func op(f: Callable) -> void:
+	var prev := pattern.cells.dup()
+	f.call()
+	pattern.dirty = true
+	act_cells(prev)
+	pattern.bitmap.save()
 
 
 func dim_norm(f: Callable) -> void:
-	var dx := dim_grid - posmod(dim_grid - pattern_root.bitmap.dwidth_calc, 2)
+	var dx := dim_grid - posmod(dim_grid - pattern.bitmap.dwidth_calc, 2)
 	var dy := dim_grid - posmod(dim_grid - StateVars.font.bb.y, 2)
-	pattern_top.cells.crop(Rect2i(0, 0, dx, dy))
+	pattern.cells.crop(Rect2i(0, 0, dx, dy))
 	f.call()
-	pattern_top.cells.crop(Rect2i(0, 0, dim_grid, dim_grid))
+	pattern.cells.crop(Rect2i(0, 0, dim_grid, dim_grid))
 
 
 func flip_x() -> void:
-	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.flip_x))
+	if layers.has_layers:
+		layers.flip_x()
+	else:
+		op(func(): dim_norm(pattern.cells.flip_x))
 
 
 func flip_y() -> void:
-	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.flip_y))
+	if layers.has_layers:
+		layers.flip_y()
+	else:
+		op(func(): dim_norm(pattern.cells.flip_y))
 
 
 func rot_ccw() -> void:
-	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.rotate_ccw))
+	if layers.has_layers:
+		layers.rot_ccw()
+	else:
+		op(func(): dim_norm(pattern.cells.rotate_ccw))
 
 
 func rot_cw() -> void:
-	op(func(_prev: BitGlyph): dim_norm(pattern_top.cells.rotate_cw))
+	if layers.has_layers:
+		layers.rot_cw()
+	else:
+		op(func(): dim_norm(pattern.cells.rotate_cw))
 
 
 func translate(dst: Vector2i) -> void:
-	op(func(_prev: BitGlyph): pattern_top.cells.translate(dst))
+	if layers.has_layers:
+		layers.translate(dst)
+	else:
+		op(func(): pattern.cells.translate(dst))
 
 
 func clear() -> void:
-	op(func(_prev: BitGlyph): pattern_top.cells.fill(false))
-
-
-func overwrite() -> void:
-	op(
-		func(_prev: BitGlyph):
-			pattern_btm.cells.copy_from(pattern_top.cells)
-			is_sel = not is_sel,
-		true
-	)
-	is_sel = true
-	refresh()
-
-
-func stamp() -> void:
-	op(
-		func(_prev: BitGlyph):
-			stamp_mode()
-			is_sel = not is_sel,
-		true
-	)
-	is_sel = true
-	refresh()
-
-
-func stamp_mode() -> void:
-	match toolman.cmode:
-		Tool.CMode.DEFAULT, Tool.CMode.T:
-			pattern_btm.cells.op(OP_BIT_OR, pattern_top.cells)
-		Tool.CMode.F:
-			pattern_btm.cells.op(OP_SUBTRACT, pattern_top.cells)
-		Tool.CMode.INV:
-			pattern_btm.cells.op(OP_BIT_XOR, pattern_top.cells)
-		Tool.CMode.CELL:
-			pattern_btm.cells.op(OP_BIT_AND, pattern_top.cells)
+	if layers.has_layers:
+		layers.clear_xform()
+	else:
+		op(func(): pattern.cells.fill(false))
 
 
 func dwidth() -> void:
-	var old := pattern_root.bitmap.dwidth
+	var old := pattern.bitmap.dwidth
 	var new: int = input_dwidth.value
 	undoman.create_action("dwidth")
 	undoman.add_undo_method(
 		func():
-			pattern_root.bitmap.dwidth = old
-			pattern_root.bitmap.save_dwidth()
+			pattern.bitmap.dwidth = old
+			pattern.bitmap.save_dwidth()
 			refresh(true)
 	)
 	undoman.add_do_method(
 		func():
-			pattern_root.bitmap.dwidth = new
-			pattern_root.bitmap.save_dwidth()
+			pattern.bitmap.dwidth = new
+			pattern.bitmap.save_dwidth()
 			refresh(true)
 	)
 	undoman.commit_action()
@@ -505,14 +437,14 @@ func is_abs(on: bool) -> void:
 	undoman.create_action("is_abs")
 	undoman.add_undo_method(
 		func():
-			pattern_root.bitmap.set_is_abs(not on)
-			pattern_root.bitmap.save_dwidth()
+			pattern.bitmap.set_is_abs(not on)
+			pattern.bitmap.save_dwidth()
 			refresh()
 	)
 	undoman.add_do_method(
 		func():
-			pattern_root.bitmap.set_is_abs(on)
-			pattern_root.bitmap.save_dwidth()
+			pattern.bitmap.set_is_abs(on)
+			pattern.bitmap.save_dwidth()
 			refresh()
 	)
 	undoman.commit_action()

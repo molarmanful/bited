@@ -2,6 +2,8 @@ class_name BFont
 extends BFontR
 ## BDF font abstraction for holding (meta)data.
 
+const BLENDS: Array[Variant.Operator] = [OP_BIT_OR, OP_SUBTRACT, OP_BIT_XOR, OP_BIT_AND]
+
 var id := "new_font"
 var px_size: int:
 	get:
@@ -49,8 +51,19 @@ static func unifontex() -> BFont:
 
 func init_font(ignore := false) -> void:
 	if not ignore:
-		StateVars.db_saves.query("drop table if exists font_%s;" % id)
-		StateVars.db_saves.query("drop table if exists layers_%s;" % id)
+		(
+			StateVars
+			. db_saves
+			. query(
+				(
+					"""
+					drop table if exists font_{0};
+					drop table if exists layers_{0};
+					"""
+					. format([id])
+				)
+			)
+		)
 	(
 		StateVars
 		. db_saves
@@ -69,39 +82,85 @@ func init_font(ignore := false) -> void:
 			}
 		)
 	)
+
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
-				create table if not exists layers_%s (
+				select count(*) as n, coalesce(sum(name = 'xform'), 0) as x
+				from pragma_table_info('layers_{0}')
+				;"""
+				. format([id])
+			)
+		)
+	)
+	var cols := StateVars.db_saves.query_result[0]
+	var migrate: bool = cols.n and not cols.x
+
+	StateVars.db_saves.query("begin;")
+	if migrate:
+		StateVars.db_saves.query("alter table layers_{0} rename to layers_{0}_old;".format([id]))
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				create table if not exists layers_{0} (
 					parent text not null,
 					ord int not null,
 					child text not null,
 					off_x int not null default 0,
 					off_y int not null default 0,
 					blend int not null default 0,
+					xform int not null default 0,
 					primary key (parent, ord)
 				) without rowid
 				;"""
-				% [id]
+				. format([id])
 			)
 		)
 	)
+	if migrate:
+		(
+			StateVars
+			. db_saves
+			. query(
+				(
+					"""
+					insert or ignore into layers_{0} (parent, ord, child, off_x, off_y, blend)
+					select parent, ord, child, off_x, off_y, blend
+					from layers_{0}_old
+					;"""
+					. format([id])
+				)
+			)
+		)
+		StateVars.db_saves.query("drop table layers_{0}_old;".format([id]))
+	if not StateVars.db_saves.query(
+		"create index if not exists layers_{0}_child on layers_{0} (child); commit;".format([id])
+	):
+		StateVars.db_saves.query("rollback;")
+
 	save_font(ignore)
 	load_font()
 
 
 func save_font(ignore = false) -> void:
-	StateVars.db_saves.query_with_bindings(
-		"insert or %s into fonts (id, data) values (?, ?);" % ("ignore" if ignore else "replace"),
-		[id, var_to_bytes(to_dict())]
+	StateVars.db_saves.query_with_named_bindings(
+		"insert or {0} into fonts (id, data) values (:id, :data);".format(
+			["ignore" if ignore else "replace"]
+		),
+		{id = id, data = var_to_bytes(to_dict())}
 	)
 
 
 func load_font() -> void:
-	StateVars.db_saves.query_with_bindings("select data from fonts where id = ?;", [id])
+	StateVars.db_saves.query_with_named_bindings(
+		"select data from fonts where id = :id;", {id = id}
+	)
 	var qs := StateVars.db_saves.query_result
 	if not qs:
 		return
@@ -172,51 +231,63 @@ func to_glyphs_toml() -> String:
 			(
 				"""
 				select is_abs, count(is_abs) as n
-				from font_%s
+				from font_{0}
+				group by is_abs
 				order by n desc
 				limit 1
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
 	var qs := StateVars.db_saves.query_result
 	var d_is_abs: int = qs[0].is_abs if qs else 1
 
-	var default := ("[default]\n" + "is_abs = %s\n") % ("true" if d_is_abs else "false")
-
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
-				select name, code, is_abs
-				from font_%s
-				where is_abs <> ?
-				order by code, name
+				with
+					g as (select *, json_quote(iif(code >= 0, 'U+', '') || name) as key from font_{0}),
+					ls as (
+						select
+							l.parent,
+							'layers = [\n' || group_concat(
+								format(
+									'    { child = %s, off_x = %d, off_y = %d, blend = %d, xform = %d },\n',
+									c.key, l.off_x, l.off_y, l.blend, l.xform
+								),
+								'' order by l.ord
+							) || ']\n' as layers
+						from layers_{0} as l
+						join g as c on c.name = l.child
+						group by l.parent
+					)
+				select
+					coalesce(
+						group_concat(
+							format('[glyphs.%s]\n', g.key)
+							|| iif(g.is_abs <> :is_abs, format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')), '')
+							|| coalesce(ls.layers, ''),
+							'' order by g.code, g.name
+						), ''
+					) as toml
+				from g
+				left join ls on ls.parent = g.name
+				where g.is_abs <> :is_abs or ls.layers is not null
 				;"""
-				% id
+				. format([id])
 			),
-			[d_is_abs]
+			{is_abs = d_is_abs}
 		)
 	)
-	qs = StateVars.db_saves.query_result
 
-	var res: PackedStringArray
-	res.resize(len(qs))
-	var i = 0
-	for q in qs:
-		res[i] = (
-			("[glyphs.%s]\n" + "is_abs = %s\n")
-			% [
-				JSON.stringify(("U+" if q.code >= 0 else "") + q.name),
-				"true" if q.is_abs else "false"
-			]
-		)
-		i += 1
-
-	return default + "".join(res)
+	return (
+		"[default]\nis_abs = %s\n%s"
+		% ["true" if d_is_abs else "false", StateVars.db_saves.query_result[0].toml]
+	)
 
 
 func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
@@ -229,10 +300,10 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 			(
 				"""
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
+				from font_{0}
 				order by code, name
 				;"""
-				% id
+				. format([id])
 			)
 		)
 	)
@@ -266,39 +337,157 @@ func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
 	StateVars.db_saves.query("begin;")
 	for gen in gens:
-		save_glyph(gen, over)
+		insert_glyph(gen, over)
+	flatten_parents(gens.map(func(gen: Dictionary): return gen.name))
 	StateVars.db_saves.query("commit;")
 	StateVars.table_refresh.emit()
 
 
-func save_glyph(gen: Dictionary, over := true) -> void:
+func insert_layers(ls: Array[Dictionary]) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
-				insert or %s
-				into font_%s
-				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
-				values
-				(?, ?, ?, ?, ?, ?, ?, ?, ?)
+				insert or replace into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
+				select
+					value ->> 'parent', value ->> 'ord', value ->> 'child',
+					value ->> 'off_x', value ->> 'off_y', value ->> 'blend', value ->> 'xform'
+				from json_each(:ls)
 				;"""
-				% ["replace" if over else "ignore", StateVars.font.id]
+				. format([id])
 			),
-			[
-				gen.name,
-				gen.code,
-				gen.dwidth,
-				int(gen.is_abs),
-				gen.bb_x,
-				gen.bb_y,
-				gen.off_x,
-				gen.off_y,
-				gen.img
-			]
+			{ls = JSON.stringify(ls)}
 		)
 	)
+
+
+func save_glyph(gen: Dictionary, over := true) -> void:
+	if insert_glyph(gen, over):
+		StateVars.refresh.emit(gen)
+	flatten_parents([gen.name])
+
+
+func insert_glyph(gen: Dictionary, over := true) -> bool:
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				insert or {0}
+				into font_{1}
+				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
+				values
+				(:name, :code, :dwidth, :is_abs, :bb_x, :bb_y, :off_x, :off_y, :img)
+				returning name
+				;"""
+				. format(["replace" if over else "ignore", StateVars.font.id])
+			),
+			gen
+		)
+	)
+	return not StateVars.db_saves.query_result.is_empty()
+
+
+func flatten_parents(names: Array) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				with recursive
+					up(name, depth) as (
+						select parent, 1
+						from layers_{0}
+						where child in (select value from json_each(:names))
+						union
+						select l.parent, up.depth + 1
+						from layers_{0} as l
+						join up on l.child = up.name
+					)
+				select name
+				from up
+				group by name
+				order by max(depth)
+				;"""
+				. format([id])
+			),
+			{names = JSON.stringify(names)}
+		)
+	)
+	for q in StateVars.db_saves.query_result:
+		flatten(q.name)
+
+
+func flatten(name: String) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				select
+					l.off_x + c.off_x as off_x, l.off_y + c.off_y as off_y, l.blend, l.xform,
+					c.bb_x, c.bb_y, c.img
+				from layers_{0} as l
+				join font_{0} as c on c.name = l.child
+				where l.parent = :name
+				order by l.ord
+				;"""
+				. format([id])
+			),
+			{name = name}
+		)
+	)
+	var d := compose(StateVars.db_saves.query_result)
+	d.name = name
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				update font_{0}
+				set bb_x = :bb_x, bb_y = :bb_y, off_x = :off_x, off_y = :off_y, img = :img
+				where name = :name
+				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+				;"""
+				. format([id])
+			),
+			d
+		)
+	)
+	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
+
+
+static func compose(qs: Array) -> Dictionary:
+	var r := Rect2i()
+	var ts: Array[Array] = []
+	for q in qs:
+		var g := BitGlyph.create_from_bytes(
+			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
+		)
+		g.xform(q.xform)
+		var qr := Rect2i(Vector2i(q.off_x, q.off_y), g.get_size())
+		ts.push_back([BLENDS[q.blend], g, qr])
+		if qr.has_area():
+			r = r.merge(qr) if r.has_area() else qr
+
+	var bg := BitGlyph.create(r.size)
+	for t in ts:
+		var qr: Rect2i = t[2]
+		bg.blit(t[0], t[1], Vector2i(qr.position.x - r.position.x, r.end.y - qr.end.y))
+	var u := bg.used_rect()
+	return {
+		bb_x = u.size.x,
+		bb_y = u.size.y,
+		off_x = r.position.x + u.position.x if u.has_area() else 0,
+		off_y = r.end.y - u.end.y if u.has_area() else 0,
+		img = bg.region(u).to_bytes(),
+	}
 
 
 func to_dict() -> Dictionary:
@@ -375,7 +564,9 @@ func xlfd() -> String:
 
 func avg_w() -> int:
 	var qs := StateVars.db_saves.select_rows(
-		"font_" + id, "", ["cast(avg(%d * (is_abs = 0) + dwidth) * 10 as int) as avg" % dwidth]
+		"font_" + id,
+		"",
+		["cast(avg({0} * (is_abs = 0) + dwidth) * 10 as int) as avg".format([dwidth])]
 	)
 	if not qs:
 		return 0
@@ -395,7 +586,7 @@ func fbbx() -> Dictionary:
 			"coalesce(max(bb_y), 0) as bb_y",
 			"coalesce(min(off_x), 0) as off_x",
 			"coalesce(min(off_y), 0) as off_y",
-			"coalesce(max(%d * (is_abs = 0) + dwidth), 0) as dwidth" % dwidth
+			"coalesce(max({0} * (is_abs = 0) + dwidth), 0) as dwidth".format([dwidth])
 		]
 	)
 	return qs[0]

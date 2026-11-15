@@ -30,23 +30,22 @@ func _init(d: int, cs := BitGlyph.create(Vector2i(d, d)), dc := -1, dn := "") ->
 func save(over := true) -> void:
 	var gen := to_gen()
 	StateVars.font.save_glyph(gen, over)
-	StateVars.refresh.emit(gen)
 
 
 func save_dwidth() -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
-				update font_%s
-				set dwidth = ?, is_abs = ?
-				where name = ?
+				update font_{0}
+				set dwidth = :dwidth, is_abs = :is_abs
+				where name = :name
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			),
-			[dwidth, int(is_abs), data_name]
+			{dwidth = dwidth, is_abs = int(is_abs), name = data_name}
 		)
 	)
 	StateVars.refresh.emit(to_gen())
@@ -56,16 +55,16 @@ func load() -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_%s
-				where name = ?
+				from font_{0}
+				where name = :name
 				;"""
-				% StateVars.font.id
+				. format([StateVars.font.id])
 			),
-			[data_name]
+			{name = data_name}
 		)
 	)
 	var qs := StateVars.db_saves.query_result
@@ -74,9 +73,7 @@ func load() -> void:
 		data_name = ""
 		return
 
-	var gen := qs[0]
-	StateVars.refresh.emit(gen)
-	update_cells(gen)
+	update_cells(qs[0])
 
 
 func to_gen() -> Dictionary:

@@ -116,6 +116,12 @@ impl BitGlyph {
     }
 
     #[func]
+    pub fn blit(&mut self, op: VariantOperator, src: Gd<Self>, at: Vector2i) {
+        let src = src.bind().region(Rect2i::new(-at, self.size));
+        self.op(op, src);
+    }
+
+    #[func]
     pub fn crop(&mut self, r: Rect2i) {
         let size = r.size.maxi(0);
         let w0 = Self::bytes(self.size.x);
@@ -299,6 +305,19 @@ impl BitGlyph {
 
         self.size = size;
         self.data = data;
+    }
+
+    #[func]
+    pub fn xform(&mut self, m: i32) {
+        if m & 4 != 0 {
+            self.transpose();
+        }
+        if m & 1 != 0 {
+            self.flip_x();
+        }
+        if m & 2 != 0 {
+            self.flip_y();
+        }
     }
 
     #[func]
