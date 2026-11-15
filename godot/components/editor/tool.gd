@@ -83,7 +83,6 @@ class _Tool:
 		pass
 
 	func end() -> void:
-		c_grid.act_cells(c_tool.prev)
 		c_grid.pattern.bitmap.save()
 
 	func apply_mask() -> void:

@@ -25,6 +25,8 @@ extends PanelContainer
 @export var btn_sepsexify: Button
 @export var btn_octify: Button
 @export var btn_braille: Button
+@export var btn_undo: Button
+@export var btn_redo: Button
 
 var font: BFont
 
@@ -51,6 +53,8 @@ func _ready() -> void:
 	btn_sepsexify.pressed.connect(sepsexify)
 	btn_octify.pressed.connect(octify)
 	btn_braille.pressed.connect(braillegen)
+	btn_undo.pressed.connect(undo)
+	btn_redo.pressed.connect(undo.bind(true))
 
 
 func refresh() -> void:
@@ -196,3 +200,11 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 
 	StateVars.font.save_glyphs(gens)
 	StateVars.edit_refresh.emit()
+
+
+func undo(redo := false) -> void:
+	StateVars.undo(redo)
+	StateVars.edit_refresh.emit()
+	table.thumbs.clear()
+	table.reset_full()
+	table.to_update = true

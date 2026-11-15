@@ -100,18 +100,6 @@ action = &"bited_layers"
 [sub_resource type="Shortcut" id="Shortcut_xaubg"]
 events = [SubResource("InputEventAction_850sg")]
 
-[sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
-action = &"ui_undo"
-
-[sub_resource type="Shortcut" id="Shortcut_8vm0w"]
-events = [SubResource("InputEventAction_mcj1b")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_tuttj"]
-action = &"ui_redo"
-
-[sub_resource type="Shortcut" id="Shortcut_iofcn"]
-events = [SubResource("InputEventAction_tuttj")]
-
 [sub_resource type="InputEventAction" id="InputEventAction_2a0pl"]
 action = &"bited_flip_x"
 
@@ -421,8 +409,8 @@ btn_prev_glyph = NodePath("../../2/HBoxContainer2/prev_glyph")
 btn_next_glyph = NodePath("../../2/HBoxContainer3/next_glyph")
 btn_prev_uc = NodePath("../../2/HBoxContainer2/prev_uc")
 btn_next_uc = NodePath("../../2/HBoxContainer3/next_uc")
-btn_undo = NodePath("../../8/undo")
-btn_redo = NodePath("../../8/redo")
+btn_undo = NodePath("")
+btn_redo = NodePath("")
 btn_flip_x = NodePath("../../8/flip_x")
 btn_flip_y = NodePath("../../8/flip_y")
 btn_rot_ccw = NodePath("../../8/rot_ccw")
@@ -472,7 +460,6 @@ layout_mode = 2
 tooltip_text = "bake layers"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
-toggle_mode = true
 text = "⏥"
 
 [node name="7" type="Control" parent="CenterContainer/GridContainer" unique_id=1763315270]
@@ -482,26 +469,6 @@ layout_mode = 2
 [node name="8" type="HBoxContainer" parent="CenterContainer/GridContainer" unique_id=1059131432]
 layout_mode = 2
 size_flags_horizontal = 4
-
-[node name="undo" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1769901325]
-layout_mode = 2
-tooltip_text = "undo"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_8vm0w")
-text = "⮪"
-
-[node name="redo" type="Button" parent="CenterContainer/GridContainer/8" unique_id=1995600911]
-layout_mode = 2
-tooltip_text = "redo"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_iofcn")
-text = "⮫"
-
-[node name="VSeparator" type="VSeparator" parent="CenterContainer/GridContainer/8" unique_id=319513539]
-layout_mode = 2
-theme_override_constants/separation = 9
 
 [node name="flip_x" type="Button" parent="CenterContainer/GridContainer/8" unique_id=917781533]
 layout_mode = 2

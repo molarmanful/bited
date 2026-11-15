@@ -213,7 +213,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2
-theme_override_constants/margin_right = 16
+theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
 [node name="PanelContainer2" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/HSplitContainer/PanelContainer/Toolbox" unique_id=1113839146]
@@ -306,6 +306,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
+theme_override_constants/margin_left = 12
 theme_override_constants/margin_bottom = 12
 
 [node name="PanelContainer" type="PanelContainer" parent="Body/Main/HSplitContainer/MarginContainer/TableInfo" unique_id=654725959]

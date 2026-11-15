@@ -25,8 +25,6 @@ signal refreshed
 @export var btn_next_glyph: Button
 @export var btn_prev_uc: Button
 @export var btn_next_uc: Button
-@export var btn_undo: Button
-@export var btn_redo: Button
 @export var btn_flip_x: Button
 @export var btn_flip_y: Button
 @export var btn_rot_ccw: Button
@@ -61,7 +59,6 @@ var tool_sel := "pen":
 	set(t):
 		tool_sel = t
 		toolman.tools[tool_sel].pre()
-var undoman := UndoRedo.new()
 
 
 func _ready() -> void:
@@ -98,8 +95,6 @@ func _ready() -> void:
 	btn_next_glyph.pressed.connect(off_glyph.bind(1))
 	btn_prev_uc.pressed.connect(off_uc.bind(-1))
 	btn_next_uc.pressed.connect(off_uc.bind(1))
-	btn_undo.pressed.connect(undoman.undo)
-	btn_redo.pressed.connect(undoman.redo)
 	btn_flip_x.pressed.connect(flip_x)
 	btn_flip_y.pressed.connect(flip_y)
 	btn_rot_ccw.pressed.connect(rot_ccw)
@@ -116,6 +111,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	toolman.tools[tool_sel].handle()
 	pattern.update_tex()
+	StateVars.undo_step()
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -134,7 +130,6 @@ func _gui_input(e: InputEvent) -> void:
 
 
 func start_edit(data_name: String, data_code: int) -> void:
-	undoman.clear_history()
 	pattern.bitmap.data_name = data_name
 	pattern.bitmap.data_code = data_code
 	pattern.bitmap.dwidth = 0
@@ -333,34 +328,9 @@ func off_uc(off: int) -> void:
 		start_edit(qs[0].name, qs[0].code)
 
 
-func act_cells(prev: BitGlyph) -> void:
-	var cs := pattern.cells.dup()
-	undoman.create_action(name)
-
-	undoman.add_undo_method(
-		func():
-			pattern.cells.copy_from(prev)
-			pattern.bitmap.save()
-			pattern.dirty = true
-	)
-	undoman.add_undo_reference(prev)
-
-	undoman.add_do_method(
-		func():
-			pattern.cells.copy_from(cs)
-			pattern.bitmap.save()
-			pattern.dirty = true
-	)
-	undoman.add_do_reference(cs)
-
-	undoman.commit_action(false)
-
-
 func op(f: Callable) -> void:
-	var prev := pattern.cells.dup()
 	f.call()
 	pattern.dirty = true
-	act_cells(prev)
 	pattern.bitmap.save()
 
 
@@ -415,36 +385,12 @@ func clear() -> void:
 
 
 func dwidth() -> void:
-	var old := pattern.bitmap.dwidth
-	var new: int = input_dwidth.value
-	undoman.create_action("dwidth")
-	undoman.add_undo_method(
-		func():
-			pattern.bitmap.dwidth = old
-			pattern.bitmap.save_dwidth()
-			refresh(true)
-	)
-	undoman.add_do_method(
-		func():
-			pattern.bitmap.dwidth = new
-			pattern.bitmap.save_dwidth()
-			refresh(true)
-	)
-	undoman.commit_action()
+	pattern.bitmap.dwidth = int(input_dwidth.value)
+	pattern.bitmap.save_dwidth()
+	refresh(true)
 
 
 func is_abs(on: bool) -> void:
-	undoman.create_action("is_abs")
-	undoman.add_undo_method(
-		func():
-			pattern.bitmap.set_is_abs(not on)
-			pattern.bitmap.save_dwidth()
-			refresh()
-	)
-	undoman.add_do_method(
-		func():
-			pattern.bitmap.set_is_abs(on)
-			pattern.bitmap.save_dwidth()
-			refresh()
-	)
-	undoman.commit_action()
+	pattern.bitmap.set_is_abs(on)
+	pattern.bitmap.save_dwidth()
+	refresh()

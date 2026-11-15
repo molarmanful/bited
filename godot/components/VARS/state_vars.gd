@@ -61,6 +61,7 @@ func _notification(what):
 
 ## Transitions from "start" to "all".
 func start_all() -> void:
+	init_undo()
 	if not scn_all:
 		scn_all = ResourceLoader.load_threaded_get("res://components/all.tscn")
 	start_all_defer.call_deferred()
@@ -215,6 +216,108 @@ func rename_font(old: String, new: String) -> void:
 		)
 	):
 		StateVars.db_locals.query("rollback;")
+	if new == font.id:
+		init_undo()
+
+
+func init_undo() -> void:
+	var sql := """
+		pragma recursive_triggers = on;
+		drop table if exists temp.undolog;
+		create table temp.undolog (
+			seq integer primary key,
+			step int not null default 0,
+			sql text not null
+		);
+		create index temp.undolog_step on undolog (step);
+		"""
+	for t in [
+		{
+			t = "font",
+			key = "'name = %Q', new.name",
+			vals =
+			"""
+			'(%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
+			old.name, old.code, old.dwidth, old.is_abs,
+			old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
+			""",
+		},
+		{
+			t = "layers",
+			key = "'parent = %Q and ord = %d', new.parent, new.ord",
+			vals =
+			"""
+			'(%Q, %d, %Q, %d, %d, %d, %d)',
+			old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
+			""",
+		},
+	]:
+		sql += (
+			"""
+			drop trigger if exists temp.undo_{t}_i;
+			drop trigger if exists temp.undo_{t}_d;
+			drop trigger if exists temp.undo_{t}_u;
+			create trigger temp.undo_{t}_i after insert on {t}_{id} begin
+				insert into undolog (sql) values (format('delete from {t}_{id} where ' || {key}));
+			end;
+			create trigger temp.undo_{t}_d after delete on {t}_{id} begin
+				insert into undolog (sql) values (format('insert into {t}_{id} values ' || {vals}));
+			end;
+			create trigger temp.undo_{t}_u after update on {t}_{id} begin
+				insert into undolog (sql) values
+				(format('insert into {t}_{id} values ' || {vals})),
+				(format('delete from {t}_{id} where ' || {key}));
+			end;
+			"""
+			. format(t.merged({id = font.id}))
+		)
+	db_saves.query(sql)
+
+
+func undo_step() -> void:
+	(
+		db_saves
+		. query(
+			"""
+			delete from temp.undolog where step < 0 and exists (select 1 from temp.undolog where step = 0);
+			update temp.undolog set step = (select max(step) + 1 from temp.undolog) where step = 0;
+			"""
+		)
+	)
+
+
+func undo(redo := false) -> void:
+	undo_step()
+	(
+		db_saves
+		. query_with_named_bindings(
+			"""
+			select step, sql from temp.undolog
+			where step = (select max(step) from temp.undolog where iif(:redo, step < 0, step > 0))
+			order by seq desc
+			;""",
+			{redo = redo}
+		)
+	)
+	var qs := db_saves.query_result
+	if not qs:
+		return
+	db_saves.query("begin;")
+	if not (
+		qs.all(func(q): return db_saves.query(q.sql))
+		and (
+			db_saves
+			. query_with_named_bindings(
+				"""
+				delete from temp.undolog where step = :s;
+				update temp.undolog set step = -:s where step = 0;
+				commit;
+				""",
+				{s = qs[0].step}
+			)
+		)
+	):
+		db_saves.query("rollback;")
 
 
 ## Saves [param font] to the fonts database.
