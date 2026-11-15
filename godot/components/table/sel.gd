@@ -347,15 +347,20 @@ func paste() -> void:
 					)
 				insert or ignore into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
 				select
-					m.name, l.ord,
+					coalesce(m.name, l.parent), l.ord,
 					coalesce(
 						(select name from font_{0} where name = l.child),
 						(select k.name from m as k where k.src = l.child order by k.row limit 1)
 					),
 					l.off_x, l.off_y, l.blend, l.xform
-				from m
-				join temp.clip_layers as l on l.parent = m.src
+				from temp.clip_layers as l
+				left join m on m.src = l.parent
+				where
+					m.name is not null
+					or l.parent in (select name from font_{0} except select name from temp.sub)
 				;
+
+				delete from temp.clip_layers where parent not in (select name from temp.clip);
 
 				with recursive
 					down(top, name) as (
@@ -444,6 +449,20 @@ func commit() -> void:
 
 func cut() -> void:
 	copy()
+	(
+		StateVars
+		. db_saves
+		. query(
+			(
+				"""
+				insert into temp.clip_layers
+				select * from layers_{0}
+				where child in (select name from temp.clip) and parent not in (select name from temp.clip)
+				;"""
+				. format([StateVars.font.id])
+			)
+		)
+	)
 	delete()
 
 
