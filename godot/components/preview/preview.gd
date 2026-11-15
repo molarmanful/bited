@@ -126,8 +126,8 @@ func preview() -> void:
 
 
 func refresh() -> void:
-	if font:
-		font.load_str(queue)
+	if font and font.load_str(queue):
+		apply_font()
 	queue = ""
 
 
@@ -143,7 +143,8 @@ func load_lines(from: int, to: int) -> void:
 	var s := ""
 	for i in range(mini(from, to), mini(maxi(from, to) + 1, input.get_line_count())):
 		s += input.get_line(i)
-	font.load_str(s)
+	if font.load_str(s):
+		apply_font()
 
 
 func apply_font() -> void:
