@@ -231,6 +231,7 @@ func init_undo() -> void:
 		);
 		create index temp.undolog_step on undolog (step);
 		"""
+
 	for t in [
 		{
 			t = "font",
@@ -257,12 +258,15 @@ func init_undo() -> void:
 			drop trigger if exists temp.undo_{t}_i;
 			drop trigger if exists temp.undo_{t}_d;
 			drop trigger if exists temp.undo_{t}_u;
+
 			create trigger temp.undo_{t}_i after insert on {t}_{id} begin
 				insert into undolog (sql) values (format('delete from {t}_{id} where ' || {key}));
 			end;
+
 			create trigger temp.undo_{t}_d after delete on {t}_{id} begin
 				insert into undolog (sql) values (format('insert into {t}_{id} values ' || {vals}));
 			end;
+
 			create trigger temp.undo_{t}_u after update on {t}_{id} begin
 				insert into undolog (sql) values
 				(format('insert into {t}_{id} values ' || {vals})),
@@ -271,6 +275,7 @@ func init_undo() -> void:
 			"""
 			. format(t.merged({id = font.id}))
 		)
+
 	db_saves.query(sql)
 
 
