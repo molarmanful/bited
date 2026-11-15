@@ -164,67 +164,51 @@ func set_page(id: String) -> void:
 		. query(
 			(
 				"""
-				select row, coalesce(code, -1) as code
+				select json_group_array(coalesce(code, -1) order by row) as codes, count(*) as count
 				from p_{0}
-				order by row
 				;"""
 				. format([id])
 			)
 		)
 	)
-	var qs := StateVars.db_uc.query_result
-
-	StateVars.db_saves.query("delete from temp.full; begin;")
-
-	for q in qs:
-		(
-			StateVars
-			. db_saves
-			. insert_row(
-				"temp.full",
-				{
-					row = q.row,
-					name = "%04X" % q.code if q.code >= 0 else "UN-%02X" % q.row,
-					code = q.code,
-				}
-			)
-		)
-
-	StateVars.db_saves.query("commit;")
-
-	viewmode = Mode.PAGE
-	virt.length = qs.size()
-	after_set()
+	set_codes(StateVars.db_uc.query_result[0])
 
 
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
-	var fpq := fp.query()
-	StateVars.db_uc.query_with_bindings(
-		"select id from data where {0} order by id;".format([fpq]), fp.binds
-	)
-	var qs := StateVars.db_uc.query_result
-
-	StateVars.db_saves.query("delete from temp.full; begin;")
-
-	for i in qs.size():
-		(
-			StateVars
-			. db_saves
-			. insert_row(
-				"temp.full",
-				{
-					row = i,
-					name = "%04X" % qs[i].id,
-					code = qs[i].id,
-				}
-			)
+	(
+		StateVars
+		. db_uc
+		. query_with_bindings(
+			(
+				"""
+				select json_group_array(id order by id) as codes, count(*) as count
+				from data where {0};
+				"""
+				. format([fp.query()])
+			),
+			fp.binds
 		)
+	)
+	set_codes(StateVars.db_uc.query_result[0])
 
-	StateVars.db_saves.query("commit;")
 
+func set_codes(q: Dictionary) -> void:
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			"""
+			delete from temp.full;
+			insert into temp.full
+			select key, iif(value >= 0, printf('%04X', value), printf('UN-%02X', key)), value
+			from json_each(:codes)
+			;""",
+			{codes = q.codes}
+		)
+	)
 	viewmode = Mode.PAGE
-	virt.length = qs.size()
+	virt.length = q.count
 	after_set()
 
 
