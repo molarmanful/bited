@@ -100,6 +100,12 @@ action = &"bited_layers"
 [sub_resource type="Shortcut" id="Shortcut_xaubg"]
 events = [SubResource("InputEventAction_850sg")]
 
+[sub_resource type="InputEventAction" id="InputEventAction_mnipk"]
+action = &"bited_layers_pick"
+
+[sub_resource type="Shortcut" id="Shortcut_850sg"]
+events = [SubResource("InputEventAction_mnipk")]
+
 [sub_resource type="InputEventAction" id="InputEventAction_2a0pl"]
 action = &"bited_flip_x"
 
@@ -389,7 +395,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer" unique_id=1740979526]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "layers", "node_wrapper", "node_root", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_undo", "btn_redo", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "layers", "node_wrapper", "node_root", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -409,8 +415,6 @@ btn_prev_glyph = NodePath("../../2/HBoxContainer2/prev_glyph")
 btn_next_glyph = NodePath("../../2/HBoxContainer3/next_glyph")
 btn_prev_uc = NodePath("../../2/HBoxContainer2/prev_uc")
 btn_next_uc = NodePath("../../2/HBoxContainer3/next_uc")
-btn_undo = NodePath("")
-btn_redo = NodePath("")
 btn_flip_x = NodePath("../../8/flip_x")
 btn_flip_y = NodePath("../../8/flip_y")
 btn_rot_ccw = NodePath("../../8/rot_ccw")
@@ -444,7 +448,6 @@ grid = NodePath("../../..")
 [node name="6" type="VBoxContainer" parent="CenterContainer/GridContainer" unique_id=1850260472]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 8
 
 [node name="layers" type="Button" parent="CenterContainer/GridContainer/6" unique_id=549640445]
 layout_mode = 2
@@ -454,6 +457,19 @@ theme_type_variation = &"Op"
 toggle_mode = true
 shortcut = SubResource("Shortcut_xaubg")
 text = "⧉"
+
+[node name="pick" type="Button" parent="CenterContainer/GridContainer/6" unique_id=973372326]
+layout_mode = 2
+tooltip_text = "pick glyphs from table"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+toggle_mode = true
+shortcut = SubResource("Shortcut_850sg")
+text = "⌖"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=2009002178]
+layout_mode = 2
+theme_override_constants/separation = 9
 
 [node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437]
 layout_mode = 2
@@ -571,7 +587,7 @@ script = ExtResource("12_xaubg")
 editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
 tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/Tree")
-btn_pick = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/pick")
+btn_pick = NodePath("../GridContainer/6/pick")
 btn_bake = NodePath("../GridContainer/6/bake")
 btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")
 
@@ -595,14 +611,6 @@ theme_override_constants/separation = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=1271668323]
 layout_mode = 2
-
-[node name="pick" type="Button" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=973372326]
-layout_mode = 2
-tooltip_text = "pick glyphs from table"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-toggle_mode = true
-text = "⌖"
 
 [node name="Spacer" type="Control" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=898146221]
 layout_mode = 2

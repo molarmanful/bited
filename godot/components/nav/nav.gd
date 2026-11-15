@@ -11,7 +11,8 @@ extends PanelContainer
 @export var txt_bdf_prog: Label
 @export var win_bdf_err: WinBDFErr
 @export var win_bdf_warn: WinBDFWarn
-@export var win_new_glyph: WinNewGlyph
+@export var win_new_glyph: WinGlyph
+@export var win_rename_glyph: WinGlyph
 @export var win_finder: WinFinder
 
 @export var btn_home: Button
@@ -20,6 +21,7 @@ extends PanelContainer
 @export var btn_preview: Button
 @export var btn_settings: Button
 @export var btn_new_glyph: Button
+@export var btn_rename_glyph: Button
 @export var btn_finder: Button
 @export var btn_sexify: Button
 @export var btn_sepsexify: Button
@@ -48,6 +50,7 @@ func _ready() -> void:
 	)
 	btn_settings.pressed.connect(settings.popup)
 	btn_new_glyph.pressed.connect(new_glyph)
+	btn_rename_glyph.pressed.connect(rename_glyph)
 	btn_finder.pressed.connect(win_finder.find)
 	btn_sexify.pressed.connect(sexify)
 	btn_sepsexify.pressed.connect(sepsexify)
@@ -116,7 +119,7 @@ func load_font(path: String) -> void:
 
 
 func new_glyph() -> void:
-	var ok := await win_new_glyph.new_glyph()
+	var ok := await win_new_glyph.prompt()
 	if not ok:
 		return
 
@@ -125,6 +128,41 @@ func new_glyph() -> void:
 	table.reset_full()
 	table.to_update = true
 	StateVars.edit.emit(gname, -1)
+
+
+func rename_glyph() -> void:
+	var old := table.sel.named()
+	var ok := await win_rename_glyph.prompt(old)
+	if not ok:
+		return
+
+	var gname := win_rename_glyph.input.text
+	if not (
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				begin;
+				update font_{0} set name = :new where name = :old;
+				update layers_{0}
+				set parent = iif(parent = :old, :new, parent), child = iif(child = :old, :new, child)
+				where :old in (parent, child);
+				commit;
+				"""
+				. format([StateVars.font.id])
+			),
+			{new = gname, old = old}
+		)
+	):
+		StateVars.db_saves.query("rollback;")
+		return
+
+	if table.grid.pattern.bitmap.data_name == old:
+		table.grid.pattern.bitmap.data_name = gname
+	table.grid.refresh()
+	table.reset_full()
+	table.to_update = true
 
 
 func finder(q: String) -> void:
@@ -158,11 +196,11 @@ func octify() -> void:
 func antgen(tbl: String, needs: Array[int]) -> void:
 	StateVars.db_saves.query(
 		"""
-			select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-			from font_{0}
-			where code in ({1})
-			order by {2}
-			;""".format(
+		select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
+		from font_{0}
+		where code in ({1})
+		order by {2}
+		;""".format(
 			[
 				StateVars.font.id,
 				",".join(needs),

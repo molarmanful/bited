@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://igqtugaw0g61" path="res://components/preview/preview.tscn" id="3_ups5f"]
 [ext_resource type="Script" uid="uid://b0wo6djat2wos" path="res://components/nav/win_bdf_err.gd" id="4_vogii"]
 [ext_resource type="Script" uid="uid://nobxen5aou23" path="res://components/nav/win_bdf_warn.gd" id="5_iswbp"]
-[ext_resource type="Script" uid="uid://cbgrjnn8nul8l" path="res://components/nav/win_new_glyph.gd" id="6_6sojv"]
 [ext_resource type="Script" uid="uid://cq0s6ql72o4ft" path="res://components/validators/glyph_val.gd" id="7_3rto3"]
 [ext_resource type="Script" uid="uid://brbjl0edgkstr" path="res://components/nav/win_finder.gd" id="8_ayivh"]
+[ext_resource type="Script" uid="uid://cbgrjnn8nul8l" path="res://components/nav/win_glyph.gd" id="8_cbahh"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_5q25s"]
 action = &"bited_home"
@@ -27,12 +27,6 @@ action = &"bited_load"
 [sub_resource type="Shortcut" id="Shortcut_heag0"]
 events = [SubResource("InputEventAction_r8rw3")]
 
-[sub_resource type="InputEventAction" id="InputEventAction_yfpmr"]
-action = &"bited_preview"
-
-[sub_resource type="Shortcut" id="Shortcut_wcks7"]
-events = [SubResource("InputEventAction_yfpmr")]
-
 [sub_resource type="InputEventAction" id="InputEventAction_mcj1b"]
 action = &"ui_undo"
 
@@ -45,17 +39,23 @@ action = &"ui_redo"
 [sub_resource type="Shortcut" id="Shortcut_cbahh"]
 events = [SubResource("InputEventAction_tuttj")]
 
-[sub_resource type="InputEventAction" id="InputEventAction_l6hp0"]
-action = &"bited_new_glyph"
+[sub_resource type="InputEventAction" id="InputEventAction_yfpmr"]
+action = &"bited_preview"
 
-[sub_resource type="Shortcut" id="Shortcut_bd6f1"]
-events = [SubResource("InputEventAction_l6hp0")]
+[sub_resource type="Shortcut" id="Shortcut_wcks7"]
+events = [SubResource("InputEventAction_yfpmr")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_amrxl"]
 action = &"bited_find"
 
 [sub_resource type="Shortcut" id="Shortcut_36wsi"]
 events = [SubResource("InputEventAction_amrxl")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_l6hp0"]
+action = &"bited_new_glyph"
+
+[sub_resource type="Shortcut" id="Shortcut_bd6f1"]
+events = [SubResource("InputEventAction_l6hp0")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_yaix3"]
 action = &"bited_settings"
@@ -88,7 +88,7 @@ action = &"bited_nvm"
 [sub_resource type="Shortcut" id="Shortcut_uuwx2"]
 events = [SubResource("InputEventAction_xv605")]
 
-[node name="Nav" type="PanelContainer" unique_id=1388008896 node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_finder", "btn_sexify", "btn_sepsexify", "btn_octify", "btn_braille", "btn_undo", "btn_redo")]
+[node name="Nav" type="PanelContainer" unique_id=1388008896 node_paths=PackedStringArray("preview", "font_name", "settings", "dialog_save", "dialog_load", "win_bdf_prog", "txt_bdf_prog", "win_bdf_err", "win_bdf_warn", "win_new_glyph", "win_rename_glyph", "win_finder", "btn_home", "btn_save", "btn_load", "btn_preview", "btn_settings", "btn_new_glyph", "btn_rename_glyph", "btn_finder", "btn_sexify", "btn_sepsexify", "btn_octify", "btn_braille", "btn_undo", "btn_redo")]
 custom_minimum_size = Vector2(0, 64)
 anchors_preset = 10
 anchor_right = 1.0
@@ -105,6 +105,7 @@ txt_bdf_prog = NodePath("BDFProg/PanelContainer/Body/Label")
 win_bdf_err = NodePath("BDFErr")
 win_bdf_warn = NodePath("BDFWarn")
 win_new_glyph = NodePath("NewGlyph")
+win_rename_glyph = NodePath("RenameGlyph")
 win_finder = NodePath("Finder")
 btn_home = NodePath("MarginContainer/HBoxContainer2/home")
 btn_save = NodePath("MarginContainer/HBoxContainer2/save")
@@ -112,6 +113,7 @@ btn_load = NodePath("MarginContainer/HBoxContainer2/load")
 btn_preview = NodePath("MarginContainer/HBoxContainer2/preview")
 btn_settings = NodePath("MarginContainer/HBoxContainer3/Settings")
 btn_new_glyph = NodePath("MarginContainer/HBoxContainer2/new_glyph")
+btn_rename_glyph = NodePath("MarginContainer/HBoxContainer2/rename_glyph")
 btn_finder = NodePath("MarginContainer/HBoxContainer2/finder")
 btn_sexify = NodePath("MarginContainer/HBoxContainer2/sexify")
 btn_sepsexify = NodePath("MarginContainer/HBoxContainer2/sepsexify")
@@ -169,15 +171,7 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_heag0")
 text = "🗁"
 
-[node name="preview" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1356866165]
-layout_mode = 2
-tooltip_text = "preview font"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_wcks7")
-text = "👁"
-
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/HBoxContainer2" unique_id=1971155778]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer2" unique_id=1971155778]
 layout_mode = 2
 theme_override_constants/separation = 9
 
@@ -197,9 +191,25 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_cbahh")
 text = "⮫"
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer2" unique_id=1701578737]
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/HBoxContainer2" unique_id=1701578737]
 layout_mode = 2
 theme_override_constants/separation = 9
+
+[node name="preview" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1356866165]
+layout_mode = 2
+tooltip_text = "preview font"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_wcks7")
+text = "👁"
+
+[node name="finder" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1915567303]
+layout_mode = 2
+tooltip_text = "finder"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_36wsi")
+text = "🔍"
 
 [node name="new_glyph" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=418856190]
 layout_mode = 2
@@ -209,13 +219,17 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_bd6f1")
 text = "🆕"
 
-[node name="finder" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1915567303]
+[node name="rename_glyph" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=1092642882 groups=["hide_on_pick", "sel_named"]]
+visible = false
 layout_mode = 2
-tooltip_text = "finder"
+tooltip_text = "rename glyph"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
-shortcut = SubResource("Shortcut_36wsi")
-text = "🔍"
+text = "📛"
+
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/HBoxContainer2" unique_id=369113619]
+layout_mode = 2
+theme_override_constants/separation = 9
 
 [node name="sexify" type="Button" parent="MarginContainer/HBoxContainer2" unique_id=2144644648]
 layout_mode = 2
@@ -501,7 +515,7 @@ initial_position = 2
 size = Vector2i(300, 113)
 visible = false
 transient = true
-script = ExtResource("6_6sojv")
+script = ExtResource("8_cbahh")
 input = NodePath("PanelContainer/VBoxContainer/Body/VBoxContainer/glyph")
 btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
 btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
@@ -559,6 +573,76 @@ shortcut = SubResource("Shortcut_blac1")
 text = "create"
 
 [node name="cancel" type="Button" parent="NewGlyph/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=482764709]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_uuwx2")
+text = "cancel"
+
+[node name="RenameGlyph" type="Window" parent="." unique_id=891347535 node_paths=PackedStringArray("input", "btn_ok", "btn_cancel")]
+auto_translate_mode = 1
+title = "rename glyph"
+initial_position = 2
+size = Vector2i(300, 113)
+visible = false
+transient = true
+script = ExtResource("8_cbahh")
+input = NodePath("PanelContainer/VBoxContainer/Body/VBoxContainer/glyph")
+btn_ok = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/ok")
+btn_cancel = NodePath("PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer/cancel")
+
+[node name="PanelContainer" type="PanelContainer" parent="RenameGlyph" unique_id=641728185]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RenameGlyph/PanelContainer" unique_id=873098870]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Body" type="MarginContainer" parent="RenameGlyph/PanelContainer/VBoxContainer" unique_id=864673622]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RenameGlyph/PanelContainer/VBoxContainer/Body" unique_id=1861603013]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="glyph" type="LineEdit" parent="RenameGlyph/PanelContainer/VBoxContainer/Body/VBoxContainer" unique_id=673046222]
+layout_mode = 2
+placeholder_text = "name..."
+max_length = 31
+select_all_on_focus = true
+script = ExtResource("7_3rto3")
+
+[node name="Footer" type="PanelContainer" parent="RenameGlyph/PanelContainer/VBoxContainer" unique_id=118155821]
+layout_mode = 2
+theme_type_variation = &"BorderT"
+
+[node name="MarginContainer" type="MarginContainer" parent="RenameGlyph/PanelContainer/VBoxContainer/Footer" unique_id=178997500]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RenameGlyph/PanelContainer/VBoxContainer/Footer/MarginContainer" unique_id=2014502736]
+layout_mode = 2
+alignment = 2
+
+[node name="ok" type="Button" parent="RenameGlyph/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=64386372]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_blac1")
+text = "rename"
+
+[node name="cancel" type="Button" parent="RenameGlyph/PanelContainer/VBoxContainer/Footer/MarginContainer/HBoxContainer" unique_id=1187471820]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_uuwx2")

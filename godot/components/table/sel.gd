@@ -473,8 +473,8 @@ func select(g: Glyph) -> void:
 	anchor = g.ind
 	ranges.assign([anchor, anchor + 1])
 	g.selected = true
+	get_sel_text()
 	table.node_info_text.text = StateVars.get_info(g.data_name, g.data_code, g.nop)
-	table.get_tree().call_group("selshow", "show")
 
 
 func select_range(g: Glyph) -> void:
@@ -518,6 +518,7 @@ func refresh(txt := true) -> void:
 
 func get_sel_text() -> void:
 	table.get_tree().call_group("selshow", "show" if ranges else "hide")
+	table.get_tree().call_group("sel_named", "set_visible", not named().is_empty())
 	if not ranges:
 		return
 	if table.pick_layer:
@@ -528,6 +529,16 @@ func get_sel_text() -> void:
 func is_selected(i: int) -> bool:
 	var a := mode and (i == anchor or (end >= 0 and Util.between(i, anchor, end)))
 	return a or ranges.bsearch(i, false) % 2
+
+
+func named() -> String:
+	if not is_alone() or table.viewmode != Table.Mode.GLYPHS:
+		return ""
+	StateVars.db_saves.query_with_named_bindings(
+		"select name from temp.full where row = :row and code < 0;", {row = ranges[0]}
+	)
+	var qs := StateVars.db_saves.query_result
+	return qs[0].name if qs else ""
 
 
 func is_alone() -> bool:

@@ -1,4 +1,4 @@
-class_name WinNewGlyph
+class_name WinGlyph
 extends Window
 
 signal out(ok: bool)
@@ -26,7 +26,9 @@ func _ready() -> void:
 	btn_cancel.pressed.connect(out.emit.bind(false))
 
 
-func new_glyph() -> bool:
+func prompt(text := "") -> bool:
+	input.text = text
+	input.text_changed.emit(text)
 	show()
 	input.grab_focus()
 	return await out

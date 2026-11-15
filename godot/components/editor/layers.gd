@@ -45,26 +45,35 @@ func _ready() -> void:
 		move
 	)
 
-	visibility_changed.connect(func(): btn.set_pressed_no_signal(visible))
-	close_requested.connect(
-		func():
-			btn_pick.button_pressed = false
-			hide()
-	)
-
+	StateVars.edit.connect(select_top.unbind(2), CONNECT_DEFERRED)
 	grid.refreshed.connect(refresh)
+
+	visibility_changed.connect(
+		func():
+			btn.set_pressed_no_signal(visible)
+			if not visible:
+				btn_pick.button_pressed = false
+	)
+	close_requested.connect(hide)
 
 	btn.toggled.connect(
 		func(on: bool):
 			if on:
-				var pos := btn.get_screen_transform() * Vector2(0, btn.size.y)
-				pos.y += 4 + get_theme_constant("title_height")
+				var pos := (
+					btn.get_screen_transform() * Vector2(btn.size.x, 0)
+					+ Vector2(8, get_theme_constant("title_height"))
+				)
 				popup(Rect2i(pos, size))
 			else:
 				close_requested.emit()
 	)
 
-	btn_pick.toggled.connect(func(on: bool): table.pick_layer = on)
+	btn_pick.toggled.connect(
+		func(on: bool):
+			table.pick_layer = on
+			if on:
+				btn.button_pressed = true
+	)
 	btn_bake.pressed.connect(bake)
 	btn_del.pressed.connect(del)
 	tree.multi_selected.connect(sync_cmode.unbind(3), CONNECT_DEFERRED)
@@ -99,6 +108,14 @@ func pick(gname: String) -> void:
 	)
 	if StateVars.db_saves.query_result:
 		flatten()
+		select_top()
+
+
+func select_top() -> void:
+	tree.deselect_all()
+	if has_layers:
+		tree.get_root().get_child(0).select(0)
+	sync_cmode()
 
 
 func del() -> void:

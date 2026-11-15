@@ -222,62 +222,77 @@ func rename_font(old: String, new: String) -> void:
 
 ## Initializes undo/redo triggers on the font.
 func init_undo() -> void:
-	var sql := """
-		pragma recursive_triggers = on;
-		drop table if exists temp.undolog;
-		create table temp.undolog (
-			seq integer primary key,
-			step int not null default 0,
-			sql text not null
-		);
-		create index temp.undolog_step on undolog (step);
-		"""
+	(
+		db_saves
+		. query(
+			(
+				"""
+				pragma recursive_triggers = on;
+				drop table if exists temp.undolog;
+				create table temp.undolog (
+					seq integer primary key,
+					step int not null default 0,
+					sql text not null
+				);
+				create index temp.undolog_step on undolog (step);
 
-	for t in [
-		{
-			t = "font",
-			key = "'name = %Q', new.name",
-			vals =
-			"""
-			'(%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
-			old.name, old.code, old.dwidth, old.is_abs,
-			old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
-			""",
-		},
-		{
-			t = "layers",
-			key = "'parent = %Q and ord = %d', new.parent, new.ord",
-			vals =
-			"""
-			'(%Q, %d, %Q, %d, %d, %d, %d)',
-			old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
-			""",
-		},
-	]:
-		sql += (
-			"""
-			drop trigger if exists temp.undo_{t}_i;
-			drop trigger if exists temp.undo_{t}_d;
-			drop trigger if exists temp.undo_{t}_u;
+				drop trigger if exists temp.undo_font_i;
+				drop trigger if exists temp.undo_font_d;
+				drop trigger if exists temp.undo_font_u;
+				drop trigger if exists temp.undo_layers_i;
+				drop trigger if exists temp.undo_layers_d;
+				drop trigger if exists temp.undo_layers_u;
 
-			create trigger temp.undo_{t}_i after insert on {t}_{id} begin
-				insert into undolog (sql) values (format('delete from {t}_{id} where ' || {key}));
-			end;
+				create trigger temp.undo_font_i after insert on font_{0} begin
+					insert into undolog (sql) values
+					(format('delete from font_{0} where name = %Q', new.name));
+				end;
 
-			create trigger temp.undo_{t}_d after delete on {t}_{id} begin
-				insert into undolog (sql) values (format('insert into {t}_{id} values ' || {vals}));
-			end;
+				create trigger temp.undo_font_d after delete on font_{0} begin
+					insert into undolog (sql) values
+					(format(
+						'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
+						old.name, old.code, old.dwidth, old.is_abs,
+						old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
+					));
+				end;
 
-			create trigger temp.undo_{t}_u after update on {t}_{id} begin
-				insert into undolog (sql) values
-				(format('insert into {t}_{id} values ' || {vals})),
-				(format('delete from {t}_{id} where ' || {key}));
-			end;
-			"""
-			. format(t.merged({id = font.id}))
+				create trigger temp.undo_font_u after update on font_{0} begin
+					insert into undolog (sql) values
+					(format(
+						'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
+						old.name, old.code, old.dwidth, old.is_abs,
+						old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
+					)),
+					(format('delete from font_{0} where name = %Q', new.name));
+				end;
+
+				create trigger temp.undo_layers_i after insert on layers_{0} begin
+					insert into undolog (sql) values
+					(format('delete from layers_{0} where parent = %Q and ord = %d', new.parent, new.ord));
+				end;
+
+				create trigger temp.undo_layers_d after delete on layers_{0} begin
+					insert into undolog (sql) values
+					(format(
+						'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
+						old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
+					));
+				end;
+
+				create trigger temp.undo_layers_u after update on layers_{0} begin
+					insert into undolog (sql) values
+					(format(
+						'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
+						old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
+					)),
+					(format('delete from layers_{0} where parent = %Q and ord = %d', new.parent, new.ord));
+				end;
+				"""
+				. format([font.id])
+			)
 		)
-
-	db_saves.query(sql)
+	)
 
 
 ## Commits pending undo log entries as a step.
