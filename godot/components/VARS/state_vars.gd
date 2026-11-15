@@ -179,7 +179,7 @@ func delete_font(id: String) -> void:
 
 ## Renames font [param old] to [param new].
 func rename_font(old: String, new: String) -> void:
-	(
+	if not (
 		StateVars
 		. db_saves
 		. query_with_named_bindings(
@@ -198,8 +198,10 @@ func rename_font(old: String, new: String) -> void:
 			),
 			{new = new, old = old}
 		)
-	)
-	(
+	):
+		StateVars.db_saves.query("rollback;")
+		return
+	if not (
 		StateVars
 		. db_locals
 		. query_with_named_bindings(
@@ -211,7 +213,8 @@ func rename_font(old: String, new: String) -> void:
 			""",
 			{new = new, old = old}
 		)
-	)
+	):
+		StateVars.db_locals.query("rollback;")
 
 
 ## Saves [param font] to the fonts database.

@@ -139,9 +139,10 @@ func init_font(ignore := false) -> void:
 			)
 		)
 		StateVars.db_saves.query("drop table layers_{0}_old;".format([id]))
-	StateVars.db_saves.query(
+	if not StateVars.db_saves.query(
 		"create index if not exists layers_{0}_child on layers_{0} (child); commit;".format([id])
-	)
+	):
+		StateVars.db_saves.query("rollback;")
 
 	save_font(ignore)
 	load_font()

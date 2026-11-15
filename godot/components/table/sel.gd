@@ -238,7 +238,7 @@ func copy() -> void:
 				)
 			)
 
-	(
+	if not (
 		StateVars
 		. db_saves
 		. query(
@@ -252,7 +252,8 @@ func copy() -> void:
 				. format([StateVars.font.id])
 			)
 		)
-	)
+	):
+		StateVars.db_saves.query("rollback;")
 
 	var res := ""
 	for i in range(0, ranges.size(), 2):
@@ -385,7 +386,8 @@ func paste() -> void:
 	)
 
 	StateVars.font.flatten_parents(StateVars.db_saves.query_result.map(func(q): return q.name))
-	StateVars.db_saves.query("drop table temp.sub; commit;")
+	if not StateVars.db_saves.query("drop table temp.sub; commit;"):
+		StateVars.db_saves.query("rollback;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
