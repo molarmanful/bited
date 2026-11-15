@@ -220,6 +220,7 @@ func rename_font(old: String, new: String) -> void:
 		init_undo()
 
 
+## Initializes undo/redo triggers on the font.
 func init_undo() -> void:
 	var sql := """
 		pragma recursive_triggers = on;
@@ -279,6 +280,7 @@ func init_undo() -> void:
 	db_saves.query(sql)
 
 
+## Commits pending undo log entries as a step.
 func undo_step() -> void:
 	(
 		db_saves
@@ -291,6 +293,7 @@ func undo_step() -> void:
 	)
 
 
+## Performs an undo/redo.
 func undo(redo := false) -> void:
 	undo_step()
 	(
