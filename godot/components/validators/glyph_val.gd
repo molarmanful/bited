@@ -9,8 +9,8 @@ func sub(new: String) -> String:
 func check() -> String:
 	if not text:
 		return "glyph name cannot be empty"
-	StateVars.db_saves.query_with_bindings(
-		"select name from font_{0} where name = ?1;".format([StateVars.font.id]), [text]
+	StateVars.db_saves.query_with_named_bindings(
+		"select name from font_{0} where name = :name;".format([StateVars.font.id]), {name = text}
 	)
 	if StateVars.db_saves.query_result:
 		return "glyph already exists"

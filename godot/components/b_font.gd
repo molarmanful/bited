@@ -51,8 +51,19 @@ static func unifontex() -> BFont:
 
 func init_font(ignore := false) -> void:
 	if not ignore:
-		StateVars.db_saves.query("drop table if exists font_{0};".format([id]))
-		StateVars.db_saves.query("drop table if exists layers_{0};".format([id]))
+		(
+			StateVars
+			. db_saves
+			. query(
+				(
+					"""
+					drop table if exists font_{0};
+					drop table if exists layers_{0};
+					"""
+					. format([id])
+				)
+			)
+		)
 	(
 		StateVars
 		. db_saves
@@ -129,25 +140,26 @@ func init_font(ignore := false) -> void:
 		)
 		StateVars.db_saves.query("drop table layers_{0}_old;".format([id]))
 	StateVars.db_saves.query(
-		"create index if not exists layers_{0}_child on layers_{0} (child);".format([id])
+		"create index if not exists layers_{0}_child on layers_{0} (child); commit;".format([id])
 	)
-	StateVars.db_saves.query("commit;")
 
 	save_font(ignore)
 	load_font()
 
 
 func save_font(ignore = false) -> void:
-	StateVars.db_saves.query_with_bindings(
-		"insert or {0} into fonts (id, data) values (?1, ?2);".format(
+	StateVars.db_saves.query_with_named_bindings(
+		"insert or {0} into fonts (id, data) values (:id, :data);".format(
 			["ignore" if ignore else "replace"]
 		),
-		[id, var_to_bytes(to_dict())]
+		{id = id, data = var_to_bytes(to_dict())}
 	)
 
 
 func load_font() -> void:
-	StateVars.db_saves.query_with_bindings("select data from fonts where id = ?1;", [id])
+	StateVars.db_saves.query_with_named_bindings(
+		"select data from fonts where id = :id;", {id = id}
+	)
 	var qs := StateVars.db_saves.query_result
 	if not qs:
 		return
@@ -233,7 +245,7 @@ func to_glyphs_toml() -> String:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				with
@@ -256,18 +268,18 @@ func to_glyphs_toml() -> String:
 					coalesce(
 						group_concat(
 							format('[glyphs.%s]\n', g.key)
-							|| iif(g.is_abs <> ?1, format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')), '')
+							|| iif(g.is_abs <> :is_abs, format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')), '')
 							|| coalesce(ls.layers, ''),
 							'' order by g.code, g.name
 						), ''
 					) as toml
 				from g
 				left join ls on ls.parent = g.name
-				where g.is_abs <> ?1 or ls.layers is not null
+				where g.is_abs <> :is_abs or ls.layers is not null
 				;"""
 				. format([id])
 			),
-			[d_is_abs]
+			{is_abs = d_is_abs}
 		)
 	)
 
@@ -334,18 +346,18 @@ func insert_layers(ls: Array[Dictionary]) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				insert or replace into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
 				select
 					value ->> 'parent', value ->> 'ord', value ->> 'child',
 					value ->> 'off_x', value ->> 'off_y', value ->> 'blend', value ->> 'xform'
-				from json_each(?1)
+				from json_each(:ls)
 				;"""
 				. format([id])
 			),
-			[JSON.stringify(ls)]
+			{ls = JSON.stringify(ls)}
 		)
 	)
 
@@ -360,29 +372,19 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				insert or {0}
 				into font_{1}
 				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
 				values
-				(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
+				(:name, :code, :dwidth, :is_abs, :bb_x, :bb_y, :off_x, :off_y, :img)
 				returning name
 				;"""
 				. format(["replace" if over else "ignore", StateVars.font.id])
 			),
-			[
-				gen.name,
-				gen.code,
-				gen.dwidth,
-				int(gen.is_abs),
-				gen.bb_x,
-				gen.bb_y,
-				gen.off_x,
-				gen.off_y,
-				gen.img
-			]
+			gen
 		)
 	)
 	return not StateVars.db_saves.query_result.is_empty()
@@ -392,14 +394,14 @@ func flatten_parents(names: Array) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				with recursive
 					up(name, depth) as (
 						select parent, 1
 						from layers_{0}
-						where child in (select value from json_each(?1))
+						where child in (select value from json_each(:names))
 						union
 						select l.parent, up.depth + 1
 						from layers_{0} as l
@@ -412,7 +414,7 @@ func flatten_parents(names: Array) -> void:
 				;"""
 				. format([id])
 			),
-			[JSON.stringify(names)]
+			{names = JSON.stringify(names)}
 		)
 	)
 	for q in StateVars.db_saves.query_result:
@@ -423,7 +425,7 @@ func flatten(name: String) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				select
@@ -431,12 +433,12 @@ func flatten(name: String) -> void:
 					c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
-				where l.parent = ?1
+				where l.parent = :name
 				order by l.ord
 				;"""
 				. format([id])
 			),
-			[name]
+			{name = name}
 		)
 	)
 	var qs := StateVars.db_saves.query_result
@@ -464,24 +466,24 @@ func flatten(name: String) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update font_{0}
-				set bb_x = ?1, bb_y = ?2, off_x = ?3, off_y = ?4, img = ?5
-				where name = ?6
+				set bb_x = :bb_x, bb_y = :bb_y, off_x = :off_x, off_y = :off_y, img = :img
+				where name = :name
 				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				;"""
 				. format([id])
 			),
-			[
-				u.size.x,
-				u.size.y,
-				r.position.x + u.position.x if u.has_area() else 0,
-				r.end.y - u.end.y if u.has_area() else 0,
-				bg.region(u).to_bytes(),
-				name,
-			]
+			{
+				bb_x = u.size.x,
+				bb_y = u.size.y,
+				off_x = r.position.x + u.position.x if u.has_area() else 0,
+				off_y = r.end.y - u.end.y if u.has_area() else 0,
+				img = bg.region(u).to_bytes(),
+				name = name
+			}
 		)
 	)
 	StateVars.refresh.emit(StateVars.db_saves.query_result[0])

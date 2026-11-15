@@ -30,15 +30,14 @@ func all() -> void:
 
 
 func filter_dwidth(dw: int, ia := false) -> void:
-	StateVars.db_saves.query("begin;")
-
-	StateVars.db_saves.query("drop table if exists temp.filter;")
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
+				begin;
+				drop table if exists temp.filter;
 				create table temp.filter as
 				select
 					cast(null as integer) as row,
@@ -58,39 +57,37 @@ func filter_dwidth(dw: int, ia := false) -> void:
 			(
 				StateVars
 				. db_saves
-				. query_with_bindings(
+				. query_with_named_bindings(
 					(
 						"""
 						insert into temp.filter (row, name)
 						select code, name
 						from font_{0}
-						where (code between ?1 and ?2) and is_abs = ?3 and dwidth = ?4
+						where (code between :a and :b) and is_abs = :is_abs and dwidth = :dwidth
 						;"""
 						. format([StateVars.font.id])
 					),
-					[a, b, int(ia), dw]
+					{a = a, b = b, is_abs = int(ia), dwidth = dw}
 				)
 			)
 		else:
 			(
 				StateVars
 				. db_saves
-				. query_with_bindings(
+				. query_with_named_bindings(
 					(
 						"""
 						insert into temp.filter (row, name)
 						select b.row, a.name
 						from font_{0} as a
 						join temp.full as b on a.name = b.name
-						where (b.row between ?1 and ?2) and a.is_abs = ?3 and a.dwidth = ?4
+						where (b.row between :a and :b) and a.is_abs = :is_abs and a.dwidth = :dwidth
 						;"""
 						. format([StateVars.font.id])
 					),
-					[a, b, int(ia), dw]
+					{a = a, b = b, is_abs = int(ia), dwidth = dw}
 				)
 			)
-
-	StateVars.db_saves.query("commit;")
 
 	clear()
 	(
@@ -98,6 +95,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 		. db_saves
 		. query(
 			"""
+			commit;
 			with rows as (
 				select row, row - (row_number() over (order by row)) as g
 				from temp.filter
@@ -136,33 +134,33 @@ func delete() -> void:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					delete from font_{0}
-					where name in (select name from {1} between ?1 and ?2)
+					where name in (select name from {1} between :a and :b)
 					returning name
 					;"""
 					. format([StateVars.font.id, src])
 				),
-				[a, b]
+				{a = a, b = b}
 			)
 		)
 		dels.append_array(StateVars.db_saves.query_result.map(func(q): return q.name))
 
 	var js := JSON.stringify(dels)
-	StateVars.db_saves.query_with_bindings(
-		"delete from layers_{0} where parent in (select value from json_each(?1));".format(
+	StateVars.db_saves.query_with_named_bindings(
+		"delete from layers_{0} where parent in (select value from json_each(:names));".format(
 			[StateVars.font.id]
 		),
-		[js]
+		{names = js}
 	)
 	StateVars.font.flatten_parents(dels)
-	StateVars.db_saves.query_with_bindings(
-		"delete from layers_{0} where child in (select value from json_each(?1));".format(
+	StateVars.db_saves.query_with_named_bindings(
+		"delete from layers_{0} where child in (select value from json_each(:names));".format(
 			[StateVars.font.id]
 		),
-		[js]
+		{names = js}
 	)
 
 	StateVars.db_saves.query("commit;")
@@ -177,15 +175,14 @@ func copy() -> void:
 	if table.pick_layer or not ranges:
 		return
 
-	StateVars.db_saves.query("begin;")
-
-	StateVars.db_saves.query("drop table if exists temp.clip;")
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
+				begin;
+				drop table if exists temp.clip;
 				create table temp.clip as
 				select
 					cast(null as integer) as row,
@@ -205,7 +202,7 @@ func copy() -> void:
 			(
 				StateVars
 				. db_saves
-				. query_with_bindings(
+				. query_with_named_bindings(
 					(
 						"""
 						insert into temp.clip (row, name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
@@ -213,18 +210,18 @@ func copy() -> void:
 							row_number() over (order by code, name) + (select count(*) from temp.clip) - 1,
 							name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 						from font_{0}
-						where code between ?1 and ?2
+						where code between :a and :b
 						;"""
 						. format([StateVars.font.id])
 					),
-					[a, b]
+					{a = a, b = b}
 				)
 			)
 		else:
 			(
 				StateVars
 				. db_saves
-				. query_with_bindings(
+				. query_with_named_bindings(
 					(
 						"""
 						insert into temp.clip (row, name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
@@ -233,11 +230,11 @@ func copy() -> void:
 							a.name, a.code, a.dwidth, a.is_abs, a.bb_x, a.bb_y, a.off_x, a.off_y, a.img
 						from font_{0} as a
 						join temp.full as b on a.name = b.name
-						where b.row between ?1 and ?2
+						where b.row between :a and :b
 						;"""
 						. format([StateVars.font.id])
 					),
-					[a, b]
+					{a = a, b = b}
 				)
 			)
 
@@ -265,8 +262,8 @@ func copy() -> void:
 			for code in range(a, b + 1):
 				res += char(code)
 		else:
-			StateVars.db_saves.query_with_bindings(
-				"select name, code from temp.full where row between ?1 and ?2;", [a, b]
+			StateVars.db_saves.query_with_named_bindings(
+				"select name, code from temp.full where row between :a and :b;", {a = a, b = b}
 			)
 			for q in StateVars.db_saves.query_result:
 				res += q.name if q.code < 0 else char(q.code)
@@ -282,14 +279,13 @@ func paste() -> void:
 	):
 		return
 
-	StateVars.db_saves.query("begin;")
-
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
+				begin;
 				create table temp.sub as
 				select
 					cast(null as integer) as row,
@@ -316,16 +312,16 @@ func paste() -> void:
 			(
 				StateVars
 				. db_saves
-				. query_with_bindings(
+				. query_with_named_bindings(
 					"""
 					insert into temp.sub (row, name, code)
 					select
 						row_number() over (order by row) - 1,
 						name, code
 					from temp.full as f
-					where f.row between ?1 and ?2
+					where f.row between :a and :b
 					;""",
-					[a, b]
+					{a = a, b = b}
 				)
 			)
 

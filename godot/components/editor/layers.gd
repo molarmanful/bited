@@ -72,24 +72,26 @@ func pick(gname: String) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				with recursive
 					up(name) as (
-						select ?1
+						select :parent
 						union
 						select l.parent
 						from layers_{0} as l
 						join up on l.child = up.name
 					)
 				insert into layers_{0} (parent, child, ord)
-				select ?1, ?2, (select coalesce(max(ord), -1) + 1 from layers_{0} where parent = ?1)
-				where ?2 not in (select name from up)
+				select
+					:parent, :child,
+					(select coalesce(max(ord), -1) + 1 from layers_{0} where parent = :parent)
+				where :child not in (select name from up)
 				;"""
 				. format([StateVars.font.id])
 			),
-			[parent_name, gname]
+			{parent = parent_name, child = gname}
 		)
 	)
 	flatten()
@@ -99,15 +101,15 @@ func del() -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				delete from layers_{0}
-				where parent = ?1 and ord in (select value from json_each(?2))
+				where parent = :parent and ord in (select value from json_each(:ords))
 				;"""
 				. format([StateVars.font.id])
 			),
-			[parent_name, JSON.stringify(selected)]
+			{parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
 	flatten()
@@ -132,32 +134,20 @@ func move(at: Vector2, ords: PackedInt32Array) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update layers_{0}
 				set ord = -1 - j.key
-				from json_each(?2) as j
-				where layers_{0}.parent = ?1 and layers_{0}.ord = j.value
-				;"""
-				. format([StateVars.font.id])
-			),
-			[parent_name, JSON.stringify(rows)]
-		)
-	)
-	(
-		StateVars
-		. db_saves
-		. query_with_bindings(
-			(
-				"""
+				from json_each(:rows) as j
+				where layers_{0}.parent = :parent and layers_{0}.ord = j.value;
 				update layers_{0}
 				set ord = -1 - ord
-				where parent = ?1 and ord < 0
-				;"""
+				where parent = :parent and ord < 0;
+				"""
 				. format([StateVars.font.id])
 			),
-			[parent_name]
+			{parent = parent_name, rows = JSON.stringify(rows)}
 		)
 	)
 
@@ -170,16 +160,16 @@ func translate(v: Vector2i) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update layers_{0}
-				set off_x = off_x + ?1, off_y = off_y - ?2
-				where parent = ?3 and ord in (select value from json_each(?4))
+				set off_x = off_x + :x, off_y = off_y - :y
+				where parent = :parent and ord in (select value from json_each(:ords))
 				;"""
 				. format([StateVars.font.id])
 			),
-			[v.x, v.y, parent_name, JSON.stringify(selected)]
+			{x = v.x, y = v.y, parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
 	flatten()
@@ -205,16 +195,16 @@ func clear_xform() -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update layers_{0}
 				set xform = 0, off_x = 0, off_y = 0
-				where parent = ?1 and ord in (select value from json_each(?2))
+				where parent = :parent and ord in (select value from json_each(:ords))
 				;"""
 				. format([StateVars.font.id])
 			),
-			[parent_name, JSON.stringify(selected)]
+			{parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
 	flatten()
@@ -224,16 +214,16 @@ func _xform(t: PackedInt32Array) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update layers_{0}
-				set xform = ?1 ->> xform
-				where parent = ?2 and ord in (select value from json_each(?3))
+				set xform = :t ->> xform
+				where parent = :parent and ord in (select value from json_each(:ords))
 				;"""
 				. format([StateVars.font.id])
 			),
-			[JSON.stringify(t), parent_name, JSON.stringify(selected)]
+			{t = JSON.stringify(t), parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
 	flatten()
@@ -243,16 +233,16 @@ func set_blend(b: int) -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				update layers_{0}
-				set blend = ?1
-				where parent = ?2 and ord in (select value from json_each(?3))
+				set blend = :blend
+				where parent = :parent and ord in (select value from json_each(:ords))
 				;"""
 				. format([StateVars.font.id])
 			),
-			[b, parent_name, JSON.stringify(selected)]
+			{blend = b, parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
 	flatten()
@@ -286,7 +276,7 @@ func refresh() -> void:
 	(
 		StateVars
 		. db_saves
-		. query_with_bindings(
+		. query_with_named_bindings(
 			(
 				"""
 				select
@@ -295,12 +285,12 @@ func refresh() -> void:
 					c.img, l.blend, l.xform
 				from layers_{0} as l
 				join font_{0} as c on l.child = c.name
-				where l.parent = ?1
+				where l.parent = :parent
 				order by l.ord
 				;"""
 				. format([StateVars.font.id])
 			),
-			[parent_name]
+			{parent = parent_name}
 		)
 	)
 

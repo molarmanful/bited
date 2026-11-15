@@ -232,12 +232,12 @@ func off_glyph(off: int) -> void:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select name, code
 					from font_{0}
-					where (code between ?1 and ?2) and (code {1} ?3)
+					where (code between :a and :b) and (code {1} :code)
 					order by code {2}, name {2}
 					limit 1
 					;"""
@@ -245,23 +245,23 @@ func off_glyph(off: int) -> void:
 						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 					)
 				),
-				[table.start, table.end, pattern.bitmap.data_code + off]
+				{a = table.start, b = table.end, code = pattern.bitmap.data_code + off}
 			)
 		)
 	else:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select o.name, o.code
 					from temp.full as o
 					join font_{0} as i on o.name = i.name
 					where o.row {1} (
-						select row + ?1
+						select row + :off
 						from temp.full
-						where name = ?2
+						where name = :name
 					)
 					order by row {2}
 					limit 1
@@ -270,7 +270,7 @@ func off_glyph(off: int) -> void:
 						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
 					)
 				),
-				[off, pattern.bitmap.data_name]
+				{off = off, name = pattern.bitmap.data_name}
 			)
 		)
 
@@ -293,14 +293,14 @@ func off_uc(off: int) -> void:
 				(
 					StateVars
 					. db_saves
-					. query_with_bindings(
+					. query_with_named_bindings(
 						"""
 						select o.name, o.code
 						from temp.full as o
-						join temp.full as i on o.row = i.row + ?1
-						where i.name = ?2
+						join temp.full as i on o.row = i.row + :off
+						where i.name = :name
 						;""",
-						[off, pattern.bitmap.data_name]
+						{off = off, name = pattern.bitmap.data_name}
 					)
 				)
 
@@ -308,22 +308,22 @@ func off_uc(off: int) -> void:
 				(
 					StateVars
 					. db_saves
-					. query_with_bindings(
+					. query_with_named_bindings(
 						(
 							"""
 							select name, code
 							from temp.full
 							where code >= 0 and row {0} (
-								select row + ?1
+								select row + :off
 								from temp.full
-								where name = ?2
+								where name = :name
 							)
 							order by row {1}
 							limit 1
 							;"""
 							. format(["<=" if off < 0 else ">=", "desc" if off < 0 else ""])
 						),
-						[off, pattern.bitmap.data_name]
+						{off = off, name = pattern.bitmap.data_name}
 					)
 				)
 

@@ -134,27 +134,26 @@ func set_range(a: int, b: int) -> void:
 
 
 func set_glyphs(top := true) -> void:
-	StateVars.db_saves.delete_rows("temp.full", "")
 	(
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
+				delete from temp.full;
 				insert into temp.full
 				select
 					row_number() over (order by code, name) - 1 as row,
 					name, code
-				from font_{0}
-				;"""
+				from font_{0};
+				select count(*) as count from temp.full;
+				"""
 				. format([StateVars.font.id])
 			)
 		)
 	)
 	viewmode = Mode.GLYPHS
-	virt.length = (
-		StateVars.db_saves.select_rows("temp.full", "", ["count(row) as count"])[0].count
-	)
+	virt.length = StateVars.db_saves.query_result[0].count
 	after_set(top)
 
 
@@ -175,8 +174,7 @@ func set_page(id: String) -> void:
 	)
 	var qs := StateVars.db_uc.query_result
 
-	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin;")
+	StateVars.db_saves.query("delete from temp.full; begin;")
 
 	for q in qs:
 		(
@@ -207,8 +205,7 @@ func set_finder(query: String) -> void:
 	)
 	var qs := StateVars.db_uc.query_result
 
-	StateVars.db_saves.delete_rows("temp.full", "")
-	StateVars.db_saves.query("begin;")
+	StateVars.db_saves.query("delete from temp.full; begin;")
 
 	for i in qs.size():
 		(
@@ -257,34 +254,34 @@ func gen_glyphs() -> void:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 					from font_{0}
-					where code between ?1 and ?2
+					where code between :a and :b
 					;"""
 					. format([StateVars.font.id])
 				),
-				[start + i0, start + i1 - 1]
+				{a = start + i0, b = start + i1 - 1}
 			)
 		)
 	else:
 		(
 			StateVars
 			. db_saves
-			. query_with_bindings(
+			. query_with_named_bindings(
 				(
 					"""
 					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
 					from temp.full as a
 					left join font_{0} as b on a.name = b.name
-					where a.row between ?1 and ?2
+					where a.row between :a and :b
 					order by a.row
 					;"""
 					. format([StateVars.font.id])
 				),
-				[i0, i1 - 1]
+				{a = i0, b = i1 - 1}
 			)
 		)
 	var qs := StateVars.db_saves.query_result
