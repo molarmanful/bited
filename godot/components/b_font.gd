@@ -179,7 +179,7 @@ func to_bdf() -> String:
 	)
 
 	res.append_array(to_bdf_properties())
-	res.append_array(to_bdf_chars(fb))
+	res.push_back(to_bdf_chars(fb))
 
 	res.push_back("ENDFONT")
 	res.push_back("")
@@ -290,48 +290,51 @@ func to_glyphs_toml() -> String:
 	)
 
 
-func to_bdf_chars(fb: Dictionary) -> PackedStringArray:
-	var res := PackedStringArray()
-
+func to_bdf_chars(fb: Dictionary) -> String:
 	(
 		StateVars
 		. db_saves
-		. query(
+		. query_with_named_bindings(
 			(
 				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_{0}
-				order by code, name
+				with recursive
+					r(n) as (
+						select 0
+						union all
+						select n + 1 from r where n + 1 < (select max(bb_y) from font_{0})
+					),
+					g as (
+						select
+							name, code, bb_x, bb_y, off_x, off_y, :dw * (is_abs = 0) + dwidth as dw,
+							coalesce(
+								group_concat(
+									substr(hex(img), n * ((bb_x + 7) / 8 * 2) + 1, (bb_x + 7) / 8 * 2) || '\n',
+									'' order by n
+								), ''
+							) as bm
+						from font_{0}
+						left join r on n < bb_y and img <> x''
+						group by name
+					)
+				select
+					'CHARS ' || count(*) || coalesce(
+						'\n' || group_concat(
+							format(
+								'STARTCHAR %s\nENCODING %d\nSWIDTH %d 0\nDWIDTH %d 0\nBBX %d %d %d %d\nBITMAP\n%sENDCHAR',
+								iif(code >= 0, 'U+', '') || name, code, dw * 72000 / (:res_x * :max_w), dw,
+								bb_x, bb_y, off_x, off_y, bm
+							),
+							'\n' order by code, name
+						), ''
+					) as chars
+				from g
 				;"""
 				. format([id])
-			)
+			),
+			{dw = dwidth, res_x = resolution.x, max_w = fb.bb_x}
 		)
 	)
-	var qs := StateVars.db_saves.query_result
-
-	res.push_back("CHARS %d" % qs.size())
-
-	for q in qs:
-		var dw: int = dwidth * int(not q.is_abs) + q.dwidth
-		(
-			res
-			. append_array(
-				[
-					"STARTCHAR %s" % (("U+" if q.code >= 0 else "") + q.name),
-					"ENCODING %d" % q.code,
-					"SWIDTH %d 0" % swidth(fb.bb_x, dw),
-					"DWIDTH %d 0" % dw,
-					"BBX %d %d %d %d" % [q.bb_x, q.bb_y, q.off_x, q.off_y],
-					"BITMAP",
-				]
-			)
-		)
-
-		if q.img:
-			res.append_array(Util.bits_to_hexes(q.img, q.bb_x, q.bb_y))
-		res.push_back("ENDCHAR")
-
-	return res
+	return StateVars.db_saves.query_result[0].chars
 
 
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
@@ -571,10 +574,6 @@ func avg_w() -> int:
 	if not qs:
 		return 0
 	return qs[0].avg if qs[0].avg else 0
-
-
-func swidth(max_w: int, dw: int) -> int:
-	return dw * 72000 / (resolution.x * max_w)
 
 
 func fbbx() -> Dictionary:
