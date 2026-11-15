@@ -88,13 +88,15 @@ func pick(gname: String) -> void:
 					:parent, :child,
 					(select coalesce(max(ord), -1) + 1 from layers_{0} where parent = :parent)
 				where :child not in (select name from up)
+				returning ord
 				;"""
 				. format([StateVars.font.id])
 			),
 			{parent = parent_name, child = gname}
 		)
 	)
-	flatten()
+	if StateVars.db_saves.query_result:
+		flatten()
 
 
 func del() -> void:
@@ -106,13 +108,15 @@ func del() -> void:
 				"""
 				delete from layers_{0}
 				where parent = :parent and ord in (select value from json_each(:ords))
+				returning ord
 				;"""
 				. format([StateVars.font.id])
 			),
 			{parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
-	flatten()
+	if StateVars.db_saves.query_result:
+		flatten()
 
 
 func move(at: Vector2, ords: PackedInt32Array) -> void:

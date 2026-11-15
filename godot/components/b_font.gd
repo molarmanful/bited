@@ -442,9 +442,6 @@ func flatten(name: String) -> void:
 		)
 	)
 	var qs := StateVars.db_saves.query_result
-	if not qs:
-		return
-
 	var r := Rect2i()
 	var ts: Array[Array] = []
 	for q in qs:
