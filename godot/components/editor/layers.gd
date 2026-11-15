@@ -122,18 +122,18 @@ func del() -> void:
 
 
 func move(at: Vector2, ords: PackedInt32Array) -> void:
-	var tgt := tree.get_item_at_position(at)
-	var sec := tree.get_drop_section_at_position(at)
+	var dst := tree.get_item_at_position(at)
+	var drop := tree.get_drop_section_at_position(at)
 	var rows := PackedInt32Array()
 	for item in tree.get_root().get_children():
 		var o: int = item.get_metadata(0).ord
-		if item == tgt and sec < 0:
+		if item == dst and drop < 0:
 			rows += ords
 		if o not in ords:
 			rows.push_back(o)
-		if item == tgt and sec > 0:
+		if item == dst and drop > 0:
 			rows += ords
-	if not tgt:
+	if not dst:
 		rows += ords
 	rows.reverse()
 
