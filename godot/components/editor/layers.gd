@@ -276,6 +276,16 @@ func sync_cmode() -> void:
 		b.set_pressed_no_signal(Tool.CMode[b.name] == m)
 
 
+func preview(v: Vector2i) -> void:
+	var qs := []
+	for item in tree.get_root().get_children():
+		var q: Dictionary = item.get_metadata(0)
+		if item.is_selected(0):
+			q = q.merged({off_x = q.off_x + v.x, off_y = q.off_y - v.y}, true)
+		qs.push_front(q)
+	grid.pattern.bitmap.update_cells(grid.pattern.bitmap.to_gen().merged(BFont.compose(qs), true))
+
+
 func flatten() -> void:
 	StateVars.font.flatten(parent_name)
 	StateVars.font.flatten_parents([parent_name])
@@ -316,16 +326,16 @@ func refresh() -> void:
 		var item := tree.create_item(null, 0)
 		item.set_cell_mode(0, TreeItem.CELL_MODE_STRING)
 		item.set_metadata(0, q)
-		var g := BitGlyph.create_from_bytes(
-			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
-		)
-		g.xform(q.xform)
-		q.bb_x = g.get_size().x
-		q.bb_y = g.get_size().y
-		q.img = g.to_bytes()
 		item.set_icon(
 			0,
-			ImageTexture.create_from_image(Bitmap.new(StyleVars.thumb_size_pre).place(q).to_image())
+			ImageTexture.create_from_image(
+				(
+					Bitmap
+					. new(StyleVars.thumb_size_pre)
+					. place(q.merged(BFont.compose([q.merged({blend = 0}, true)]), true))
+					. to_image()
+				)
+			)
 		)
 		item.set_icon_modulate(0, grid.get_theme_color("fg"))
 		item.set_text(0, ("U+" if q.code >= 0 else "") + q.name)

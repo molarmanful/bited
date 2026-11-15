@@ -152,13 +152,14 @@ class ToolMove:
 	func update() -> void:
 		super()
 		if c_grid.layers.has_layers:
-			if p != c_tool.pivot:
-				c_grid.layers.translate(p - c_tool.pivot)
-				c_tool.pivot = p
+			c_grid.layers.preview(p - c_tool.pivot)
 		else:
 			c_grid.pattern.cells.copy_from(c_tool.prev)
 			c_grid.pattern.cells.translate(p - c_tool.pivot)
 
 	func end() -> void:
-		if not c_grid.layers.has_layers:
+		if c_grid.layers.has_layers:
+			if p != c_tool.pivot:
+				c_grid.layers.translate(p - c_tool.pivot)
+		else:
 			super()

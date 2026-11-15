@@ -430,7 +430,7 @@ func flatten(name: String) -> void:
 			(
 				"""
 				select
-					l.off_x + c.off_x as x, l.off_y + c.off_y as y, l.blend, l.xform,
+					l.off_x + c.off_x as off_x, l.off_y + c.off_y as off_y, l.blend, l.xform,
 					c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
@@ -442,25 +442,8 @@ func flatten(name: String) -> void:
 			{name = name}
 		)
 	)
-	var qs := StateVars.db_saves.query_result
-	var r := Rect2i()
-	var ts: Array[Array] = []
-	for q in qs:
-		var g := BitGlyph.create_from_bytes(
-			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
-		)
-		g.xform(q.xform)
-		var qr := Rect2i(Vector2i(q.x, q.y), g.get_size())
-		ts.push_back([BLENDS[q.blend], g, qr])
-		if qr.has_area():
-			r = r.merge(qr) if r.has_area() else qr
-
-	var bg := BitGlyph.create(r.size)
-	for t in ts:
-		var qr: Rect2i = t[2]
-		bg.blit(t[0], t[1], Vector2i(qr.position.x - r.position.x, r.end.y - qr.end.y))
-	var u := bg.used_rect()
-
+	var d := compose(StateVars.db_saves.query_result)
+	d.name = name
 	(
 		StateVars
 		. db_saves
@@ -474,17 +457,37 @@ func flatten(name: String) -> void:
 				;"""
 				. format([id])
 			),
-			{
-				bb_x = u.size.x,
-				bb_y = u.size.y,
-				off_x = r.position.x + u.position.x if u.has_area() else 0,
-				off_y = r.end.y - u.end.y if u.has_area() else 0,
-				img = bg.region(u).to_bytes(),
-				name = name
-			}
+			d
 		)
 	)
 	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
+
+
+static func compose(qs: Array) -> Dictionary:
+	var r := Rect2i()
+	var ts: Array[Array] = []
+	for q in qs:
+		var g := BitGlyph.create_from_bytes(
+			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
+		)
+		g.xform(q.xform)
+		var qr := Rect2i(Vector2i(q.off_x, q.off_y), g.get_size())
+		ts.push_back([BLENDS[q.blend], g, qr])
+		if qr.has_area():
+			r = r.merge(qr) if r.has_area() else qr
+
+	var bg := BitGlyph.create(r.size)
+	for t in ts:
+		var qr: Rect2i = t[2]
+		bg.blit(t[0], t[1], Vector2i(qr.position.x - r.position.x, r.end.y - qr.end.y))
+	var u := bg.used_rect()
+	return {
+		bb_x = u.size.x,
+		bb_y = u.size.y,
+		off_x = r.position.x + u.position.x if u.has_area() else 0,
+		off_y = r.end.y - u.end.y if u.has_area() else 0,
+		img = bg.region(u).to_bytes(),
+	}
 
 
 func to_dict() -> Dictionary:
