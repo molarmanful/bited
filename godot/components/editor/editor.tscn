@@ -467,6 +467,14 @@ toggle_mode = true
 shortcut = SubResource("Shortcut_xaubg")
 text = "⧉"
 
+[node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437]
+layout_mode = 2
+tooltip_text = "bake layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+toggle_mode = true
+text = "⏥"
+
 [node name="7" type="Control" parent="CenterContainer/GridContainer" unique_id=1763315270]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
@@ -585,7 +593,7 @@ text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick", "btn_del")]
+[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick", "btn_bake", "btn_del")]
 oversampling_override = 1.0
 title = "layers"
 position = Vector2i(0, 32)
@@ -597,6 +605,7 @@ editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
 tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/Tree")
 btn_pick = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/pick")
+btn_bake = NodePath("../GridContainer/6/bake")
 btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer/layers" unique_id=3710046]

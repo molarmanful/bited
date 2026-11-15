@@ -6,6 +6,7 @@ extends Window
 @export var tree: Tree
 
 @export var btn_pick: Button
+@export var btn_bake: Button
 @export var btn_del: Button
 
 var grid: Grid:
@@ -64,6 +65,7 @@ func _ready() -> void:
 	)
 
 	btn_pick.toggled.connect(func(on: bool): table.pick_layer = on)
+	btn_bake.pressed.connect(bake)
 	btn_del.pressed.connect(del)
 	tree.multi_selected.connect(sync_cmode.unbind(3), CONNECT_DEFERRED)
 
@@ -193,6 +195,14 @@ func rot_cw() -> void:
 
 func rot_ccw() -> void:
 	_xform([6, 4, 7, 5, 2, 0, 3, 1])
+
+
+func bake() -> void:
+	StateVars.db_saves.query_with_named_bindings(
+		"delete from layers_{0} where parent = :parent;".format([StateVars.font.id]),
+		{parent = parent_name}
+	)
+	grid.refresh()
 
 
 func clear_xform() -> void:
