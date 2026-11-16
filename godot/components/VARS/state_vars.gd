@@ -143,7 +143,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 	var qs := StateVars.db_uc.query_result
 
 	return (
-		"U+%s  #%d%s\n%s"
+		"%s  #%d%s\n%s"
 		% [
 			data_name,
 			data_code,

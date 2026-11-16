@@ -201,7 +201,7 @@ func set_codes(q: Dictionary) -> void:
 			"""
 			delete from temp.full;
 			insert into temp.full
-			select key, iif(value >= 0, printf('%04X', value), printf('UN-%02X', key)), value
+			select key, iif(value >= 0, printf('U+%04X', value), printf('UN-%02X', key)), value
 			from json_each(:codes)
 			;""",
 			{codes = q.codes}

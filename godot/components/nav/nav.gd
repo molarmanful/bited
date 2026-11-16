@@ -226,7 +226,7 @@ func antgen(tbl: String, needs: Array[int]) -> void:
 	var gens: Array[Dictionary] = []
 	for c in codes.size():
 		var bm := Bitmap.new(
-			StyleVars.grid_size_cor, bms[0].cells.dup(), codes[c], "%04X" % codes[c]
+			StyleVars.grid_size_cor, bms[0].cells.dup(), codes[c], "U+%04X" % codes[c]
 		)
 		var i := 1
 		while c > 0:

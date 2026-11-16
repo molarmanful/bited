@@ -306,7 +306,7 @@ func paste() -> void:
 		if table.viewmode == Table.Mode.RANGE:
 			for code in range(a, b + 1):
 				StateVars.db_saves.insert_row(
-					"temp.sub", {row = row, name = "%04X" % code, code = code}
+					"temp.sub", {row = row, name = "U+%04X" % code, code = code}
 				)
 				row += 1
 		else:

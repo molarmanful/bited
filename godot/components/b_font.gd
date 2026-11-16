@@ -83,31 +83,14 @@ func init_font(ignore := false) -> void:
 		)
 	)
 
-	(
+	if not (
 		StateVars
 		. db_saves
 		. query(
 			(
 				"""
-				select count(*) as n, coalesce(sum(name = 'xform'), 0) as x
-				from pragma_table_info('layers_{0}')
-				;"""
-				. format([id])
-			)
-		)
-	)
-	var cols := StateVars.db_saves.query_result[0]
-	var migrate: bool = cols.n and not cols.x
+				begin;
 
-	StateVars.db_saves.query("begin;")
-	if migrate:
-		StateVars.db_saves.query("alter table layers_{0} rename to layers_{0}_old;".format([id]))
-	(
-		StateVars
-		. db_saves
-		. query(
-			(
-				"""
 				create table if not exists layers_{0} (
 					parent text not null,
 					ord int not null,
@@ -118,29 +101,24 @@ func init_font(ignore := false) -> void:
 					xform int not null default 0,
 					primary key (parent, ord)
 				) without rowid
-				;"""
+				;
+
+				with up as (select name from font_{0} where code >= 0 and name not glob 'U+*')
+				update layers_{0}
+				set
+					parent = iif(parent in up, 'U+' || parent, parent),
+					child = iif(child in up, 'U+' || child, child)
+				where parent in up or child in up
+				;
+
+				update font_{0} set name = 'U+' || name where code >= 0 and name not glob 'U+*';
+				create index if not exists layers_{0}_child on layers_{0} (child);
+
+				commit;
+				"""
 				. format([id])
 			)
 		)
-	)
-	if migrate:
-		(
-			StateVars
-			. db_saves
-			. query(
-				(
-					"""
-					insert or ignore into layers_{0} (parent, ord, child, off_x, off_y, blend)
-					select parent, ord, child, off_x, off_y, blend
-					from layers_{0}_old
-					;"""
-					. format([id])
-				)
-			)
-		)
-		StateVars.db_saves.query("drop table layers_{0}_old;".format([id]))
-	if not StateVars.db_saves.query(
-		"create index if not exists layers_{0}_child on layers_{0} (child); commit;".format([id])
 	):
 		StateVars.db_saves.query("rollback;")
 
@@ -250,7 +228,7 @@ func to_glyphs_toml() -> String:
 			(
 				"""
 				with
-					g as (select *, json_quote(iif(code >= 0, 'U+', '') || name) as key from font_{0}),
+					g as (select *, json_quote(name) as key from font_{0}),
 					ls as (
 						select
 							l.parent,
@@ -321,7 +299,7 @@ func to_bdf_chars(fb: Dictionary) -> String:
 						'\n' || group_concat(
 							format(
 								'STARTCHAR %s\nENCODING %d\nSWIDTH %d 0\nDWIDTH %d 0\nBBX %d %d %d %d\nBITMAP\n%sENDCHAR',
-								iif(code >= 0, 'U+', '') || name, code, dw * 72000 / (:res_x * :max_w), dw,
+								name, code, dw * 72000 / (:res_x * :max_w), dw,
 								bb_x, bb_y, off_x, off_y, bm
 							),
 							'\n' order by code, name

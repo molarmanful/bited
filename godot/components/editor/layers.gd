@@ -355,7 +355,7 @@ func refresh() -> void:
 			)
 		)
 		item.set_icon_modulate(0, grid.get_theme_color("fg"))
-		item.set_text(0, ("U+" if q.code >= 0 else "") + q.name)
+		item.set_text(0, q.name)
 		item.add_button(0, grid.cmode_group.get_buttons()[q.blend + Tool.CMode.T].icon)
 
 		if q.ord in keep:

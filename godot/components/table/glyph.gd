@@ -15,7 +15,7 @@ var data_code := -1:
 	set(c):
 		data_code = c
 		if c >= 0:
-			data_name = "%04X" % data_code
+			data_name = "U+%04X" % data_code
 		refresh()
 
 var selected := false:

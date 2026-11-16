@@ -279,7 +279,7 @@ impl<'font> Parser<'font> {
                         Some(n) => {
                             self.p_gen.code = n;
                             if n >= 0 {
-                                self.p_gen.name = format!("{n:04X}")
+                                self.p_gen.name = format!("U+{n:04X}")
                             }
                         }
                         None => self.warn("ENCODING is not a valid int, defaulting to -1"),

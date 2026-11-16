@@ -280,7 +280,7 @@ func off_uc(off: int) -> void:
 		var code1 := pattern.bitmap.data_code + off
 		if code1 < table.start or code1 > table.end:
 			return
-		start_edit("%04X" % code1, code1)
+		start_edit("U+%04X" % code1, code1)
 
 	else:
 		match table.viewmode:
