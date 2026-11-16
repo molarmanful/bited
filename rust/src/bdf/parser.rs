@@ -329,7 +329,11 @@ impl<'font> Parser<'font> {
 
             "BITMAP" => {
                 self.p_gen_notdef(k);
-                self.mode = Mode::BM;
+                self.mode = if self.verify_name() {
+                    Mode::BM
+                } else {
+                    Mode::CharIgnore
+                };
             }
 
             "ENDCHAR" => self.end_char(),
@@ -346,7 +350,7 @@ impl<'font> Parser<'font> {
 
     fn parse_char_ignore(&mut self, k: &str) -> Result<(), String> {
         if k == "ENDCHAR" {
-            self.mode = Mode::X;
+            self.mode = Mode::Chars;
         }
         Ok(())
     }
@@ -368,6 +372,11 @@ impl<'font> Parser<'font> {
     }
 
     fn end_char(&mut self) {
+        let ok = !matches!(self.mode, Mode::Char) || self.verify_name();
+        self.mode = Mode::Chars;
+        if !ok {
+            return;
+        }
         match &self.p_gen.check_missing()[..] {
             [] => {}
             xs => {
@@ -375,10 +384,24 @@ impl<'font> Parser<'font> {
                 self.warn(&format!("glyph {} is missing {s}", self.p_gen.name))
             }
         }
-        self.mode = Mode::Chars;
         self.names
             .insert(std::mem::take(&mut self.key), self.p_gen.name.clone());
         self.font.push_glyph_pre(self.p_gen.to_glyph())
+    }
+
+    fn verify_name(&mut self) -> bool {
+        let name = &self.p_gen.name;
+        if self.p_gen.code < 0
+            && !(name.starts_with(|c: char| !c.is_ascii_digit())
+                && name
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '.'))
+        {
+            self.warn(&format!("glyph name '{name}' is invalid, skipping"));
+            false
+        } else {
+            self.notdef(&format!("glyph {name}"))
+        }
     }
 
     fn parse_xlfd(&mut self, v: &str) -> Result<(), String> {
