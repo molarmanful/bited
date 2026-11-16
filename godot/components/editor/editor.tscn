@@ -576,7 +576,7 @@ text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_pick", "btn_bake", "btn_del")]
+[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_move", "btn_pick", "btn_bake", "btn_del")]
 oversampling_override = 1.0
 title = "layers"
 position = Vector2i(0, 32)
@@ -587,6 +587,7 @@ script = ExtResource("12_xaubg")
 editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
 tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/Tree")
+btn_move = NodePath("../GridContainer/4/move")
 btn_pick = NodePath("../GridContainer/6/pick")
 btn_bake = NodePath("../GridContainer/6/bake")
 btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")

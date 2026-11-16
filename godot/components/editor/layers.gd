@@ -5,6 +5,7 @@ extends Window
 @export var btn: Button
 @export var tree: Tree
 
+@export var btn_move: Button
 @export var btn_pick: Button
 @export var btn_bake: Button
 @export var btn_del: Button
@@ -338,6 +339,8 @@ func refresh() -> void:
 	var qs := StateVars.db_saves.query_result
 	has_layers = not qs.is_empty()
 	grid.get_tree().call_group("hide_if_layer", "hide" if has_layers else "show")
+	if has_layers:
+		btn_move.button_pressed = true
 
 	for q in qs:
 		var item := tree.create_item(null, 0)
