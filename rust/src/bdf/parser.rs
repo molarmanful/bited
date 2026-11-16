@@ -189,7 +189,7 @@ impl<'font> Parser<'font> {
 
             "DWIDTH" => {
                 if self.notdef(k) {
-                    match one_int(v) {
+                    match one_int(v).filter(|&n| n >= 0) {
                         Some(n) => self.font.bb.x = n,
                         None => self.warn("DWIDTH x is not a valid int >=0, defaulting to 0"),
                     }
@@ -346,7 +346,7 @@ impl<'font> Parser<'font> {
 
             "DWIDTH" => {
                 if self.p_gen_notdef(k) {
-                    match one_int::<i32>(v) {
+                    match one_int(v).filter(|&n: &i32| n >= 0) {
                         Some(n) => {
                             self.p_gen.dwidth = n - self.font.bb.x * (!self.p_gen.is_abs as i32);
                         }
