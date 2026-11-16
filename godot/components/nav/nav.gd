@@ -52,10 +52,10 @@ func _ready() -> void:
 	btn_new_glyph.pressed.connect(new_glyph)
 	btn_rename_glyph.pressed.connect(rename_glyph)
 	btn_finder.pressed.connect(win_finder.find)
-	btn_sexify.pressed.connect(sexify)
-	btn_sepsexify.pressed.connect(sepsexify)
-	btn_octify.pressed.connect(octify)
-	btn_braille.pressed.connect(braillegen)
+	btn_sexify.pressed.connect(antgen.bind("p_block2x3"))
+	btn_sepsexify.pressed.connect(antgen.bind("p_block2x3sep"))
+	btn_octify.pressed.connect(antgen.bind("p_block2x4"))
+	btn_braille.pressed.connect(antgen.bind("p_block2x4braille"))
 	btn_undo.pressed.connect(undo)
 	btn_redo.pressed.connect(undo.bind(true))
 
@@ -144,10 +144,14 @@ func rename_glyph() -> void:
 			(
 				"""
 				begin;
+
 				update font_{0} set name = :new where name = :old;
+
 				update layers_{0}
 				set parent = iif(parent = :old, :new, parent), child = iif(child = :old, :new, child)
-				where :old in (parent, child);
+				where :old in (parent, child)
+				;
+
 				commit;
 				"""
 				. format([StateVars.font.id])
@@ -172,71 +176,95 @@ func finder(q: String) -> void:
 	table.set_finder(q)
 
 
-func braillegen() -> void:
-	antgen(
-		"p_block2x4braille",
-		[0x2800, 0x2801, 0x2808, 0x2802, 0x2810, 0x2804, 0x2820, 0x2840, 0x2880, 0x28ff]
-	)
-
-
-func sexify() -> void:
-	antgen("p_block2x3", [0x20, 0x1fb00, 0x1fb01, 0x1fb03, 0x1fb07, 0x1fb0f, 0x1fb1e])
-
-
-func sepsexify() -> void:
-	antgen("p_block2x3sep", [0x20, 0x1ce51, 0x1ce52, 0x1ce54, 0x1ce58, 0x1ce60, 0x1ce70])
-
-
-func octify() -> void:
-	antgen(
-		"p_block2x4", [0x20, 0x1cea8, 0x1ceab, 0x1cd00, 0x1cd03, 0x1cd09, 0x1cd18, 0x1cea3, 0x1cea0]
-	)
-
-
-func antgen(tbl: String, needs: Array[int]) -> void:
-	StateVars.db_saves.query(
-		"""
-		select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-		from font_{0}
-		where code in ({1})
-		order by {2}
-		;""".format(
-			[
-				StateVars.font.id,
-				",".join(needs),
-				",".join(needs.map(func(n): return "code={0} desc".format([n])))
-			]
+func antgen(tbl: String) -> void:
+	(
+		StateVars
+		. db_uc
+		. query(
+			(
+				"""
+				select
+					(select json_group_array(code order by row) from {0}_in) as reqs,
+					(select json_group_array(code order by row) from {0}) as codes
+				;"""
+				. format([tbl])
+			)
 		)
 	)
 
-	var qs := StateVars.db_saves.query_result
-	if qs.size() < needs.size():
+	(
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				with recursive
+					src as (
+						select r.key, f.name
+						from json_each(:reqs) as r
+						left join font_{0} as f on f.code = r.value
+					),
+					down(name) as (
+						select name from src where name is not null
+						union
+						select l.child
+						from layers_{0} as l
+						join down on l.parent = down.name
+					),
+					miss(m) as (
+						select iif(min(key) = 0, -1, coalesce(sum(1 << (key - 1)), 0))
+						from src
+						where name is null
+					)
+				select
+					json_group_array(json_object('row', g.key, 'code', g.value, 'name', g.name)) as gens,
+					(select json_group_array(name order by key) from src) as srcs
+				from (select key, value, format('U+%04X', value) as name from json_each(:codes)) as g, miss
+				where g.key & (g.key - 1) and not (g.key & miss.m) and g.name not in down
+				;"""
+				. format([StateVars.font.id])
+			),
+			StateVars.db_uc.query_result[0]
+		)
+	)
+	var q := StateVars.db_saves.query_result[0]
+	if q.gens == "[]":
 		return
 
-	var bms: Array[Bitmap]
-	bms.resize(needs.size())
-	for i in needs.size():
-		var bm := Bitmap.new(StyleVars.grid_size_cor)
-		bm.update_cells(qs[i])
-		bms[i] = bm
+	if not (
+		StateVars
+		. db_saves
+		. query_with_named_bindings(
+			(
+				"""
+				begin;
 
-	StateVars.db_uc.query("select code from {0} order by row;".format([tbl]))
-	var codes := StateVars.db_uc.query_result.map(func(q): return q.code)
+				delete from layers_{0}
+				where parent in (select value ->> 'name' from json_each(:gens))
+				;
 
-	var gens: Array[Dictionary] = []
-	for c in codes.size():
-		var bm := Bitmap.new(
-			StyleVars.grid_size_cor, bms[0].cells.dup(), codes[c], "U+%04X" % codes[c]
+				insert or replace into font_{0} (name, code, img)
+				select value ->> 'name', value ->> 'code', x'' from json_each(:gens)
+				;
+
+				insert into layers_{0} (parent, ord, child)
+				select g.value ->> 'name', s.key, s.value
+				from json_each(:gens) as g
+				join json_each(:srcs) as s
+				on s.key = 0 or (((g.value ->> 'row') >> (s.key - 1)) & 1)
+				;"""
+				. format([StateVars.font.id])
+			),
+			q
 		)
-		var i := 1
-		while c > 0:
-			if c & 1:
-				bm.cells.op(OP_BIT_OR, bms[i].cells)
-			c = c >> 1
-			i += 1
-		gens.push_back(bm.to_gen())
+	):
+		StateVars.db_saves.query("rollback;")
+		return
 
-	StateVars.font.save_glyphs(gens)
+	StateVars.font.flatten_parents(JSON.parse_string(q.srcs))
+	StateVars.db_saves.query("commit;")
+
+	StateVars.table_refresh.emit()
 	StateVars.edit_refresh.emit()
 
 
