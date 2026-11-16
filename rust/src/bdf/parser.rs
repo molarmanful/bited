@@ -81,22 +81,52 @@ impl<'font> Parser<'font> {
         for (key, glyph) in &self.glyphs_map.glyphs {
             let parent = self.names.get(key);
             for (ord, layer) in glyph.layers.iter().enumerate() {
-                if let (Some(parent), Some(child)) = (parent, self.names.get(&layer.child)) {
-                    self.font.push_layer_pre(vdict! {
-                        "parent" => parent.as_str(),
-                        "ord" => ord as u32,
-                        "child" => child.as_str(),
-                        "off_x" => layer.off_x,
-                        "off_y" => layer.off_y,
-                        "blend" => layer.blend,
-                        "xform" => layer.xform,
-                    });
-                } else {
+                let (Some(parent), Some(child)) = (parent, self.names.get(&layer.child)) else {
                     self.font.warn(
                         self.n_line,
-                        &format!("layer {} of glyph {key} is unknown, skipping", layer.child),
+                        &format!(
+                            "glyph {key} layer {ord} ({}) is unknown, skipping",
+                            layer.child
+                        ),
                     );
+                    continue;
+                };
+
+                if self.glyphs_map.is_cycle(key, &layer.child) {
+                    self.font.warn(
+                        self.n_line,
+                        &format!("glyph {key} layer {ord} creates a cycle, skipping"),
+                    );
+                    continue;
                 }
+
+                let mut blend = layer.blend;
+                if !(0..4).contains(&blend) {
+                    self.font.warn(
+                        self.n_line,
+                        &format!("glyph {key} layer {ord} has invalid blend, defaulting to 0"),
+                    );
+                    blend = 0;
+                }
+
+                let mut xform = layer.xform;
+                if !(0..8).contains(&xform) {
+                    self.font.warn(
+                        self.n_line,
+                        &format!("glyph {key} layer {ord} has invalid xform, defaulting to 0"),
+                    );
+                    xform = 0;
+                }
+
+                self.font.push_layer_pre(vdict! {
+                    "parent" => parent.as_str(),
+                    "ord" => ord as u32,
+                    "child" => child.as_str(),
+                    "off_x" => layer.off_x,
+                    "off_y" => layer.off_y,
+                    "blend" => blend,
+                    "xform" => xform,
+                });
             }
         }
     }

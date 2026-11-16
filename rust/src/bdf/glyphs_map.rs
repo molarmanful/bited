@@ -1,4 +1,7 @@
-use std::collections::HashMap;
+use std::collections::{
+    HashMap,
+    HashSet,
+};
 
 use serde::{
     Deserialize,
@@ -41,6 +44,22 @@ impl GlyphsMap {
             .get(name)
             .and_then(|glyph| glyph.is_abs)
             .unwrap_or(self.default.is_abs)
+    }
+
+    pub fn is_cycle(&self, parent: &str, child: &str) -> bool {
+        let mut gs = vec![child];
+        let mut seen = HashSet::new();
+        while let Some(n) = gs.pop() {
+            if n == parent {
+                return true;
+            }
+            if seen.insert(n)
+                && let Some(g) = self.glyphs.get(n)
+            {
+                gs.extend(g.layers.iter().map(|l| l.child.as_str()));
+            }
+        }
+        false
     }
 }
 
