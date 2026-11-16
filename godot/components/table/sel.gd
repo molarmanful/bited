@@ -517,13 +517,16 @@ func refresh(txt := true) -> void:
 
 
 func get_sel_text() -> void:
+	update()
+	if ranges:
+		table.node_info_text.text = ("%d item%s selected" % [length, "s" if length != 1 else ""])
+
+
+func update() -> void:
 	table.get_tree().call_group("selshow", "show" if ranges else "hide")
 	table.get_tree().call_group("sel_named", "set_visible", not named().is_empty())
-	if not ranges:
-		return
 	if table.pick_layer:
 		table.get_tree().call_group("hide_on_pick", "hide")
-	table.node_info_text.text = ("%d item%s selected" % [length, "s" if length != 1 else ""])
 
 
 func is_selected(i: int) -> bool:

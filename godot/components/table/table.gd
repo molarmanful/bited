@@ -46,7 +46,7 @@ var end := 0
 var pick_layer := false:
 	set(v):
 		pick_layer = v
-		sel.get_sel_text()
+		sel.update()
 
 
 func _ready() -> void:
