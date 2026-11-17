@@ -68,7 +68,11 @@ func _ready() -> void:
 			thumbs.clear()
 			to_update = true
 	)
-	StateVars.table_refresh.connect(func(): to_update = true)
+	StateVars.table_refresh.connect(
+		func():
+			thumbs.clear()
+			to_update = true
+	)
 	StateVars.refresh.connect(
 		func(gen):
 			if gen.name in names:
@@ -270,6 +274,7 @@ func gen_glyphs() -> void:
 		)
 	var qs := StateVars.db_saves.query_result
 
+	var prev := names.duplicate()
 	names.clear()
 	for c in range(i0, i1):
 		var i := c - i0
@@ -290,7 +295,7 @@ func gen_glyphs() -> void:
 		names[g.data_name] = g
 
 	for q in qs:
-		if q.is_abs != null:
+		if q.is_abs != null and not (q.name in prev and q.name in thumbs):
 			names[q.name].refresh_tex(q)
 
 

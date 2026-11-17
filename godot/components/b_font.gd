@@ -113,6 +113,7 @@ func init_font(ignore := false) -> void:
 
 				update font_{0} set name = 'U+' || name where code >= 0 and name not glob 'U+*';
 				create index if not exists layers_{0}_child on layers_{0} (child);
+				create index if not exists font_{0}_code on font_{0} (code, name);
 
 				commit;
 				"""

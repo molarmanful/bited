@@ -188,6 +188,7 @@ func rename_font(old: String, new: String) -> void:
 				"""
 				begin;
 				drop table if exists font_{1};
+				drop index if exists font_{0}_code;
 				alter table font_{0} rename to font_{1};
 				drop table if exists layers_{1};
 				drop index if exists layers_{0}_child;

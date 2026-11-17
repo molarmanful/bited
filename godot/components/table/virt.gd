@@ -17,8 +17,10 @@ var h_view := 0:
 		refresh.emit()
 var v_scroll := 0:
 	set(n):
+		var w := Vector2i(i0, i1)
 		v_scroll = n
-		refresh.emit()
+		if w != Vector2i(i0, i1):
+			refresh.emit()
 
 var w_item: int:
 	get:
