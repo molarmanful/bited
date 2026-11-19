@@ -11,11 +11,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1795082574,
-        "narHash": "sha256-pNiFKSnsWsWjDCSH/TROJEU1v0YDbFCbT52g7HfpKCo=",
+        "lastModified": 1795109114,
+        "narHash": "sha256-cRlcKbFQo5Jn82RnzFmt71leKpUkb/fcusXaPYR4Ywk=",
         "owner": "molarmanful",
         "repo": "bited-utils",
-        "rev": "6cce9badea68317281f1eb02fa05c4b77dc09c24",
+        "rev": "fe5491107024b6618b3bb01530f16da78ab63772",
         "type": "github"
       },
       "original": {
