@@ -28,7 +28,6 @@
       systems = [ "x86_64-linux" ];
       imports = [
         inputs.treefmt-nix.flakeModule
-        inputs.bited-utils.flakeModule
       ];
       perSystem =
         {
@@ -105,6 +104,10 @@
             };
           };
 
+          font-build = pkgs.callPackage ./nix/font-build.nix {
+            inherit (inputs'.bited-utils.packages) bited-build;
+          };
+
           mdformat-plugins =
             ps: with ps; [ mdformat-mkdocs ] ++ mdformat-mkdocs.optional-dependencies.recommended;
         in
@@ -136,6 +139,7 @@
                 uv
                 mdformat
                 (python3.withPackages mdformat-plugins)
+                font-build
               ];
               inputsFrom = [ (craneLibDev.devShell { }) ];
             };
