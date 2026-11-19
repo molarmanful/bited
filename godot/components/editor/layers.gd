@@ -77,7 +77,7 @@ func _ready() -> void:
 	)
 	btn_bake.pressed.connect(bake)
 	btn_del.pressed.connect(del)
-	tree.multi_selected.connect(sync_cmode.unbind(3), CONNECT_DEFERRED)
+	tree.multi_selected.connect(sync_sel.unbind(3), CONNECT_DEFERRED)
 
 
 func pick(gname: String) -> void:
@@ -116,7 +116,7 @@ func select_top() -> void:
 	tree.deselect_all()
 	if has_layers:
 		tree.get_root().get_child(0).select(0)
-	sync_cmode()
+	sync_sel()
 
 
 func del() -> void:
@@ -280,18 +280,37 @@ func set_blend(b: int) -> void:
 	flatten()
 
 
-func sync_cmode() -> void:
+func sync_sel(v := Vector2i.ZERO) -> void:
+	var bs := {}
+	var qs := []
+	var item := tree.get_next_selected(null)
+	while item:
+		var q: Dictionary = item.get_metadata(0)
+		bs[q.blend] = true
+		qs.push_back(q.merged({off_x = q.off_x + v.x, off_y = q.off_y - v.y, blend = 0}, true))
+		item = tree.get_next_selected(item)
+
 	var m := grid.toolman.cmode
 	if has_layers:
-		var bs := {}
-		var item := tree.get_next_selected(null)
-		while item:
-			bs[item.get_metadata(0).blend] = true
-			item = tree.get_next_selected(item)
 		m = bs.keys()[0] + Tool.CMode.T if bs.size() == 1 else -1
-
 	for b in grid.cmode_group.get_buttons():
 		b.set_pressed_no_signal(Tool.CMode[b.name] == m)
+
+	grid.node_sel.visible = not not qs
+	if not qs:
+		return
+
+	var img := (
+		Bitmap
+		. new(grid.dim_grid)
+		. place(grid.pattern.bitmap.meta().merged(BFont.compose(qs)))
+		. to_image()
+	)
+	var tex: ImageTexture = grid.node_sel.texture
+	if Vector2i(tex.get_size()) == img.get_size():
+		tex.update(img)
+	else:
+		tex.set_image(img)
 
 
 func preview(v: Vector2i) -> void:
@@ -301,7 +320,8 @@ func preview(v: Vector2i) -> void:
 		if item.is_selected(0):
 			q = q.merged({off_x = q.off_x + v.x, off_y = q.off_y - v.y}, true)
 		qs.push_front(q)
-	grid.pattern.bitmap.update_cells(grid.pattern.bitmap.to_gen().merged(BFont.compose(qs), true))
+	grid.pattern.bitmap.update_cells(grid.pattern.bitmap.meta().merged(BFont.compose(qs)))
+	sync_sel(v)
 
 
 func flatten() -> void:
@@ -360,7 +380,7 @@ func refresh() -> void:
 		if q.ord in keep:
 			item.select(0)
 
-	sync_cmode()
+	sync_sel()
 
 
 func render_layer(item: TreeItem, gen: Dictionary) -> void:

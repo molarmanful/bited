@@ -8,6 +8,7 @@ signal refreshed
 @export var layers: Layers
 @export var node_wrapper: Container
 @export var node_root: TextureRect
+@export var node_sel: TextureRect
 @export var node_view_lines: SubViewport
 @export var node_lines: GridLines
 @export var node_placeholder: Label
@@ -63,6 +64,7 @@ var tool_sel := "pen":
 
 func _ready() -> void:
 	pattern = Pattern.new(node_root)
+	node_sel.texture = ImageTexture.new()
 
 	StateVars.settings.connect(refresh)
 	StateVars.edit.connect(start_edit)
@@ -178,6 +180,7 @@ func update_grid() -> void:
 
 	node_root.custom_minimum_size = size_grid
 	node_root.self_modulate = get_theme_color("fg")
+	node_sel.self_modulate = get_theme_color("sel")
 
 	node_view_lines.size = size_grid
 	node_lines.queue_redraw()

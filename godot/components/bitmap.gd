@@ -84,17 +84,13 @@ func to_gen() -> Dictionary:
 	if bounds:
 		img = cells.region(bounds).to_bytes()
 
-	return {
-		name = data_name,
-		code = data_code,
-		dwidth = dwidth,
-		is_abs = is_abs,
-		bb_x = bounds.size.x,
-		bb_y = bounds.size.y,
-		off_x = off.x,
-		off_y = off.y,
-		img = img,
-	}
+	return meta().merged(
+		{bb_x = bounds.size.x, bb_y = bounds.size.y, off_x = off.x, off_y = off.y, img = img}
+	)
+
+
+func meta() -> Dictionary:
+	return {name = data_name, code = data_code, dwidth = dwidth, is_abs = is_abs}
 
 
 func from_gen(gen: Dictionary) -> void:
