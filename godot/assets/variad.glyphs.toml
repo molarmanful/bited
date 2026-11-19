@@ -32,6 +32,11 @@ layers = [
     { child = "U+0050", off_x = 0, off_y = 0, blend = 0, xform = 0 },
     { child = "U+0050", off_x = 0, off_y = 0, blend = 0, xform = 2 },
 ]
+[glyphs."U+0049"]
+layers = [
+    { child = "U+0054", off_x = 0, off_y = 0, blend = 0, xform = 0 },
+    { child = "U+0054", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+]
 [glyphs."U+0062"]
 layers = [
     { child = "U+0064", off_x = 0, off_y = 0, blend = 0, xform = 1 },
