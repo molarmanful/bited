@@ -579,6 +579,16 @@ layers = [
     { child = "U+0068", off_x = 0, off_y = 0, blend = 0, xform = 0 },
     { child = "U+0302", off_x = 0, off_y = 0, blend = 0, xform = 0 },
 ]
+[glyphs."U+0126"]
+layers = [
+    { child = "U+0048", off_x = 0, off_y = 0, blend = 0, xform = 0 },
+    { child = "U+2015", off_x = 0, off_y = 3, blend = 0, xform = 0 },
+]
+[glyphs."U+0127"]
+layers = [
+    { child = "U+0068", off_x = 0, off_y = 0, blend = 0, xform = 0 },
+    { child = "U+2013", off_x = -1, off_y = 3, blend = 0, xform = 0 },
+]
 [glyphs."U+0128"]
 layers = [
     { child = "U+0049", off_x = 0, off_y = 0, blend = 0, xform = 0 },
