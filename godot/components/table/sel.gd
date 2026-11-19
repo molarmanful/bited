@@ -524,7 +524,7 @@ func get_sel_text() -> void:
 
 func update() -> void:
 	table.get_tree().call_group("selshow", "show" if ranges else "hide")
-	table.get_tree().call_group("sel_named", "set_visible", not named().is_empty())
+	table.get_tree().call_group("sel_named", "set_visible", named() != "")
 	if table.pick_layer:
 		table.get_tree().call_group("hide_on_pick", "hide")
 

@@ -35,7 +35,7 @@ func _ready() -> void:
 	tree.set_drag_forwarding(
 		func(_at: Vector2) -> Variant:
 			var s := selected
-			if s.is_empty():
+			if not s:
 				return null
 			var l := Label.new()
 			l.text = "%d layers" % s.size()
@@ -337,31 +337,46 @@ func refresh() -> void:
 	)
 
 	var qs := StateVars.db_saves.query_result
-	has_layers = not qs.is_empty()
+	has_layers = not not qs
 	grid.get_tree().call_group("hide_if_layer", "hide" if has_layers else "show")
 	if has_layers:
 		btn_move.button_pressed = true
 
+	StateVars.db_uc.query_with_named_bindings(
+		"""
+		select json_group_object(id, name) as names
+		from data
+		where id in (select value from json_each(:codes))
+		;""",
+		{codes = JSON.stringify(qs.map(func(q): return q.code))}
+	)
+	var names: Dictionary = JSON.parse_string(StateVars.db_uc.query_result[0].names)
+
 	for q in qs:
+		q.uc = names.get(str(q.code))
 		var item := tree.create_item(null, 0)
-		item.set_cell_mode(0, TreeItem.CELL_MODE_STRING)
 		item.set_metadata(0, q)
+		render_layer(item, q)
+		if q.ord in keep:
+			item.select(0)
+
+	sync_cmode()
+
+
+func render_layer(item: TreeItem, gen: Dictionary) -> void:
+	if gen.img:
 		item.set_icon(
 			0,
 			ImageTexture.create_from_image(
 				(
 					Bitmap
 					. new(StyleVars.thumb_size_pre)
-					. place(q.merged(BFont.compose([q.merged({blend = 0}, true)]), true))
+					. place(gen.merged(BFont.compose([gen.merged({blend = 0}, true)]), true))
 					. to_image()
 				)
 			)
 		)
-		item.set_icon_modulate(0, grid.get_theme_color("fg"))
-		item.set_text(0, q.name)
-		item.add_button(0, grid.cmode_group.get_buttons()[q.blend + Tool.CMode.T].icon)
 
-		if q.ord in keep:
-			item.select(0)
-
-	sync_cmode()
+	item.set_icon_modulate(0, grid.get_theme_color("fg"))
+	item.set_text(0, "%s%s" % [gen.name, " %s" % gen.uc if gen.uc else ""])
+	item.add_button(0, grid.cmode_group.get_buttons()[gen.blend + Tool.CMode.T].icon)

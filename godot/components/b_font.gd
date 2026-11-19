@@ -370,7 +370,7 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 			gen
 		)
 	)
-	return not StateVars.db_saves.query_result.is_empty()
+	return not not StateVars.db_saves.query_result
 
 
 func flatten_parents(names: Array) -> void:
