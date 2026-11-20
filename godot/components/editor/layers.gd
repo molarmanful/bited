@@ -336,10 +336,10 @@ func preview(v: Vector2i) -> void:
 	sync_sel(v)
 
 
-func flatten() -> void:
+func flatten(hard := false) -> void:
 	StateVars.font.flatten(parent_name)
 	StateVars.font.flatten_parents([parent_name])
-	grid.refresh()
+	grid.refresh(hard)
 
 
 func refresh() -> void:

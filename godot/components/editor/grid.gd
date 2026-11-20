@@ -389,14 +389,12 @@ func dwidth() -> void:
 	pattern.bitmap.dwidth = int(input_dwidth.value)
 	pattern.bitmap.save_dwidth()
 	if layers.has_layers:
-		layers.flatten()
-	refresh(true)
+		layers.flatten(true)
+	else:
+		refresh(true)
 
 
 func is_abs(on: bool) -> void:
 	pattern.bitmap.set_is_abs(on)
 	pattern.bitmap.save_dwidth()
-	if layers.has_layers:
-		layers.flatten()
-	else:
-		refresh()
+	refresh()
