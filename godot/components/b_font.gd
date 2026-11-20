@@ -412,8 +412,8 @@ func flatten(name: String) -> void:
 			(
 				"""
 				select
-					l.off_x + c.off_x as off_x, l.off_y + c.off_y as off_y, l.blend, l.xform,
-					c.bb_x, c.bb_y, c.img
+					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, l.blend, l.xform,
+					c.dwidth, c.is_abs, c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
 				where l.parent = :name
@@ -446,6 +446,7 @@ func flatten(name: String) -> void:
 
 
 static func compose(qs: Array) -> Dictionary:
+	var f := StateVars.font
 	var r := Rect2i()
 	var ts: Array[Array] = []
 	for q in qs:
@@ -453,7 +454,17 @@ static func compose(qs: Array) -> Dictionary:
 			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
 		)
 		g.xform(q.xform)
-		var qr := Rect2i(Vector2i(q.off_x, q.off_y), g.get_size())
+		var c := Vector2i(f.dwidth * int(not q.is_abs) + q.dwidth, f.asc - f.desc)
+		var m := Vector2i(q.off_x, q.off_y) * 2 + Vector2i(q.bb_x, q.bb_y) - c
+		if q.xform & 4:
+			m = -Vector2i(m.y, m.x)
+		if q.xform & 1:
+			m.x = -m.x
+		if q.xform & 2:
+			m.y = -m.y
+		var s := g.get_size()
+		var n := m + c - s + Vector2i(q.dx, q.dy) * 2
+		var qr := Rect2i(Vector2i(n.x >> 1, n.y >> 1), s)
 		ts.push_back([BLENDS[q.blend], g, qr])
 		if qr.has_area():
 			r = r.merge(qr) if r.has_area() else qr

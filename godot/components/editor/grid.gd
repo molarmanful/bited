@@ -337,40 +337,38 @@ func op(f: Callable) -> void:
 	pattern.bitmap.save()
 
 
-func dim_norm(f: Callable) -> void:
-	var dx := dim_grid - posmod(dim_grid - pattern.bitmap.dwidth_calc, 2)
-	var dy := dim_grid - posmod(dim_grid - StateVars.font.bb.y, 2)
-	pattern.cells.crop(Rect2i(0, 0, dx, dy))
-	f.call()
-	pattern.cells.crop(Rect2i(0, 0, dim_grid, dim_grid))
+func xform(x: int) -> void:
+	var b := pattern.bitmap
+	var q := b.to_gen().merged({xform = x, dx = 0, dy = 0, blend = 0})
+	op(func(): b.update_cells(q.merged(BFont.compose([q]), true)))
 
 
 func flip_x() -> void:
 	if layers.has_layers:
 		layers.flip_x()
 	else:
-		op(func(): dim_norm(pattern.cells.flip_x))
+		xform(1)
 
 
 func flip_y() -> void:
 	if layers.has_layers:
 		layers.flip_y()
 	else:
-		op(func(): dim_norm(pattern.cells.flip_y))
+		xform(2)
 
 
 func rot_ccw() -> void:
 	if layers.has_layers:
 		layers.rot_ccw()
 	else:
-		op(func(): dim_norm(pattern.cells.rotate_ccw))
+		xform(6)
 
 
 func rot_cw() -> void:
 	if layers.has_layers:
 		layers.rot_cw()
 	else:
-		op(func(): dim_norm(pattern.cells.rotate_cw))
+		xform(5)
 
 
 func translate(dst: Vector2i) -> void:

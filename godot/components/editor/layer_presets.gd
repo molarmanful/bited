@@ -70,7 +70,7 @@ func refresh() -> void:
 					j.value ->> 'variant' as variant, j.value ->> 'code' as code,
 					j.value ->> 'xform' as xform, j.value ->> 'blend' as blend, j.value ->> 'uc' as uc,
 					coalesce(f.name, format('U+%04X', j.value ->> 'code')) as name,
-					f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, f.img
+					f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, 0 as dx, 0 as dy, f.img
 				from json_each(:rows) as j
 				left join font_{0} as f on f.code = j.value ->> 'code'
 				order by j.key

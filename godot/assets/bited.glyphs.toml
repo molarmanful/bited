@@ -18,11 +18,11 @@ layers = [
 ]
 [glyphs."U+0029"]
 layers = [
-    { child = "U+0028", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+0028", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0039"]
 layers = [
-    { child = "U+0036", off_x = 0, off_y = 0, blend = 0, xform = 3 },
+    { child = "U+0036", off_x = 1, off_y = 0, blend = 0, xform = 3 },
 ]
 [glyphs."U+003A"]
 layers = [
@@ -41,32 +41,32 @@ layers = [
 [glyphs."U+0042"]
 layers = [
     { child = "U+0050", off_x = 0, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+0050", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+0050", off_x = 0, off_y = 1, blend = 0, xform = 2 },
 ]
 [glyphs."U+0049"]
 layers = [
     { child = "U+0054", off_x = 0, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+0054", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+0054", off_x = 0, off_y = 1, blend = 0, xform = 2 },
 ]
 [glyphs."U+005D"]
 layers = [
-    { child = "U+005B", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+005B", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0062"]
 layers = [
-    { child = "U+0064", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+0064", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0071"]
 layers = [
-    { child = "U+0070", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+0070", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+007D"]
 layers = [
-    { child = "U+007B", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+007B", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+00A1"]
 layers = [
-    { child = "U+0021", off_x = 0, off_y = -2, blend = 0, xform = 2 },
+    { child = "U+0021", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+00AB"]
 layers = [
@@ -88,7 +88,7 @@ layers = [
 ]
 [glyphs."U+00BB"]
 layers = [
-    { child = "U+00AB", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+00AB", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+00BC"]
 layers = [
@@ -107,7 +107,7 @@ layers = [
 ]
 [glyphs."U+00BF"]
 layers = [
-    { child = "U+003F", off_x = 0, off_y = -2, blend = 0, xform = 3 },
+    { child = "U+003F", off_x = 1, off_y = -1, blend = 0, xform = 3 },
 ]
 [glyphs."U+00C0"]
 layers = [
@@ -567,7 +567,7 @@ layers = [
 [glyphs."U+0123"]
 layers = [
     { child = "U+0067", off_x = 0, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+0327", off_x = 1, off_y = 9, blend = 0, xform = 3 },
+    { child = "U+0327", off_x = 1, off_y = -3, blend = 0, xform = 3 },
 ]
 [glyphs."U+0124"]
 layers = [
@@ -1053,7 +1053,7 @@ layers = [
 ]
 [glyphs."U+0245"]
 layers = [
-    { child = "U+0056", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+0056", off_x = 0, off_y = 1, blend = 0, xform = 2 },
 ]
 [glyphs."U+02BC"]
 layers = [
@@ -1065,7 +1065,7 @@ layers = [
 ]
 [glyphs."U+02C7"]
 layers = [
-    { child = "U+02C6", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+02C6", off_x = 0, off_y = 8, blend = 0, xform = 2 },
 ]
 [glyphs."U+02C9"]
 layers = [
@@ -1089,7 +1089,7 @@ layers = [
 ]
 [glyphs."U+02F5"]
 layers = [
-    { child = "U+030B", off_x = -1, off_y = -7, blend = 0, xform = 1 },
+    { child = "U+030B", off_x = 1, off_y = -7, blend = 0, xform = 1 },
 ]
 [glyphs."U+02F6"]
 layers = [
@@ -1109,11 +1109,11 @@ layers = [
 ]
 [glyphs."U+030C"]
 layers = [
-    { child = "U+0302", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+0302", off_x = 0, off_y = 14, blend = 0, xform = 2 },
 ]
 [glyphs."U+030F"]
 layers = [
-    { child = "U+030B", off_x = -1, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+030B", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0328"]
 layers = [
@@ -1182,7 +1182,7 @@ layers = [
 ]
 [glyphs."U+0393"]
 layers = [
-    { child = "U+004C", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+004C", off_x = 0, off_y = 1, blend = 0, xform = 2 },
 ]
 [glyphs."U+0395"]
 layers = [
@@ -1317,7 +1317,7 @@ layers = [
 ]
 [glyphs."U+0404"]
 layers = [
-    { child = "U+042D", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+042D", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0405"]
 layers = [
@@ -1406,7 +1406,7 @@ layers = [
 ]
 [glyphs."U+042F"]
 layers = [
-    { child = "U+0052", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+0052", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0430"]
 layers = [
@@ -1454,7 +1454,7 @@ layers = [
 ]
 [glyphs."U+0454"]
 layers = [
-    { child = "U+044D", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+044D", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+0455"]
 layers = [
@@ -1554,7 +1554,7 @@ layers = [
 ]
 [glyphs."U+2019"]
 layers = [
-    { child = "U+2018", off_x = -1, off_y = 0, blend = 0, xform = 3 },
+    { child = "U+2018", off_x = 1, off_y = 7, blend = 0, xform = 3 },
 ]
 [glyphs."U+201A"]
 layers = [
@@ -1562,7 +1562,7 @@ layers = [
 ]
 [glyphs."U+201B"]
 layers = [
-    { child = "U+2018", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+2018", off_x = 0, off_y = 7, blend = 0, xform = 2 },
 ]
 [glyphs."U+201C"]
 layers = [
@@ -1580,12 +1580,12 @@ layers = [
 ]
 [glyphs."U+201F"]
 layers = [
-    { child = "U+201C", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+201C", off_x = 0, off_y = 7, blend = 0, xform = 2 },
 ]
 [glyphs."U+2021"]
 layers = [
     { child = "U+2020", off_x = 0, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+2020", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+2020", off_x = 0, off_y = -2, blend = 0, xform = 2 },
 ]
 [glyphs."U+2026"]
 layers = [
@@ -1604,7 +1604,7 @@ layers = [
 ]
 [glyphs."U+203A"]
 layers = [
-    { child = "U+2039", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2039", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+203C"]
 layers = [
@@ -1621,7 +1621,7 @@ layers = [
 ]
 [glyphs."U+2079"]
 layers = [
-    { child = "U+2076", off_x = 0, off_y = 0, blend = 0, xform = 3 },
+    { child = "U+2076", off_x = 1, off_y = 7, blend = 0, xform = 3 },
 ]
 [glyphs."U+2080"]
 layers = [
@@ -1755,11 +1755,11 @@ layers = [
 ]
 [glyphs."U+2192"]
 layers = [
-    { child = "U+2190", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2190", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2193"]
 layers = [
-    { child = "U+2191", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+2191", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+2194"]
 layers = [
@@ -1797,15 +1797,15 @@ layers = [
 ]
 [glyphs."U+2265"]
 layers = [
-    { child = "U+2264", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2264", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2310"]
 layers = [
-    { child = "U+00AC", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+00AC", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2321"]
 layers = [
-    { child = "U+2320", off_x = -2, off_y = 1, blend = 0, xform = 3 },
+    { child = "U+2320", off_x = 1, off_y = 0, blend = 0, xform = 3 },
 ]
 [glyphs."U+2500"]
 layers = [
@@ -2292,39 +2292,39 @@ layers = [
 ]
 [glyphs."U+2555"]
 layers = [
-    { child = "U+2552", off_x = -3, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2552", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2556"]
 layers = [
-    { child = "U+2553", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2553", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2557"]
 layers = [
-    { child = "U+2554", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2554", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2558"]
 layers = [
-    { child = "U+2552", off_x = 0, off_y = 7, blend = 0, xform = 2 },
+    { child = "U+2552", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+2559"]
 layers = [
-    { child = "U+2553", off_x = 0, off_y = 8, blend = 0, xform = 2 },
+    { child = "U+2553", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+255A"]
 layers = [
-    { child = "U+2554", off_x = 0, off_y = 7, blend = 0, xform = 2 },
+    { child = "U+2554", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+255B"]
 layers = [
-    { child = "U+2558", off_x = -3, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2558", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+255C"]
 layers = [
-    { child = "U+2559", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2559", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+255D"]
 layers = [
-    { child = "U+255A", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+255A", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+255E"]
 layers = [
@@ -2343,15 +2343,15 @@ layers = [
 ]
 [glyphs."U+2561"]
 layers = [
-    { child = "U+255E", off_x = -3, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+255E", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2562"]
 layers = [
-    { child = "U+255F", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+255F", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2563"]
 layers = [
-    { child = "U+2560", off_x = -2, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2560", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2564"]
 layers = [
@@ -2371,15 +2371,15 @@ layers = [
 ]
 [glyphs."U+2567"]
 layers = [
-    { child = "U+2564", off_x = 0, off_y = 7, blend = 0, xform = 2 },
+    { child = "U+2564", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+2568"]
 layers = [
-    { child = "U+2565", off_x = 0, off_y = 8, blend = 0, xform = 2 },
+    { child = "U+2565", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+2569"]
 layers = [
-    { child = "U+2566", off_x = 0, off_y = 7, blend = 0, xform = 2 },
+    { child = "U+2566", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+256A"]
 layers = [
@@ -2398,19 +2398,19 @@ layers = [
 ]
 [glyphs."U+256E"]
 layers = [
-    { child = "U+256D", off_x = -3, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+256D", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+256F"]
 layers = [
-    { child = "U+2570", off_x = -3, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2570", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2570"]
 layers = [
-    { child = "U+256D", off_x = 0, off_y = 8, blend = 0, xform = 2 },
+    { child = "U+256D", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+2572"]
 layers = [
-    { child = "U+2571", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+2571", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+2573"]
 layers = [
@@ -2653,11 +2653,11 @@ layers = [
 ]
 [glyphs."U+25BC"]
 layers = [
-    { child = "U+25B2", off_x = 0, off_y = 0, blend = 0, xform = 2 },
+    { child = "U+25B2", off_x = 0, off_y = -1, blend = 0, xform = 2 },
 ]
 [glyphs."U+25C4"]
 layers = [
-    { child = "U+25BA", off_x = 0, off_y = 0, blend = 0, xform = 1 },
+    { child = "U+25BA", off_x = 1, off_y = 0, blend = 0, xform = 1 },
 ]
 [glyphs."U+25D8"]
 layers = [

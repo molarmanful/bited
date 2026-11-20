@@ -287,7 +287,7 @@ func sync_sel(v := Vector2i.ZERO) -> void:
 	while item:
 		var q: Dictionary = item.get_metadata(0)
 		bs[q.blend] = true
-		qs.push_back(q.merged({off_x = q.off_x + v.x, off_y = q.off_y - v.y, blend = 0}, true))
+		qs.push_back(q.merged({dx = q.dx + v.x, dy = q.dy - v.y, blend = 0}, true))
 		item = tree.get_next_selected(item)
 
 	var m := grid.toolman.cmode
@@ -318,7 +318,7 @@ func preview(v: Vector2i) -> void:
 	for item in tree.get_root().get_children():
 		var q: Dictionary = item.get_metadata(0)
 		if item.is_selected(0):
-			q = q.merged({off_x = q.off_x + v.x, off_y = q.off_y - v.y}, true)
+			q = q.merged({dx = q.dx + v.x, dy = q.dy - v.y}, true)
 		qs.push_front(q)
 	grid.pattern.bitmap.update_cells(grid.pattern.bitmap.meta().merged(BFont.compose(qs)))
 	sync_sel(v)
@@ -343,8 +343,7 @@ func refresh() -> void:
 				"""
 				select
 					l.ord, c.name, c.code, c.dwidth, c.is_abs, c.bb_x, c.bb_y,
-					c.off_x + l.off_x as off_x, c.off_y + l.off_y as off_y,
-					c.img, l.blend, l.xform
+					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, c.img, l.blend, l.xform
 				from layers_{0} as l
 				join font_{0} as c on l.child = c.name
 				where l.parent = :parent
