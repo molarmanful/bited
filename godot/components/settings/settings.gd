@@ -40,6 +40,8 @@ func save() -> void:
 	if not is_valid():
 		return
 
+	var f := StateVars.font
+	var c := Vector2i(f.dwidth, f.asc - f.desc)
 	for child in get_tree().get_nodes_in_group("settings"):
 		child.save()
 
@@ -53,6 +55,8 @@ func save() -> void:
 	StateVars.font.props.clear()
 	StateVars.font.props.merge(props)
 	StateVars.font.save_font()
+	if c != Vector2i(f.dwidth, f.asc - f.desc):
+		f.flatten_xformed()
 	StateVars.cfg.save("user://settings.ini")
 	StateVars.settings.emit()
 

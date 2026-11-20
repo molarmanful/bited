@@ -404,6 +404,11 @@ func flatten_parents(names: Array) -> void:
 		flatten(q.name)
 
 
+func flatten_xformed() -> void:
+	StateVars.db_saves.query("select child from layers_{0} where xform;".format([id]))
+	flatten_parents(StateVars.db_saves.query_result.map(func(q): return q.child))
+
+
 func flatten(name: String) -> void:
 	StateVars.db_saves.query_with_named_bindings(
 		"select name, dwidth, is_abs from font_{0} where name = :name;".format([id]), {name = name}
