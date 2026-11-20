@@ -48,6 +48,10 @@ layers = [
     { child = "U+0054", off_x = 0, off_y = 0, blend = 0, xform = 0 },
     { child = "U+0054", off_x = 0, off_y = 9, blend = 0, xform = 2 },
 ]
+[glyphs."U+005C"]
+layers = [
+    { child = "U+002F", off_x = 7, off_y = 0, blend = 0, xform = 1 },
+]
 [glyphs."U+005D"]
 layers = [
     { child = "U+005B", off_x = 7, off_y = 0, blend = 0, xform = 1 },
