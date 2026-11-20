@@ -404,16 +404,7 @@ func flatten_parents(names: Array) -> void:
 		flatten(q.name)
 
 
-func flatten_xformed() -> void:
-	StateVars.db_saves.query("select child from layers_{0} where xform;".format([id]))
-	flatten_parents(StateVars.db_saves.query_result.map(func(q): return q.child))
-
-
 func flatten(name: String) -> void:
-	StateVars.db_saves.query_with_named_bindings(
-		"select name, dwidth, is_abs from font_{0} where name = :name;".format([id]), {name = name}
-	)
-	var p := StateVars.db_saves.query_result[0]
 	(
 		StateVars
 		. db_saves
@@ -433,7 +424,7 @@ func flatten(name: String) -> void:
 			{name = name}
 		)
 	)
-	var d := compose(p, StateVars.db_saves.query_result)
+	var d := compose({name = name}, StateVars.db_saves.query_result)
 	(
 		StateVars
 		. db_saves
@@ -453,23 +444,23 @@ func flatten(name: String) -> void:
 	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
 
 
-static func xform_rect(r: Rect2i, x: int, w: int) -> Rect2i:
-	var c := Vector2i(w, StateVars.font.asc - StateVars.font.desc)
-	var v := r.position * 2 + r.size - c
+static func xform_rect(r: Rect2i, x: int) -> Rect2i:
 	if x & 4:
-		v = -Vector2i(v.y, v.x)
-		r.size = Vector2i(r.size.y, r.size.x)
+		r = Rect2i(-r.end.y, -r.end.x, r.size.y, r.size.x)
 	if x & 1:
-		v.x = -v.x
+		r.position.x = -r.end.x
 	if x & 2:
-		v.y = -v.y
-	v += c - r.size
-	r.position = Vector2i(v.x >> 1, v.y >> 1)
+		r.position.y = -r.end.y
 	return r
 
 
+static func shift(x: int, w: int) -> Vector2i:
+	var c := Vector2i(w, StateVars.font.asc - StateVars.font.desc)
+	var d := c - xform_rect(Rect2i(c, Vector2i.ZERO), x).position
+	return Vector2i(d.x >> 1, d.y >> 1)
+
+
 static func compose(p: Dictionary, qs: Array) -> Dictionary:
-	var w: int = StateVars.font.dwidth * int(not p.is_abs) + p.dwidth
 	var r := Rect2i()
 	var ts: Array[Array] = []
 	for q in qs:
@@ -478,7 +469,7 @@ static func compose(p: Dictionary, qs: Array) -> Dictionary:
 		)
 		g.xform(q.xform)
 
-		var qr := xform_rect(Rect2i(q.off_x, q.off_y, q.bb_x, q.bb_y), q.xform, w)
+		var qr := xform_rect(Rect2i(q.off_x, q.off_y, q.bb_x, q.bb_y), q.xform)
 		qr.position += Vector2i(q.dx, q.dy)
 		ts.push_back([BLENDS[q.blend], g, qr])
 		if qr.has_area():

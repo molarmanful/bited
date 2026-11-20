@@ -243,17 +243,12 @@ func clear_xform() -> void:
 
 
 func _xform(t: PackedInt32Array) -> void:
-	var w := grid.pattern.bitmap.dwidth_calc
+	var s := BFont.shift(t[0], grid.pattern.bitmap.dwidth_calc)
 	var ls := []
 	var item := tree.get_next_selected(null)
 	while item:
 		var q: Dictionary = item.get_metadata(0)
-		var r := Rect2i(q.off_x, q.off_y, q.bb_x, q.bb_y)
-		var at := BFont.xform_rect(r, q.xform, w)
-		at.position += Vector2i(q.dx, q.dy)
-		var d := (
-			BFont.xform_rect(at, t[0], w).position - BFont.xform_rect(r, t[q.xform], w).position
-		)
+		var d := BFont.xform_rect(Rect2i(q.dx, q.dy, 0, 0), t[0]).position + s
 		ls.push_back({ord = q.ord, xform = t[q.xform], dx = d.x, dy = d.y})
 		item = tree.get_next_selected(item)
 
@@ -336,10 +331,10 @@ func preview(v: Vector2i) -> void:
 	sync_sel(v)
 
 
-func flatten(hard := false) -> void:
+func flatten() -> void:
 	StateVars.font.flatten(parent_name)
 	StateVars.font.flatten_parents([parent_name])
-	grid.refresh(hard)
+	grid.refresh()
 
 
 func refresh() -> void:

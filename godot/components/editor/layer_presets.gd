@@ -70,7 +70,7 @@ func refresh() -> void:
 					j.value ->> 'variant' as variant, j.value ->> 'code' as code,
 					j.value ->> 'xform' as xform, j.value ->> 'blend' as blend, j.value ->> 'uc' as uc,
 					coalesce(f.name, format('U+%04X', j.value ->> 'code')) as name,
-					f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, 0 as dx, 0 as dy, f.img
+					f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, f.img
 				from json_each(:rows) as j
 				left join font_{0} as f on f.code = j.value ->> 'code'
 				order by j.key
@@ -86,7 +86,11 @@ func refresh() -> void:
 
 	var item: TreeItem = null
 	var dis := Color(tree.get_theme_color("danger"), 0.7)
+	var w := grid.pattern.bitmap.dwidth_calc
 	for q in qs:
+		var s := BFont.shift(q.xform, w)
+		q.dx = s.x
+		q.dy = s.y
 		if not item or item.get_metadata(0) != q.variant:
 			item = tree.create_item(null, 0)
 			item.set_metadata(0, q.variant)
@@ -119,8 +123,10 @@ func choose() -> void:
 				"""
 				delete from layers_{0} where parent = :parent;
 
-				insert into layers_{0} (parent, ord, child, xform, blend)
-				select :parent, key, value ->> 'name', value ->> 'xform', value ->> 'blend'
+				insert into layers_{0} (parent, ord, child, off_x, off_y, xform, blend)
+				select
+					:parent, key, value ->> 'name',
+					value ->> 'dx', value ->> 'dy', value ->> 'xform', value ->> 'blend'
 				from json_each(:ls)
 				;"""
 				. format([StateVars.font.id])
