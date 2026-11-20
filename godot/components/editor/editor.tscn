@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cmf158hy1yp5d" path="res://components/editor/grid.gd" id="9_8b0ie"]
 [ext_resource type="Script" uid="uid://bcq70vid0xrwv" path="res://components/editor/layers.gd" id="12_xaubg"]
 [ext_resource type="Script" uid="uid://beymo7grch5dc" path="res://components/editor/layer_presets.gd" id="13_mnipk"]
+[ext_resource type="Script" uid="uid://ccqkl21mr1cd7" path="res://components/editor/layer_parents.gd" id="14_850sg"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_2r100"]
 action = &"bited_prev_uc"
@@ -96,10 +97,16 @@ events = [SubResource("InputEventAction_ow1e3")]
 viewport_path = NodePath("CenterContainer/GridContainer/5/Grid/Lines/SubViewport")
 
 [sub_resource type="InputEventAction" id="InputEventAction_850sg"]
+action = &"bited_layer_parents"
+
+[sub_resource type="Shortcut" id="Shortcut_xmsq5"]
+events = [SubResource("InputEventAction_850sg")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_6a0dx"]
 action = &"bited_layers"
 
-[sub_resource type="Shortcut" id="Shortcut_xaubg"]
-events = [SubResource("InputEventAction_850sg")]
+[sub_resource type="Shortcut" id="Shortcut_do8dj"]
+events = [SubResource("InputEventAction_6a0dx")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_mnipk"]
 action = &"bited_layers_pick"
@@ -414,7 +421,7 @@ focus_mode = 1
 theme_type_variation = &"Grid"
 script = ExtResource("9_8b0ie")
 editor = NodePath("../../../..")
-layers = NodePath("../../../layers")
+layers = NodePath("../../../Layers")
 node_wrapper = NodePath("../..")
 node_root = NodePath("Root")
 node_sel = NodePath("Sel")
@@ -468,13 +475,22 @@ grid = NodePath("../../..")
 layout_mode = 2
 size_flags_vertical = 4
 
+[node name="parents" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1924783342]
+layout_mode = 2
+tooltip_text = "parents"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+toggle_mode = true
+shortcut = SubResource("Shortcut_xmsq5")
+text = "⧈"
+
 [node name="layers" type="Button" parent="CenterContainer/GridContainer/6" unique_id=549640445]
 layout_mode = 2
 tooltip_text = "layers"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"Op"
 toggle_mode = true
-shortcut = SubResource("Shortcut_xaubg")
+shortcut = SubResource("Shortcut_do8dj")
 text = "⧉"
 
 [node name="pick" type="Button" parent="CenterContainer/GridContainer/6" unique_id=973372326]
@@ -616,7 +632,7 @@ text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="layers" type="Window" parent="CenterContainer" unique_id=121889515 node_paths=PackedStringArray("editor", "btn", "tree", "btn_move", "btn_pick", "btn_bake", "btn_del")]
+[node name="Layers" type="Window" parent="CenterContainer" unique_id=994362725 node_paths=PackedStringArray("editor", "btn", "tree", "btn_move", "btn_pick", "btn_bake", "btn_del")]
 oversampling_override = 1.0
 title = "layers"
 size = Vector2i(200, 200)
@@ -630,22 +646,23 @@ btn_move = NodePath("../GridContainer/4/move")
 btn_pick = NodePath("../GridContainer/6/pick")
 btn_bake = NodePath("../GridContainer/6/bake")
 btn_del = NodePath("../GridContainer/6/del")
+metadata/_custom_type_script = "uid://bcq70vid0xrwv"
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/layers" unique_id=3710046]
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/Layers" unique_id=3710046]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/layers/PanelContainer" unique_id=2049598590]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Layers/PanelContainer" unique_id=2049598590]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Tree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer" unique_id=845784831]
+[node name="Tree" type="Tree" parent="CenterContainer/Layers/PanelContainer/MarginContainer" unique_id=845784831]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Layers"
@@ -661,7 +678,7 @@ size = Vector2i(300, 300)
 visible = false
 unfocusable = true
 script = ExtResource("13_mnipk")
-layers = NodePath("../layers")
+layers = NodePath("../Layers")
 btn = NodePath("../GridContainer/6/presets")
 tree = NodePath("PanelContainer/MarginContainer/Tree")
 metadata/_custom_type_script = "uid://beymo7grch5dc"
@@ -684,4 +701,37 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 theme_type_variation = &"Layers"
 theme_override_constants/item_margin = 16
+hide_root = true
+
+[node name="LayerParents" type="Window" parent="CenterContainer" unique_id=992157901 node_paths=PackedStringArray("layers", "btn", "tree")]
+oversampling_override = 1.0
+title = "parents"
+size = Vector2i(200, 200)
+visible = false
+unfocusable = true
+script = ExtResource("14_850sg")
+layers = NodePath("../Layers")
+btn = NodePath("../GridContainer/6/parents")
+tree = NodePath("PanelContainer/MarginContainer/Tree")
+metadata/_custom_type_script = "uid://ccqkl21mr1cd7"
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/LayerParents" unique_id=1229991786]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LayerParents/PanelContainer" unique_id=1472785346]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Tree" type="Tree" parent="CenterContainer/LayerParents/PanelContainer/MarginContainer" unique_id=2003315307]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Layers"
+hide_folding = true
 hide_root = true

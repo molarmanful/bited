@@ -78,6 +78,7 @@ func _ready() -> void:
 	btn_bake.pressed.connect(bake)
 	btn_del.pressed.connect(del)
 	tree.multi_selected.connect(sync_sel.unbind(3), CONNECT_DEFERRED)
+	tree.item_activated.connect(edit)
 
 
 func pick(gname: String) -> void:
@@ -347,6 +348,14 @@ func flatten() -> void:
 	grid.refresh()
 
 
+func edit() -> void:
+	var item := tree.get_selected()
+	if not item:
+		return
+	var q: Dictionary = item.get_metadata(0)
+	StateVars.edit.emit(q.name, q.code)
+
+
 func refresh() -> void:
 	var keep := selected
 	tree.clear()
@@ -417,4 +426,5 @@ func render_layer(item: TreeItem, gen: Dictionary) -> void:
 
 	item.set_icon_modulate(0, grid.get_theme_color("fg"))
 	item.set_text(0, "%s%s" % [gen.name, " %s" % gen.uc if gen.uc else ""])
-	item.add_button(0, grid.cmode_group.get_buttons()[gen.blend + Tool.CMode.T].icon)
+	if gen.blend != null:
+		item.add_button(0, grid.cmode_group.get_buttons()[gen.blend + Tool.CMode.T].icon)
