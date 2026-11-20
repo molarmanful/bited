@@ -86,9 +86,8 @@ func refresh() -> void:
 
 	var item: TreeItem = null
 	var dis := Color(tree.get_theme_color("danger"), 0.7)
-	var w := grid.pattern.bitmap.dwidth_calc
 	for q in qs:
-		var s := BFont.shift(q.xform, w)
+		var s := BFont.shift(q.xform, q) if q.img else Vector2i.ZERO
 		q.dx = s.x
 		q.dy = s.y
 		if not item or item.get_metadata(0) != q.variant:

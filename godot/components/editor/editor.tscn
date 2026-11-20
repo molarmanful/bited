@@ -113,6 +113,12 @@ action = &"bited_layer_presets"
 [sub_resource type="Shortcut" id="Shortcut_ai11x"]
 events = [SubResource("InputEventAction_xmsq5")]
 
+[sub_resource type="InputEventAction" id="InputEventAction_ai11x"]
+action = &"bited_layers_del"
+
+[sub_resource type="Shortcut" id="Shortcut_6a0dx"]
+events = [SubResource("InputEventAction_ai11x")]
+
 [sub_resource type="InputEventAction" id="InputEventAction_2a0pl"]
 action = &"bited_flip_x"
 
@@ -493,6 +499,18 @@ text = "☰"
 layout_mode = 2
 theme_override_constants/separation = 9
 
+[node name="del" type="Button" parent="CenterContainer/GridContainer/6" unique_id=983453432]
+layout_mode = 2
+tooltip_text = "delete selected layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_6a0dx")
+text = "🗑"
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=863479152]
+layout_mode = 2
+theme_override_constants/separation = 9
+
 [node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437]
 layout_mode = 2
 tooltip_text = "bake layers"
@@ -607,11 +625,11 @@ unfocusable = true
 script = ExtResource("12_xaubg")
 editor = NodePath("../..")
 btn = NodePath("../GridContainer/6/layers")
-tree = NodePath("PanelContainer/MarginContainer/VBoxContainer/Tree")
+tree = NodePath("PanelContainer/MarginContainer/Tree")
 btn_move = NodePath("../GridContainer/4/move")
 btn_pick = NodePath("../GridContainer/6/pick")
 btn_bake = NodePath("../GridContainer/6/bake")
-btn_del = NodePath("PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/del")
+btn_del = NodePath("../GridContainer/6/del")
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer/layers" unique_id=3710046]
 anchors_preset = 15
@@ -627,25 +645,7 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/layers/PanelContainer/MarginContainer" unique_id=146087436]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=1271668323]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=898146221]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="del" type="Button" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=983453432]
-layout_mode = 2
-tooltip_text = "delete selected layers"
-mouse_default_cursor_shape = 2
-theme_type_variation = &"Op"
-text = "🗑"
-
-[node name="Tree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer/VBoxContainer" unique_id=845784831]
+[node name="Tree" type="Tree" parent="CenterContainer/layers/PanelContainer/MarginContainer" unique_id=845784831]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Layers"

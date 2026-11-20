@@ -243,14 +243,23 @@ func clear_xform() -> void:
 
 
 func _xform(t: PackedInt32Array) -> void:
-	var s := BFont.shift(t[0], grid.pattern.bitmap.dwidth_calc)
-	var ls := []
+	var qs := []
 	var item := tree.get_next_selected(null)
 	while item:
-		var q: Dictionary = item.get_metadata(0)
-		var d := BFont.xform_rect(Rect2i(q.dx, q.dy, 0, 0), t[0]).position + s
-		ls.push_back({ord = q.ord, xform = t[q.xform], dx = d.x, dy = d.y})
+		qs.push_back(item.get_metadata(0).merged({blend = 0}, true))
 		item = tree.get_next_selected(item)
+
+	var b := (
+		grid.pattern.bitmap.to_gen()
+		if qs.size() == tree.get_root().get_child_count()
+		else BFont.compose({}, qs)
+	)
+	var s := BFont.shift(t[0], b)
+	var ls := qs.map(
+		func(q: Dictionary):
+			var d := BFont.xform_rect(Rect2i(q.dx, q.dy, 0, 0), t[0]).position + s
+			return {ord = q.ord, xform = t[q.xform], dx = d.x, dy = d.y}
+	)
 
 	(
 		StateVars

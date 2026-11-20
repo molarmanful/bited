@@ -340,7 +340,7 @@ func op(f: Callable) -> void:
 func xform(x: int) -> void:
 	var b := pattern.bitmap
 	var q := b.to_gen()
-	var s := BFont.shift(x, b.dwidth_calc)
+	var s := BFont.shift(x, q)
 	op(
 		func():
 			b.update_cells(BFont.compose(q, [q.merged({xform = x, dx = s.x, dy = s.y, blend = 0})]))

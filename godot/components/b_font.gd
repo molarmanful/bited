@@ -454,8 +454,8 @@ static func xform_rect(r: Rect2i, x: int) -> Rect2i:
 	return r
 
 
-static func shift(x: int, w: int) -> Vector2i:
-	var c := Vector2i(w, StateVars.font.asc - StateVars.font.desc)
+static func shift(x: int, g: Dictionary) -> Vector2i:
+	var c := Vector2i(g.off_x * 2 + g.bb_x, g.off_y * 2 + g.bb_y)
 	var d := c - xform_rect(Rect2i(c, Vector2i.ZERO), x).position
 	return Vector2i(d.x >> 1, d.y >> 1)
 
