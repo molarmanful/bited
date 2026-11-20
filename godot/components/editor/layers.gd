@@ -316,6 +316,7 @@ func sync_sel(v := Vector2i.ZERO) -> void:
 		b.set_pressed_no_signal(Tool.CMode[b.name] == m)
 
 	grid.node_sel.visible = not not qs
+	grid.get_tree().call_group("layer_sel", "set_visible", not not qs)
 	if not qs:
 		return
 

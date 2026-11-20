@@ -495,11 +495,11 @@ toggle_mode = true
 shortcut = SubResource("Shortcut_ai11x")
 text = "☰"
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=2009002178]
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=2009002178 groups=["layer_sel"]]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="del" type="Button" parent="CenterContainer/GridContainer/6" unique_id=983453432]
+[node name="del" type="Button" parent="CenterContainer/GridContainer/6" unique_id=983453432 groups=["layer_sel"]]
 layout_mode = 2
 tooltip_text = "delete selected layers"
 mouse_default_cursor_shape = 2
@@ -507,11 +507,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_6a0dx")
 text = "🗑"
 
-[node name="HSeparator2" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=863479152]
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=863479152 groups=["layer_sel"]]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437]
+[node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437 groups=["layer_sel"]]
 layout_mode = 2
 tooltip_text = "bake layers"
 mouse_default_cursor_shape = 2
