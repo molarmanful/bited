@@ -339,8 +339,8 @@ func op(f: Callable) -> void:
 
 func xform(x: int) -> void:
 	var b := pattern.bitmap
-	var q := b.to_gen().merged({xform = x, dx = 0, dy = 0, blend = 0})
-	op(func(): b.update_cells(q.merged(BFont.compose([q]), true)))
+	var q := b.to_gen()
+	op(func(): b.update_cells(BFont.compose(q, [q.merged({xform = x, dx = 0, dy = 0, blend = 0})])))
 
 
 func flip_x() -> void:
@@ -388,10 +388,15 @@ func clear() -> void:
 func dwidth() -> void:
 	pattern.bitmap.dwidth = int(input_dwidth.value)
 	pattern.bitmap.save_dwidth()
+	if layers.has_layers:
+		layers.flatten()
 	refresh(true)
 
 
 func is_abs(on: bool) -> void:
 	pattern.bitmap.set_is_abs(on)
 	pattern.bitmap.save_dwidth()
-	refresh()
+	if layers.has_layers:
+		layers.flatten()
+	else:
+		refresh()

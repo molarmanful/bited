@@ -243,6 +243,20 @@ func clear_xform() -> void:
 
 
 func _xform(t: PackedInt32Array) -> void:
+	var w := grid.pattern.bitmap.dwidth_calc
+	var ls := []
+	var item := tree.get_next_selected(null)
+	while item:
+		var q: Dictionary = item.get_metadata(0)
+		var r := Rect2i(q.off_x, q.off_y, q.bb_x, q.bb_y)
+		var at := BFont.xform_rect(r, q.xform, w)
+		at.position += Vector2i(q.dx, q.dy)
+		var d := (
+			BFont.xform_rect(at, t[0], w).position - BFont.xform_rect(r, t[q.xform], w).position
+		)
+		ls.push_back({ord = q.ord, xform = t[q.xform], dx = d.x, dy = d.y})
+		item = tree.get_next_selected(item)
+
 	(
 		StateVars
 		. db_saves
@@ -250,12 +264,13 @@ func _xform(t: PackedInt32Array) -> void:
 			(
 				"""
 				update layers_{0}
-				set xform = :t ->> xform
-				where parent = :parent and ord in (select value from json_each(:ords))
+				set xform = j.value ->> 'xform', off_x = j.value ->> 'dx', off_y = j.value ->> 'dy'
+				from json_each(:ls) as j
+				where layers_{0}.parent = :parent and layers_{0}.ord = j.value ->> 'ord'
 				;"""
 				. format([StateVars.font.id])
 			),
-			{t = JSON.stringify(t), parent = parent_name, ords = JSON.stringify(selected)}
+			{ls = JSON.stringify(ls), parent = parent_name}
 		)
 	)
 	flatten()
@@ -301,10 +316,7 @@ func sync_sel(v := Vector2i.ZERO) -> void:
 		return
 
 	var img := (
-		Bitmap
-		. new(grid.dim_grid)
-		. place(grid.pattern.bitmap.meta().merged(BFont.compose(qs)))
-		. to_image()
+		Bitmap.new(grid.dim_grid).place(BFont.compose(grid.pattern.bitmap.meta(), qs)).to_image()
 	)
 	var tex: ImageTexture = grid.node_sel.texture
 	if Vector2i(tex.get_size()) == img.get_size():
@@ -320,7 +332,7 @@ func preview(v: Vector2i) -> void:
 		if item.is_selected(0):
 			q = q.merged({dx = q.dx + v.x, dy = q.dy - v.y}, true)
 		qs.push_front(q)
-	grid.pattern.bitmap.update_cells(grid.pattern.bitmap.meta().merged(BFont.compose(qs)))
+	grid.pattern.bitmap.update_cells(BFont.compose(grid.pattern.bitmap.meta(), qs))
 	sync_sel(v)
 
 
@@ -390,7 +402,9 @@ func render_layer(item: TreeItem, gen: Dictionary) -> void:
 				(
 					Bitmap
 					. new(StyleVars.thumb_size_pre)
-					. place(gen.merged(BFont.compose([gen.merged({blend = 0}, true)]), true))
+					. place(
+						BFont.compose(grid.pattern.bitmap.meta(), [gen.merged({blend = 0}, true)])
+					)
 					. to_image()
 				)
 			)

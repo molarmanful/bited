@@ -405,6 +405,10 @@ func flatten_parents(names: Array) -> void:
 
 
 func flatten(name: String) -> void:
+	StateVars.db_saves.query_with_named_bindings(
+		"select name, dwidth, is_abs from font_{0} where name = :name;".format([id]), {name = name}
+	)
+	var p := StateVars.db_saves.query_result[0]
 	(
 		StateVars
 		. db_saves
@@ -413,7 +417,7 @@ func flatten(name: String) -> void:
 				"""
 				select
 					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, l.blend, l.xform,
-					c.dwidth, c.is_abs, c.bb_x, c.bb_y, c.img
+					c.bb_x, c.bb_y, c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
 				where l.parent = :name
@@ -424,8 +428,7 @@ func flatten(name: String) -> void:
 			{name = name}
 		)
 	)
-	var d := compose(StateVars.db_saves.query_result)
-	d.name = name
+	var d := compose(p, StateVars.db_saves.query_result)
 	(
 		StateVars
 		. db_saves
@@ -445,8 +448,23 @@ func flatten(name: String) -> void:
 	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
 
 
-static func compose(qs: Array) -> Dictionary:
-	var f := StateVars.font
+static func xform_rect(r: Rect2i, x: int, w: int) -> Rect2i:
+	var c := Vector2i(w, StateVars.font.asc - StateVars.font.desc)
+	var v := r.position * 2 + r.size - c
+	if x & 4:
+		v = -Vector2i(v.y, v.x)
+		r.size = Vector2i(r.size.y, r.size.x)
+	if x & 1:
+		v.x = -v.x
+	if x & 2:
+		v.y = -v.y
+	v += c - r.size
+	r.position = Vector2i(v.x >> 1, v.y >> 1)
+	return r
+
+
+static func compose(p: Dictionary, qs: Array) -> Dictionary:
+	var w: int = StateVars.font.dwidth * int(not p.is_abs) + p.dwidth
 	var r := Rect2i()
 	var ts: Array[Array] = []
 	for q in qs:
@@ -454,17 +472,9 @@ static func compose(qs: Array) -> Dictionary:
 			Vector2i(q.bb_x, q.bb_y), q.img if q.img else PackedByteArray()
 		)
 		g.xform(q.xform)
-		var c := Vector2i(f.dwidth * int(not q.is_abs) + q.dwidth, f.asc - f.desc)
-		var m := Vector2i(q.off_x, q.off_y) * 2 + Vector2i(q.bb_x, q.bb_y) - c
-		if q.xform & 4:
-			m = -Vector2i(m.y, m.x)
-		if q.xform & 1:
-			m.x = -m.x
-		if q.xform & 2:
-			m.y = -m.y
-		var s := g.get_size()
-		var n := m + c - s + Vector2i(q.dx, q.dy) * 2
-		var qr := Rect2i(Vector2i(n.x >> 1, n.y >> 1), s)
+
+		var qr := xform_rect(Rect2i(q.off_x, q.off_y, q.bb_x, q.bb_y), q.xform, w)
+		qr.position += Vector2i(q.dx, q.dy)
 		ts.push_back([BLENDS[q.blend], g, qr])
 		if qr.has_area():
 			r = r.merge(qr) if r.has_area() else qr
@@ -473,14 +483,21 @@ static func compose(qs: Array) -> Dictionary:
 	for t in ts:
 		var qr: Rect2i = t[2]
 		bg.blit(t[0], t[1], Vector2i(qr.position.x - r.position.x, r.end.y - qr.end.y))
+
 	var u := bg.used_rect()
-	return {
-		bb_x = u.size.x,
-		bb_y = u.size.y,
-		off_x = r.position.x + u.position.x if u.has_area() else 0,
-		off_y = r.end.y - u.end.y if u.has_area() else 0,
-		img = bg.region(u).to_bytes(),
-	}
+	return (
+		p
+		. merged(
+			{
+				bb_x = u.size.x,
+				bb_y = u.size.y,
+				off_x = r.position.x + u.position.x if u.has_area() else 0,
+				off_y = r.end.y - u.end.y if u.has_area() else 0,
+				img = bg.region(u).to_bytes(),
+			},
+			true
+		)
+	)
 
 
 func to_dict() -> Dictionary:
