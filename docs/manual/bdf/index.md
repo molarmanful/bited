@@ -46,33 +46,3 @@ Corresponds to `DISPLAY > editor grid size`.
 ### `BITED_EDITOR_CELL_SIZE`
 
 Corresponds to `DISPLAY > editor cell size`.
-
-## `glyphs.toml`
-
-One limitation of the BDF format is that there is no spec-compliant way to store
-custom per-glyph data. To work around this, bited interfaces with a TOML file
-colocated with the BDF that follows the pattern `{bdf_basename}.glyphs.toml`.
-Like BDF, this file is intended for both human and computer consumption.
-
-!!! warning
-
-    Whenever you rename your BDF, you must also rename the corresponding
-    `glyphs.toml` to ensure bited can find it.
-
-### `glyphs.<name>`
-
-This table contains glyph-specific values. Glyphs not specified here will derive
-values from the `default` table.
-
-#### `is_abs: bool`
-
-Whether the glyph is in offset mode (`false`) or dwidth mode (`true`).
-
-### `default`
-
-This table contains fallback values for glyphs not specified in the `glyphs`
-table.
-
-| Key      | Default Value |
-| -------- | ------------- |
-| `is_abs` | `true`        |
