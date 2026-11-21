@@ -9,10 +9,9 @@ use serde::{
 };
 
 #[derive(Deserialize, Serialize, Default)]
+#[serde(default)]
 pub struct GlyphsMap {
-    #[serde(default)]
     pub default: Defaults,
-    #[serde(default)]
     pub glyphs: HashMap<String, Glyph>,
 }
 
@@ -28,13 +27,16 @@ pub struct Glyph {
     pub layers: Vec<Layer>,
 }
 
-#[derive(Deserialize, Serialize, Default)]
-#[serde(default)]
+#[derive(Deserialize, Serialize)]
 pub struct Layer {
     pub child: String,
+    #[serde(default)]
     pub off_x: i32,
+    #[serde(default)]
     pub off_y: i32,
+    #[serde(default)]
     pub blend: i32,
+    #[serde(default)]
     pub xform: i32,
 }
 
