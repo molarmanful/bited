@@ -470,7 +470,7 @@ layers = [
 [glyphs."U+010F"]
 layers = [
     { child = ".d_narrow", off_x = -1, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+2019", off_x = 3, off_y = 0, blend = 0, xform = 0 },
+    { child = "U+02BC", off_x = 3, off_y = 0, blend = 0, xform = 0 },
 ]
 [glyphs."U+0110"]
 layers = [
