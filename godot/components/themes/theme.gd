@@ -42,6 +42,8 @@ var color_grid_cap: Color
 var color_grid_desc: Color
 var color_grid_w: Color
 var color_grid_x: Color
+var color_grid_layer_add: Color
+var color_grid_layer_sub: Color
 
 var border_w := 1
 var border_w_foc := 1
@@ -61,70 +63,74 @@ func setup_dark():
 	set_save_path("res://components/themes/dark.tres")
 
 	color_bg = Color.BLACK
-	color_bg_2 = Color.from_rgba8(38, 38, 38)
+	color_bg_2 = Tw.NEUTRAL_800
 	color_fg = Color.WHITE
-	color_fg_2 = Color.from_rgba8(163, 163, 163)
-	color_border = Color.from_rgba8(38, 38, 38)
-	color_warn = Color.from_rgba8(251, 146, 60)
-	color_warn_2 = Color.from_rgba8(154, 52, 18)
-	color_danger = Color.from_rgba8(220, 38, 38)
-	color_danger_2 = Color.from_rgba8(153, 27, 27)
-	color_danger_foc = Color.from_rgba8(248, 113, 113)
-	color_dis = Color.from_rgba8(23, 23, 23)
-	color_sel = Color.from_rgba8(30, 64, 175)
+	color_fg_2 = Tw.NEUTRAL_400
+	color_border = Tw.NEUTRAL_800
+	color_warn = Tw.ORANGE_400
+	color_warn_2 = Tw.ORANGE_800
+	color_danger = Tw.RED_600
+	color_danger_2 = Tw.RED_800
+	color_danger_foc = Tw.RED_400
+	color_dis = Tw.NEUTRAL_900
+	color_sel = Tw.BLUE_800
 	color_edit = Color.from_rgba8(112, 16, 117)
-	color_edit_sel = Color.from_rgba8(91, 33, 182)
-	color_nop_sel = Color.from_rgba8(30, 41, 59)
+	color_edit_sel = Tw.VIOLET_800
+	color_nop_sel = Tw.SLATE_800
 
 	color_tip_bg = Color.BLACK
 	color_tip_fg = Color.WHITE
-	color_tip_border = Color.from_rgba8(115, 115, 115)
+	color_tip_border = Tw.NEUTRAL_500
 
-	color_win_dis = Color.from_rgba8(64, 64, 64)
-	color_win_fg_2 = Color.from_rgba8(163, 163, 163)
+	color_win_dis = Tw.NEUTRAL_700
+	color_win_fg_2 = Tw.NEUTRAL_400
 
-	color_grid_border = Color.from_rgba8(23, 23, 23)
-	color_grid_origin = Color.from_rgba8(82, 82, 82)
-	color_grid_asc = Color.from_rgba8(131, 24, 67)
-	color_grid_cap = Color.from_rgba8(127, 29, 29)
-	color_grid_desc = Color.from_rgba8(22, 78, 99)
-	color_grid_w = Color.from_rgba8(20, 83, 45)
-	color_grid_x = Color.from_rgba8(113, 63, 18)
+	color_grid_border = Tw.NEUTRAL_900
+	color_grid_origin = Tw.NEUTRAL_600
+	color_grid_asc = Tw.PINK_900
+	color_grid_cap = Tw.RED_900
+	color_grid_desc = Tw.CYAN_900
+	color_grid_w = Tw.GREEN_900
+	color_grid_x = Tw.YELLOW_900
+	color_grid_layer_add = Tw.GREEN_300
+	color_grid_layer_sub = Tw.RED_900
 
 
 func setup_light():
 	set_save_path("res://components/themes/light.tres")
 
 	color_bg = Color.WHITE
-	color_bg_2 = Color.from_rgba8(212, 212, 212)
+	color_bg_2 = Tw.NEUTRAL_300
 	color_fg = Color.BLACK
-	color_fg_2 = Color.from_rgba8(64, 64, 64)
+	color_fg_2 = Tw.NEUTRAL_700
 	color_border = Color.BLACK
-	color_warn = Color.from_rgba8(249, 115, 22)
-	color_warn_2 = Color.from_rgba8(253, 186, 116)
-	color_danger = Color.from_rgba8(220, 38, 38)
-	color_danger_2 = Color.from_rgba8(248, 113, 113)
-	color_danger_foc = Color.from_rgba8(220, 38, 38)
-	color_dis = Color.from_rgba8(64, 64, 64)
-	color_sel = Color.from_rgba8(96, 165, 250)
-	color_edit = Color.from_rgba8(232, 121, 249)
-	color_edit_sel = Color.from_rgba8(167, 139, 250)
-	color_nop_sel = Color.from_rgba8(148, 163, 184)
+	color_warn = Tw.ORANGE_500
+	color_warn_2 = Tw.ORANGE_300
+	color_danger = Tw.RED_600
+	color_danger_2 = Tw.RED_400
+	color_danger_foc = Tw.RED_600
+	color_dis = Tw.NEUTRAL_700
+	color_sel = Tw.BLUE_400
+	color_edit = Tw.FUCHSIA_400
+	color_edit_sel = Tw.VIOLET_400
+	color_nop_sel = Tw.SLATE_400
 
 	color_tip_bg = Color.BLACK
 	color_tip_fg = Color.WHITE
 	color_tip_border = Color.BLACK
 
-	color_win_dis = Color.from_rgba8(64, 64, 64)
-	color_win_fg_2 = Color.from_rgba8(163, 163, 163)
+	color_win_dis = Tw.NEUTRAL_700
+	color_win_fg_2 = Tw.NEUTRAL_400
 
-	color_grid_border = Color.from_rgba8(212, 212, 212)
-	color_grid_origin = Color.from_rgba8(64, 64, 64)
-	color_grid_asc = Color.from_rgba8(236, 72, 153)
-	color_grid_cap = Color.from_rgba8(239, 68, 68)
-	color_grid_desc = Color.from_rgba8(6, 182, 212)
-	color_grid_w = Color.from_rgba8(34, 197, 94)
-	color_grid_x = Color.from_rgba8(234, 179, 8)
+	color_grid_border = Tw.NEUTRAL_300
+	color_grid_origin = Tw.NEUTRAL_700
+	color_grid_asc = Tw.PINK_500
+	color_grid_cap = Tw.RED_500
+	color_grid_desc = Tw.CYAN_500
+	color_grid_w = Tw.GREEN_500
+	color_grid_x = Tw.YELLOW_500
+	color_grid_layer_add = Tw.GREEN_800
+	color_grid_layer_sub = Tw.RED_200
 
 	border_w_foc = 2
 
@@ -488,6 +494,8 @@ func define_theme():
 	current_theme.set_color("desc", "Grid", color_grid_desc)
 	current_theme.set_color("w", "Grid", color_grid_w)
 	current_theme.set_color("x", "Grid", color_grid_x)
+	current_theme.set_color("layer_add", "Grid", color_grid_layer_add)
+	current_theme.set_color("layer_sub", "Grid", color_grid_layer_sub)
 
 	define_variant_style(
 		"BgBorder",

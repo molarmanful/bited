@@ -415,7 +415,7 @@ expand_icon = true
 [node name="5" type="CenterContainer" parent="CenterContainer/GridContainer" unique_id=1740979526]
 layout_mode = 2
 
-[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "layers", "node_wrapper", "node_root", "node_sel", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
+[node name="Grid" type="PanelContainer" parent="CenterContainer/GridContainer/5" unique_id=1463285025 node_paths=PackedStringArray("editor", "layers", "node_wrapper", "node_root", "node_ladd", "node_lsub", "node_view_lines", "node_lines", "node_placeholder", "input_dwidth", "btn_is_abs", "btn_prev_glyph", "btn_next_glyph", "btn_prev_uc", "btn_next_uc", "btn_flip_x", "btn_flip_y", "btn_rot_ccw", "btn_rot_cw", "btn_left", "btn_down", "btn_up", "btn_right", "btn_grid_clr")]
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"Grid"
@@ -424,7 +424,8 @@ editor = NodePath("../../../..")
 layers = NodePath("../../../Layers")
 node_wrapper = NodePath("../..")
 node_root = NodePath("Root")
-node_sel = NodePath("Sel")
+node_ladd = NodePath("Root/Add")
+node_lsub = NodePath("Sub")
 node_view_lines = NodePath("Lines/SubViewport")
 node_lines = NodePath("Lines/SubViewport/Node2D")
 node_placeholder = NodePath("../../../Placeholder")
@@ -446,15 +447,25 @@ btn_up = NodePath("../../8/up")
 btn_right = NodePath("../../8/right")
 btn_grid_clr = NodePath("../../8/grid_clr")
 
+[node name="Sub" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1840273562 groups=["layer_sel"]]
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+
 [node name="Root" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=326697129]
+clip_children = 2
 texture_filter = 1
 texture_repeat = 1
 layout_mode = 2
 mouse_default_cursor_shape = 3
 
-[node name="Sel" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1840273561]
-texture_filter = 1
-layout_mode = 2
+[node name="Add" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid/Root" unique_id=1840273561 groups=["layer_sel"]]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="Lines" type="TextureRect" parent="CenterContainer/GridContainer/5/Grid" unique_id=1128866789]
