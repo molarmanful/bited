@@ -427,3 +427,4 @@ func render_layer(item: TreeItem, gen: Dictionary) -> void:
 	item.set_text(0, "%s%s" % [gen.name, " %s" % gen.uc if gen.uc else ""])
 	if gen.blend != null:
 		item.add_button(0, grid.cmode_group.get_buttons()[gen.blend + Tool.CMode.T].icon)
+		item.set_button_color(0, 0, grid.get_theme_color("icon_normal_color", "Tool"))
