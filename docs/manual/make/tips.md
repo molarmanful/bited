@@ -79,13 +79,15 @@ glyphs are drawn to fit into a 4px width.
 ### Width-to-Height Ratio
 
 The effect of width-to-height ratio on your font can be a bit subtle. If you
-don't plan on supporting Unicode symbols blocks and box drawings in your font,
-then choosing this ratio is largely a matter of aesthetic preference. On the
-other hand, if you want your font to support these symbols, then here are a few
-considerations to keep in mind:
+don't plan on supporting Unicode symbols like blocks and box drawings in your
+font, then choosing this ratio is largely a matter of aesthetic preference. On
+the other hand, if you want your font to support these symbols, then here are a
+few considerations to keep in mind:
 
 - **Block elements** (`U+2580..U+259F`) are composed of 8ths. These are easiest
   to draw when your width/height are divisible by 8.
+- Sextant blocks are 2x3 and therefore work best with a `2:3` ratio -- e.g.
+  8x12.
 - **Box drawings** (`U+2500..U+257F`) have several types of lines:
     - Normal straight lines. These go through the center of the bounding box, and
       are easiest to draw when the lines can be visually centered. E.g. 1px

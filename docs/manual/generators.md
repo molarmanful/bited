@@ -7,7 +7,7 @@
 ///
 
 Generators automate the tedious process of compositing glyphs from individual
-pieces. bited comes with the following generators:
+pieces using layers. bited comes with the following generators:
 
 | Name       | Glyphs                   |
 | ---------- | ------------------------ |
@@ -16,7 +16,5 @@ pieces. bited comes with the following generators:
 | octify     | Octants (2x4)            |
 | braillegen | Braille (2x4)            |
 
-The [Query Spellbook](finder/query-spellbook.md) contains Finder queries to
-retrieve the glyph pieces necessary for each generator to work. Once you've
-finished drawing the pieces, press the generator's button and bited will draw
-the rest of the glyphs for you.
+The "Ants" category has blocks for each set of glyphs, including subsets
+suffixed with "-In" for glyphs that each generator builds from.
