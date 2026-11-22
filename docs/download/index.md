@@ -1,6 +1,6 @@
 # Download
 
-[:material-github: Github Releases](https://github.com/molarmanful/bited/releases){.md-button}
+[:material-github: Github Releases](https://github.com/molarmanful/bited/releases){ .md-button .md-button--primary }
 
 ## Build from Source
 

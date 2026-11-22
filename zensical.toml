@@ -53,13 +53,11 @@ toggle.name = "Switch to light mode"
 [[project.theme.palette]]
 media = "(prefers-color-scheme: light)"
 scheme = "default"
-primary = "white"
 toggle.icon = "material/brightness-7"
 toggle.name = "Switch to dark mode"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: dark)"
 scheme = "slate"
-primary = "black"
 toggle.icon = "material/brightness-4"
 toggle.name = "Switch to system preference"
