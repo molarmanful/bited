@@ -98,9 +98,11 @@ few considerations to keep in mind:
     - Diagonal lines that go from corner to corner. Perfectly straight diagonal
       lines are found at `1:n` or `n:1` ratios -- e.g. 8x8, 8x16.
 
-!!! note
+/// note
 
-    In this case, "easiest to draw" basically implies "looks the best".
+In this case, "easiest to draw" basically implies "looks the best".
+
+///
 
 With vector fonts, you can design these symbols as-is and pay a relatively small
 cost in rendered crispness. But with bitmap fonts, you will have to accept some

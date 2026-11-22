@@ -5,10 +5,12 @@ custom per-glyph data. To work around this, bited interfaces with a TOML file
 colocated with the BDF that follows the pattern `{bdf_basename}.glyphs.toml`.
 Like BDF, this file is intended for both human and computer consumption.
 
-!!! warning
+/// warning
 
-    Whenever you rename your BDF, you must also rename the corresponding
-    `glyphs.toml` to ensure bited can find it.
+Whenever you rename your BDF, you must also rename the corresponding
+`glyphs.toml` to ensure bited can find it.
+
+///
 
 ## `glyphs.<name>`
 

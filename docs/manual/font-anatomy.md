@@ -1,11 +1,13 @@
 # Anatomy of a Font
 
-!!! tip
+/// tip
 
-    This section might be a bit dense, especially for newcomers. Feel free to just
-    skim through on your first read, and then -- as you progress through subsequent
-    sections -- periodically refer back here. The information here is important, but
-    can also be intuitively learned through the hands-on process of making a font.
+This section might be a bit dense, especially for newcomers. Feel free to just
+skim through on your first read, and then -- as you progress through subsequent
+sections -- periodically refer back here. The information here is important, but
+can also be intuitively learned through the hands-on process of making a font.
+
+///
 
 In bited, a **font** is a collection of glyphs which generally share some sort
 of style. Creating a font is essentially just creating a bunch of glyphs!
@@ -31,46 +33,55 @@ The glyph view inside the Editor exposes several metrics as colored grid lines:
 
 ///
 
-???+ info "Horizontal Metrics (from left to right)"
+/// info | Horizontal Metrics (from left to right)
 
-    ???+ question "Baseline"
+/// define
 
-        The line upon which the other horizontal metrics are measured.
+**Baseline**
 
-    ???+ question "DWidth"
+- The line upon which the other horizontal metrics are measured.
 
-        Typically known as advance width. A glyph-specific metric for the amount of
-        horizontal space this character occupies.
+**DWidth**
 
-???+ info "Vertical Metrics (from top to bottom)"
+- Typically known as advance width. A glyph-specific metric for the amount of
+  horizontal space this character occupies.
 
-    ???+ question "Ascent"
+///
 
-        The topmost edge of the font. Pixels above the ascent will bleed upwards into
-        the previous line.
+///
 
-    ???+ question "Cap Height"
+/// info | Vertical Metrics (from top to bottom)
 
-        The height above the baseline of a typical uppercase letter in your font.
+/// define
 
-        This metric is purely for designer use; it isn't used in any font-related
-        calculations.
+**Ascent**
 
-    ???+ question "X-Height"
+- The topmost edge of the font. Pixels above the ascent will bleed upwards into
+  the previous line.
 
-        The height above the baseline of a lowercase "x" in your font.
+**Cap Height**
 
-        This metric is purely for designer use; it isn't used in any font-related
-        calculations.
+- The height above the baseline of a typical uppercase letter in your font. This
+  metric is purely for designer use; it isn't used in any font-related
+  calculations.
 
-    ???+ question "Baseline"
+**X-Height**
 
-        The line upon which the other vertical metrics are measured.
+- The height above the baseline of a lowercase "x" in your font. This metric is
+  purely for designer use; it isn't used in any font-related calculations.
 
-    ???+ question "Descent"
+**Baseline**
 
-        The bottommost edge of the font. Pixels below the descent will bleed downwards
-        into the next line.
+- The line upon which the other vertical metrics are measured.
+
+**Descent**
+
+- The bottommost edge of the font. Pixels below the descent will bleed downwards
+  into the next line.
+
+///
+
+///
 
 Typesetting glyphs relies on boxes formed from each glyph's ascent, descent,
 horizontal baseline, and dwidth. In other words:
@@ -98,7 +109,7 @@ Here are some other useful things to know about these metrics:
 
 ## Sample Glyphs
 
-<div class='grid cards' markdown>
+/// html | div.grid.cards
 
 ![glyph "y" annotated with metrics](assets/glyph-y.png){loading=lazy}
 
@@ -126,4 +137,4 @@ The cedilla in this "ţ" sits below the letter, between the descent and baseline
 This "♥" extends a bit beyond its dwidth.
 ///
 
-</div>
+///

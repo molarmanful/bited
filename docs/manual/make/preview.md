@@ -20,7 +20,9 @@ far!
 
 ///
 
-!!! tip
+/// tip
 
-    Preview comes with several text presets that may come in handy as you continue
-    designing your font and adding more glyphs.
+Preview comes with several text presets that may come in handy as you continue
+designing your font and adding more glyphs.
+
+///

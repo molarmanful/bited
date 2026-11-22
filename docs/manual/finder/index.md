@@ -21,9 +21,11 @@ then copy your design across all the matched glyphs.
 
 ## Query Language
 
-!!! warning
+/// warning
 
-    The query language is experimental (a.k.a. scuffed and subject to change).
+The query language is experimental (a.k.a. scuffed and subject to change).
+
+///
 
 The Finder has a rudimentary query language that internally transpiles to a
 SQLite statement.
@@ -38,12 +40,23 @@ op = '&' | '|' | '!' | '(' | ')';
 
 ### Phrases
 
-???+ question "`%` `_` Wildcards"
+/// question | `%` `_` Wildcards
 
-    - `%` matches zero or more of any character.
-    - `_` matches one of any character.
+/// define
 
-    You can escape these with `\`, which treats them as normal characters.
+**`%`**
+
+- Matches zero or more of any character.
+
+**`_`**
+
+- Matches one of any character.
+
+///
+
+You can escape these with `\`, which treats them as normal characters.
+
+///
 
 Phrases are one of the query language's search primitives. If a word in the
 query isn't a special keyword, then it's a phrase.

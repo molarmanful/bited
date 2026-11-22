@@ -2,7 +2,7 @@
 
 Here are the rest of the lowercase letters:
 
-<div class='grid cards' markdown>
+/// html | div.grid.cards
 
 ![unicorn glyph for "c"](assets/unicorn-c.png){loading=lazy}
 
@@ -76,4 +76,4 @@ Here are the rest of the lowercase letters:
 
 ///
 
-</div>
+///

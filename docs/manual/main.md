@@ -2,9 +2,11 @@
 
 From the Start Menu, let's load the `bited` font we imported previously.
 
-??? tip "Hint"
+/// details-tip | Hint
 
-    To load existing fonts from the Start Menu, press the "load" button (++2++).
+To load existing fonts from the Start Menu, press the "load" button (++2++).
+
+///
 
 ![bited main screen with bited font loaded](assets/import-ed.png){loading=lazy}
 
@@ -22,22 +24,27 @@ In the table with a bunch of glyphs, find the "b" glyph and double-click it.
 
 The Main Screen consists of several panels (from left to right, top to bottom):
 
-???+ question "Editor"
+/// define
 
-    A place to draw and manipulate individual glyphs. Features visual markers
-    representing font metrics.
+**Editor**
 
-???+ question "Table"
+- A place to draw and manipulate individual glyphs. Features visual markers
+  representing font metrics.
 
-    A view of glyphs in the currently selected Tree. Used to select and manipulate
-    multiple glyphs, or send individual glyphs to the Editor.
+**Table**
 
-???+ question "Tree"
+- A view of glyphs in the currently selected Tree. Used to select and manipulate
+  multiple glyphs, or send individual glyphs to the Editor.
 
-    A nested list of character sets ("charsets") and encodings. You can switch
-    between entries here to find or focus on groups of glyphs that you wish to edit.
+**Tree**
 
-???+ question "Navbar"
+- A nested list of character sets ("charsets") and encodings. You can switch
+  between entries here to find or focus on groups of glyphs that you wish to
+  edit.
 
-    A bar at the bottom of the Main Screen. Contains buttons for font-wide
-    operations (e.g. saving and loading) and settings.
+**Navbar**
+
+- A bar at the bottom of the Main Screen. Contains buttons for font-wide
+  operations (e.g. saving and loading) and settings.
+
+///

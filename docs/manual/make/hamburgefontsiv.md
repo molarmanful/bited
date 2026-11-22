@@ -5,7 +5,7 @@ letterforms. The next word we'll target is "hamburgefontsiv" (weird word, I
 know). We'll take cues from our existing glyphs to make sure the styles stay
 consistent.
 
-<div class='grid cards' markdown>
+/// html | div.grid.cards
 
 ![unicorn glyph for "m"](assets/unicorn-m.png){loading=lazy}
 
@@ -55,7 +55,7 @@ consistent.
 
 ///
 
-</div>
+///
 
 You can preview the letters you've drawn so far using the "hamburgefontsiv"
 preset.

@@ -15,15 +15,17 @@ default color mode (++b+q++). Draw the following glyph:
 
 ///
 
-!!! tip
+/// tip
 
-    The pen tool's default color mode is the same as first-cell mode (++t++). In
-    this mode, the first pixel's color is inverted; as long as the pen is held down,
-    that color persists when dragged. This allows you to both draw and erase without
-    having to switch modes.
+The pen tool's default color mode is the same as first-cell mode (++t++). In
+this mode, the first pixel's color is inverted; as long as the pen is held down,
+that color persists when dragged. This allows you to both draw and erase without
+having to switch modes.
 
-    If you wish to *only* draw or erase, you can press ++w++ or ++e++ respectively
-    to change the mode.
+If you wish to *only* draw or erase, you can press ++w++ or ++e++ respectively
+to change the mode.
+
+///
 
 ## Copy/Paste
 
@@ -59,18 +61,20 @@ flip horizontally (++shift+h++) and draw the following:
 
 ///
 
-!!! note
+/// note
 
-    The glyphs of our `unicorn` font so far have spacing on both sides, where flips
-    are symmetrical. However, if you're working with glyphs with spacing on only one
-    side, then you may need to translate the glyph left or right (++shift+left++ /
-    ++shift+right++) after flipping.
+The glyphs of our `unicorn` font so far have spacing on both sides, where flips
+are symmetrical. However, if you're working with glyphs with spacing on only one
+side, then you may need to translate the glyph left or right (++shift+left++ /
+++shift+right++) after flipping.
+
+///
 
 ---
 
 The glyphs for "e" and "s" should be pretty straightforward to draw:
 
-<div class='grid cards' markdown>
+/// html | div.grid.cards
 
 ![unicorn glyph for "e"](assets/unicorn-e.png){loading=lazy}
 
@@ -84,7 +88,7 @@ The glyphs for "e" and "s" should be pretty straightforward to draw:
 
 ///
 
-</div>
+///
 
 ## DWidth
 
@@ -108,11 +112,13 @@ While editing, you may have noticed these controls above the grid:
 
 bited features two dwidth modes that can be toggled by pressing the `W?` button:
 
-???+ question "offset (indicated by `o:`)"
+/// define
 
-    The given input is treated as an offset of the default (font-wide) dwidth.
-    Glyphs in offset mode will recalculate their dwidths when the default dwidth
-    changes.
+**offset (indicated by `o:`)**
+
+- The given input is treated as an offset of the default (font-wide) dwidth.
+  Glyphs in offset mode will recalculate their dwidths when the default dwidth
+  changes.
 
     ```
     glyph_dwidth = font_dwidth + offset
@@ -120,11 +126,13 @@ bited features two dwidth modes that can be toggled by pressing the `W?` button:
 
     By default, new glyphs are set to offset by 0.
 
-???+ question "dwidth (indicated by `w:`)"
+**dwidth (indicated by `w:`)**
 
-    The given input is treated as the glyph's dwidth. Unlike in offset mode, glyphs
-    in dwidth mode will **not** change their dwidths when the default dwidth
-    changes.
+- The given input is treated as the glyph's dwidth. Unlike in offset mode,
+  glyphs in dwidth mode will **not** change their dwidths when the default
+  dwidth changes.
+
+///
 
 Since "i" is a thinner letterform, we'll use an offset of -2:
 
@@ -138,7 +146,7 @@ Since "i" is a thinner letterform, we'll use an offset of -2:
 
 The glyphs for "o" and "n" will also be pretty straightforward:
 
-<div class='grid cards' markdown>
+/// html | div.grid.cards
 
 ![unicorn glyph for "o"](assets/unicorn-o.png){loading=lazy}
 
@@ -152,4 +160,4 @@ The glyphs for "o" and "n" will also be pretty straightforward:
 
 ///
 
-</div>
+///

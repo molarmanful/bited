@@ -31,7 +31,9 @@ features include:
 
 ---
 
-!!! warning
+/// warning
 
-    bited is still under heavy development; any bugs should be reported to
-    [Issues](https://github.com/molarmanful/bited/issues).
+bited is still under heavy development; any bugs should be reported to
+[Issues](https://github.com/molarmanful/bited/issues).
+
+///

@@ -33,13 +33,15 @@ After each change you make to your font, bited autosaves to `saves.db`, a SQLite
 database of all the fonts that you loaded into bited. bited also reads from
 `saves.db` when loading fonts from the start menu.
 
-???+ question "Location of `saves.db`"
+/// question | Location of `saves.db`
 
-    | OS      | Path                                           |
-    | ------- | ---------------------------------------------- |
-    | Windows | `%APPDATA%\bited\saves.db`                     |
-    | MacOS   | `~/Library/Application Support/bited/saves.db` |
-    | Linux   | `~/.local/share/bited/saves.db`                |
+| OS      | Path                                           |
+| ------- | ---------------------------------------------- |
+| Windows | `%APPDATA%\bited\saves.db`                     |
+| MacOS   | `~/Library/Application Support/bited/saves.db` |
+| Linux   | `~/.local/share/bited/saves.db`                |
+
+///
 
 ## BDF File
 

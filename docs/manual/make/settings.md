@@ -10,32 +10,44 @@ tab.
 
 ///
 
-!!! tip
+/// tip
 
-    Hover over each settings field's label to get more information about that field!
+Hover over each settings field's label to get more information about that field!
 
-???+ question "foundry name"
+///
 
-    By default, this is `bited`. Feel free to change this to something more
-    personalized if you wish.
+/// define
 
-???+ question "family name"
+**foundry name**
 
-    By default, this is `new font`. Let's change this to `unicorn`.
+- By default, this is `bited`. Feel free to change this to something more
+  personalized if you wish.
 
-!!! note
+**family name**
 
-    If you didn't choose a preset when creating the font, the following metrics
-    fields will be `0`.
+- By default, this is `new font`. Let's change this to `unicorn`.
 
-???+ question "Metrics"
+///
 
-    Let's set:
+/// note
+
+If you didn't choose a preset when creating the font, the following metrics
+fields will be `0`.
+
+///
+
+/// define
+
+**Metrics**
+
+- Let's set:
 
     - Default dimensions to width `7` and height `17`.
     - Descent to `4` (ascent will automatically update accordingly).
     - Cap height to `9`.
     - X-height to `5`.
+
+///
 
 Once you've finished changing the settings, save & close (++ctrl+enter++) to go
 back to the Main Screen.
