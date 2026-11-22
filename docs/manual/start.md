@@ -2,7 +2,7 @@
 
 When you first open bited, you'll see this Start Menu:
 
-![bited start menu](assets/start.png){loading=lazy}
+![bited start menu](assets/start.png){ loading=lazy }
 
 /// caption
 
@@ -22,7 +22,7 @@ Let's see what each of these buttons do.
 Let's see how to create a new font from scratch. Pressing "new" (or its keybind
 ++1++) will bring up the following dialog:
 
-![bited dialog for creating a new font](assets/new.png){loading=lazy}
+![bited dialog for creating a new font](assets/new.png){ loading=lazy }
 
 /// caption
 
@@ -59,7 +59,7 @@ For all dialogs, you can trigger "OK"-type buttons with ++ctrl+enter++, and
 
 ///
 
-![bited main screen after creating a new font](assets/new-ed.png){loading=lazy}
+![bited main screen after creating a new font](assets/new-ed.png){ loading=lazy }
 
 /// caption
 
@@ -74,7 +74,7 @@ button with a house (or press ++ctrl+h++) to go back to the Start Menu.
 Let's see how to load existing fonts from the font database. Pressing "load"
 (++2++) will bring up the following dialog:
 
-![bited dialog for loading fonts](assets/load.png){loading=lazy}
+![bited dialog for loading fonts](assets/load.png){ loading=lazy }
 
 /// caption
 
@@ -99,7 +99,7 @@ Let's see how to import BDFs into bited. Pressing "import" (++3++) will bring up
 a file dialog. Locate the previously downloaded BDF and open it. After bited
 finishes parsing the BDF, you should see the following dialog:
 
-![bited dialog for importing a font from BDF](assets/import.png){loading=lazy}
+![bited dialog for importing a font from BDF](assets/import.png){ loading=lazy }
 
 /// caption
 
@@ -123,7 +123,7 @@ finishes parsing the BDF, you should see the following dialog:
 
 When you're ready, press "import" and you'll see the Main Screen once more:
 
-![bited main screen after importing a BDF](assets/import-ed.png){loading=lazy}
+![bited main screen after importing a BDF](assets/import-ed.png){ loading=lazy }
 
 /// caption
 

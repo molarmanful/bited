@@ -1,6 +1,6 @@
 # Generators
 
-![generator ui screen example with octant](assets/generators.png){loading=lazy}
+![generator ui screen example with octant](assets/generators.png){ loading=lazy }
 
 /// caption
 

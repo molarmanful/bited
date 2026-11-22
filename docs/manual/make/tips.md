@@ -19,7 +19,7 @@ glyph, as opposed to the glyph to the width. For example, you can easily make
 design choices, and makes it far easier to expand your font's Unicode support
 without having to compromise compactness.
 
-![text sample in Times New Roman](assets/times-new-roman.webp){loading=lazy}
+![text sample in Times New Roman](assets/times-new-roman.webp){ loading=lazy }
 
 /// caption
 Source: [nypl.org](https://nypl.org)
@@ -34,7 +34,7 @@ going back to the previous example, you'd have to make "m", "x", and "i" the
 same width. A significant part of your design process will involve balancing
 aesthetics and legibility through compromises in compactness and spacing.
 
-![htop command in a terminal](assets/htop.png){loading=lazy}
+![htop command in a terminal](assets/htop.png){ loading=lazy }
 
 /// caption
 Source: [htop.dev](https://htop.dev)
@@ -55,7 +55,7 @@ font. If you're looking to build a font specifically for HiDPI screens, then
 choosing a larger size will afford you much more flexibility to make readable
 fonts with great Unicode support while remaining reasonably compact.
 
-![Terminus 10x20 Bold](assets/terminus-10x20b.gif){loading=lazy}
+![Terminus 10x20 Bold](assets/terminus-10x20b.gif){ loading=lazy }
 
 /// caption
 [Terminus](https://terminus-font.sourceforge.net/) 10x20 Bold. The large size
@@ -69,7 +69,7 @@ difficult to design around. But don't let this discourage you!
 the entirety of printable ASCII, and is about as readable as you can get at that
 tiny of a size.
 
-![eldur](assets/eldur-prog.png){loading=lazy}
+![eldur](assets/eldur-prog.png){ loading=lazy }
 
 /// caption
 [eldur](https://github.com/molarmanful/eldur) 5x13. Note how the "m" and "w"
@@ -109,7 +109,7 @@ cost in rendered crispness. But with bitmap fonts, you will have to accept some
 tradeoffs in visual perfection no matter what dimensions you choose.
 Fortunately, our eyes are quite easy to fool!
 
-![ANAKRON](assets/anakron-box.png){loading=lazy}
+![ANAKRON](assets/anakron-box.png){ loading=lazy }
 
 /// caption
 [ANAKRON](https://github.com/molarmanful/ANAKRON) 8x12. If you look closely, you
@@ -124,7 +124,7 @@ designers to increase the x-height of their font. Frankly though, I find that
 the choice of x-height is up to personal taste. For example, I personally am
 partial towards fonts with lower x-heights.
 
-![Cozette](assets/cozette-vim.png){loading=lazy}
+![Cozette](assets/cozette-vim.png){ loading=lazy }
 
 /// caption
 [Cozette](https://github.com/slavfox/Cozette) 6x13. Cozette's x-height isn't

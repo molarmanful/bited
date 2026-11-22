@@ -9,7 +9,7 @@ starter word.
 Double-click the cell for "a" to define it. The tool should be set to pen with
 default color mode (++b+q++). Draw the following glyph:
 
-![unicorn glyph for "a"](assets/unicorn-a.png){loading=lazy}
+![unicorn glyph for "a"](assets/unicorn-a.png){ loading=lazy }
 
 /// caption
 
@@ -33,7 +33,7 @@ This "a" we've drawn could easily become a "d" with a bit of tweaking. With the
 "a" cell still selected in the table, copy it (++ctrl+c++). Then single-click
 the "d" cell and paste (++ctrl+v++).
 
-![main screen result of copying "a" to "d"](assets/copy-paste.png){loading=lazy}
+![main screen result of copying "a" to "d"](assets/copy-paste.png){ loading=lazy }
 
 /// caption
 
@@ -44,7 +44,7 @@ Clicking the "d" cell again will send it to the Editor. This will highlight the
 
 Here's the "d" glyph we'll draw:
 
-![unicorn glyph for "d"](assets/unicorn-d.png){loading=lazy}
+![unicorn glyph for "d"](assets/unicorn-d.png){ loading=lazy }
 
 /// caption
 
@@ -55,7 +55,7 @@ Here's the "d" glyph we'll draw:
 For "h", we can start by copying "d" and paste it into the "h" cell. We can then
 flip horizontally (++shift+h++) and draw the following:
 
-![unicorn glyph for "h"](assets/unicorn-h.png){loading=lazy}
+![unicorn glyph for "h"](assets/unicorn-h.png){ loading=lazy }
 
 /// caption
 
@@ -76,13 +76,13 @@ The glyphs for "e" and "s" should be pretty straightforward to draw:
 
 /// html | div.grid.cards
 
-![unicorn glyph for "e"](assets/unicorn-e.png){loading=lazy}
+![unicorn glyph for "e"](assets/unicorn-e.png){ loading=lazy }
 
 /// caption
 
 ///
 
-![unicorn glyph for "s"](assets/unicorn-s.png){loading=lazy}
+![unicorn glyph for "s"](assets/unicorn-s.png){ loading=lazy }
 
 /// caption
 
@@ -104,7 +104,7 @@ variable!
 
 While editing, you may have noticed these controls above the grid:
 
-![dwidth mode controls](assets/dwidth-mode.png){loading=lazy}
+![dwidth mode controls](assets/dwidth-mode.png){ loading=lazy }
 
 /// caption
 
@@ -136,7 +136,7 @@ bited features two dwidth modes that can be toggled by pressing the `W?` button:
 
 Since "i" is a thinner letterform, we'll use an offset of -2:
 
-![unicorn glyph for "i"](assets/unicorn-i.png){loading=lazy}
+![unicorn glyph for "i"](assets/unicorn-i.png){ loading=lazy }
 
 /// caption
 
@@ -148,13 +148,13 @@ The glyphs for "o" and "n" will also be pretty straightforward:
 
 /// html | div.grid.cards
 
-![unicorn glyph for "o"](assets/unicorn-o.png){loading=lazy}
+![unicorn glyph for "o"](assets/unicorn-o.png){ loading=lazy }
 
 /// caption
 
 ///
 
-![unicorn glyph for "n"](assets/unicorn-n.png){loading=lazy}
+![unicorn glyph for "n"](assets/unicorn-n.png){ loading=lazy }
 
 /// caption
 

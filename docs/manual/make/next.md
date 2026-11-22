@@ -16,7 +16,7 @@ to look at it, simply download the BDF and `glyphs.toml` into the same directory
 and import inside bited. It covers all of ISO-8859-1 and includes some extra
 symbols from Windows Glyph List 4 to cover common punctuation and symbols.
 
-![unicorn kern king](assets/unicorn-kernking.png){loading=lazy}
+![unicorn kern king](assets/unicorn-kernking.png){ loading=lazy }
 
 /// caption
 

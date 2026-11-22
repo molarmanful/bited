@@ -4,7 +4,7 @@ After opening up `unicorn` and getting to the Main Screen, the first thing we'll
 do is open the Settings Menu (++ctrl+comma++). Verify that it's on the FONTS
 tab.
 
-![settings menu for unicorn](assets/settings.png){loading=lazy}
+![settings menu for unicorn](assets/settings.png){ loading=lazy }
 
 /// caption
 

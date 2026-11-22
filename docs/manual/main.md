@@ -8,7 +8,7 @@ To load existing fonts from the Start Menu, press the "load" button (++2++).
 
 ///
 
-![bited main screen with bited font loaded](assets/import-ed.png){loading=lazy}
+![bited main screen with bited font loaded](assets/import-ed.png){ loading=lazy }
 
 /// caption
 
@@ -16,7 +16,7 @@ To load existing fonts from the Start Menu, press the "load" button (++2++).
 
 In the table with a bunch of glyphs, find the "b" glyph and double-click it.
 
-![bited main screen with "b" selected](assets/main-ui.png){loading=lazy}
+![bited main screen with "b" selected](assets/main-ui.png){ loading=lazy }
 
 /// caption
 

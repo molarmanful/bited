@@ -3,7 +3,7 @@
 The Finder (++ctrl+f++) allows you to create dynamic Tables by querying for
 glyphs.
 
-![Finder UI and results](assets/finder.png){loading=lazy}
+![Finder UI and results](assets/finder.png){ loading=lazy }
 
 /// caption
 
@@ -13,7 +13,7 @@ This is especially useful if, for example, you're looking for all instances of
 the Python logo in Nerd Fonts. You can type in a query like `:cat nf & python`,
 then copy your design across all the matched glyphs.
 
-![Finder after querying for python](assets/finder-python.png){loading=lazy}
+![Finder after querying for python](assets/finder-python.png){ loading=lazy }
 
 /// caption
 

@@ -12,7 +12,7 @@ can also be intuitively learned through the hands-on process of making a font.
 In bited, a **font** is a collection of glyphs which generally share some sort
 of style. Creating a font is essentially just creating a bunch of glyphs!
 
-![bited font specimen](assets/font.png){loading=lazy}
+![bited font specimen](assets/font.png){ loading=lazy }
 
 /// caption
 
@@ -27,7 +27,7 @@ symbols and are constructed from pixels.
 
 The glyph view inside the Editor exposes several metrics as colored grid lines:
 
-![glyph "b" annotated with metrics](assets/glyph-b.png){loading=lazy}
+![glyph "b" annotated with metrics](assets/glyph-b.png){ loading=lazy }
 
 /// caption
 
@@ -111,27 +111,27 @@ Here are some other useful things to know about these metrics:
 
 /// html | div.grid.cards
 
-![glyph "y" annotated with metrics](assets/glyph-y.png){loading=lazy}
+![glyph "y" annotated with metrics](assets/glyph-y.png){ loading=lazy }
 
 /// caption
 The tail in this "y" extends below the baseline, while the body remains above
 the baseline.
 ///
 
-![glyph "Ä" annotated with metrics](assets/glyph-a-diar.png){loading=lazy}
+![glyph "Ä" annotated with metrics](assets/glyph-a-diar.png){ loading=lazy }
 
 /// caption
 The diaresis in this "Ä" sit above the letter, between the ascent and cap
 height.
 ///
 
-![glyph "ţ" annotated with metrics](assets/glyph-t-ced.png){loading=lazy}
+![glyph "ţ" annotated with metrics](assets/glyph-t-ced.png){ loading=lazy }
 
 /// caption
 The cedilla in this "ţ" sits below the letter, between the descent and baseline.
 ///
 
-![glyph "♥" annotated with metrics](assets/glyph-heart.png){loading=lazy}
+![glyph "♥" annotated with metrics](assets/glyph-heart.png){ loading=lazy }
 
 /// caption
 This "♥" extends a bit beyond its dwidth.
