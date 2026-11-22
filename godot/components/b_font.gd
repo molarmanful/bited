@@ -103,15 +103,6 @@ func init_font(ignore := false) -> void:
 				) without rowid
 				;
 
-				with up as (select name from font_{0} where code >= 0 and name not glob 'U+*')
-				update layers_{0}
-				set
-					parent = iif(parent in up, 'U+' || parent, parent),
-					child = iif(child in up, 'U+' || child, child)
-				where parent in up or child in up
-				;
-
-				update font_{0} set name = 'U+' || name where code >= 0 and name not glob 'U+*';
 				create index if not exists layers_{0}_child on layers_{0} (child);
 				create index if not exists font_{0}_code on font_{0} (code, name);
 

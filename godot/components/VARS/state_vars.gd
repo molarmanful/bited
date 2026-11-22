@@ -46,6 +46,7 @@ func _ready() -> void:
 	db_locals.open_db()
 
 	init_font_metas()
+	migrate()
 	init_locals_paths()
 	init_cfg()
 
@@ -100,6 +101,31 @@ func init_font_metas() -> void:
 			}
 		)
 	)
+
+
+func migrate() -> void:
+	db_saves.query("pragma user_version;")
+	if db_saves.query_result[0].user_version >= 1:
+		return
+
+	db_saves.query("begin;")
+	db_saves.query("select id from fonts;")
+	for f in db_saves.query_result:
+		if not (
+			db_saves
+			. query(
+				(
+					"""
+					drop table if exists layers_{0};
+					update font_{0} set name = 'U+' || name where code >= 0;
+					"""
+					. format([f.id])
+				)
+			)
+		):
+			db_saves.query("rollback;")
+			return
+	db_saves.query("pragma user_version = 1; commit;")
 
 
 ## Initializes local table for font save paths.
