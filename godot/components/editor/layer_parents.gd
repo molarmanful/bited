@@ -68,12 +68,8 @@ func refresh() -> void:
 	)
 	var names: Dictionary = JSON.parse_string(StateVars.db_uc.query_result[0].names)
 
-	var bm := Bitmap.new(StyleVars.thumb_size_pre)
 	for q in qs:
 		q.uc = names.get(str(q.code))
 		var item := tree.create_item()
 		item.set_metadata(0, q)
-		if q.img:
-			item.set_icon(0, ImageTexture.create_from_image(bm.place(q).to_image()))
-			q.img = null
-		layers.render_layer(item, q)
+		layers.render_layer(item, q, q)

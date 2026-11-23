@@ -407,21 +407,15 @@ func refresh() -> void:
 	sync_sel()
 
 
-func render_layer(item: TreeItem, gen: Dictionary) -> void:
-	if gen.img:
-		item.set_icon(
-			0,
-			ImageTexture.create_from_image(
-				(
-					Bitmap
-					. new(StyleVars.thumb_size_pre)
-					. place(
-						BFont.compose(grid.pattern.bitmap.meta(), [gen.merged({blend = 0}, true)])
-					)
-					. to_image()
-				)
-			)
-		)
+func render_layer(
+	item: TreeItem,
+	gen: Dictionary,
+	icon := BFont.compose(grid.pattern.bitmap.meta(), [gen.merged({blend = 0}, true)])
+) -> void:
+	item.set_icon(
+		0,
+		ImageTexture.create_from_image(Bitmap.new(StyleVars.thumb_size_pre).place(icon).to_image())
+	)
 
 	item.set_icon_modulate(0, grid.get_theme_color("fg"))
 	item.set_text(0, "%s%s" % [gen.name, " %s" % gen.uc if gen.uc else ""])
