@@ -731,7 +731,7 @@ layers = [
 [glyphs."U+0144"]
 layers = [
     { child = "U+006E", off_x = 0, off_y = 0, blend = 0, xform = 0 },
-    { child = "U+0301", off_x = 0, off_y = 0, blend = 0, xform = 0 },
+    { child = "U+0301", off_x = 0, off_y = -4, blend = 0, xform = 0 },
 ]
 [glyphs."U+0145"]
 layers = [

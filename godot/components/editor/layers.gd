@@ -9,6 +9,8 @@ extends Window
 @export var btn_pick: Button
 @export var btn_bake: Button
 @export var btn_del: Button
+@export var btn_sel_all: Button
+@export var btn_sel_none: Button
 
 var grid: Grid:
 	get:
@@ -77,6 +79,18 @@ func _ready() -> void:
 	)
 	btn_bake.pressed.connect(bake)
 	btn_del.pressed.connect(del)
+	btn_sel_all.pressed.connect(
+		func():
+			for item in tree.get_root().get_children():
+				item.select(0)
+			sync_sel()
+	)
+	btn_sel_none.pressed.connect(
+		func():
+			tree.deselect_all()
+			sync_sel()
+	)
+
 	tree.multi_selected.connect(sync_sel.unbind(3), CONNECT_DEFERRED)
 	tree.item_activated.connect(edit)
 
@@ -383,6 +397,7 @@ func refresh() -> void:
 	var qs := StateVars.db_saves.query_result
 	has_layers = not not qs
 	grid.get_tree().call_group("hide_if_layer", "hide" if has_layers else "show")
+	grid.get_tree().call_group("show_if_layer", "show" if has_layers else "hide")
 	if has_layers:
 		btn_move.button_pressed = true
 

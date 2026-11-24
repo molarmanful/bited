@@ -120,6 +120,18 @@ action = &"bited_layer_presets"
 [sub_resource type="Shortcut" id="Shortcut_ai11x"]
 events = [SubResource("InputEventAction_xmsq5")]
 
+[sub_resource type="InputEventAction" id="InputEventAction_do8dj"]
+action = &"bited_layers_sel_all"
+
+[sub_resource type="Shortcut" id="Shortcut_w3586"]
+events = [SubResource("InputEventAction_do8dj")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_w3586"]
+action = &"bited_layers_sel_none"
+
+[sub_resource type="Shortcut" id="Shortcut_vjxfs"]
+events = [SubResource("InputEventAction_w3586")]
+
 [sub_resource type="InputEventAction" id="InputEventAction_ai11x"]
 action = &"bited_layers_del"
 
@@ -522,7 +534,27 @@ toggle_mode = true
 shortcut = SubResource("Shortcut_ai11x")
 text = "☰"
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=2009002178 groups=["layer_sel"]]
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=2009002178 groups=["show_if_layer"]]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="sel_all" type="Button" parent="CenterContainer/GridContainer/6" unique_id=2004027842 groups=["show_if_layer"]]
+layout_mode = 2
+tooltip_text = "select all layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_w3586")
+text = "☑"
+
+[node name="sel_none" type="Button" parent="CenterContainer/GridContainer/6" unique_id=200739586 groups=["show_if_layer"]]
+layout_mode = 2
+tooltip_text = "deselect all layers"
+mouse_default_cursor_shape = 2
+theme_type_variation = &"Op"
+shortcut = SubResource("Shortcut_vjxfs")
+text = "☐"
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=863479152 groups=["layer_sel"]]
 layout_mode = 2
 theme_override_constants/separation = 9
 
@@ -534,11 +566,11 @@ theme_type_variation = &"Op"
 shortcut = SubResource("Shortcut_6a0dx")
 text = "🗑"
 
-[node name="HSeparator2" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=863479152 groups=["layer_sel"]]
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/GridContainer/6" unique_id=484362615 groups=["show_if_layer"]]
 layout_mode = 2
 theme_override_constants/separation = 9
 
-[node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437 groups=["layer_sel"]]
+[node name="bake" type="Button" parent="CenterContainer/GridContainer/6" unique_id=1258295437 groups=["show_if_layer"]]
 layout_mode = 2
 tooltip_text = "bake layers"
 mouse_default_cursor_shape = 2
@@ -643,7 +675,7 @@ text = "select a glyph to start..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Layers" type="Window" parent="CenterContainer" unique_id=994362725 node_paths=PackedStringArray("editor", "btn", "tree", "btn_move", "btn_pick", "btn_bake", "btn_del")]
+[node name="Layers" type="Window" parent="CenterContainer" unique_id=994362725 node_paths=PackedStringArray("editor", "btn", "tree", "btn_move", "btn_pick", "btn_bake", "btn_del", "btn_sel_all", "btn_sel_none")]
 oversampling_override = 1.0
 title = "layers"
 size = Vector2i(200, 200)
@@ -657,6 +689,8 @@ btn_move = NodePath("../GridContainer/4/move")
 btn_pick = NodePath("../GridContainer/6/pick")
 btn_bake = NodePath("../GridContainer/6/bake")
 btn_del = NodePath("../GridContainer/6/del")
+btn_sel_all = NodePath("../GridContainer/6/sel_all")
+btn_sel_none = NodePath("../GridContainer/6/sel_none")
 metadata/_custom_type_script = "uid://bcq70vid0xrwv"
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer/Layers" unique_id=3710046]
