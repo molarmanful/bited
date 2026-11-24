@@ -7,7 +7,8 @@
 ///
 
 Generators automate the tedious process of compositing glyphs from individual
-pieces using layers. bited comes with the following generators:
+pieces using layers. bited comes with the following generators, accessible via
+the Navbar:
 
 | Name       | Glyphs                   |
 | ---------- | ------------------------ |

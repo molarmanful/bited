@@ -25,48 +25,52 @@ Optional. Whether the glyph is in offset mode (`false`) or dwidth mode (`true`).
 
 Optional. Layers that compose into the parent glyph.
 
-#### `child: str`
+/// define
 
-The layer's glyph name.
+`child: str`
 
-#### `off_x?: i32`, `off_y?: i32`
+- The layer's glyph name.
 
-The layer's translation offsets. Both default to `0`.
+`off_x?: i32`, `off_y?: i32`
 
-#### `blend?: i32`
+- The layer's translation offsets. Both default to `0`.
 
-The layer's blend mode. Defaults to `0`.
+`blend?: i32`
 
-| Index | Blend Mode |
-| ----- | ---------- |
-| 0     | add        |
-| 1     | subtract   |
-| 2     | exclude    |
-| 3     | multiply   |
+- The layer's blend mode. Defaults to `0`.
 
-#### `xform: i32`
+    | Index | Blend Mode |
+    | ----- | ---------- |
+    | 0     | add        |
+    | 1     | subtract   |
+    | 2     | exclude    |
+    | 3     | multiply   |
 
-The layer's flips (x/y) and transposition encoded as bits of an int. Defaults to
-`0`.
+`xform: i32`
 
-| Bit (LSB) | Value | Transform |
-| --------- | ----- | --------- |
-| 0         | 1     | flip x    |
-| 1         | 2     | flip y    |
-| 2         | 4     | transpose |
+- The layer's flips (x/y) and transposition encoded as bits of an int. Defaults
+  to `0`.
 
-Transposition is applied before flips.
+    | Bit (LSB) | Value | Transform |
+    | --------- | ----- | --------- |
+    | 0         | 1     | flip x    |
+    | 1         | 2     | flip y    |
+    | 2         | 4     | transpose |
 
-| Value | Bits  | Steps                     | Result         |
-| ----- | ----- | ------------------------- | -------------- |
-| 0     | `000` | none                      | identity       |
-| 1     | `001` | flip x                    | flip x         |
-| 2     | `010` | flip y                    | flip y         |
-| 3     | `011` | flip x, flip y            | rotate 180°    |
-| 4     | `100` | transpose                 | transpose      |
-| 5     | `101` | transpose, flip x         | rotate cw      |
-| 6     | `110` | transpose, flip y         | rotate ccw     |
-| 7     | `111` | transpose, flip x, flip y | anti-transpose |
+    Transposition is applied before flips.
+
+    | Value | Bits  | Steps                     | Result         |
+    | ----- | ----- | ------------------------- | -------------- |
+    | 0     | `000` | none                      | identity       |
+    | 1     | `001` | flip x                    | flip x         |
+    | 2     | `010` | flip y                    | flip y         |
+    | 3     | `011` | flip x, flip y            | rotate 180°    |
+    | 4     | `100` | transpose                 | transpose      |
+    | 5     | `101` | transpose, flip x         | rotate cw      |
+    | 6     | `110` | transpose, flip y         | rotate ccw     |
+    | 7     | `111` | transpose, flip x, flip y | anti-transpose |
+
+///
 
 ## `default`
 
