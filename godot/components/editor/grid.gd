@@ -1,4 +1,3 @@
-# gdlint:ignore = max-public-methods
 class_name Grid
 extends PanelContainer
 

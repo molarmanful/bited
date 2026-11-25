@@ -337,8 +337,9 @@ func insert_layers(ls: Array[Dictionary]) -> void:
 
 
 func save_glyph(gen: Dictionary, over := true) -> void:
-	if insert_glyph(gen, over):
-		StateVars.refresh.emit(gen)
+	if not insert_glyph(gen, over):
+		return
+	StateVars.refresh.emit(gen)
 	flatten_parents([gen.name])
 
 
