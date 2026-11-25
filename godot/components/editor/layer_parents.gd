@@ -11,6 +11,16 @@ var grid: Grid:
 
 
 func _ready() -> void:
+	StateVars.refresh.connect(
+		func(gen: Dictionary):
+			var root := tree.get_root()
+			if not root:
+				return
+			for item in root.get_children():
+				if item.get_metadata(0).name == gen.name:
+					layers.render_layer(item, item.get_metadata(0), gen)
+					return
+	)
 	grid.refreshed.connect(refresh)
 
 	visibility_changed.connect(func(): btn.set_pressed_no_signal(visible))
