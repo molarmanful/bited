@@ -164,37 +164,37 @@ func set_glyphs(top := true) -> void:
 func set_page(id: String) -> void:
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query(
 			(
 				"""
 				select json_group_array(coalesce(code, -1) order by row) as codes, count(*) as count
-				from p_{0}
+				from uc.p_{0}
 				;"""
 				. format([id])
 			)
 		)
 	)
-	set_codes(StateVars.db_uc.query_result[0])
+	set_codes(StateVars.db_saves.query_result[0])
 
 
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query_with_bindings(
 			(
 				"""
 				select json_group_array(id order by id) as codes, count(*) as count
-				from data where {0};
+				from uc.data where {0};
 				"""
 				. format([fp.query()])
 			),
 			fp.binds
 		)
 	)
-	set_codes(StateVars.db_uc.query_result[0])
+	set_codes(StateVars.db_saves.query_result[0])
 
 
 func set_codes(q: Dictionary) -> void:

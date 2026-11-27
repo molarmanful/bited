@@ -35,16 +35,16 @@ func refresh() -> void:
 
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query_with_named_bindings(
 			"""
 			select json_group_array(
 				json_object(
 					'variant', variant, 'code', child, 'xform', xform, 'blend', blend,
-					'uc', (select name from data where id = child)
+					'uc', (select name from uc.data where id = child)
 				) order by variant desc, ord
 			) as rows
-			from comps
+			from uc.comps
 			where parent = :parent
 			;""",
 			{parent = parent_code}
@@ -78,7 +78,7 @@ func refresh() -> void:
 				;"""
 				. format([StateVars.font.id])
 			),
-			StateVars.db_uc.query_result[0].merged({parent = layers.parent_name})
+			StateVars.db_saves.query_result[0].merged({parent = layers.parent_name})
 		)
 	)
 	var qs := StateVars.db_saves.query_result

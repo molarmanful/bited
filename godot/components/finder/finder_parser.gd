@@ -170,12 +170,12 @@ func build_page(r := false) -> void:
 			xs.append("name like ? escape '\\'")
 			ys.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		StateVars.db_uc.query_with_bindings(
-			"select id from pages where {0};".format([" or ".join(xs)]), ys
+		StateVars.db_saves.query_with_bindings(
+			"select id from uc.pages where {0};".format([" or ".join(xs)]), ys
 		)
 		xs.clear()
-		for q in StateVars.db_uc.query_result:
-			xs.append("select code from p_{0}".format([q.id]))
+		for q in StateVars.db_saves.query_result:
+			xs.append("select code from uc.p_{0}".format([q.id]))
 		if xs:
 			push_qs("id in ({0})".format([" union ".join(xs)]))
 
@@ -188,11 +188,11 @@ func build_block(r := false) -> void:
 			xs.append("name like ? escape '\\'")
 			ys.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		StateVars.db_uc.query_with_bindings(
-			"select start, end from blocks where {0};".format([" or ".join(xs)]), ys
+		StateVars.db_saves.query_with_bindings(
+			"select start, end from uc.blocks where {0};".format([" or ".join(xs)]), ys
 		)
 		xs.clear()
-		for q in StateVars.db_uc.query_result:
+		for q in StateVars.db_saves.query_result:
 			xs.append("id between ? and ?")
 			binds.append(q.start)
 			binds.append(q.end - 1)

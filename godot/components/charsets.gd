@@ -31,16 +31,16 @@ func _ready() -> void:
 func load_blocks() -> void:
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query(
 			"""
 			select name, start, end
-			from blocks
+			from uc.blocks
 			order by start, end desc
 			;"""
 		)
 	)
-	for q in StateVars.db_uc.query_result:
+	for q in StateVars.db_saves.query_result:
 		var x := unicode.create_child()
 		x.set_text(0, q.name)
 		blocks[x] = [q.start, q.end]
@@ -49,16 +49,16 @@ func load_blocks() -> void:
 func load_pages() -> void:
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query(
 			"""
 			select id, name, category
-			from pages
+			from uc.pages
 			order by category nulls last, id
 			;"""
 		)
 	)
-	for q in StateVars.db_uc.query_result:
+	for q in StateVars.db_saves.query_result:
 		var x: TreeItem
 		if q.category:
 			if q.category not in page_cats:

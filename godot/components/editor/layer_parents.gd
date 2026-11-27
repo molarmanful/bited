@@ -68,15 +68,15 @@ func refresh() -> void:
 	)
 	var qs := StateVars.db_saves.query_result
 
-	StateVars.db_uc.query_with_named_bindings(
+	StateVars.db_saves.query_with_named_bindings(
 		"""
 		select json_group_object(id, name) as names
-		from data
+		from uc.data
 		where id in (select value from json_each(:codes))
 		;""",
 		{codes = JSON.stringify(qs.map(func(q): return q.code))}
 	)
-	var names: Dictionary = JSON.parse_string(StateVars.db_uc.query_result[0].names)
+	var names: Dictionary = JSON.parse_string(StateVars.db_saves.query_result[0].names)
 
 	for q in qs:
 		q.uc = names.get(str(q.code))

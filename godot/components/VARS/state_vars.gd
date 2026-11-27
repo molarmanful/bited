@@ -17,8 +17,6 @@ var font := BFont.new()
 ## Editor settings.
 var cfg := ConfigFile.new()
 
-## Static database for Unicode metadata.
-var db_uc := SQLite.new()
 ## Database for font data.
 var db_saves := SQLite.new()
 ## Database for local data (i.e. machine-specific, not meant to be synced).
@@ -35,12 +33,15 @@ func _ready() -> void:
 	root.borderless = false
 	root.mode = Window.MODE_MAXIMIZED
 
-	db_uc.path = "res://assets/uc.db"
-	db_uc.read_only = true
-	db_uc.open_db()
+	var db := SQLite.new()
+	db.path = "res://assets/uc.db"
+	db.read_only = true
+	db.open_db()
+	db.close_db()
 
 	db_saves.path = "user://saves.db"
 	db_saves.open_db()
+	db_saves.query("attach 'file:res://assets/uc.db?vfs=godot&mode=ro' as uc;")
 
 	db_locals.path = "user://locals.db"
 	db_locals.open_db()
@@ -156,17 +157,17 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query_with_named_bindings(
 			"""
 			select name, category
-			from data
+			from uc.data
 			where id = :id
 			;""",
 			{id = data_code}
 		)
 	)
-	var qs := StateVars.db_uc.query_result
+	var qs := StateVars.db_saves.query_result
 
 	return (
 		"%s  #%d%s\n%s"

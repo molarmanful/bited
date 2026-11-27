@@ -179,13 +179,13 @@ func finder(q: String) -> void:
 func antgen(tbl: String) -> void:
 	(
 		StateVars
-		. db_uc
+		. db_saves
 		. query(
 			(
 				"""
 				select
-					(select json_group_array(code order by row) from {0}_in) as reqs,
-					(select json_group_array(code order by row) from {0}) as codes
+					(select json_group_array(code order by row) from uc.{0}_in) as reqs,
+					(select json_group_array(code order by row) from uc.{0}) as codes
 				;"""
 				. format([tbl])
 			)
@@ -224,7 +224,7 @@ func antgen(tbl: String) -> void:
 				;"""
 				. format([StateVars.font.id])
 			),
-			StateVars.db_uc.query_result[0]
+			StateVars.db_saves.query_result[0]
 		)
 	)
 	var q := StateVars.db_saves.query_result[0]
