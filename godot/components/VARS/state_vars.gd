@@ -113,8 +113,9 @@ func migrate() -> void:
 			db
 			. query(
 				(
-					"""
+					"""-- sql
 					drop table if exists layers_{0};
+
 					update font_{0} set name = 'U+' || name where code >= 0;
 					"""
 					. format([f.id])
@@ -152,17 +153,8 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 	if data_code < 0:
 		return "%s\n(custom)" % data_name
 
-	(
-		StateVars
-		. db
-		. query_with_named_bindings(
-			"""
-			select name, category
-			from uc.data
-			where id = :id
-			;""",
-			{id = data_code}
-		)
+	StateVars.db.query_with_named_bindings(
+		"select name, category from uc.data where id = :id;", {id = data_code}
 	)
 	var qs := StateVars.db.query_result
 
@@ -179,7 +171,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
-	StateVars.db.query_with_named_bindings("select 1 from fonts where id = :id", {id = id})
+	StateVars.db.query_with_named_bindings("select 1 from fonts where id = :id;", {id = id})
 	return not not StateVars.db.query_result
 
 
@@ -190,12 +182,17 @@ func delete_font(id: String) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				begin;
+
 				delete from fonts where id = :id;
+
 				delete from locals.paths where id = :id;
+
 				drop table if exists font_{0};
+
 				drop table if exists layers_{0};
+
 				commit;
 				"""
 				. format([id])
@@ -213,17 +210,27 @@ func rename_font(old: String, new: String) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				begin;
+
 				drop table if exists font_{1};
+
 				drop index if exists font_{0}_code;
+
 				alter table font_{0} rename to font_{1};
+
 				drop table if exists layers_{1};
+
 				drop index if exists layers_{0}_child;
+
 				alter table layers_{0} rename to layers_{1};
+
 				update or replace fonts set id = :new where id = :old;
+
 				delete from locals.paths where id = :new;
+
 				update locals.paths set id = :new where id = :old;
+
 				commit;
 				"""
 				. format([old, new])
@@ -243,67 +250,132 @@ func init_undo() -> void:
 		db
 		. query(
 			(
-				"""
+				"""-- sql
 				pragma recursive_triggers = on;
+
 				drop table if exists temp.undolog;
-				create table temp.undolog (
+
+				create table temp.undolog(
 					seq integer primary key,
 					step int not null default 0,
 					sql text not null
 				);
+
 				create index temp.undolog_step on undolog (step);
 
 				drop trigger if exists temp.undo_font_i;
+
 				drop trigger if exists temp.undo_font_d;
+
 				drop trigger if exists temp.undo_font_u;
+
 				drop trigger if exists temp.undo_layers_i;
+
 				drop trigger if exists temp.undo_layers_d;
+
 				drop trigger if exists temp.undo_layers_u;
 
-				create trigger temp.undo_font_i after insert on font_{0} begin
-					insert into undolog (sql) values
-					(format('delete from font_{0} where name = %Q', new.name));
+				create trigger temp.undo_font_i after insert on font_{0}
+				begin
+					insert into undolog(sql)
+					values (format('delete from font_{0} where name = %Q', new.name));
 				end;
 
-				create trigger temp.undo_font_d after delete on font_{0} begin
-					insert into undolog (sql) values
-					(format(
-						'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
-						old.name, old.code, old.dwidth, old.is_abs,
-						old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
-					));
+				create trigger temp.undo_font_d after delete on font_{0}
+				begin
+					insert into undolog(sql)
+					values
+						(
+							format(
+								'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
+								old.name,
+								old.code,
+								old.dwidth,
+								old.is_abs,
+								old.bb_x,
+								old.bb_y,
+								old.off_x,
+								old.off_y,
+								quote(old.img)
+							)
+						);
 				end;
 
-				create trigger temp.undo_font_u after update on font_{0} begin
-					insert into undolog (sql) values
-					(format(
-						'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
-						old.name, old.code, old.dwidth, old.is_abs,
-						old.bb_x, old.bb_y, old.off_x, old.off_y, quote(old.img)
-					)),
-					(format('delete from font_{0} where name = %Q', new.name));
+				create trigger temp.undo_font_u after update on font_{0}
+				begin
+					insert into undolog(sql)
+					values
+						(
+							format(
+								'insert into font_{0} values (%Q, %d, %d, %d, %d, %d, %d, %d, %s)',
+								old.name,
+								old.code,
+								old.dwidth,
+								old.is_abs,
+								old.bb_x,
+								old.bb_y,
+								old.off_x,
+								old.off_y,
+								quote(old.img)
+							)
+						),
+						(format('delete from font_{0} where name = %Q', new.name));
 				end;
 
-				create trigger temp.undo_layers_i after insert on layers_{0} begin
-					insert into undolog (sql) values
-					(format('delete from layers_{0} where parent = %Q and ord = %d', new.parent, new.ord));
+				create trigger temp.undo_layers_i after insert on layers_{0}
+				begin
+					insert into undolog(sql)
+					values
+						(
+							format(
+								'delete from layers_{0} where parent = %Q and ord = %d',
+								new.parent,
+								new.ord
+							)
+						);
 				end;
 
-				create trigger temp.undo_layers_d after delete on layers_{0} begin
-					insert into undolog (sql) values
-					(format(
-						'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
-						old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
-					));
+				create trigger temp.undo_layers_d after delete on layers_{0}
+				begin
+					insert into undolog(sql)
+					values
+						(
+							format(
+								'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
+								old.parent,
+								old.ord,
+								old.child,
+								old.off_x,
+								old.off_y,
+								old.blend,
+								old.xform
+							)
+						);
 				end;
 
-				create trigger temp.undo_layers_u after update on layers_{0} begin
-					insert into undolog (sql) values
-					(format(
-						'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
-						old.parent, old.ord, old.child, old.off_x, old.off_y, old.blend, old.xform
-					)),
-					(format('delete from layers_{0} where parent = %Q and ord = %d', new.parent, new.ord));
+				create trigger temp.undo_layers_u after update on layers_{0}
+				begin
+					insert into undolog(sql)
+					values
+						(
+							format(
+								'insert into layers_{0} values (%Q, %d, %Q, %d, %d, %d, %d)',
+								old.parent,
+								old.ord,
+								old.child,
+								old.off_x,
+								old.off_y,
+								old.blend,
+								old.xform
+							)
+						),
+						(
+							format(
+								'delete from layers_{0} where parent = %Q and ord = %d',
+								new.parent,
+								new.ord
+							)
+						);
 				end;
 				"""
 				. format([font.id])
@@ -317,15 +389,18 @@ func undo_step() -> void:
 	(
 		db
 		. query(
-			"""
+			"""-- sql
 			delete from temp.undolog
-			where step < 0 and exists (select 1 from temp.undolog where step = 0)
-			;
+			where
+				step < 0
+				and exists (select 1 from temp.undolog where step = 0);
 
 			update temp.undolog
-			set step = (select max(step) + 1 from temp.undolog)
-			where step = 0
-			;"""
+			set
+				step = (select max(step) + 1 from temp.undolog)
+			where
+				step = 0;
+			"""
 		)
 	)
 
@@ -336,11 +411,15 @@ func undo(redo := false) -> void:
 	(
 		db
 		. query_with_named_bindings(
-			"""
-			select step, sql from temp.undolog
-			where step = (select max(step) from temp.undolog where iif(:redo, step < 0, step > 0))
-			order by seq desc
-			;""",
+			"""-- sql
+			select step, sql
+			from temp.undolog
+			where
+				step
+				= (select max(step) from temp.undolog where iif(:redo, step < 0, step > 0))
+			order by
+				seq desc;
+			""",
 			{redo = redo}
 		)
 	)
@@ -353,9 +432,11 @@ func undo(redo := false) -> void:
 		and (
 			db
 			. query_with_named_bindings(
-				"""
+				"""-- sql
 				delete from temp.undolog where step = :s;
+
 				update temp.undolog set step = -:s where step = 0;
+
 				commit;
 				""",
 				{s = qs[0].step}
@@ -380,7 +461,7 @@ func load_parsed(bf: BFont) -> void:
 ## Returns the save path of the current font.
 func path() -> String:
 	StateVars.db.query_with_named_bindings(
-		"select path from locals.paths where id = :id", {id = StateVars.font.id}
+		"select path from locals.paths where id = :id;", {id = StateVars.font.id}
 	)
 	var qs := StateVars.db.query_result
 	return qs[0].path if qs else ""

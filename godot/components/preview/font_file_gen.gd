@@ -27,11 +27,12 @@ func load_str(text: String) -> bool:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				select code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_{0}
-				where code in (select value from json_each(:codes))
-				;"""
+				where
+					code in (select value from json_each(:codes));
+				"""
 				. format([StateVars.font.id])
 			),
 			{codes = JSON.stringify(codes)}

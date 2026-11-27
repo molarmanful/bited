@@ -38,7 +38,7 @@ func refresh() -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				with recursive
 					up(name) as (
 						select :parent
@@ -49,16 +49,28 @@ func refresh() -> void:
 					)
 				select
 					f.name not in (select name from up) as ok,
-					c.variant, c.child as code, c.xform, c.blend, d.name as uc,
+					c.variant,
+					c.child as code,
+					c.xform,
+					c.blend,
+					d.name as uc,
 					coalesce(f.name, format('U+%04X', c.child)) as name,
-					f.dwidth, f.is_abs, f.img, coalesce(f.bb_x, 0) as bb_x, coalesce(f.bb_y, 0) as bb_y,
-					coalesce(f.off_x, 0) as off_x, coalesce(f.off_y, 0) as off_y
+					f.dwidth,
+					f.is_abs,
+					f.img,
+					coalesce(f.bb_x, 0) as bb_x,
+					coalesce(f.bb_y, 0) as bb_y,
+					coalesce(f.off_x, 0) as off_x,
+					coalesce(f.off_y, 0) as off_y
 				from uc.comps as c
 				left join uc.data as d on d.id = c.child
 				left join font_{0} as f on f.code = c.child
-				where c.parent = :code
-				order by c.variant desc, c.ord
-				;"""
+				where
+					c.parent = :code
+				order by
+					c.variant desc,
+					c.ord;
+				"""
 				. format([StateVars.font.id])
 			),
 			{parent = layers.parent_name, code = parent_code}
@@ -103,15 +115,20 @@ func choose() -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				delete from layers_{0} where parent = :parent;
 
-				insert into layers_{0} (parent, ord, child, off_x, off_y, xform, blend)
+				insert into layers_{0}(parent, ord, child, off_x, off_y, xform, blend)
 				select
-					:parent, key, value ->> 'name',
-					value ->> 'dx', value ->> 'dy', value ->> 'xform', value ->> 'blend'
-				from json_each(:ls)
-				;"""
+					:parent,
+					key,
+					value ->> 'name',
+					value ->> 'dx',
+					value ->> 'dy',
+					value ->> 'xform',
+					value ->> 'blend'
+				from json_each(:ls);
+				"""
 				. format([StateVars.font.id])
 			),
 			{parent = layers.parent_name, ls = JSON.stringify(ls)}

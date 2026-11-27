@@ -50,21 +50,21 @@ static func exec(q: String):
 		. db
 		. query_with_bindings(
 			(
-				"""
-				delete from temp.full;
+				"""-- sql
+				delete from temp.tbl;
 
-				insert into temp.full
+				insert into temp.tbl
 				select row_number() over (order by id, g) - 1, g, id
 				from (
 					select id, name, category, printf('U+%04X', id) as g from uc.data
 					union all
 					select code, name, null, name from font_{1} where code < 0
 				)
-				where {0}
-				;
+				where
+					{0};
 
-				select changes() as count
-				;"""
+				select changes() as count;
+				"""
 				. format([fc.query(), StateVars.font.id])
 			),
 			fc.binds

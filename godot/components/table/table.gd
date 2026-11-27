@@ -54,7 +54,7 @@ func _ready() -> void:
 		StateVars
 		. db
 		. create_table(
-			"temp.full",
+			"temp.tbl",
 			{
 				row = {data_type = "int", primary_key = true},
 				name = {data_type = "text", not_null = true, unique = true},
@@ -145,18 +145,15 @@ func set_glyphs(top := true) -> void:
 		. db
 		. query(
 			(
+				"""-- sql
+				delete from temp.tbl;
+
+				insert into temp.tbl
+				select row_number() over (order by code, name) - 1 as row, name, code
+				from font_{0};
+
+				select changes() as count;
 				"""
-				delete from temp.full;
-
-				insert into temp.full
-				select
-					row_number() over (order by code, name) - 1 as row,
-					name, code
-				from font_{0}
-				;
-
-				select changes() as count
-				;"""
 				. format([StateVars.font.id])
 			)
 		)
@@ -172,16 +169,18 @@ func set_page(id: String) -> void:
 		. db
 		. query(
 			(
+				"""-- sql
+				delete from temp.tbl;
+
+				insert into temp.tbl
+				select
+					row,
+					iif(code >= 0, printf('U+%04X', code), printf('UN-%02X', row)),
+					coalesce(code, -1)
+				from uc.p_{0};
+
+				select changes() as count;
 				"""
-				delete from temp.full;
-
-				insert into temp.full
-				select row, iif(code >= 0, printf('U+%04X', code), printf('UN-%02X', row)), coalesce(code, -1)
-				from uc.p_{0}
-				;
-
-				select changes() as count
-				;"""
 				. format([id])
 			)
 		)
@@ -226,11 +225,12 @@ func gen_glyphs() -> void:
 			. db
 			. query_with_named_bindings(
 				(
-					"""
+					"""-- sql
 					select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 					from font_{0}
-					where code between :a and :b
-					;"""
+					where
+						code between :a and :b;
+					"""
 					. format([StateVars.font.id])
 				),
 				{a = start + i0, b = start + i1 - 1}
@@ -242,13 +242,24 @@ func gen_glyphs() -> void:
 			. db
 			. query_with_named_bindings(
 				(
-					"""
-					select a.name, a.code, b.dwidth, b.is_abs, b.bb_x, b.bb_y, b.off_x, b.off_y, b.img
-					from temp.full as a
+					"""-- sql
+					select
+						a.name,
+						a.code,
+						b.dwidth,
+						b.is_abs,
+						b.bb_x,
+						b.bb_y,
+						b.off_x,
+						b.off_y,
+						b.img
+					from temp.tbl as a
 					left join font_{0} as b on a.name = b.name
-					where a.row between :a and :b
-					order by a.row
-					;"""
+					where
+						a.row between :a and :b
+					order by
+						a.row;
+					"""
 					. format([StateVars.font.id])
 				),
 				{a = i0, b = i1 - 1}

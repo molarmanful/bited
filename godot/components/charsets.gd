@@ -29,17 +29,7 @@ func _ready() -> void:
 
 
 func load_blocks() -> void:
-	(
-		StateVars
-		. db
-		. query(
-			"""
-			select name, start, end
-			from uc.blocks
-			order by start, end desc
-			;"""
-		)
-	)
+	StateVars.db.query("select name, start, end from uc.blocks order by start, end desc;")
 	for q in StateVars.db.query_result:
 		var x := unicode.create_child()
 		x.set_text(0, q.name)
@@ -47,17 +37,7 @@ func load_blocks() -> void:
 
 
 func load_pages() -> void:
-	(
-		StateVars
-		. db
-		. query(
-			"""
-			select id, name, category
-			from uc.pages
-			order by category nulls last, id
-			;"""
-		)
-	)
+	StateVars.db.query("select id, name, category from uc.pages order by category nulls last, id;")
 	for q in StateVars.db.query_result:
 		var x: TreeItem
 		if q.category:

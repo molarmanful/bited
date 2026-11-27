@@ -234,15 +234,22 @@ func off_glyph(off: int) -> void:
 			. db
 			. query_with_named_bindings(
 				(
-					"""
+					"""-- sql
 					select name, code
 					from font_{0}
-					where (code between :a and :b) and (code {1} :code)
-					order by code {2}, name {2}
-					limit 1
-					;"""
+					where
+						(code between :a and :b)
+						and ({1})
+					order by
+						{2}
+					limit 1;
+					"""
 					. format(
-						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+						[
+							StateVars.font.id,
+							"code <= :code" if off < 0 else "code >= :code",
+							"code desc, name desc" if off < 0 else "code, name",
+						]
 					)
 				),
 				{a = table.start, b = table.end, code = pattern.bitmap.data_code + off}
@@ -254,20 +261,23 @@ func off_glyph(off: int) -> void:
 			. db
 			. query_with_named_bindings(
 				(
-					"""
+					"""-- sql
 					select o.name, o.code
-					from temp.full as o
+					from temp.tbl as o
+					join temp.tbl as c on c.name = :name
 					join font_{0} as i on o.name = i.name
-					where o.row {1} (
-						select row + :off
-						from temp.full
-						where name = :name
-					)
-					order by row {2}
-					limit 1
-					;"""
+					where
+						{1}
+					order by
+						{2}
+					limit 1;
+					"""
 					. format(
-						[StateVars.font.id, "<=" if off < 0 else ">=", "desc" if off < 0 else ""]
+						[
+							StateVars.font.id,
+							"o.row <= c.row + :off" if off < 0 else "o.row >= c.row + :off",
+							"o.row desc" if off < 0 else "o.row"
+						]
 					)
 				),
 				{off = off, name = pattern.bitmap.data_name}
@@ -294,12 +304,13 @@ func off_uc(off: int) -> void:
 					StateVars
 					. db
 					. query_with_named_bindings(
-						"""
+						"""-- sql
 						select o.name, o.code
-						from temp.full as o
-						join temp.full as i on o.row = i.row + :off
-						where i.name = :name
-						;""",
+						from temp.tbl as o
+						join temp.tbl as i on o.row = i.row + :off
+						where
+							i.name = :name;
+						""",
 						{off = off, name = pattern.bitmap.data_name}
 					)
 				)
@@ -310,18 +321,23 @@ func off_uc(off: int) -> void:
 					. db
 					. query_with_named_bindings(
 						(
+							"""-- sql
+							select o.name, o.code
+							from temp.tbl as o
+							join temp.tbl as i on i.name = :name
+							where
+								o.code >= 0
+								and {0}
+							order by
+								{1}
+							limit 1;
 							"""
-							select name, code
-							from temp.full
-							where code >= 0 and row {0} (
-								select row + :off
-								from temp.full
-								where name = :name
+							. format(
+								[
+									"o.row <= i.row + :off" if off < 0 else "o.row >= i.row + :off",
+									"o.row desc" if off < 0 else "o.row"
+								]
 							)
-							order by row {1}
-							limit 1
-							;"""
-							. format(["<=" if off < 0 else ">=", "desc" if off < 0 else ""])
 						),
 						{off = off, name = pattern.bitmap.data_name}
 					)

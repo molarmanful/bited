@@ -142,15 +142,17 @@ func rename_glyph() -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				begin;
 
 				update font_{0} set name = :new where name = :old;
 
 				update layers_{0}
-				set parent = iif(parent = :old, :new, parent), child = iif(child = :old, :new, child)
-				where :old in (parent, child)
-				;
+				set
+					parent = iif(parent = :old, :new, parent),
+					child = iif(child = :old, :new, child)
+				where
+					:old in (parent, child);
 
 				commit;
 				"""
@@ -182,7 +184,7 @@ func antgen(tbl: String) -> void:
 		. db
 		. query(
 			(
-				"""
+				"""-- sql
 				with recursive
 					src as (
 						select r.row as key, f.name
@@ -199,14 +201,20 @@ func antgen(tbl: String) -> void:
 					miss(m) as (
 						select iif(min(key) = 0, -1, coalesce(sum(1 << (key - 1)), 0))
 						from src
-						where name is null
+						where
+							name is null
 					)
 				select
 					json_group_array(json_object('row', g.key, 'code', g.code, 'name', g.name)) as gens,
 					(select json_group_array(name order by key) from src) as srcs
-				from (select row as key, code, format('U+%04X', code) as name from uc.{1}) as g, miss
-				where g.key & (g.key - 1) and not (g.key & miss.m) and g.name not in down
-				;"""
+				from (
+					select row as key, code, format('U+%04X', code) as name from uc.{1}
+				) as g, miss
+				where
+					(g.key & (g.key - 1))
+					and not (g.key & miss.m)
+					and g.name not in down;
+				"""
 				. format([StateVars.font.id, tbl])
 			)
 		)
@@ -220,23 +228,23 @@ func antgen(tbl: String) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				begin;
 
 				delete from layers_{0}
-				where parent in (select value ->> 'name' from json_each(:gens))
-				;
+				where
+					parent in (select value ->> 'name' from json_each(:gens));
 
-				insert or replace into font_{0} (name, code, img)
-				select value ->> 'name', value ->> 'code', x'' from json_each(:gens)
-				;
+				insert or replace into font_{0}(name, code, img)
+				select value ->> 'name', value ->> 'code', x'' from json_each(:gens);
 
-				insert into layers_{0} (parent, ord, child)
+				insert into layers_{0}(parent, ord, child)
 				select g.value ->> 'name', s.key, s.value
 				from json_each(:gens) as g
 				join json_each(:srcs) as s
-				on s.key = 0 or (((g.value ->> 'row') >> (s.key - 1)) & 1)
-				;"""
+					on s.key = 0
+					or (((g.value ->> 'row') >> (s.key - 1)) & 1);
+				"""
 				. format([StateVars.font.id])
 			),
 			q

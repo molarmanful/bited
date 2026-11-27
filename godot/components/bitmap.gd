@@ -38,11 +38,9 @@ func save_dwidth() -> void:
 		. db
 		. query_with_named_bindings(
 			(
+				"""-- sql
+				update font_{0} set dwidth = :dwidth, is_abs = :is_abs where name = :name;
 				"""
-				update font_{0}
-				set dwidth = :dwidth, is_abs = :is_abs
-				where name = :name
-				;"""
 				. format([StateVars.font.id])
 			),
 			{dwidth = dwidth, is_abs = int(is_abs), name = data_name}
@@ -57,11 +55,12 @@ func load() -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
 				from font_{0}
-				where name = :name
-				;"""
+				where
+					name = :name;
+				"""
 				. format([StateVars.font.id])
 			),
 			{name = data_name}

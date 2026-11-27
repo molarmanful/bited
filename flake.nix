@@ -104,6 +104,8 @@
             };
           };
 
+          gd-sql-fmt = pkgs.callPackage ./nix/gd-sql-fmt.nix { };
+
           font-build = pkgs.callPackage ./nix/font-build.nix {
             inherit (inputs'.bited-utils.packages) bited-build;
           };
@@ -133,6 +135,7 @@
                 taplo
                 just
                 yamlfmt
+                ruff
                 clang-tools
                 actionlint
                 pixelorama
@@ -160,7 +163,7 @@
               deadnix.enable = true;
               gdformat = {
                 enable = true;
-                includes = [ "godot/components/**/*.gd" ];
+                includes = [ "godot/components/**.gd" ];
               };
               rustfmt = {
                 enable = true;
@@ -171,13 +174,19 @@
               mdformat = {
                 enable = true;
                 plugins = mdformat-plugins;
-                includes = [ "docs/**/*.md" ];
+                includes = [ "docs/**.md" ];
               };
               clang-format = {
                 enable = true;
-                includes = [ "godot/components/**/*.gdshader" ];
+                includes = [ "godot/components/**.gdshader" ];
               };
               taplo.enable = true;
+              ruff-format.enable = true;
+            };
+            settings.formatter.gd-sql-fmt = {
+              command = "${gd-sql-fmt}/bin/gd-sql-fmt";
+              includes = [ "godot/components/**.gd" ];
+              priority = 1;
             };
           };
         };

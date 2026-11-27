@@ -55,15 +55,27 @@ func refresh() -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				select
-					f.name, f.code, f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, f.img,
-					null as blend, d.name as uc
+					f.name,
+					f.code,
+					f.dwidth,
+					f.is_abs,
+					f.bb_x,
+					f.bb_y,
+					f.off_x,
+					f.off_y,
+					f.img,
+					null as blend,
+					d.name as uc
 				from font_{0} as f
 				left join uc.data as d on d.id = f.code
-				where f.name in (select parent from layers_{0} where child = :name)
-				order by f.code, f.name
-				;"""
+				where
+					f.name in (select parent from layers_{0} where child = :name)
+				order by
+					f.code,
+					f.name;
+				"""
 				. format([StateVars.font.id])
 			),
 			{name = layers.parent_name}

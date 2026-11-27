@@ -56,8 +56,9 @@ func init_font(ignore := false) -> void:
 			. db
 			. query(
 				(
-					"""
+					"""-- sql
 					drop table if exists font_{0};
+
 					drop table if exists layers_{0};
 					"""
 					. format([id])
@@ -88,10 +89,10 @@ func init_font(ignore := false) -> void:
 		. db
 		. query(
 			(
-				"""
+				"""-- sql
 				begin;
 
-				create table if not exists layers_{0} (
+				create table if not exists layers_{0}(
 					parent text not null,
 					ord int not null,
 					child text not null,
@@ -99,11 +100,11 @@ func init_font(ignore := false) -> void:
 					off_y int not null default 0,
 					blend int not null default 0,
 					xform int not null default 0,
-					primary key (parent, ord)
-				) without rowid
-				;
+					primary key(parent, ord)
+				) without rowid;
 
 				create index if not exists layers_{0}_child on layers_{0} (child);
+
 				create index if not exists font_{0}_code on font_{0} (code, name);
 
 				commit;
@@ -197,13 +198,15 @@ func to_glyphs_toml() -> String:
 		. db
 		. query(
 			(
-				"""
+				"""-- sql
 				select is_abs, count(is_abs) as n
 				from font_{0}
-				group by is_abs
-				order by n desc
-				limit 1
-				;"""
+				group by
+					is_abs
+				order by
+					n desc
+				limit 1;
+				"""
 				. format([id])
 			)
 		)
@@ -216,36 +219,51 @@ func to_glyphs_toml() -> String:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				with
 					g as (select *, json_quote(name) as key from font_{0}),
 					ls as (
 						select
 							l.parent,
-							'layers = [\n' || group_concat(
+							'layers = [\n'
+							|| group_concat(
 								format(
 									'  { child = %s, off_x = %d, off_y = %d, blend = %d, xform = %d },\n',
-									c.key, l.off_x, l.off_y, l.blend, l.xform
+									c.key,
+									l.off_x,
+									l.off_y,
+									l.blend,
+									l.xform
 								),
 								'' order by l.ord
-							) || ']\n' as layers
+							)
+							|| ']\n' as layers
 						from layers_{0} as l
 						join g as c on c.name = l.child
-						group by l.parent
+						group by
+							l.parent
 					)
 				select
 					coalesce(
 						group_concat(
 							format('[glyphs.%s]\n', g.key)
-							|| iif(g.is_abs <> :is_abs, format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')), '')
+							|| iif(
+								g.is_abs <> :is_abs,
+								format('is_abs = %s\n', iif(g.is_abs, 'true', 'false')),
+								''
+							)
 							|| coalesce(ls.layers, ''),
-							'' order by g.code, g.name
-						), ''
+							'' order by g.code,
+						g.name
+						),
+						''
 					) as toml
 				from g
 				left join ls on ls.parent = g.name
-				where g.is_abs <> :is_abs or ls.layers is not null
-				;"""
+				where
+					g.is_abs <> :is_abs
+					or ls.layers is not null;
+				"""
 				. format([id])
 			),
 			{is_abs = d_is_abs}
@@ -264,7 +282,7 @@ func to_bdf_chars(fb: Dictionary) -> String:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				with recursive
 					r(n) as (
 						select 0
@@ -273,30 +291,50 @@ func to_bdf_chars(fb: Dictionary) -> String:
 					),
 					g as (
 						select
-							name, code, bb_x, bb_y, off_x, off_y, :dw * (is_abs = 0) + dwidth as dw,
+							name,
+							code,
+							bb_x,
+							bb_y,
+							off_x,
+							off_y,
+							:dw * (is_abs = 0) + dwidth as dw,
 							coalesce(
 								group_concat(
-									substr(hex(img), n * ((bb_x + 7) / 8 * 2) + 1, (bb_x + 7) / 8 * 2) || '\n',
+									substr(hex(img), n * ((bb_x + 7) / 8 * 2) + 1, (bb_x + 7) / 8 * 2)
+									|| '\n',
 									'' order by n
-								), ''
+								),
+								''
 							) as bm
 						from font_{0}
 						left join r on n < bb_y and img <> x''
-						group by name
+						group by
+							name
 					)
 				select
-					'CHARS ' || count(*) || coalesce(
-						'\n' || group_concat(
+					'CHARS ' || count(*)
+					|| coalesce(
+						'\n'
+						|| group_concat(
 							format(
 								'STARTCHAR %s\nENCODING %d\nSWIDTH %d 0\nDWIDTH %d 0\nBBX %d %d %d %d\nBITMAP\n%sENDCHAR',
-								name, code, dw * 72000 / (:res_x * :max_w), dw,
-								bb_x, bb_y, off_x, off_y, bm
+								name,
+								code,
+								dw * 72000 / (:res_x * :max_w),
+								dw,
+								bb_x,
+								bb_y,
+								off_x,
+								off_y,
+								bm
 							),
-							'\n' order by code, name
-						), ''
+							'\n' order by code,
+						name
+						),
+						''
 					) as chars
-				from g
-				;"""
+				from g;
+				"""
 				. format([id])
 			),
 			{dw = dwidth, res_x = resolution.x, max_w = fb.bb_x}
@@ -320,13 +358,26 @@ func insert_layers(ls: Array[Dictionary]) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
-				insert or replace into layers_{0} (parent, ord, child, off_x, off_y, blend, xform)
+				"""-- sql
+				insert or replace into layers_{0}(
+					parent,
+					ord,
+					child,
+					off_x,
+					off_y,
+					blend,
+					xform
+				)
 				select
-					value ->> 'parent', value ->> 'ord', value ->> 'child',
-					value ->> 'off_x', value ->> 'off_y', value ->> 'blend', value ->> 'xform'
-				from json_each(:ls)
-				;"""
+					value ->> 'parent',
+					value ->> 'ord',
+					value ->> 'child',
+					value ->> 'off_x',
+					value ->> 'off_y',
+					value ->> 'blend',
+					value ->> 'xform'
+				from json_each(:ls);
+				"""
 				. format([id])
 			),
 			{ls = JSON.stringify(ls)}
@@ -348,13 +399,20 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 		. query_with_named_bindings(
 			(
 				"""
-				insert or {0}
-				into font_{1}
-				(name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img)
-				values
-				(:name, :code, :dwidth, :is_abs, :bb_x, :bb_y, :off_x, :off_y, :img)
-				returning name
-				;"""
+				insert or {0} into font_{1}(
+					name,
+					code,
+					dwidth,
+					is_abs,
+					bb_x,
+					bb_y,
+					off_x,
+					off_y,
+					img
+				)
+				values (:name, :code, :dwidth, :is_abs, :bb_x, :bb_y, :off_x, :off_y, :img)
+				returning name;
+				"""
 				. format(["replace" if over else "ignore", StateVars.font.id])
 			),
 			gen
@@ -369,22 +427,20 @@ func flatten_parents(names: Array) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				with recursive
 					up(name, depth) as (
 						select parent, 1
 						from layers_{0}
-						where child in (select value from json_each(:names))
+						where
+							child in (select value from json_each(:names))
 						union
 						select l.parent, up.depth + 1
 						from layers_{0} as l
 						join up on l.child = up.name
 					)
-				select name
-				from up
-				group by name
-				order by max(depth)
-				;"""
+				select name from up group by name order by max(depth);
+				"""
 				. format([id])
 			),
 			{names = JSON.stringify(names)}
@@ -400,15 +456,24 @@ func flatten(name: String) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				select
-					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, l.blend, l.xform,
-					c.bb_x, c.bb_y, c.img
+					c.off_x,
+					c.off_y,
+					l.off_x as dx,
+					l.off_y as dy,
+					l.blend,
+					l.xform,
+					c.bb_x,
+					c.bb_y,
+					c.img
 				from layers_{0} as l
 				join font_{0} as c on c.name = l.child
-				where l.parent = :name
-				order by l.ord
-				;"""
+				where
+					l.parent = :name
+				order by
+					l.ord;
+				"""
 				. format([id])
 			),
 			{name = name}
@@ -420,12 +485,18 @@ func flatten(name: String) -> void:
 		. db
 		. query_with_named_bindings(
 			(
-				"""
+				"""-- sql
 				update font_{0}
-				set bb_x = :bb_x, bb_y = :bb_y, off_x = :off_x, off_y = :off_y, img = :img
-				where name = :name
-				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				;"""
+				set
+					bb_x = :bb_x,
+					bb_y = :bb_y,
+					off_x = :off_x,
+					off_y = :off_y,
+					img = :img
+				where
+					name = :name
+				returning name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img;
+				"""
 				. format([id])
 			),
 			d
