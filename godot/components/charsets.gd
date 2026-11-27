@@ -31,7 +31,7 @@ func _ready() -> void:
 func load_blocks() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			"""
 			select name, start, end
@@ -40,7 +40,7 @@ func load_blocks() -> void:
 			;"""
 		)
 	)
-	for q in StateVars.db_saves.query_result:
+	for q in StateVars.db.query_result:
 		var x := unicode.create_child()
 		x.set_text(0, q.name)
 		blocks[x] = [q.start, q.end]
@@ -49,7 +49,7 @@ func load_blocks() -> void:
 func load_pages() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			"""
 			select id, name, category
@@ -58,7 +58,7 @@ func load_pages() -> void:
 			;"""
 		)
 	)
-	for q in StateVars.db_saves.query_result:
+	for q in StateVars.db.query_result:
 		var x: TreeItem
 		if q.category:
 			if q.category not in page_cats:

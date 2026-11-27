@@ -17,8 +17,8 @@ var font := BFont.new()
 ## Editor settings.
 var cfg := ConfigFile.new()
 
-## Database for font data.
-var db_saves := SQLite.new()
+## SQLite DB connection.
+var db := SQLite.new()
 ## Database for local data (i.e. machine-specific, not meant to be synced).
 var db_locals := SQLite.new()
 
@@ -33,15 +33,15 @@ func _ready() -> void:
 	root.borderless = false
 	root.mode = Window.MODE_MAXIMIZED
 
-	var db := SQLite.new()
-	db.path = "res://assets/uc.db"
-	db.read_only = true
-	db.open_db()
-	db.close_db()
+	var d := SQLite.new()
+	d.path = "res://assets/uc.db"
+	d.read_only = true
+	d.open_db()
+	d.close_db()
 
-	db_saves.path = "user://saves.db"
-	db_saves.open_db()
-	db_saves.query("attach 'file:res://assets/uc.db?vfs=godot&mode=ro' as uc;")
+	db.path = "user://saves.db"
+	db.open_db()
+	db.query("attach 'file:res://assets/uc.db?vfs=godot&mode=ro' as uc;")
 
 	db_locals.path = "user://locals.db"
 	db_locals.open_db()
@@ -57,8 +57,8 @@ func _ready() -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		for db in [db_saves, db_locals]:
-			db.query("pragma optimize;")
+		for d in [db, db_locals]:
+			d.query("pragma optimize;")
 
 
 ## Transitions from "start" to "all".
@@ -93,7 +93,7 @@ func all_start_defer() -> void:
 ## Initializes master table for saved fonts.
 func init_font_metas() -> void:
 	(
-		db_saves
+		db
 		. create_table(
 			"fonts",
 			{
@@ -105,15 +105,15 @@ func init_font_metas() -> void:
 
 
 func migrate() -> void:
-	db_saves.query("pragma user_version;")
-	if db_saves.query_result[0].user_version >= 1:
+	db.query("pragma user_version;")
+	if db.query_result[0].user_version >= 1:
 		return
 
-	db_saves.query("begin;")
-	db_saves.query("select id from fonts;")
-	for f in db_saves.query_result:
+	db.query("begin;")
+	db.query("select id from fonts;")
+	for f in db.query_result:
 		if not (
-			db_saves
+			db
 			. query(
 				(
 					"""
@@ -124,9 +124,9 @@ func migrate() -> void:
 				)
 			)
 		):
-			db_saves.query("rollback;")
+			db.query("rollback;")
 			return
-	db_saves.query("pragma user_version = 1; commit;")
+	db.query("pragma user_version = 1; commit;")
 
 
 ## Initializes local table for font save paths.
@@ -157,7 +157,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			"""
 			select name, category
@@ -167,7 +167,7 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 			{id = data_code}
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 
 	return (
 		"%s  #%d%s\n%s"
@@ -182,15 +182,15 @@ func get_info(data_name: String, data_code: int, nop = false) -> String:
 
 ## Returns whether font [param id] already exists in the fonts database.
 func has_font(id: String) -> bool:
-	StateVars.db_saves.query_with_named_bindings("select 1 from fonts where id = :id", {id = id})
-	return not not StateVars.db_saves.query_result
+	StateVars.db.query_with_named_bindings("select 1 from fonts where id = :id", {id = id})
+	return not not StateVars.db.query_result
 
 
 ## Deletes font [param id].
 func delete_font(id: String) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -209,7 +209,7 @@ func delete_font(id: String) -> void:
 func rename_font(old: String, new: String) -> void:
 	if not (
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -228,7 +228,7 @@ func rename_font(old: String, new: String) -> void:
 			{new = new, old = old}
 		)
 	):
-		StateVars.db_saves.query("rollback;")
+		StateVars.db.query("rollback;")
 		return
 	if not (
 		StateVars
@@ -251,7 +251,7 @@ func rename_font(old: String, new: String) -> void:
 ## Initializes undo/redo triggers on the font.
 func init_undo() -> void:
 	(
-		db_saves
+		db
 		. query(
 			(
 				"""
@@ -326,7 +326,7 @@ func init_undo() -> void:
 ## Commits pending undo log entries as a step.
 func undo_step() -> void:
 	(
-		db_saves
+		db
 		. query(
 			"""
 			delete from temp.undolog where step < 0 and exists (select 1 from temp.undolog where step = 0);
@@ -340,7 +340,7 @@ func undo_step() -> void:
 func undo(redo := false) -> void:
 	undo_step()
 	(
-		db_saves
+		db
 		. query_with_named_bindings(
 			"""
 			select step, sql from temp.undolog
@@ -350,14 +350,14 @@ func undo(redo := false) -> void:
 			{redo = redo}
 		)
 	)
-	var qs := db_saves.query_result
+	var qs := db.query_result
 	if not qs:
 		return
-	db_saves.query("begin;")
+	db.query("begin;")
 	if not (
-		qs.all(func(q): return db_saves.query(q.sql))
+		qs.all(func(q): return db.query(q.sql))
 		and (
-			db_saves
+			db
 			. query_with_named_bindings(
 				"""
 				delete from temp.undolog where step = :s;
@@ -368,7 +368,7 @@ func undo(redo := false) -> void:
 			)
 		)
 	):
-		db_saves.query("rollback;")
+		db.query("rollback;")
 
 
 ## Saves [param font] to the fonts database.

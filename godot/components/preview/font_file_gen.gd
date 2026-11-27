@@ -24,7 +24,7 @@ func load_str(text: String) -> bool:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -38,7 +38,7 @@ func load_str(text: String) -> bool:
 		)
 	)
 
-	add_glyphs(StateVars.db_saves.query_result)
+	add_glyphs(StateVars.db.query_result)
 	return true
 
 

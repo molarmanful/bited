@@ -52,7 +52,7 @@ var pick_layer := false:
 func _ready() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. create_table(
 			"temp.full",
 			{
@@ -140,7 +140,7 @@ func set_range(a: int, b: int) -> void:
 func set_glyphs(top := true) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -157,14 +157,14 @@ func set_glyphs(top := true) -> void:
 		)
 	)
 	viewmode = Mode.GLYPHS
-	virt.length = StateVars.db_saves.query_result[0].count
+	virt.length = StateVars.db.query_result[0].count
 	after_set(top)
 
 
 func set_page(id: String) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -175,14 +175,14 @@ func set_page(id: String) -> void:
 			)
 		)
 	)
-	set_codes(StateVars.db_saves.query_result[0])
+	set_codes(StateVars.db.query_result[0])
 
 
 func set_finder(query: String) -> void:
 	var fp := FinderParser.from(query)
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_bindings(
 			(
 				"""
@@ -194,13 +194,13 @@ func set_finder(query: String) -> void:
 			fp.binds
 		)
 	)
-	set_codes(StateVars.db_saves.query_result[0])
+	set_codes(StateVars.db.query_result[0])
 
 
 func set_codes(q: Dictionary) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			"""
 			delete from temp.full;
@@ -241,7 +241,7 @@ func gen_glyphs() -> void:
 	if viewmode == Mode.RANGE:
 		(
 			StateVars
-			. db_saves
+			. db
 			. query_with_named_bindings(
 				(
 					"""
@@ -257,7 +257,7 @@ func gen_glyphs() -> void:
 	else:
 		(
 			StateVars
-			. db_saves
+			. db
 			. query_with_named_bindings(
 				(
 					"""
@@ -272,7 +272,7 @@ func gen_glyphs() -> void:
 				{a = i0, b = i1 - 1}
 			)
 		)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 
 	var prev := names.duplicate()
 	names.clear()

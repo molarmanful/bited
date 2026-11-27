@@ -52,7 +52,7 @@ func refresh() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -66,9 +66,9 @@ func refresh() -> void:
 			{name = layers.parent_name}
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"""
 		select json_group_object(id, name) as names
 		from uc.data
@@ -76,7 +76,7 @@ func refresh() -> void:
 		;""",
 		{codes = JSON.stringify(qs.map(func(q): return q.code))}
 	)
-	var names: Dictionary = JSON.parse_string(StateVars.db_saves.query_result[0].names)
+	var names: Dictionary = JSON.parse_string(StateVars.db.query_result[0].names)
 
 	for q in qs:
 		q.uc = names.get(str(q.code))

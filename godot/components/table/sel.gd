@@ -32,7 +32,7 @@ func all() -> void:
 func filter_dwidth(dw: int, ia := false) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -56,7 +56,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 		if table.viewmode == Table.Mode.RANGE:
 			(
 				StateVars
-				. db_saves
+				. db
 				. query_with_named_bindings(
 					(
 						"""
@@ -73,7 +73,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 		else:
 			(
 				StateVars
-				. db_saves
+				. db
 				. query_with_named_bindings(
 					(
 						"""
@@ -92,7 +92,7 @@ func filter_dwidth(dw: int, ia := false) -> void:
 	clear()
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			"""
 			commit;
@@ -106,13 +106,13 @@ func filter_dwidth(dw: int, ia := false) -> void:
 			;"""
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	for q in qs:
 		ranges.push_back(q.a)
 		ranges.push_back(q.b)
 	if ranges:
 		anchor = ranges[0]
-	StateVars.db_saves.query("drop table if exists temp.filter;")
+	StateVars.db.query("drop table if exists temp.filter;")
 	refresh()
 
 
@@ -120,7 +120,7 @@ func delete() -> void:
 	if table.pick_layer or not ranges:
 		return
 
-	StateVars.db_saves.query("begin;")
+	StateVars.db.query("begin;")
 
 	var dels := []
 	for i in range(0, ranges.size(), 2):
@@ -133,7 +133,7 @@ func delete() -> void:
 		)
 		(
 			StateVars
-			. db_saves
+			. db
 			. query_with_named_bindings(
 				(
 					"""
@@ -146,24 +146,24 @@ func delete() -> void:
 				{a = a, b = b}
 			)
 		)
-		dels.append_array(StateVars.db_saves.query_result.map(func(q): return q.name))
+		dels.append_array(StateVars.db.query_result.map(func(q): return q.name))
 
 	var js := JSON.stringify(dels)
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"delete from layers_{0} where parent in (select value from json_each(:names));".format(
 			[StateVars.font.id]
 		),
 		{names = js}
 	)
 	StateVars.font.flatten_parents(dels)
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"delete from layers_{0} where child in (select value from json_each(:names));".format(
 			[StateVars.font.id]
 		),
 		{names = js}
 	)
 
-	StateVars.db_saves.query("commit;")
+	StateVars.db.query("commit;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
@@ -177,7 +177,7 @@ func copy() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -201,7 +201,7 @@ func copy() -> void:
 		if table.viewmode == Table.Mode.RANGE:
 			(
 				StateVars
-				. db_saves
+				. db
 				. query_with_named_bindings(
 					(
 						"""
@@ -220,7 +220,7 @@ func copy() -> void:
 		else:
 			(
 				StateVars
-				. db_saves
+				. db
 				. query_with_named_bindings(
 					(
 						"""
@@ -240,7 +240,7 @@ func copy() -> void:
 
 	if not (
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -253,7 +253,7 @@ func copy() -> void:
 			)
 		)
 	):
-		StateVars.db_saves.query("rollback;")
+		StateVars.db.query("rollback;")
 
 	var res := ""
 	for i in range(0, ranges.size(), 2):
@@ -263,10 +263,10 @@ func copy() -> void:
 			for code in range(a, b + 1):
 				res += char(code)
 		else:
-			StateVars.db_saves.query_with_named_bindings(
+			StateVars.db.query_with_named_bindings(
 				"select name, code from temp.full where row between :a and :b;", {a = a, b = b}
 			)
-			for q in StateVars.db_saves.query_result:
+			for q in StateVars.db.query_result:
 				res += q.name if q.code < 0 else char(q.code)
 
 	DisplayServer.clipboard_set(res)
@@ -275,14 +275,14 @@ func copy() -> void:
 func paste() -> void:
 	if table.pick_layer or not ranges:
 		return
-	if not StateVars.db_saves.select_rows(
+	if not StateVars.db.select_rows(
 		"sqlite_temp_master", "name = 'clip' and type = 'table'", ["name"]
 	):
 		return
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -305,14 +305,14 @@ func paste() -> void:
 		var b := ranges[i + 1] - 1
 		if table.viewmode == Table.Mode.RANGE:
 			for code in range(a, b + 1):
-				StateVars.db_saves.insert_row(
+				StateVars.db.insert_row(
 					"temp.sub", {row = row, name = "U+%04X" % code, code = code}
 				)
 				row += 1
 		else:
 			(
 				StateVars
-				. db_saves
+				. db
 				. query_with_named_bindings(
 					"""
 					insert into temp.sub (row, name, code)
@@ -328,7 +328,7 @@ func paste() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -385,9 +385,9 @@ func paste() -> void:
 		)
 	)
 
-	StateVars.font.flatten_parents(StateVars.db_saves.query_result.map(func(q): return q.name))
-	if not StateVars.db_saves.query("drop table temp.sub; commit;"):
-		StateVars.db_saves.query("rollback;")
+	StateVars.font.flatten_parents(StateVars.db.query_result.map(func(q): return q.name))
+	if not StateVars.db.query("drop table temp.sub; commit;"):
+		StateVars.db.query("rollback;")
 
 	StateVars.edit_refresh.emit()
 	table.thumbs.clear()
@@ -453,7 +453,7 @@ func cut() -> void:
 	copy()
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -537,10 +537,10 @@ func is_selected(i: int) -> bool:
 func named() -> String:
 	if not is_alone() or table.viewmode != Table.Mode.GLYPHS:
 		return ""
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"select name from temp.full where row = :row and code < 0;", {row = ranges[0]}
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	return qs[0].name if qs else ""
 
 

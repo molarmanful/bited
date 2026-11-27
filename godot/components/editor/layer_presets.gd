@@ -35,7 +35,7 @@ func refresh() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			"""
 			select json_group_array(
@@ -53,7 +53,7 @@ func refresh() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -78,10 +78,10 @@ func refresh() -> void:
 				;"""
 				. format([StateVars.font.id])
 			),
-			StateVars.db_saves.query_result[0].merged({parent = layers.parent_name})
+			StateVars.db.query_result[0].merged({parent = layers.parent_name})
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	if not qs:
 		return
 
@@ -117,7 +117,7 @@ func choose() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""

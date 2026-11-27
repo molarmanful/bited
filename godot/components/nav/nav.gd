@@ -124,7 +124,7 @@ func new_glyph() -> void:
 		return
 
 	var gname := win_new_glyph.input.text
-	StateVars.db_saves.insert_row("font_" + StateVars.font.id, {name = gname})
+	StateVars.db.insert_row("font_" + StateVars.font.id, {name = gname})
 	table.reset_full()
 	table.to_update = true
 	StateVars.edit.emit(gname, -1)
@@ -139,7 +139,7 @@ func rename_glyph() -> void:
 	var gname := win_rename_glyph.input.text
 	if not (
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -159,7 +159,7 @@ func rename_glyph() -> void:
 			{new = gname, old = old}
 		)
 	):
-		StateVars.db_saves.query("rollback;")
+		StateVars.db.query("rollback;")
 		return
 
 	if table.grid.pattern.bitmap.data_name == old:
@@ -179,7 +179,7 @@ func finder(q: String) -> void:
 func antgen(tbl: String) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -194,7 +194,7 @@ func antgen(tbl: String) -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -224,16 +224,16 @@ func antgen(tbl: String) -> void:
 				;"""
 				. format([StateVars.font.id])
 			),
-			StateVars.db_saves.query_result[0]
+			StateVars.db.query_result[0]
 		)
 	)
-	var q := StateVars.db_saves.query_result[0]
+	var q := StateVars.db.query_result[0]
 	if q.gens == "[]":
 		return
 
 	if not (
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -258,11 +258,11 @@ func antgen(tbl: String) -> void:
 			q
 		)
 	):
-		StateVars.db_saves.query("rollback;")
+		StateVars.db.query("rollback;")
 		return
 
 	StateVars.font.flatten_parents(JSON.parse_string(q.srcs))
-	StateVars.db_saves.query("commit;")
+	StateVars.db.query("commit;")
 
 	StateVars.table_refresh.emit()
 	StateVars.edit_refresh.emit()

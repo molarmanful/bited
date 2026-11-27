@@ -35,7 +35,7 @@ func save(over := true) -> void:
 func save_dwidth() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -54,7 +54,7 @@ func save_dwidth() -> void:
 func load() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -67,7 +67,7 @@ func load() -> void:
 			{name = data_name}
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	if not qs:
 		data_code = -1
 		data_name = ""

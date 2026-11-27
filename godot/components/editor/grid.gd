@@ -231,7 +231,7 @@ func off_glyph(off: int) -> void:
 	if table.viewmode == Table.Mode.RANGE:
 		(
 			StateVars
-			. db_saves
+			. db
 			. query_with_named_bindings(
 				(
 					"""
@@ -251,7 +251,7 @@ func off_glyph(off: int) -> void:
 	else:
 		(
 			StateVars
-			. db_saves
+			. db
 			. query_with_named_bindings(
 				(
 					"""
@@ -274,7 +274,7 @@ func off_glyph(off: int) -> void:
 			)
 		)
 
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	if not qs:
 		return
 	start_edit(qs[0].name, qs[0].code)
@@ -292,7 +292,7 @@ func off_uc(off: int) -> void:
 			Table.Mode.GLYPHS:
 				(
 					StateVars
-					. db_saves
+					. db
 					. query_with_named_bindings(
 						"""
 						select o.name, o.code
@@ -307,7 +307,7 @@ func off_uc(off: int) -> void:
 			Table.Mode.PAGE:
 				(
 					StateVars
-					. db_saves
+					. db
 					. query_with_named_bindings(
 						(
 							"""
@@ -327,7 +327,7 @@ func off_uc(off: int) -> void:
 					)
 				)
 
-		var qs := StateVars.db_saves.query_result
+		var qs := StateVars.db.query_result
 		if not qs:
 			return
 		start_edit(qs[0].name, qs[0].code)

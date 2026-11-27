@@ -53,7 +53,7 @@ func init_font(ignore := false) -> void:
 	if not ignore:
 		(
 			StateVars
-			. db_saves
+			. db
 			. query(
 				(
 					"""
@@ -66,7 +66,7 @@ func init_font(ignore := false) -> void:
 		)
 	(
 		StateVars
-		. db_saves
+		. db
 		. create_table(
 			"font_" + id,
 			{
@@ -85,7 +85,7 @@ func init_font(ignore := false) -> void:
 
 	if not (
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -112,14 +112,14 @@ func init_font(ignore := false) -> void:
 			)
 		)
 	):
-		StateVars.db_saves.query("rollback;")
+		StateVars.db.query("rollback;")
 
 	save_font(ignore)
 	load_font()
 
 
 func save_font(ignore = false) -> void:
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"insert or {0} into fonts (id, data) values (:id, :data);".format(
 			["ignore" if ignore else "replace"]
 		),
@@ -128,10 +128,8 @@ func save_font(ignore = false) -> void:
 
 
 func load_font() -> void:
-	StateVars.db_saves.query_with_named_bindings(
-		"select data from fonts where id = :id;", {id = id}
-	)
-	var qs := StateVars.db_saves.query_result
+	StateVars.db.query_with_named_bindings("select data from fonts where id = :id;", {id = id})
+	var qs := StateVars.db.query_result
 	if not qs:
 		return
 	from_dict(bytes_to_var(qs[0].data))
@@ -196,7 +194,7 @@ func to_bdf_properties() -> PackedStringArray:
 func to_glyphs_toml() -> String:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query(
 			(
 				"""
@@ -210,12 +208,12 @@ func to_glyphs_toml() -> String:
 			)
 		)
 	)
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	var d_is_abs: int = qs[0].is_abs if qs else 1
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -256,14 +254,14 @@ func to_glyphs_toml() -> String:
 
 	return (
 		"[default]\nis_abs = %s\n%s"
-		% ["true" if d_is_abs else "false", StateVars.db_saves.query_result[0].toml]
+		% ["true" if d_is_abs else "false", StateVars.db.query_result[0].toml]
 	)
 
 
 func to_bdf_chars(fb: Dictionary) -> String:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -304,22 +302,22 @@ func to_bdf_chars(fb: Dictionary) -> String:
 			{dw = dwidth, res_x = resolution.x, max_w = fb.bb_x}
 		)
 	)
-	return StateVars.db_saves.query_result[0].chars
+	return StateVars.db.query_result[0].chars
 
 
 func save_glyphs(gens: Array[Dictionary], over := true) -> void:
-	StateVars.db_saves.query("begin;")
+	StateVars.db.query("begin;")
 	for gen in gens:
 		insert_glyph(gen, over)
 	flatten_parents(gens.map(func(gen: Dictionary): return gen.name))
-	StateVars.db_saves.query("commit;")
+	StateVars.db.query("commit;")
 	StateVars.table_refresh.emit()
 
 
 func insert_layers(ls: Array[Dictionary]) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -346,7 +344,7 @@ func save_glyph(gen: Dictionary, over := true) -> void:
 func insert_glyph(gen: Dictionary, over := true) -> bool:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -362,13 +360,13 @@ func insert_glyph(gen: Dictionary, over := true) -> bool:
 			gen
 		)
 	)
-	return not not StateVars.db_saves.query_result
+	return not not StateVars.db.query_result
 
 
 func flatten_parents(names: Array) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -392,14 +390,14 @@ func flatten_parents(names: Array) -> void:
 			{names = JSON.stringify(names)}
 		)
 	)
-	for q in StateVars.db_saves.query_result:
+	for q in StateVars.db.query_result:
 		flatten(q.name)
 
 
 func flatten(name: String) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -416,10 +414,10 @@ func flatten(name: String) -> void:
 			{name = name}
 		)
 	)
-	var d := compose({name = name}, StateVars.db_saves.query_result)
+	var d := compose({name = name}, StateVars.db.query_result)
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -433,7 +431,7 @@ func flatten(name: String) -> void:
 			d
 		)
 	)
-	StateVars.refresh.emit(StateVars.db_saves.query_result[0])
+	StateVars.refresh.emit(StateVars.db.query_result[0])
 
 
 static func xform_rect(r: Rect2i, x: int) -> Rect2i:
@@ -561,7 +559,7 @@ func xlfd() -> String:
 
 
 func avg_w() -> int:
-	var qs := StateVars.db_saves.select_rows(
+	var qs := StateVars.db.select_rows(
 		"font_" + id,
 		"",
 		["cast(avg({0} * (is_abs = 0) + dwidth) * 10 as int) as avg".format([dwidth])]
@@ -572,7 +570,7 @@ func avg_w() -> int:
 
 
 func fbbx() -> Dictionary:
-	var qs := StateVars.db_saves.select_rows(
+	var qs := StateVars.db.select_rows(
 		"font_" + id,
 		"",
 		[

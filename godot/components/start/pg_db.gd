@@ -38,7 +38,7 @@ func build_tree() -> void:
 	btn_del.hide()
 	btn_rename.hide()
 
-	var qs := StateVars.db_saves.select_rows("fonts", "", ["id", "data"])
+	var qs := StateVars.db.select_rows("fonts", "", ["id", "data"])
 	placeholder.visible = not qs
 	tree.visible = not placeholder.visible
 	if qs:

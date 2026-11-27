@@ -98,7 +98,7 @@ func _ready() -> void:
 func pick(gname: String) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -122,7 +122,7 @@ func pick(gname: String) -> void:
 			{parent = parent_name, child = gname}
 		)
 	)
-	if StateVars.db_saves.query_result:
+	if StateVars.db.query_result:
 		flatten()
 		select_top()
 
@@ -137,7 +137,7 @@ func select_top() -> void:
 func del() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -150,7 +150,7 @@ func del() -> void:
 			{parent = parent_name, ords = JSON.stringify(selected)}
 		)
 	)
-	if StateVars.db_saves.query_result:
+	if StateVars.db.query_result:
 		flatten()
 
 
@@ -172,7 +172,7 @@ func move(at: Vector2, ords: PackedInt32Array) -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -198,7 +198,7 @@ func move(at: Vector2, ords: PackedInt32Array) -> void:
 func translate(v: Vector2i) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -231,7 +231,7 @@ func rot_ccw() -> void:
 
 
 func bake() -> void:
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"delete from layers_{0} where parent = :parent;".format([StateVars.font.id]),
 		{parent = parent_name}
 	)
@@ -241,7 +241,7 @@ func bake() -> void:
 func clear_xform() -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -278,7 +278,7 @@ func _xform(t: PackedInt32Array) -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -298,7 +298,7 @@ func _xform(t: PackedInt32Array) -> void:
 func set_blend(b: int) -> void:
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -376,7 +376,7 @@ func refresh() -> void:
 
 	(
 		StateVars
-		. db_saves
+		. db
 		. query_with_named_bindings(
 			(
 				"""
@@ -394,14 +394,14 @@ func refresh() -> void:
 		)
 	)
 
-	var qs := StateVars.db_saves.query_result
+	var qs := StateVars.db.query_result
 	has_layers = not not qs
 	grid.get_tree().call_group("hide_if_layer", "hide" if has_layers else "show")
 	grid.get_tree().call_group("show_if_layer", "show" if has_layers else "hide")
 	if has_layers:
 		btn_move.button_pressed = true
 
-	StateVars.db_saves.query_with_named_bindings(
+	StateVars.db.query_with_named_bindings(
 		"""
 		select json_group_object(id, name) as names
 		from uc.data
@@ -409,7 +409,7 @@ func refresh() -> void:
 		;""",
 		{codes = JSON.stringify(qs.map(func(q): return q.code))}
 	)
-	var names: Dictionary = JSON.parse_string(StateVars.db_saves.query_result[0].names)
+	var names: Dictionary = JSON.parse_string(StateVars.db.query_result[0].names)
 
 	for q in qs:
 		q.uc = names.get(str(q.code))
