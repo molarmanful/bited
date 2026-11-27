@@ -183,26 +183,11 @@ func antgen(tbl: String) -> void:
 		. query(
 			(
 				"""
-				select
-					(select json_group_array(code order by row) from uc.{0}_in) as reqs,
-					(select json_group_array(code order by row) from uc.{0}) as codes
-				;"""
-				. format([tbl])
-			)
-		)
-	)
-
-	(
-		StateVars
-		. db
-		. query_with_named_bindings(
-			(
-				"""
 				with recursive
 					src as (
-						select r.key, f.name
-						from json_each(:reqs) as r
-						left join font_{0} as f on f.code = r.value
+						select r.row as key, f.name
+						from uc.{1}_in as r
+						left join font_{0} as f on f.code = r.code
 					),
 					down(name) as (
 						select name from src where name is not null
@@ -217,14 +202,13 @@ func antgen(tbl: String) -> void:
 						where name is null
 					)
 				select
-					json_group_array(json_object('row', g.key, 'code', g.value, 'name', g.name)) as gens,
+					json_group_array(json_object('row', g.key, 'code', g.code, 'name', g.name)) as gens,
 					(select json_group_array(name order by key) from src) as srcs
-				from (select key, value, format('U+%04X', value) as name from json_each(:codes)) as g, miss
+				from (select row as key, code, format('U+%04X', code) as name from uc.{1}) as g, miss
 				where g.key & (g.key - 1) and not (g.key & miss.m) and g.name not in down
 				;"""
-				. format([StateVars.font.id])
-			),
-			StateVars.db.query_result[0]
+				. format([StateVars.font.id, tbl])
+			)
 		)
 	)
 	var q := StateVars.db.query_result[0]

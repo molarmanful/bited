@@ -150,7 +150,7 @@ func set_glyphs(top := true) -> void:
 					row_number() over (order by code, name) - 1 as row,
 					name, code
 				from font_{0};
-				select count(*) as count from temp.full;
+				select changes() as count;
 				"""
 				. format([StateVars.font.id])
 			)
@@ -168,14 +168,19 @@ func set_page(id: String) -> void:
 		. query(
 			(
 				"""
-				select json_group_array(coalesce(code, -1) order by row) as codes, count(*) as count
-				from uc.p_{0}
-				;"""
+				delete from temp.full;
+				insert into temp.full
+				select row, iif(code >= 0, printf('U+%04X', code), printf('UN-%02X', row)), coalesce(code, -1)
+				from uc.p_{0};
+				select changes() as count;
+				"""
 				. format([id])
 			)
 		)
 	)
-	set_codes(StateVars.db.query_result[0])
+	viewmode = Mode.PAGE
+	virt.length = StateVars.db.query_result[0].count
+	after_set()
 
 
 func set_finder(query: String) -> void:
@@ -186,33 +191,20 @@ func set_finder(query: String) -> void:
 		. query_with_bindings(
 			(
 				"""
-				select json_group_array(id order by id) as codes, count(*) as count
-				from uc.data where {0};
+				delete from temp.full;
+				insert into temp.full
+				select row_number() over (order by id) - 1, printf('U+%04X', id), id
+				from uc.data
+				where {0};
+				select changes() as count;
 				"""
 				. format([fp.query()])
 			),
 			fp.binds
 		)
 	)
-	set_codes(StateVars.db.query_result[0])
-
-
-func set_codes(q: Dictionary) -> void:
-	(
-		StateVars
-		. db
-		. query_with_named_bindings(
-			"""
-			delete from temp.full;
-			insert into temp.full
-			select key, iif(value >= 0, printf('U+%04X', value), printf('UN-%02X', key)), value
-			from json_each(:codes)
-			;""",
-			{codes = q.codes}
-		)
-	)
 	viewmode = Mode.PAGE
-	virt.length = q.count
+	virt.length = StateVars.db.query_result[0].count
 	after_set()
 
 

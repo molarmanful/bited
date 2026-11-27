@@ -37,24 +37,6 @@ func refresh() -> void:
 		StateVars
 		. db
 		. query_with_named_bindings(
-			"""
-			select json_group_array(
-				json_object(
-					'variant', variant, 'code', child, 'xform', xform, 'blend', blend,
-					'uc', (select name from uc.data where id = child)
-				) order by variant desc, ord
-			) as rows
-			from uc.comps
-			where parent = :parent
-			;""",
-			{parent = parent_code}
-		)
-	)
-
-	(
-		StateVars
-		. db
-		. query_with_named_bindings(
 			(
 				"""
 				with recursive
@@ -67,18 +49,19 @@ func refresh() -> void:
 					)
 				select
 					f.name not in (select name from up) as ok,
-					j.value ->> 'variant' as variant, j.value ->> 'code' as code,
-					j.value ->> 'xform' as xform, j.value ->> 'blend' as blend, j.value ->> 'uc' as uc,
-					coalesce(f.name, format('U+%04X', j.value ->> 'code')) as name,
+					c.variant, c.child as code, c.xform, c.blend, d.name as uc,
+					coalesce(f.name, format('U+%04X', c.child)) as name,
 					f.dwidth, f.is_abs, f.img, coalesce(f.bb_x, 0) as bb_x, coalesce(f.bb_y, 0) as bb_y,
 					coalesce(f.off_x, 0) as off_x, coalesce(f.off_y, 0) as off_y
-				from json_each(:rows) as j
-				left join font_{0} as f on f.code = j.value ->> 'code'
-				order by j.key
+				from uc.comps as c
+				left join uc.data as d on d.id = c.child
+				left join font_{0} as f on f.code = c.child
+				where c.parent = :code
+				order by c.variant desc, c.ord
 				;"""
 				. format([StateVars.font.id])
 			),
-			StateVars.db.query_result[0].merged({parent = layers.parent_name})
+			{parent = layers.parent_name, code = parent_code}
 		)
 	)
 	var qs := StateVars.db.query_result

@@ -182,22 +182,24 @@ func build_page(r := false) -> void:
 
 func build_block(r := false) -> void:
 	var xs: PackedStringArray
-	var ys: PackedStringArray
 	for tk in args:
 		if tk:
-			xs.append("name like ? escape '\\'")
-			ys.append(("%s" if r else "%%%s%%") % tk)
+			xs.append("b.name like ? escape '\\'")
+			binds.append(("%s" if r else "%%%s%%") % tk)
 	if xs:
-		StateVars.db.query_with_bindings(
-			"select start, end from uc.blocks where {0};".format([" or ".join(xs)]), ys
+		push_qs(
+			(
+				"""
+				id in (
+					select d.id
+					from uc.blocks as b
+					join uc.data as d on d.id between b.start and b.end - 1
+					where {0}
+				)
+				"""
+				. format([Sep.OR.join(xs)])
+			)
 		)
-		xs.clear()
-		for q in StateVars.db.query_result:
-			xs.append("id between ? and ?")
-			binds.append(q.start)
-			binds.append(q.end - 1)
-		if xs:
-			push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func build_x(r := false) -> void:

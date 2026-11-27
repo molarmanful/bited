@@ -185,21 +185,25 @@ func has_font(id: String) -> bool:
 
 ## Deletes font [param id].
 func delete_font(id: String) -> void:
-	(
+	if not (
 		StateVars
 		. db
 		. query_with_named_bindings(
 			(
 				"""
+				begin;
 				delete from fonts where id = :id;
+				delete from locals.paths where id = :id;
 				drop table if exists font_{0};
 				drop table if exists layers_{0};
+				commit;
 				"""
 				. format([id])
 			),
 			{id = id}
 		)
-	)
+	):
+		StateVars.db.query("rollback;")
 
 
 ## Renames font [param old] to [param new].
@@ -218,6 +222,8 @@ func rename_font(old: String, new: String) -> void:
 				drop index if exists layers_{0}_child;
 				alter table layers_{0} rename to layers_{1};
 				update or replace fonts set id = :new where id = :old;
+				delete from locals.paths where id = :new;
+				update locals.paths set id = :new where id = :old;
 				commit;
 				"""
 				. format([old, new])
@@ -227,20 +233,6 @@ func rename_font(old: String, new: String) -> void:
 	):
 		StateVars.db.query("rollback;")
 		return
-	if not (
-		StateVars
-		. db
-		. query_with_named_bindings(
-			"""
-			begin;
-			delete from locals.paths where id = :new;
-			update locals.paths set id = :new where id = :old;
-			commit;
-			""",
-			{new = new, old = old}
-		)
-	):
-		StateVars.db.query("rollback;")
 	if new == font.id:
 		init_undo()
 

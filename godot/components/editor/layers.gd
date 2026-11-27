@@ -382,9 +382,10 @@ func refresh() -> void:
 				"""
 				select
 					l.ord, c.name, c.code, c.dwidth, c.is_abs, c.bb_x, c.bb_y,
-					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, c.img, l.blend, l.xform
+					c.off_x, c.off_y, l.off_x as dx, l.off_y as dy, c.img, l.blend, l.xform, d.name as uc
 				from layers_{0} as l
 				join font_{0} as c on l.child = c.name
+				left join uc.data as d on d.id = c.code
 				where l.parent = :parent
 				order by l.ord
 				;"""
@@ -401,18 +402,7 @@ func refresh() -> void:
 	if has_layers:
 		btn_move.button_pressed = true
 
-	StateVars.db.query_with_named_bindings(
-		"""
-		select json_group_object(id, name) as names
-		from uc.data
-		where id in (select value from json_each(:codes))
-		;""",
-		{codes = JSON.stringify(qs.map(func(q): return q.code))}
-	)
-	var names: Dictionary = JSON.parse_string(StateVars.db.query_result[0].names)
-
 	for q in qs:
-		q.uc = names.get(str(q.code))
 		var item := tree.create_item(null, 0)
 		item.set_metadata(0, q)
 		render_layer(item, q)

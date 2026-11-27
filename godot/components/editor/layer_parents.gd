@@ -56,10 +56,13 @@ func refresh() -> void:
 		. query_with_named_bindings(
 			(
 				"""
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img, null as blend
-				from font_{0}
-				where name in (select parent from layers_{0} where child = :name)
-				order by code, name
+				select
+					f.name, f.code, f.dwidth, f.is_abs, f.bb_x, f.bb_y, f.off_x, f.off_y, f.img,
+					null as blend, d.name as uc
+				from font_{0} as f
+				left join uc.data as d on d.id = f.code
+				where f.name in (select parent from layers_{0} where child = :name)
+				order by f.code, f.name
 				;"""
 				. format([StateVars.font.id])
 			),
@@ -68,18 +71,7 @@ func refresh() -> void:
 	)
 	var qs := StateVars.db.query_result
 
-	StateVars.db.query_with_named_bindings(
-		"""
-		select json_group_object(id, name) as names
-		from uc.data
-		where id in (select value from json_each(:codes))
-		;""",
-		{codes = JSON.stringify(qs.map(func(q): return q.code))}
-	)
-	var names: Dictionary = JSON.parse_string(StateVars.db.query_result[0].names)
-
 	for q in qs:
-		q.uc = names.get(str(q.code))
 		var item := tree.create_item()
 		item.set_metadata(0, q)
 		layers.render_layer(item, q, q)
