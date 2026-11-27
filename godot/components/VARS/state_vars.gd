@@ -19,8 +19,6 @@ var cfg := ConfigFile.new()
 
 ## SQLite DB connection.
 var db := SQLite.new()
-## Database for local data (i.e. machine-specific, not meant to be synced).
-var db_locals := SQLite.new()
 
 var root: Window
 var scn_all: Resource
@@ -42,9 +40,9 @@ func _ready() -> void:
 	db.path = "user://saves.db"
 	db.open_db()
 	db.query("attach 'file:res://assets/uc.db?vfs=godot&mode=ro' as uc;")
-
-	db_locals.path = "user://locals.db"
-	db_locals.open_db()
+	db.query_with_bindings(
+		"attach ? as locals;", [ProjectSettings.globalize_path("user://locals.db")]
+	)
 
 	init_font_metas()
 	migrate()
@@ -57,8 +55,7 @@ func _ready() -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		for d in [db, db_locals]:
-			d.query("pragma optimize;")
+		db.query("pragma main.optimize; pragma locals.optimize;")
 
 
 ## Transitions from "start" to "all".
@@ -132,9 +129,9 @@ func migrate() -> void:
 ## Initializes local table for font save paths.
 func init_locals_paths() -> void:
 	(
-		db_locals
+		db
 		. create_table(
-			"paths",
+			"locals.paths",
 			{
 				id = {data_type = "text", not_null = true, primary_key = true},
 				path = {data_type = "string", not_null = true},
@@ -232,18 +229,18 @@ func rename_font(old: String, new: String) -> void:
 		return
 	if not (
 		StateVars
-		. db_locals
+		. db
 		. query_with_named_bindings(
 			"""
 			begin;
-			delete from paths where id = :new;
-			update paths set id = :new where id = :old;
+			delete from locals.paths where id = :new;
+			update locals.paths set id = :new where id = :old;
 			commit;
 			""",
 			{new = new, old = old}
 		)
 	):
-		StateVars.db_locals.query("rollback;")
+		StateVars.db.query("rollback;")
 	if new == font.id:
 		init_undo()
 
@@ -385,15 +382,16 @@ func load_parsed(bf: BFont) -> void:
 
 ## Returns the save path of the current font.
 func path() -> String:
-	StateVars.db_locals.query_with_named_bindings(
-		"select path from paths where id = :id", {id = StateVars.font.id}
+	StateVars.db.query_with_named_bindings(
+		"select path from locals.paths where id = :id", {id = StateVars.font.id}
 	)
-	var qs := StateVars.db_locals.query_result
+	var qs := StateVars.db.query_result
 	return qs[0].path if qs else ""
 
 
 ## Sets the save path of the current font to [param p].
 func set_path(p: String) -> void:
-	StateVars.db_locals.query_with_named_bindings(
-		"insert or replace into paths (id, path) values (:id, :path);", {id = font.id, path = p}
+	StateVars.db.query_with_named_bindings(
+		"insert or replace into locals.paths (id, path) values (:id, :path);",
+		{id = font.id, path = p}
 	)
