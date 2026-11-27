@@ -1,7 +1,7 @@
 class_name Table
 extends PanelContainer
 
-enum Mode { RANGE, GLYPHS, PAGE }
+enum Mode { RANGE, GLYPHS, PAGE, FINDER }
 
 @export var editor: Editor
 @export var charsets: Charsets
@@ -127,6 +127,8 @@ func reset_full() -> void:
 	match viewmode:
 		Mode.GLYPHS:
 			set_glyphs(false)
+		Mode.FINDER:
+			set_finder(node_subheader.text, false)
 
 
 func set_range(a: int, b: int) -> void:
@@ -145,13 +147,16 @@ func set_glyphs(top := true) -> void:
 			(
 				"""
 				delete from temp.full;
+
 				insert into temp.full
 				select
 					row_number() over (order by code, name) - 1 as row,
 					name, code
-				from font_{0};
-				select changes() as count;
-				"""
+				from font_{0}
+				;
+
+				select changes() as count
+				;"""
 				. format([StateVars.font.id])
 			)
 		)
@@ -169,11 +174,14 @@ func set_page(id: String) -> void:
 			(
 				"""
 				delete from temp.full;
+
 				insert into temp.full
 				select row, iif(code >= 0, printf('U+%04X', code), printf('UN-%02X', row)), coalesce(code, -1)
-				from uc.p_{0};
-				select changes() as count;
-				"""
+				from uc.p_{0}
+				;
+
+				select changes() as count
+				;"""
 				. format([id])
 			)
 		)
@@ -183,29 +191,11 @@ func set_page(id: String) -> void:
 	after_set()
 
 
-func set_finder(query: String) -> void:
-	var fp := FinderParser.from(query)
-	(
-		StateVars
-		. db
-		. query_with_bindings(
-			(
-				"""
-				delete from temp.full;
-				insert into temp.full
-				select row_number() over (order by id) - 1, printf('U+%04X', id), id
-				from uc.data
-				where {0};
-				select changes() as count;
-				"""
-				. format([fp.query()])
-			),
-			fp.binds
-		)
-	)
-	viewmode = Mode.PAGE
+func set_finder(query: String, top := true) -> void:
+	FinderCompiler.exec(query)
+	viewmode = Mode.FINDER
 	virt.length = StateVars.db.query_result[0].count
-	after_set()
+	after_set(top)
 
 
 func after_set(top := true) -> void:

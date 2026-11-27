@@ -289,7 +289,7 @@ func off_uc(off: int) -> void:
 
 	else:
 		match table.viewmode:
-			Table.Mode.GLYPHS:
+			Table.Mode.GLYPHS, Table.Mode.FINDER:
 				(
 					StateVars
 					. db

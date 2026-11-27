@@ -179,11 +179,13 @@ func move(at: Vector2, ords: PackedInt32Array) -> void:
 				update layers_{0}
 				set ord = -1 - j.key
 				from json_each(:rows) as j
-				where layers_{0}.parent = :parent and layers_{0}.ord = j.value;
+				where layers_{0}.parent = :parent and layers_{0}.ord = j.value
+				;
+
 				update layers_{0}
 				set ord = -1 - ord
-				where parent = :parent and ord < 0;
-				"""
+				where parent = :parent and ord < 0
+				;"""
 				. format([StateVars.font.id])
 			),
 			{parent = parent_name, rows = JSON.stringify(rows)}

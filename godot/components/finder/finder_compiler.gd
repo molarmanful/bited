@@ -1,7 +1,7 @@
-class_name FinderParser
+class_name FinderCompiler
 extends RefCounted
 
-enum Mode { X, Q, U, CAT, CAT_Q, PAGE, PAGE_Q, BLOCK, BLOCK_Q }
+enum Mode { X, Q, U, CAT, CAT_Q, PAGE, PAGE_Q, BLOCK, BLOCK_Q, GLYPH, NAME, NAME_Q }
 
 
 class Op:
@@ -13,6 +13,9 @@ class Op:
 	const PAGE_Q = ":page;"
 	const BLOCK = ":block"
 	const BLOCK_Q = ":block;"
+	const GLYPH = ":glyph"
+	const NAME = ":name"
+	const NAME_Q = ":name;"
 	const AND = "&"
 	const OR = "|"
 	const NOT = "!"
@@ -37,11 +40,36 @@ var is_not := false
 var args: PackedStringArray
 
 
-static func from(q: String) -> FinderParser:
-	var parser := FinderParser.new()
-	parser.tks = FinderTokenizer.tokenize(q)
-	parser.parse()
-	return parser
+static func exec(q: String):
+	var fc := FinderCompiler.new()
+	fc.tks = FinderTokenizer.tokenize(q)
+	fc.parse()
+
+	(
+		StateVars
+		. db
+		. query_with_bindings(
+			(
+				"""
+				delete from temp.full;
+
+				insert into temp.full
+				select row_number() over (order by id, g) - 1, g, id
+				from (
+					select id, name, category, printf('U+%04X', id) as g from uc.data
+					union all
+					select code, name, null, name from font_{1} where code < 0
+				)
+				where {0}
+				;
+
+				select changes() as count
+				;"""
+				. format([fc.query(), StateVars.font.id])
+			),
+			fc.binds
+		)
+	)
 
 
 func parse() -> void:
@@ -76,6 +104,15 @@ func parse() -> void:
 			Op.BLOCK_Q:
 				next()
 				mode = Mode.BLOCK_Q
+			Op.GLYPH:
+				next()
+				mode = Mode.GLYPH
+			Op.NAME:
+				next()
+				mode = Mode.NAME
+			Op.NAME_Q:
+				next()
+				mode = Mode.NAME_Q
 			Op.AND:
 				sep = Sep.AND
 				next()
@@ -87,7 +124,7 @@ func parse() -> void:
 				is_not = not is_not
 			Op.LPAREN:
 				next()
-				var fp := FinderParser.new()
+				var fp := FinderCompiler.new()
 				fp.tks = tks.slice(i_tks)
 				fp.parse()
 				push_qs("({0})".format([fp.query()]))
@@ -123,6 +160,12 @@ func next() -> void:
 			build_block()
 		Mode.BLOCK_Q:
 			build_block(true)
+		Mode.GLYPH:
+			build_glyph()
+		Mode.NAME:
+			build_name()
+		Mode.NAME_Q:
+			build_name(true)
 		_:
 			build_x()
 
@@ -134,20 +177,13 @@ func next() -> void:
 func build_u() -> void:
 	var xs: PackedStringArray
 	for tk in args:
-		if tk:
-			if tk.contains("-"):
-				var hs := tk.split("-", true, 1)
-				if hs[0].is_valid_hex_number() and hs[1].is_valid_hex_number():
-					xs.append("id between ? and ?")
-					binds.append(hs[0].hex_to_int())
-					binds.append(hs[1].hex_to_int())
-			else:
-				xs.append("printf('%X', id) like ? escape '\\'")
-				xs.append("printf('%04X', id) like ? escape '\\'")
-				xs.append("printf('%06X', id) like ? escape '\\'")
-				binds.append(tk)
-				binds.append(tk)
-				binds.append(tk)
+		var hs := Array(tk.to_upper().split("-", true, 1)).map(
+			func(h: String): return h.trim_prefix("U+")
+		)
+		if hs.all(func(h: String): return h.is_valid_hex_number()):
+			xs.append("id between ? and ?")
+			binds.append(hs[0].hex_to_int())
+			binds.append(hs[-1].hex_to_int())
 	if xs:
 		push_qs("({0})".format([Sep.OR.join(xs)]))
 
@@ -200,6 +236,22 @@ func build_block(r := false) -> void:
 				. format([Sep.OR.join(xs)])
 			)
 		)
+
+
+func build_glyph() -> void:
+	push_qs("id in (select code from font_{0})".format([StateVars.font.id]))
+	mode = Mode.X
+	next()
+
+
+func build_name(r := false) -> void:
+	var xs: PackedStringArray
+	for tk in args:
+		if tk:
+			xs.append("g like ? escape '\\'")
+			binds.append(("%s" if r else "%%%s%%") % tk)
+	if xs:
+		push_qs("({0})".format([Sep.OR.join(xs)]))
 
 
 func build_x(r := false) -> void:

@@ -245,8 +245,11 @@ func copy() -> void:
 			(
 				"""
 				drop table if exists temp.clip_layers;
+
 				create table temp.clip_layers as
-				select * from layers_{0} where parent in (select name from temp.clip);
+				select * from layers_{0} where parent in (select name from temp.clip)
+				;
+
 				commit;
 				"""
 				. format([StateVars.font.id])

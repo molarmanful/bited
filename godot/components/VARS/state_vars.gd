@@ -318,9 +318,14 @@ func undo_step() -> void:
 		db
 		. query(
 			"""
-			delete from temp.undolog where step < 0 and exists (select 1 from temp.undolog where step = 0);
-			update temp.undolog set step = (select max(step) + 1 from temp.undolog) where step = 0;
-			"""
+			delete from temp.undolog
+			where step < 0 and exists (select 1 from temp.undolog where step = 0)
+			;
+
+			update temp.undolog
+			set step = (select max(step) + 1 from temp.undolog)
+			where step = 0
+			;"""
 		)
 	)
 
