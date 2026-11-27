@@ -20,7 +20,13 @@ pymdownx.superfences.custom_fences = [
   { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
 ]
 pymdownx.keys = {}
-pymdownx.blocks.admonition.types = ["note", "tip", "warning", "info", "question"]
+pymdownx.blocks.admonition.types = [
+  "note",
+  "tip",
+  "warning",
+  "info",
+  "question",
+]
 pymdownx.blocks.details.types = [{ name = "details-tip", class = "tip" }]
 pymdownx.blocks.caption = {}
 pymdownx.blocks.html = {}

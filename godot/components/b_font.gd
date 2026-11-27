@@ -226,7 +226,7 @@ func to_glyphs_toml() -> String:
 							l.parent,
 							'layers = [\n' || group_concat(
 								format(
-									'    { child = %s, off_x = %d, off_y = %d, blend = %d, xform = %d },\n',
+									'  { child = %s, off_x = %d, off_y = %d, blend = %d, xform = %d },\n',
 									c.key, l.off_x, l.off_y, l.blend, l.xform
 								),
 								'' order by l.ord
