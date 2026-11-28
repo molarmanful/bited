@@ -147,25 +147,23 @@ func init_cfg() -> void:
 
 
 ## Retrieves Unicode metadata.
-func get_info(data_name: String, data_code: int, nop = false) -> String:
+func get_info(data_name: String, data_code: int, nop = false, uc := {}) -> String:
 	if nop:
 		return "%s\n(undefined)" % data_name
 	if data_code < 0:
 		return "%s\n(custom)" % data_name
 
-	StateVars.db.query_with_named_bindings(
-		"select name, category from uc.data where id = :id;", {id = data_code}
-	)
-	var qs := StateVars.db.query_result
+	if not uc:
+		StateVars.db.query_with_named_bindings(
+			"select name as uname, category from uc.data where id = :id;", {id = data_code}
+		)
+		var qs := StateVars.db.query_result
+		uc = qs[0] if qs else {}
+	var cat = uc.get("category")
 
 	return (
 		"%s  #%d%s\n%s"
-		% [
-			data_name,
-			data_code,
-			"  " + qs[0].category if qs else "",
-			qs[0].name if qs else "(undefined)",
-		]
+		% [data_name, data_code, "  " + cat if cat else "", uc.uname if cat else "(undefined)"]
 	)
 
 

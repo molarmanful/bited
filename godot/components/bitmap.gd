@@ -49,17 +49,29 @@ func save_dwidth() -> void:
 	StateVars.refresh.emit(to_gen())
 
 
-func load() -> void:
+func load() -> Dictionary:
 	(
 		StateVars
 		. db
 		. query_with_named_bindings(
 			(
 				"""-- sql
-				select name, code, dwidth, is_abs, bb_x, bb_y, off_x, off_y, img
-				from font_{0}
+				select
+					f.name,
+					f.code,
+					f.dwidth,
+					f.is_abs,
+					f.bb_x,
+					f.bb_y,
+					f.off_x,
+					f.off_y,
+					f.img,
+					u.name as uname,
+					u.category
+				from font_{0} as f
+				left join uc.data as u on u.id = f.code
 				where
-					name = :name;
+					f.name = :name;
 				"""
 				. format([StateVars.font.id])
 			),
@@ -70,9 +82,10 @@ func load() -> void:
 	if not qs:
 		data_code = -1
 		data_name = ""
-		return
+		return {}
 
 	update_cells(qs[0])
+	return qs[0]
 
 
 func to_gen() -> Dictionary:

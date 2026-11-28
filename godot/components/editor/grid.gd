@@ -147,7 +147,7 @@ func refresh(hard := false) -> void:
 	if hard:
 		pattern.clear()
 
-	pattern.bitmap.load()
+	var row := pattern.bitmap.load()
 	refreshed.emit()
 
 	if not pattern.bitmap.data_name:
@@ -169,7 +169,7 @@ func refresh(hard := false) -> void:
 	input_dwidth.allow_lesser = false
 
 	editor.node_info_text.text = StateVars.get_info(
-		pattern.bitmap.data_name, pattern.bitmap.data_code
+		pattern.bitmap.data_name, pattern.bitmap.data_code, false, row
 	)
 	pattern.update_node()
 	pattern.dirty = true

@@ -179,82 +179,67 @@ func finder(q: String) -> void:
 
 
 func antgen(tbl: String) -> void:
-	(
-		StateVars
-		. db
-		. query(
-			(
-				"""-- sql
-				with recursive
-					src as (
-						select r.row as key, f.name
-						from uc.{1}_in as r
-						left join font_{0} as f on f.code = r.code
-					),
-					down(name) as (
-						select name from src where name is not null
-						union
-						select l.child
-						from layers_{0} as l
-						join down on l.parent = down.name
-					),
-					miss(m) as (
-						select iif(min(key) = 0, -1, coalesce(sum(1 << (key - 1)), 0))
-						from src
-						where
-							name is null
-					)
-				select
-					json_group_array(json_object('row', g.key, 'code', g.code, 'name', g.name)) as gens,
-					(select json_group_array(name order by key) from src) as srcs
-				from (
-					select row as key, code, format('U+%04X', code) as name from uc.{1}
-				) as g, miss
-				where
-					(g.key & (g.key - 1))
-					and not (g.key & miss.m)
-					and g.name not in down;
-				"""
-				. format([StateVars.font.id, tbl])
+	if not (
+		(
+			StateVars
+			. db
+			. query(
+				(
+					"""-- sql
+					begin;
+
+					create table temp.src as
+					select r.row as key, f.name
+					from uc.{1}_in as r
+					left join font_{0} as f on f.code = r.code;
+
+					create table temp.gens as
+					with recursive
+						down(name) as (
+							select name from temp.src where name is not null
+							union
+							select l.child
+							from layers_{0} as l
+							join down on l.parent = down.name
+						)
+					select g.row, g.code, format('U+%04X', g.code) as name
+					from uc.{1} as g
+					where
+						(g.row & (g.row - 1))
+						and name not in down
+						and not exists (
+							select 1
+							from temp.src as s
+							where
+								s.name is null
+								and (s.key = 0 or ((g.row >> (s.key - 1)) & 1))
+						);
+
+					delete from layers_{0} where parent in (select name from temp.gens);
+
+					insert into layers_{0}(parent, ord, child)
+					select g.name, s.key, s.name
+					from temp.gens as g
+					join temp.src as s on s.key = 0 or ((g.row >> (s.key - 1)) & 1);
+
+					insert or replace into font_{0}(name, code)
+					select name, code from temp.gens
+					returning name;
+					"""
+					. format([StateVars.font.id, tbl])
+				)
 			)
 		)
-	)
-	var q := StateVars.db.query_result[0]
-	if q.gens == "[]":
-		return
-
-	if not (
-		StateVars
-		. db
-		. query_with_named_bindings(
-			(
-				"""-- sql
-				begin;
-
-				delete from layers_{0}
-				where
-					parent in (select value ->> 'name' from json_each(:gens));
-
-				insert or replace into font_{0}(name, code, img)
-				select value ->> 'name', value ->> 'code', x'' from json_each(:gens);
-
-				insert into layers_{0}(parent, ord, child)
-				select g.value ->> 'name', s.key, s.value
-				from json_each(:gens) as g
-				join json_each(:srcs) as s
-					on s.key = 0
-					or (((g.value ->> 'row') >> (s.key - 1)) & 1);
-				"""
-				. format([StateVars.font.id])
-			),
-			q
-		)
+		and StateVars.db.query_result
 	):
 		StateVars.db.query("rollback;")
 		return
 
-	StateVars.font.flatten_parents(JSON.parse_string(q.srcs))
-	StateVars.db.query("commit;")
+	var names := StateVars.db.query_result.map(func(q): return q.name)
+	for gname in names:
+		StateVars.font.flatten(gname)
+	StateVars.font.flatten_parents(names)
+	StateVars.db.query("drop table temp.src; drop table temp.gens; commit;")
 
 	StateVars.table_refresh.emit()
 	StateVars.edit_refresh.emit()
