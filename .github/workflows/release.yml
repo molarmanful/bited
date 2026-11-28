@@ -8,7 +8,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  version:
+    name: Check VERSION
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: VERSION
+          sparse-checkout-cone-mode: false
+      - run: test "$(cat VERSION)" = "${GITHUB_REF_NAME#v}"
   rust:
+    needs: version
     strategy:
       matrix:
         platform:
@@ -92,42 +102,8 @@ jobs:
           path: rust/target/release
           key: ${{ github.ref }}-macos
           enableCrossOsArchive: true
-  bump:
-    needs: macos-bruh
-    name: Bump VERSION
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/create-github-app-token@v3
-        id: app
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
-      - name: app user id
-        run: echo "user-id=$(gh api "/users/${{ steps.app.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
-        id: user-id
-        env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
-      - name: creds
-        run: |
-          git config --global url.'https://x-access-token:${{ steps.app.outputs.token }}@github.com/'.insteadOf https://github.com/
-          git config --global user.name '${{ steps.app.outputs.app-slug }}[bot]'
-          git config --global user.email '${{ steps.user-id.outputs.user-id }}+${{ steps.app.outputs.app-slug }}[bot]@users.noreply.github.com'
-      - uses: actions/checkout@v7
-        with:
-          token: ${{ steps.app.outputs.token }}
-          ref: ${{ github.event.repository.default_branch }}
-          persist-credentials: false
-      - name: bump
-        run: printf '%s' "${GITHUB_REF_NAME#v}" > VERSION
-      - name: push
-        run: |
-          git add VERSION
-          if ! git diff-index --quiet HEAD; then
-            git commit -m 'chore: bump version to ${{ github.ref_name }}' -m '[skip ci]'
-            git push
-          fi
   release:
-    needs: bump
+    needs: macos-bruh
     strategy:
       matrix:
         platform:
@@ -148,7 +124,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.repository.default_branch }}
           lfs: true
       - uses: actions/cache/restore@v6
         with:
@@ -184,3 +159,4 @@ jobs:
         with:
           file: result/bited.zip
           asset_name: bited_${{ matrix.platform.pkg }}_$tag.zip
+          prerelease: ${{ contains(github.ref_name, '-') }}
