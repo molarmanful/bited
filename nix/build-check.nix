@@ -5,6 +5,8 @@
   stdenv,
   godot,
   export-templates-bin,
+  xvfb-run,
+  mesa,
   ...
 }:
 
@@ -13,7 +15,8 @@ stdenv.mkDerivation {
   pname = "bited-build-check";
   src = ./..;
 
-  nativeBuildInputs = [ godot ];
+  nativeCheckInputs = [ mesa.llvmpipeHook ];
+  doCheck = true;
 
   buildPhase = ''
     runHook preBuild
@@ -26,10 +29,23 @@ stdenv.mkDerivation {
     cp ${rust-dbg}/lib/libbited_rust.so rust/target/debug
 
     pushd godot
-    godot --headless --v --export-debug linux build-check.x86_64
+    ${godot}/bin/godot --headless --v --export-debug linux build-check.x86_64
     popd
 
     runHook postBuild
+  '';
+
+  checkPhase = ''
+    runHook preCheck
+
+    pushd godot
+    patchShebangs addons/gdUnit4/runtest.sh
+    GODOT_BIN="${godot}/bin/godot" \
+      ${xvfb-run}/bin/xvfb-run -s "-screen 0 1920x1080x24" \
+      addons/gdUnit4/runtest.sh -a test
+    popd
+
+    runHook postCheck
   '';
 
   installPhase = ''
