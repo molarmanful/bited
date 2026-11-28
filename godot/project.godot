@@ -62,7 +62,11 @@ project/assembly_name="bited"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/theme_gen_save_sync/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/theme_gen_save_sync/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+
+report/godot/push_error=true
 
 [gui]
 
